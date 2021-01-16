@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TongZhuangShui144.iml" filepath="$PROJECT_DIR$/.idea/modules/TongZhuangShui144.iml" group="TongZhuangShui144" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="TongZhuangShui144/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib_boxing/lib_boxing.iml" filepath="$PROJECT_DIR$/.idea/modules/lib_boxing/lib_boxing.iml" group="TongZhuangShui144/lib_boxing" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib_boxing_photobrowser/lib_boxing_photobrowser.iml" filepath="$PROJECT_DIR$/.idea/modules/lib_boxing_photobrowser/lib_boxing_photobrowser.iml" group="TongZhuangShui144/lib_boxing_photobrowser" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib_qrcode/lib_qrcode.iml" filepath="$PROJECT_DIR$/.idea/modules/lib_qrcode/lib_qrcode.iml" group="TongZhuangShui144/lib_qrcode" />
+    </modules>
+  </component>
+</project>
