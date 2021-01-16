@@ -1,0 +1,6 @@
+
+include ':lib_boxing_photobrowser'
+include ':lib_boxing'
+include ':lib_qrcode'
+include ':app'
+rootProject.name = "TongZhuangShui144"

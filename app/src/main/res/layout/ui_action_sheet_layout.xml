@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
+    android:background="@android:color/transparent"
+    android:layout_marginEnd="15dp"
+    android:layout_marginBottom="15dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ui_action_sheet_cancel_shape"
+        android:clickable="false"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/action_sheet_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:enabled="false"
+            android:gravity="center"
+            android:minHeight="55dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/action_sheet_title_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#eeeeee" />
+
+        <LinearLayout
+            android:id="@+id/action_sheet_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ui_action_sheet_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ui_action_sheet_cancel_shape"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="#2376b7"
+        android:textSize="15sp"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

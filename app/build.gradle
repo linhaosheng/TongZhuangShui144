@@ -1,0 +1,111 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+//        debug {
+//            storeFile file('/Users/linhaosheng/Desktop/Project/SiteInspectionProject/sign/xunjianweixiu141.keystore')
+//            storePassword 'haichuang'
+//            keyPassword 'haichuang'
+//            keyAlias 'tongzhuangshui144'
+//        }
+    }
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "pro.haichuang.tzs144"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        ndk {
+            abiFilters 'armeabi', "armeabi-v7a","x86" //兼容x86cpu架构  需要什么样的架构就添加什么样的
+        }
+
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        rxhttp_rxjava: 'rxjava2',
+                        rxhttp_package: 'rxhttp'
+                ]
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled true  //compression optimization
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false    //Turn on obfuscation
+            shrinkResources false  //Remove useless resources
+            zipAlignEnabled false  //Compression optimization
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation project(path: ':lib_qrcode')
+    implementation project(path: ':lib_boxing_photobrowser')
+
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
+
+    annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0"
+    implementation 'org.permissionsdispatcher:permissionsdispatcher:4.6.0'
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+
+
+    implementation 'com.ljx.rxhttp:rxhttp:2.4.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    annotationProcessor 'com.ljx.rxhttp:rxhttp-compiler:2.4.2'
+
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.ljx.rxlife2:rxlife-rxjava:2.0.0'
+
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    //bottom navigation
+
+    implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.5'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    implementation 'jsc.kit.wheel:wheel-view:0.5.4'
+    implementation 'com.kongzue.dialog:dialog:2.5.2'
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
+
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8FAFC">
+
+    <RelativeLayout
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginBottom="@dimen/dp_6">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_60"
+            android:background="@drawable/set_bg_btn4"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_8">
+
+            <ImageView
+                android:id="@+id/search_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/search"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_13"/>
+
+            <EditText
+                android:id="@+id/device_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="展项名称或设备编号关键字搜索"
+                android:textSize="13sp"
+                android:layout_toRightOf="@+id/search_img"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_centerVertical="true"
+                />
+
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/scan_img"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:src="@mipmap/scan"
+            android:scaleType="center"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

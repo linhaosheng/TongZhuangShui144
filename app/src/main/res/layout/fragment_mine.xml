@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="233dp"
+        android:src="@mipmap/mine_bg"
+        android:scaleType="fitXY"/>
+
+    <RelativeLayout
+        android:id="@+id/info_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="113dp"
+        android:background="@drawable/set_bg_btn2"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_12"
+        android:elevation="@dimen/dp_8">
+
+        <ImageView
+            android:id="@+id/avator_img"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:src="@mipmap/avator"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_30"/>
+
+        <TextView
+            android:id="@+id/phone_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="191****4196"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/avator_img"
+            android:layout_marginTop="@dimen/dp_30"
+            android:textSize="@dimen/sp_17"
+            android:textColor="#999999"
+            android:layout_marginBottom="@dimen/dp_37"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/info_view"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="@dimen/dp_20">
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/change_password_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:leftText="修改密码"
+        app:LtextColor="#000000"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightIconSize="@dimen/dp_22"/>
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/help_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:leftText="帮助"
+        app:LtextColor="#000000"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightIconSize="@dimen/dp_22"/>
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/exit_login_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:LtextColor="#000000"
+        app:leftText="退出登录"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightIconSize="@dimen/dp_22"/>
+
+    </LinearLayout>
+</RelativeLayout>

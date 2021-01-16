@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/iv_lefticon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:src="@mipmap/next"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/iv_lefticon"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_lefttext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_left_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/rightlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/iv_righticon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:scaleType="center"
+            android:src="@mipmap/next" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/rightcheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/rightswitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_righttext"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/rightlayout"
+        android:gravity="center"
+        android:text="1.0.0"
+        android:layout_marginRight="@dimen/dp_20"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/underline"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/iv_lefticon"
+        android:background="#FFEEEEEE" />
+</RelativeLayout>

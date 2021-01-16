@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/empty_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/weixiu"/>
+
+        <TextView
+            android:id="@+id/order_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没有订单"
+            android:layout_gravity="center"
+            android:textSize="@dimen/sp_16"
+            android:textColor="#76879F" />
+
+</LinearLayout>
+

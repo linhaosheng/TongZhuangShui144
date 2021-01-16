@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/set_bg_btn7"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:layout_marginTop="@dimen/dp_10"
+    android:elevation="@dimen/dp_8">
+
+    <TextView
+        android:id="@+id/repair_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="报修单号：1231212323"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_12"
+        android:textColor="#000000"/>
+
+
+    <TextView
+        android:id="@+id/repair_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="报修人员：米老鼠"
+        android:textSize="@dimen/sp_12"
+        android:textColor="#999999"
+        android:layout_below="@+id/repair_num"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"/>
+
+
+    <TextView
+        android:id="@+id/repair_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_10"
+        android:textColor="#FA6400"
+        android:text="待审核"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textSize="@dimen/sp_14"/>
+
+
+    <TextView
+        android:id="@+id/repair_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="报修时间：2020-10-12 12:00:00"
+        android:textSize="@dimen/sp_12"
+        android:textColor="#999999"
+        android:layout_below="@+id/repair_num"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"/>
+
+    <TextView
+        android:id="@+id/malfunction_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_below="@+id/repair_name"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textSize="@dimen/sp_14"
+        android:textColor="#000000"
+        android:text="故障描述：今天2020年10月12日发现故障，已经打电话进行报修等待处理中。"
+        android:layout_marginBottom="@dimen/dp_20"/>
+
+</RelativeLayout>

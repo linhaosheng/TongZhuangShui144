@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (C) 2017 Bilibili
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~          http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+    <color name="boxing_colorPrimary">#000000</color>
+    <color name="boxing_colorPrimaryDark">#ff212121</color>
+    <color name="boxing_colorPrimaryAlpha">#44000000</color>
+    <color name="boxing_colorAccent">#FF4081</color>
+
+    <color name="boxing_gray1">#333333</color>
+
+    <color name="boxing_white">#ffffff</color>
+    <color name="boxing_white1">#fafafa</color>
+
+    <color name="boxing_black">#000000</color>
+    <color name="boxing_black1">#1b1b1b</color>
+    <color name="boxing_black_alpha15">#26000000</color>
+    <color name="box_grep">#FFEDE8E5</color>
+    <color name="box_black_two">#FF2F2F2F</color>
+    <color name="box_blue">#FF869FC5</color>
+    <color name="ip_color_primary">#393A3F</color>
+    <color name="ic_back_press">#323336</color>
+    <color name="ip_color_accent">#1AAD19</color>
+
+
+    <color name="ip_color_primary_dark">#303135</color>
+    <color name="ip_color_primary_trans">#ec2f3335</color>
+    <color name="ip_color_press">#ffe0e0e0</color>
+    <color name="ip_camera_pre">#353535</color>
+    <color name="ip_text_secondary_inverted">#66ffffff</color>
+    <color name="ip_text_primary_inverted">#ffffff</color>
+</resources>

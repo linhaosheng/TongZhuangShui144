@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/home_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="54dp"
+        android:text="首页"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/sp_18" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/limit_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_44"
+                android:layout_marginRight="@dimen/dp_12"
+                android:background="@drawable/set_bg_btn2">
+
+                <RelativeLayout
+                    android:id="@+id/repair_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_60"
+                    android:layout_marginTop="@dimen/dp_30">
+
+                    <ImageView
+                        android:id="@+id/repair_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/repair" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/repair_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:text="报修"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/sp_18" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/examine_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/repair_view"
+                    android:layout_marginLeft="@dimen/dp_90"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:layout_marginRight="@dimen/dp_60">
+
+                    <ImageView
+                        android:id="@+id/examine_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/examine" />
+
+                    <TextView
+                        android:id="@+id/examine_num"
+                        android:layout_width="20dp"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginLeft="-10dp"
+                        android:layout_toRightOf="@+id/examine_img"
+                        android:background="@drawable/notice_num_bg"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:text="10"
+                        android:textColor="@color/white"
+                        android:visibility="gone"
+                        android:textSize="@dimen/sp_12" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/examine_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:text="审核"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/sp_18" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/checkout_more_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/repair_view"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp_31"
+                    android:layout_marginBottom="@dimen/dp_25"
+                    android:background="@drawable/set_bg_btn3"
+                    android:paddingLeft="@dimen/dp_20"
+                    android:paddingTop="@dimen/dp_5"
+                    android:paddingRight="@dimen/dp_20"
+                    android:paddingBottom="@dimen/dp_5"
+                    android:text="查看更多 >"
+                    android:textColor="#34B6FA"
+                    android:textSize="@dimen/sp_14" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_12"
+                android:layout_marginBottom="58dp"
+                android:background="@drawable/set_bg_btn2"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/repair_status_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/device_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_12"
+                        android:text="设备维修"
+                        android:textColor="#333333"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/all_documents"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:text="全部单据 > "
+                        android:textColor="#ACACAC"
+                        android:textSize="@dimen/sp_14" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/device_tv"
+                        android:background="#EEEEEE" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/repair_info_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/need_repair_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/need_repair_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="19dp"
+                                    android:src="@mipmap/need_repair" />
+
+                                <TextView
+                                    android:id="@+id/need_repair_num"
+                                    android:layout_width="20dp"
+                                    android:layout_height="@dimen/dp_20"
+                                    android:layout_marginTop="19dp"
+                                    android:layout_toRightOf="@+id/need_repair_img"
+                                    android:background="@drawable/notice_num_bg"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:text="10"
+                                    android:textColor="@color/white"
+                                    android:visibility="gone"
+                                    android:textSize="@dimen/sp_12" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/need_repair_img"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="@dimen/dp_13"
+                                    android:text="待维修"
+                                    android:textColor="#333333"
+                                    android:textSize="@dimen/sp_18" />
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/repairing_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/repairing_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="19dp"
+                                    android:src="@mipmap/repairing" />
+
+                                <TextView
+                                    android:id="@+id/repairing_num"
+                                    android:layout_width="20dp"
+                                    android:layout_height="@dimen/dp_20"
+                                    android:layout_marginTop="19dp"
+                                    android:layout_toRightOf="@+id/repairing_img"
+                                    android:background="@drawable/notice_num_bg"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:text="10"
+                                    android:visibility="gone"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/sp_12" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/repairing_img"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="@dimen/dp_13"
+                                    android:text="维修中"
+                                    android:textColor="#333333"
+                                    android:textSize="@dimen/sp_18" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_32">
+
+                        <LinearLayout
+                            android:id="@+id/test_repair_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/test_repair_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:src="@mipmap/test_repair"
+                                    android:layout_marginTop="@dimen/dp_22"/>
+
+                                <TextView
+                                    android:id="@+id/test_repair_num"
+                                    android:layout_width="20dp"
+                                    android:layout_height="@dimen/dp_20"
+                                    android:layout_toRightOf="@+id/test_repair_img"
+                                    android:background="@drawable/notice_num_bg"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:text="10"
+                                    android:layout_marginTop="@dimen/dp_22"
+                                    android:textColor="@color/white"
+                                    android:visibility="gone"
+                                    android:textSize="@dimen/sp_12" />
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/test_repair_img"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="@dimen/dp_13"
+                                    android:text="待测试 "
+                                    android:textColor="#333333"
+                                    android:textSize="@dimen/sp_18" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/finish_repair_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/finish_repair_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="@dimen/dp_22"
+                                    android:src="@mipmap/finish_repair" />
+
+                                <TextView
+                                    android:id="@+id/finish_repair_num"
+                                    android:layout_width="20dp"
+                                    android:layout_height="@dimen/dp_20"
+                                    android:layout_toRightOf="@+id/finish_repair_img"
+                                    android:background="@drawable/notice_num_bg"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:text="10"
+                                    android:layout_marginTop="@dimen/dp_22"
+                                    android:textColor="@color/white"
+                                    android:visibility="gone"
+                                    android:textSize="@dimen/sp_12" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/finish_repair_img"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="@dimen/dp_13"
+                                    android:text="已完成"
+                                    android:textColor="#333333"
+                                    android:textSize="@dimen/sp_18" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

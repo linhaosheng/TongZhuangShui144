@@ -1,0 +1,205 @@
+<resources>
+
+    <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">true</item>
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="colorAccent">@color/bule_one</item>
+
+    </style>
+
+
+    <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
+    <style name="VideoRecordAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">false</item>
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="colorAccent">@color/bule_one</item>
+
+    </style>
+
+    <style name="chargeDialogTyle" parent="@android:style/Theme.Dialog">
+        //Dialog的windowFrame框为无
+        <item name="android:windowFrame">@null</item>
+        //是否浮现在activity之上
+        <item name="android:windowIsFloating">true</item>
+        //是否半透明
+        <item name="android:windowIsTranslucent">false</item>
+        //是否显示title
+        <item name="android:windowNoTitle">true</item>
+        //设置dialog的背景
+        <item name="android:background">@android:color/transparent</item>
+        //显示区域背景是否透明
+        <item name="android:windowBackground">@android:color/transparent</item>
+        //就是用来控制灰度的值，当为1时，界面除了我们的dialog内容是高亮显示的，dialog以外的区域是黑色的，完全看不到其他内容，系统的默认值是0.5
+        <item name="android:backgroundDimAmount">0.5</item>
+        //显示区域以外是否使用黑色半透明背景
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="carDialogSuccessTyle" parent="@android:style/Theme.Dialog">
+        //Dialog的windowFrame框为无
+        <item name="android:windowFrame">@null</item>
+        //是否浮现在activity之上
+        <item name="android:windowIsFloating">true</item>
+        //是否半透明
+        <item name="android:windowIsTranslucent">false</item>
+        //是否显示title
+        <item name="android:windowNoTitle">true</item>
+        //设置dialog的背景
+        <item name="android:background">@android:color/transparent</item>
+        //显示区域背景是否透明
+        <item name="android:windowBackground">@android:color/transparent</item>
+        //就是用来控制灰度的值，当为1时，界面除了我们的dialog内容是高亮显示的，dialog以外的区域是黑色的，完全看不到其他内容，系统的默认值是0.5
+        <item name="android:backgroundDimAmount">0.5</item>
+        //显示区域以外是否使用黑色半透明背景
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+    <style name="addressDialogTyle" parent="@android:style/Theme.Dialog">
+        //Dialog的windowFrame框为无
+        <item name="android:windowFrame">@null</item>
+        //是否浮现在activity之上
+        <item name="android:windowIsFloating">true</item>
+        //是否半透明
+        <item name="android:windowIsTranslucent">false</item>
+        //是否显示title
+        <item name="android:windowNoTitle">true</item>
+        //设置dialog的背景
+        <item name="android:background">@android:color/transparent</item>
+        //显示区域背景是否透明
+        <item name="android:windowBackground">@android:color/transparent</item>
+        //就是用来控制灰度的值，当为1时，界面除了我们的dialog内容是高亮显示的，dialog以外的区域是黑色的，完全看不到其他内容，系统的默认值是0.5
+        <item name="android:backgroundDimAmount">0.5</item>
+        //显示区域以外是否使用黑色半透明背景
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="editTextDialogTyle" parent="@android:style/Theme.Dialog">
+        //Dialog的windowFrame框为无
+        <item name="android:windowFrame">@null</item>
+        //是否浮现在activity之上
+        <item name="android:windowIsFloating">true</item>
+        //是否半透明
+        <item name="android:windowIsTranslucent">true</item>
+        //是否显示title
+        <item name="android:windowNoTitle">true</item>
+        //设置dialog的背景
+        <item name="android:background">@android:color/transparent</item>
+        //显示区域背景是否透明
+        <item name="android:windowBackground">@android:color/transparent</item>
+        //就是用来控制灰度的值，当为1时，界面除了我们的dialog内容是高亮显示的，dialog以外的区域是黑色的，完全看不到其他内容，系统的默认值是0.5
+        <item name="android:backgroundDimAmount">0.5</item>
+        //显示区域以外是否使用黑色半透明背景
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/grep_twelve</item>
+        <item name="colorControlActivated">@color/grep_twelve</item>
+    </style>
+
+
+    <style name="my_tab_text_style">
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="emergy_contact_text">
+        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textColor">@color/grep_seven</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="emergy_contact_edit">
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:textColor">@color/cancel_air_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginRight">@dimen/dp_40</item>
+        <item name="android:layout_marginLeft">@dimen/dp_10</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="emergy_contact_linr">
+        <item name="android:layout_height">@dimen/dp_1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginRight">@dimen/dp_40</item>
+        <item name="android:layout_marginLeft">@dimen/dp_20</item>
+        <item name="android:layout_marginTop">@dimen/dp_10</item>
+        <item name="android:background">@color/line_four</item>
+    </style>
+
+    <style name="setting_text_style_num">
+        <item name="android:textColor">@color/black_three</item>
+        <item name="android:textSize">@dimen/sp_20</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:text">0</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="setting_text_style">
+        <item name="android:textColor">@color/grep_seventh</item>
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/dp_5</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <declare-styleable name="LSettingView">
+        <attr name="leftTextInfo" format="string" />
+        <attr name="leftText" format="string" />
+        <attr name="leftIcon" format="integer" />
+        <attr name="rightIcon" format="integer" />
+        <attr name="LtextSize" format="dimension" />
+        <attr name="LtextInfoSize" format="dimension" />
+        <attr name="LtextInfoColor" format="color" />
+        <attr name="LtextColor" format="color" />
+        <attr name="isShowUnderLine" format="boolean" />
+        <attr name="leftIconSize" format="dimension" />
+        <attr name="leftTextMarginLeft" format="dimension" />
+        <attr name="leftTextInfoMarginLeft" format="dimension" />
+        <attr name="rightStyle" format="enum">
+            <enum name="iconShow" value="0" />
+            <enum name="iconHide" value="1" />
+            <enum name="iconCheck" value="2" />
+            <enum name="iconSwitch" value="3" />
+        </attr>
+        <attr name="isShowLeftInfoText" format="boolean" />
+        <attr name="isShowRightText" format="boolean" />
+        <attr name="isShowRightLogo" format="boolean" />
+        <attr name="rightText" format="string" />
+        <attr name="rightTextSize" format="dimension" />
+        <attr name="rightTextColor" format="color" />
+        <attr name="rightIconSize" format="dimension" />
+    </declare-styleable>
+
+
+    <style name="UIActionSheetStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/UIActionSheetAnimation</item>
+        <item name="android:windowSoftInputMode">stateHidden</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="UIActionSheetAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/ui_action_sheet_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/ui_action_sheet_exit_anim</item>
+    </style>
+
+
+</resources>
