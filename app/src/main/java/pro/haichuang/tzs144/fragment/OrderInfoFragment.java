@@ -39,13 +39,13 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     private OrderInfoAdapter orderInfoAdapter;
     private List<String> datas;
 
-    private String id;
+    private int id;
 
     public OrderInfoFragment() {
         super();
     }
 
-    public OrderInfoFragment(String mId) {
+    public OrderInfoFragment(int mId) {
         this.id = mId;
     }
 
@@ -68,7 +68,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
    //             refresh.setRefreshing(true);
             }
         },100);
-        orderInfoAdapter = new OrderInfoAdapter();
+        orderInfoAdapter = new OrderInfoAdapter(id);
         recycleData.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
         recycleData.setAdapter(orderInfoAdapter);
 

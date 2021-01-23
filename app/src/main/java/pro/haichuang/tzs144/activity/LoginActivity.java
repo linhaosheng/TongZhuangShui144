@@ -32,10 +32,7 @@ import butterknife.OnClick;
  */
 public class LoginActivity extends BaseActivity implements ILoadDataView<String> {
 
-    @BindView(R.id.back)
-    ImageView back;
-    @BindView(R.id.title)
-    TextView title;
+
     @BindView(R.id.account)
     EditText account;
     @BindView(R.id.password)
@@ -55,23 +52,22 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     protected void setUpView() {
-        back.setVisibility(View.GONE);
-        title.setText("登录");
+
     }
 
     @Override
     protected void setUpData() {
-      //  account.setText("17360155213");  //17360155214   //  15165011853
-     //   password.setText("123456");
+        account.setText("17360155213");  //17360155214   //  15165011853
+        password.setText("123456");
         //数据
         data_list = new ArrayList<String>();
-        data_list.add("北京");
-        data_list.add("上海");
-        data_list.add("广州");
-        data_list.add("深圳");
+        data_list.add("经销商A");
+        data_list.add("经销商B");
+        data_list.add("经销商C");
+        data_list.add("经销商D");
 
         //适配器
-        arr_adapter= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
+        arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
         //设置样式
         arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
@@ -95,32 +91,32 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     @OnClick(R.id.login_btn)
     public void onViewClicked() {
 
-        if (TextUtils.isEmpty(account.getText())){
+        if (TextUtils.isEmpty(account.getText())) {
             Utils.showCenterTomast("请输入正确账号");
             return;
         }
-        if (TextUtils.isEmpty(password.getText())){
+        if (TextUtils.isEmpty(password.getText())) {
             Utils.showCenterTomast("请输入正确密码");
             return;
         }
-        Log.i(TAG,"登录....");
-        Intent intent =new Intent(LoginActivity.this,MainActivity.class);
+        Log.i(TAG, "登录....");
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
 
-     //   loginPresenter.login(account.getText().toString(),password.getText().toString());
+        //   loginPresenter.login(account.getText().toString(),password.getText().toString());
     }
 
     @Override
     public void startLoad() {
-        WaitDialog.show(this,"登录中....");
+        WaitDialog.show(this, "登录中....");
     }
 
     @Override
     public void successLoad(String data) {
-        SPUtils.putBoolean(Config.IS_LOGIN,true);
+        SPUtils.putBoolean(Config.IS_LOGIN, true);
         WaitDialog.dismiss();
-        Intent intent =new Intent(LoginActivity.this,MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }

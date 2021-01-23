@@ -2,6 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
+        release {
+            storeFile file('/Users/haoshenglin/Desktop/Project/TongZhuangShui144/sign/tongzhuangshui144.keystore')
+            storePassword "haichuang"
+            keyAlias "tongzhuangshui144"
+            keyPassword "haichuang"
+        }
 //        debug {
 //            storeFile file('/Users/linhaosheng/Desktop/Project/SiteInspectionProject/sign/xunjianweixiu141.keystore')
 //            storePassword 'haichuang'
@@ -71,6 +77,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation project(path: ':lib_qrcode')
     implementation project(path: ':lib_boxing_photobrowser')
+    implementation files('libs/BaiduLBS_Android.jar')
 
 
     testImplementation 'junit:junit:4.12'
@@ -106,6 +113,6 @@ dependencies {
     implementation 'com.kongzue.dialog:dialog:2.5.2'
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
 
-    implementation 'com.tencent.bugly:crashreport:latest.release'
+   // implementation 'com.tencent.bugly:crashreport:latest.release'
 
 }

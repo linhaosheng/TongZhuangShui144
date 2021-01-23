@@ -98,7 +98,18 @@ public class MainActivity extends BaseActivity {
                         BottomMenu.show(MainActivity.this, tabList, new OnMenuItemClickListener() {
                                 @Override
                                 public void onClick(String text, int index) {
+                                    Intent intent = new Intent();
 
+                                      if (index==0){
+                                          intent.setClass(MainActivity.this,SalesListActivity.class);
+                                      }else if (index==1){
+                                          intent.setClass(MainActivity.this,EnterOrderActivity.class);
+                                      }else if (index==2){
+                                          intent.setClass(MainActivity.this,StartDepositActivity.class);
+                                      }else if (index==3){
+                                          intent.setClass(MainActivity.this,WithDrawalOrderActivity.class);
+                                      }
+                                      startActivity(intent);
                                 }
                             });
                         return false;

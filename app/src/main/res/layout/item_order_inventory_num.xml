@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:layout_marginTop="@dimen/dp_10">
+
+    <ImageView
+        android:id="@+id/bottled_water"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_70"
+        android:src="@mipmap/bottled_water"
+        android:scaleType="fitXY"
+        android:layout_marginLeft="@dimen/dp_20"/>
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="农夫山泉桶装水 1.8L"
+        android:textColor="#3F3F3F"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_toRightOf="@+id/bottled_water"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_17"
+        />
+
+    <TextView
+        android:id="@+id/bottled_water_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="库存:80     月售:80"
+        android:textColor="#3F3F3F"
+        android:textSize="14sp"
+        android:layout_toRightOf="@+id/bottled_water"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginBottom="@dimen/dp_15"
+        />
+
+
+</RelativeLayout>

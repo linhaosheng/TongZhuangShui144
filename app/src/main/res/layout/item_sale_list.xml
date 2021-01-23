@@ -28,6 +28,7 @@
         android:textColor="#32C5FF"
         android:gravity="center"
         android:paddingTop="@dimen/dp_5"
+        android:textSize="11sp"
         android:paddingBottom="@dimen/dp_5"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/dp_20"

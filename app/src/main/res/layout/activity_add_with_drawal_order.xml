@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <include layout="@layout/header" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/client_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginRight="12dp">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="wrap_content"
+                    android:text="张三"
+                    android:textColor="#3F3F3F"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/name"
+                    android:text="18909293021"
+                    android:textColor="#999999"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="麓谷大道店"
+                    android:textColor="#3F3F3F"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/address_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/phone"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_toRightOf="@+id/name"
+                    android:text="湖南省长沙市岳麓区麓谷大道1928号"
+                    android:textColor="#999999"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F8F8F8"
+                android:layout_below="@+id/client_info"/>
+
+            <Button
+                android:id="@+id/with_drawal_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:text="退款"
+                android:background="@drawable/set_bg_btn14"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/dp_60"/>
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

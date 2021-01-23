@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:scaleType="center"
+            android:src="@mipmap/back" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_40"
+            android:layout_toRightOf="@+id/back"
+            android:background="@drawable/set_bg_btn11">
+
+            <EditText
+                android:id="@+id/search_edit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_22"
+                android:layout_marginRight="@dimen/dp_18"
+                android:background="@null"
+                android:drawableLeft="@mipmap/search"
+                android:drawablePadding="@dimen/dp_10"
+                android:gravity="center"
+                android:hint="请输入押金编号"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F8F8F8">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/item_empty" />
+
+</LinearLayout>

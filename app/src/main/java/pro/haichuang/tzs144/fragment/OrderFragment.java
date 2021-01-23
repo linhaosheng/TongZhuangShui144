@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.fragment;
 
+import android.content.Intent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.activity.SalesListActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
 
 /**
@@ -48,7 +50,8 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     protected void setUpView() {
-
+        title.setText("订单");
+        tips.setText("直接销售列表");
         orderTitleList = new ArrayList<>();
         orderTitleList.add("新订单");
         orderTitleList.add("待配送");
@@ -56,10 +59,10 @@ public class OrderFragment extends BaseFragment {
         orderTitleList.add("订单查询");
 
         orderList = new ArrayList<>();
-        orderList.add(new OrderInfoFragment("0"));
-        orderList.add(new OrderInfoFragment("1"));
-        orderList.add(new OrderInfoFragment("2"));
-        orderList.add(new OrderInfoFragment("3"));
+        orderList.add(new OrderInfoFragment(0));
+        orderList.add(new OrderInfoFragment(1));
+        orderList.add(new OrderInfoFragment(2));
+        orderList.add(new OrderInfoFragment(3));
 
         myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(),orderList,orderTitleList);
         vpView.setAdapter(myPagerAdapter);
@@ -75,5 +78,7 @@ public class OrderFragment extends BaseFragment {
 
     @OnClick(R.id.tips)
     public void onViewClicked() {
+        Intent intent = new Intent(getActivity(), SalesListActivity.class);
+        startActivity(intent);
     }
 }

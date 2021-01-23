@@ -58,7 +58,7 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         title.setTextColor(ContextCompat.getColor(this,R.color.blank2));
 
         tipImg.setVisibility(View.VISIBLE);
-        tipImg.setBackgroundResource(R.mipmap.tab);
+        tipImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.tab_img));
         refresh.setOnRefreshListener(this);
 
         saleListItemAdapter = new SaleListItemAdapter();

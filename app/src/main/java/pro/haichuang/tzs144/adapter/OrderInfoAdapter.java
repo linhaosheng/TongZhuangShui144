@@ -13,13 +13,22 @@ import pro.haichuang.tzs144.R;
 
 public class OrderInfoAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
+    private int type;
 
-    public OrderInfoAdapter() {
+    public OrderInfoAdapter(int mType) {
         super(R.layout.item_order_info);
+        this.type = mType;
     }
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, String baseMedia) {
 
+        if (type==0){
+            baseViewHolder.setText(R.id.take_orders,"抢单/接单");
+        }else if (type==1){
+            baseViewHolder.setText(R.id.take_orders,"配送");
+        }else if (type==2 || type==3){
+            baseViewHolder.setText(R.id.take_orders,"知道了");
+        }
     }
 }

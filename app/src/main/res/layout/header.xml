@@ -15,6 +15,17 @@
         />
 
     <TextView
+        android:id="@+id/left_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#32C5FF"
+        android:text="新增客户"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_55"
+        android:visibility="gone"
+        android:textSize="14sp"/>
+
+    <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

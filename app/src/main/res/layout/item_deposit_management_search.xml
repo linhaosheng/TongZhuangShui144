@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/set_bg_btn13"
+    android:paddingBottom="@dimen/dp_14"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:layout_marginTop="@dimen/dp_10">
+
+    <TextView
+        android:id="@+id/deposit_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginLeft="@dimen/dp_32"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginRight="@dimen/dp_30"
+        android:text="押金本编号：SCKD20201105001"/>
+
+    <TextView
+        android:id="@+id/start_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="@dimen/dp_32"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginRight="@dimen/dp_30"
+        android:text="开始编码：yjb74827849274892"/>
+
+    <TextView
+        android:id="@+id/end_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="@dimen/dp_32"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginRight="@dimen/dp_30"
+        android:text="结束编码 ：yjb74827849274892"/>
+
+    <TextView
+        android:id="@+id/code_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="@dimen/dp_32"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginRight="@dimen/dp_30"
+        android:text="领入时间：2020-11-23 12:12:12"/>
+
+
+</LinearLayout>

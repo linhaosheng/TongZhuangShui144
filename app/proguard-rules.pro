@@ -23,3 +23,9 @@
 -dontwarn com.bumptech.glide.**
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+
+-keep class com.baidu.** {*;}
+-keep class vi.com.** {*;}
+-keep class com.baidu.vi.** {*;}
+-dontwarn com.baidu.**
+
