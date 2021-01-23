@@ -14,6 +14,8 @@
 
     <!-- 获取网络状态，根据网络状态切换进行数据请求网络转换 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 
     <application
@@ -64,6 +66,12 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="W5p2xXCo9Pz3pWckgdFBZWApjOvTPsfC" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
 
     </application>
 

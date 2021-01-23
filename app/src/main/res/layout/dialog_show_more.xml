@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/set_bg_btn21"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/sale"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_57"
+        android:text="直接销售"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="#E5E5E5"
+        />
+
+    <TextView
+        android:id="@+id/make_up_order"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_57"
+        android:text="补录订单"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="#E5E5E5"
+        />
+
+    <TextView
+        android:id="@+id/open_deposit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_57"
+        android:text="开押"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="#E5E5E5"
+        />
+
+    <TextView
+        android:id="@+id/withdrawal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_57"
+        android:text="退押"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+</LinearLayout>

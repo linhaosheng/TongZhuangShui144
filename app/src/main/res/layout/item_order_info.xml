@@ -8,6 +8,15 @@
     android:layout_marginRight="@dimen/dp_10"
     android:background="@drawable/set_bg_btn15">
 
+    <ImageView
+        android:id="@+id/order_state_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/have_finish"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_marginRight="@dimen/dp_90"/>
+
     <TextView
         android:id="@+id/order_num"
         android:layout_width="wrap_content"
@@ -52,6 +61,7 @@
         android:textSize="14sp"/>
 
      <ImageView
+         android:id="@+id/time_out_icon"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:src="@mipmap/time_out"

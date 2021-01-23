@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.fragment;
 
 import android.content.Intent;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,6 +39,8 @@ public class OrderFragment extends BaseFragment {
     private List<Fragment> orderList;
     private List<String>orderTitleList;
 
+
+
     @Override
     public boolean lazyLoader() {
         return false;
@@ -65,6 +68,8 @@ public class OrderFragment extends BaseFragment {
         orderList.add(new OrderInfoFragment(3));
 
         myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(),orderList,orderTitleList);
+
+
         vpView.setAdapter(myPagerAdapter);
         tabs.setupWithViewPager(vpView);
         tabs.setTabsFromPagerAdapter(myPagerAdapter);

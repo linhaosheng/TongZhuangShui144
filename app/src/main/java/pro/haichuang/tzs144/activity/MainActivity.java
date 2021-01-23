@@ -31,6 +31,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
+import pro.haichuang.tzs144.view.ShowMoreDialog;
 
 /**
  * 主页面
@@ -95,23 +96,25 @@ public class MainActivity extends BaseActivity {
                 .setOnCenterTabClickListener(new EasyNavigationBar.OnCenterTabSelectListener() {
                     @Override
                     public boolean onCenterTabSelectEvent(View view) {
-                        BottomMenu.show(MainActivity.this, tabList, new OnMenuItemClickListener() {
-                                @Override
-                                public void onClick(String text, int index) {
-                                    Intent intent = new Intent();
-
-                                      if (index==0){
-                                          intent.setClass(MainActivity.this,SalesListActivity.class);
-                                      }else if (index==1){
-                                          intent.setClass(MainActivity.this,EnterOrderActivity.class);
-                                      }else if (index==2){
-                                          intent.setClass(MainActivity.this,StartDepositActivity.class);
-                                      }else if (index==3){
-                                          intent.setClass(MainActivity.this,WithDrawalOrderActivity.class);
-                                      }
-                                      startActivity(intent);
-                                }
-                            });
+                        ShowMoreDialog showMoreDialog = new ShowMoreDialog(MainActivity.this);
+                        showMoreDialog.show(getSupportFragmentManager(),"");
+//                        BottomMenu.show(MainActivity.this, tabList, new OnMenuItemClickListener() {
+//                                @Override
+//                                public void onClick(String text, int index) {
+//                                    Intent intent = new Intent();
+//
+//                                      if (index==0){
+//                                          intent.setClass(MainActivity.this,SalesListActivity.class);
+//                                      }else if (index==1){
+//                                          intent.setClass(MainActivity.this,EnterOrderActivity.class);
+//                                      }else if (index==2){
+//                                          intent.setClass(MainActivity.this,StartDepositActivity.class);
+//                                      }else if (index==3){
+//                                          intent.setClass(MainActivity.this,WithDrawalOrderActivity.class);
+//                                      }
+//                                      startActivity(intent);
+//                                }
+//                            });
                         return false;
                     }
                 })
@@ -142,7 +145,7 @@ public class MainActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
     public void allplyPermission() {
 
     }
@@ -156,7 +159,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 申请权限被拒绝时
      */
-    @OnPermissionDenied({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    @OnPermissionDenied({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
     void onWriteAndReadDenied() {
         Utils.showCenterTomast("写入和读取以及摄像头权限被拒，有可能导致无法使用");
     }
@@ -164,7 +167,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 申请权限被拒绝并勾选不再提醒时
      */
-    @OnNeverAskAgain({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    @OnNeverAskAgain({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
     void onInstallNeverAskAgain() {
         Utils.showCenterTomast("写入和读取以及摄像头权限被拒，有可能导致无法使用");
     }

@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.kongzue.dialog.v2.WaitDialog;
 
 import java.util.ArrayList;
@@ -41,9 +43,12 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     Button loginBtn;
     @BindView(R.id.inventory_subject)
     Spinner inventorySubject;
+    @BindView(R.id.check_state)
+    ImageView checkState;
     private LoginPresenter loginPresenter;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
+    private boolean checked = true;
 
     @Override
     protected int setLayoutResourceID() {
@@ -88,9 +93,27 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     }
 
-    @OnClick(R.id.login_btn)
-    public void onViewClicked() {
+    @OnClick({R.id.login_btn,R.id.check_state})
+    public void onViewClicked(View view) {
 
+        switch (view.getId()){
+            case R.id.login_btn:
+               login();
+                break;
+            case R.id.check_state:
+                if (checked){
+                    checkState.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.check));
+                }else {
+                    checkState.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.check_box));
+                }
+                checked =!checked;
+                break;
+        }
+
+        //
+    }
+
+    private void login(){
         if (TextUtils.isEmpty(account.getText())) {
             Utils.showCenterTomast("请输入正确账号");
             return;
@@ -103,8 +126,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
-
-        //   loginPresenter.login(account.getText().toString(),password.getText().toString());
+     //   loginPresenter.login(account.getText().toString(),password.getText().toString());
     }
 
     @Override

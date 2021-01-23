@@ -29,7 +29,7 @@
         //是否浮现在activity之上
         <item name="android:windowIsFloating">true</item>
         //是否半透明
-        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowIsTranslucent">true</item>
         //是否显示title
         <item name="android:windowNoTitle">true</item>
         //设置dialog的背景
@@ -199,6 +199,16 @@
     <style name="UIActionSheetAnimation" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/ui_action_sheet_enter_anim</item>
         <item name="android:windowExitAnimation">@anim/ui_action_sheet_exit_anim</item>
+    </style>
+
+    <style name="TurnTableDilogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
 
