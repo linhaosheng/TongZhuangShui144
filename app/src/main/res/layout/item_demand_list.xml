@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/set_bg_btn13"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/dp_10"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_15">
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/end_time"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:LtextColor="#333333"
+        app:leftText="商品"
+        app:leftTextMarginLeft="@dimen/dp_20"
+        app:rightStyle="iconHide"
+        app:isShowRightText = "true"
+        app:rightText="请选择"
+        app:isShowUnderLine="true"
+        app:rightIconSize="@dimen/dp_22" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5">
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="数量"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:textColor="#3F3F3F"
+            android:layout_marginLeft="30dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@+id/number"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/reduce"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_20"
+                android:background="@drawable/set_bg_btn26"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/shop_num"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_20"
+                android:background="@drawable/set_bg_btn26"
+                android:gravity="center"
+                android:text="1234"
+                android:textColor="#32C5FF"
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:id="@+id/shop_add"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_20"
+                android:background="@drawable/set_bg_btn26"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10">
+            
+            <TextView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:text="一"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:background="@drawable/set_bg_btn27"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="移除"
+                android:textColor="#E02020"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

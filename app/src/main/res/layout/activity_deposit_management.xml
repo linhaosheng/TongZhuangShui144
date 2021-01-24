@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_30">
 
         <ImageView
             android:id="@+id/back"
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_80"
+            android:layout_marginRight="@dimen/dp_40"
             android:layout_toRightOf="@+id/back"
             android:background="@drawable/set_bg_btn11">
 
@@ -34,19 +34,20 @@
                 android:background="@null"
                 android:drawableLeft="@mipmap/search"
                 android:drawablePadding="@dimen/dp_10"
-                android:gravity="center"
-                android:hint="#CCCCCC"
+                android:gravity="left|center"
+                android:hint="请输入押金本编号"
                 android:textSize="14sp" />
 
         </LinearLayout>
 
         <ImageView
             android:id="@+id/add_img"
-            android:layout_width="@dimen/dp_50"
-            android:layout_height="@dimen/dp_50"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
             android:layout_alignParentRight="true"
             android:scaleType="center"
-            android:src="@mipmap/back" />
+            android:layout_centerVertical="true"
+            android:src="@mipmap/add_order" />
 
     </RelativeLayout>
 

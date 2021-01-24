@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.fragment;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,6 +30,8 @@ public class OrderFragment extends BaseFragment {
     TextView title;
     @BindView(R.id.tips)
     TextView tips;
+    @BindView(R.id.back)
+    ImageView back;
     @BindView(R.id.head_view)
     RelativeLayout headView;
     @BindView(R.id.tabs)
@@ -53,8 +56,12 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     protected void setUpView() {
+        back.setVisibility(View.GONE);
         title.setText("订单");
         tips.setText("直接销售列表");
+        tips.setTextSize(12);
+        tips.setVisibility(View.VISIBLE);
+
         orderTitleList = new ArrayList<>();
         orderTitleList.add("新订单");
         orderTitleList.add("待配送");

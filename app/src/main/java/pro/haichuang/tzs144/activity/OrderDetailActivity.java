@@ -118,6 +118,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
+        title.setText("订单详情");
 
     }
 

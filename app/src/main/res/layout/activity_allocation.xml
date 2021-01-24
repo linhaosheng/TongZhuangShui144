@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include layout="@layout/header"/>
+
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/subject"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="#fff"
+        app:LtextColor="#333333"
+        app:leftText="调拨至库存主体"
+        app:leftTextMarginLeft="@dimen/dp_20"
+        app:rightStyle="iconHide"
+        app:isShowRightText = "true"
+        app:rightText="请选择"
+        app:isShowUnderLine="true"
+        app:rightIconSize="@dimen/dp_22" />
+
+    <Button
+        android:id="@+id/add_shop"
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_28"
+        android:text="添加商品"
+        android:textColor="#fff"
+        android:textSize="12sp"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/set_bg_btn14"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_data"
+        android:background="#F8F8F8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <Button
+        android:id="@+id/input_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginLeft="@dimen/dp_50"
+        android:layout_marginRight="@dimen/dp_50"
+        android:text="提交"
+        android:background="@drawable/set_bg_btn14"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/dp_50"/>
+
+    <Button
+        android:id="@+id/cancel_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginLeft="@dimen/dp_50"
+        android:layout_marginRight="@dimen/dp_50"
+        android:text="取消"
+        android:background="@drawable/set_bg_btn17"
+        android:textColor="#32C5FF"
+        android:layout_marginTop="@dimen/dp_20"
+        android:textSize="16sp"/>
+
+</LinearLayout>

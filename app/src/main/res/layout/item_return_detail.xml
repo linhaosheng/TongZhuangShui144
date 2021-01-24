@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_22"
+    android:background="#fff"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/order_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发水收桶单号：SCKD20201105001"
+        android:textSize="12sp"
+        android:textColor="#3F3F3F"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"/>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:text="时间：2020-12-12 12:00:00"/>
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:text="出库人：米老鼠"/>
+
+    <TextView
+        android:id="@+id/account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:text="当日主账号：tanglaouya"/>
+
+    <TextView
+        android:id="@+id/shop_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:text="商品：农夫山泉桶装水"/>
+
+    <TextView
+        android:id="@+id/shop_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:text="发水数量：10"/>
+
+    <TextView
+        android:id="@+id/recycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:text="回收材料：农夫山泉空桶"/>
+
+    <TextView
+        android:id="@+id/recycle_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:text="回收数量：10"/>
+
+</LinearLayout>

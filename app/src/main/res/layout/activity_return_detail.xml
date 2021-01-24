@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_60"
             android:layout_toRightOf="@+id/back"
             android:background="@drawable/set_bg_btn11">
 
@@ -29,63 +29,31 @@
                 android:id="@+id/search_edit"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_30"
-                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_22"
+                android:layout_marginRight="@dimen/dp_18"
                 android:background="@null"
                 android:drawableLeft="@mipmap/search"
                 android:drawablePadding="@dimen/dp_10"
-                android:gravity="center"
-                android:hint="请输入押金编号"
-                android:textSize="14sp" />
+                android:gravity="left|center"
+                android:hint="输入商品关键字搜索"
+                android:textSize="13sp" />
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/dp_17"
+            android:text="筛选"
+            android:textColor="#32C5FF"
+            android:textSize="14sp"
+             />
 
     </RelativeLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/dp_15">
-
-        <Button
-            android:id="@+id/add_with_drawal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/dp_28"
-            android:text="新增退押记录"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
-            android:layout_marginRight="@dimen/dp_20"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:background="@drawable/set_bg_btn14"/>
-
-        <Button
-            android:id="@+id/historical_deposit"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/dp_28"
-            android:text="作废退押记录"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
-            android:layout_marginRight="@dimen/dp_20"
-            android:background="@drawable/set_bg_btn14"/>
-
-        <Button
-            android:id="@+id/detention_record"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/dp_28"
-            android:text="历史押金单录入"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
-            android:layout_marginRight="@dimen/dp_20"
-            android:background="@drawable/set_bg_btn14"/>
-
-
-    </LinearLayout>
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F8F8"
+    android:background="#fff"
     android:orientation="vertical">
 
     <include layout="@layout/header" />
@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,9 +92,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_24"
-                android:layout_marginTop="@dimen/dp_18"
-                android:layout_marginRight="@dimen/dp_24"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:background="#ffffff">
 
                 <TextView
@@ -104,6 +102,8 @@
                     android:text="选择商品"
                     android:textColor="#333333"
                     android:textSize="14sp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="@dimen/dp_15"
                     android:textStyle="bold" />
 
                 <TextView
@@ -114,7 +114,9 @@
                     android:drawableRight="@mipmap/next"
                     android:text="添加"
                     android:textColor="#32C5FF"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_25"/>
 
             </RelativeLayout>
 
@@ -123,7 +125,8 @@
                 android:id="@+id/shop_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
                 android:background="@drawable/set_bg_btn13">
 
                 <TextView
@@ -149,7 +152,7 @@
                         android:id="@+id/reduce"
                         android:layout_width="@dimen/dp_20"
                         android:layout_height="@dimen/dp_20"
-                        android:background="@drawable/set_bg_btn16"
+                        android:background="@drawable/set_bg_btn26"
                         android:gravity="center"
                         android:text="-"
                         android:textColor="#000000"
@@ -159,7 +162,7 @@
                         android:id="@+id/shop_num"
                         android:layout_width="@dimen/dp_40"
                         android:layout_height="@dimen/dp_20"
-                        android:background="@drawable/set_bg_btn16"
+                        android:background="@drawable/set_bg_btn26"
                         android:gravity="center"
                         android:text="1234"
                         android:textColor="#32C5FF"
@@ -170,7 +173,7 @@
                         android:id="@+id/shop_add"
                         android:layout_width="@dimen/dp_20"
                         android:layout_height="@dimen/dp_20"
-                        android:background="@drawable/set_bg_btn16"
+                        android:background="@drawable/set_bg_btn26"
                         android:gravity="center"
                         android:text="+"
                         android:textColor="#000000"
@@ -181,7 +184,8 @@
                 <RelativeLayout
                     android:id="@+id/shop_info"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/shop_name">
 
 
                     <TextView
@@ -199,7 +203,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="14dp"
-                        android:layout_marginRight="@dimen/dp_90"
+                        android:layout_marginRight="@dimen/dp_100"
                         android:text="￥"
                         android:textColor="#3F3F3F"
                         android:textSize="12sp" />
@@ -212,12 +216,76 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="@dimen/dp_10"
-                        android:background="@drawable/set_bg_btn16"
+                        android:background="@drawable/set_bg_btn26"
                         android:gravity="center"
                         android:text="30.00"
                         android:textColor="#3F3F3F"
                         android:textSize="12sp" />
 
+                    <TextView
+                        android:id="@+id/view2"
+                        android:layout_width="@dimen/dp_48"
+                        android:layout_height="@dimen/dp_18"
+                        android:text="回收"
+                        android:textSize="12sp"
+                        android:background="@drawable/set_bg_btn25"
+                        android:textColor="#FF9419"
+                        android:gravity="center"
+                        android:layout_marginTop="11dp"
+                        android:layout_below="@+id/shop_capacity"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="直饮桶"
+                        android:textSize="12sp"
+                        android:textColor="#3F3F3F"
+                        android:layout_toRightOf="@+id/view2"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_below="@+id/shop_capacity"
+                        android:layout_marginLeft="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="@dimen/dp_15"
+                        android:layout_below="@+id/shop_capacity"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/reduce_tong"
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:background="@drawable/set_bg_btn26"
+                            android:gravity="center"
+                            android:text="-"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/shop_num_tong"
+                            android:layout_width="@dimen/dp_40"
+                            android:layout_height="@dimen/dp_20"
+                            android:background="@drawable/set_bg_btn26"
+                            android:gravity="center"
+                            android:text="1234"
+                            android:textColor="#32C5FF"
+                            android:textSize="12sp" />
+
+
+                        <TextView
+                            android:id="@+id/shop_add_tong"
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:background="@drawable/set_bg_btn26"
+                            android:gravity="center"
+                            android:text="+"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -287,7 +355,6 @@
                         app:isShowRightText="true"
                         app:isShowUnderLine="true"
                         app:leftText="水票"
-                        app:leftTextMarginLeft="@dimen/dp_10"
                         app:rightIconSize="@dimen/dp_22"
                         app:rightText="请选择" />
 
@@ -301,7 +368,6 @@
                         app:isShowRightText="true"
                         app:isShowUnderLine="true"
                         app:leftText="水票数量"
-                        app:leftTextMarginLeft="@dimen/dp_10"
                         app:rightIconSize="@dimen/dp_22"
                         app:rightText="请输入" />
 
@@ -315,7 +381,6 @@
                         app:isShowRightText="true"
                         app:isShowUnderLine="true"
                         app:leftText="抵扣数量"
-                        app:leftTextMarginLeft="@dimen/dp_10"
                         app:rightIconSize="@dimen/dp_22"
                         app:rightText="请输入" />
 
@@ -331,6 +396,7 @@
                             android:text="奖券"
                             android:textColor="#3F3F3F"
                             android:textSize="14sp"
+                            android:layout_marginTop="@dimen/dp_10"
                             android:textStyle="bold" />
 
                         <ImageView
@@ -338,7 +404,7 @@
                             android:layout_width="@dimen/dp_80"
                             android:layout_height="@dimen/dp_80"
                             android:layout_marginLeft="@dimen/dp_37"
-                            android:src="@mipmap/bottled_water" />
+                            android:src="@mipmap/upload" />
 
 
                     </LinearLayout>
@@ -352,7 +418,6 @@
                         app:isShowRightText="true"
                         app:isShowUnderLine="true"
                         app:leftText="抵扣数量"
-                        app:leftTextMarginLeft="@dimen/dp_10"
                         app:rightIconSize="@dimen/dp_22"
                         app:rightText="请输入" />
 
@@ -368,6 +433,7 @@
                             android:text="月结"
                             android:textColor="#3F3F3F"
                             android:textSize="14sp"
+                            android:layout_marginTop="@dimen/dp_10"
                             android:textStyle="bold" />
 
                         <ImageView
@@ -375,7 +441,7 @@
                             android:layout_width="@dimen/dp_80"
                             android:layout_height="@dimen/dp_80"
                             android:layout_marginLeft="@dimen/dp_37"
-                            android:src="@mipmap/bottled_water" />
+                            android:src="@mipmap/upload" />
 
 
                     </LinearLayout>
@@ -403,6 +469,7 @@
                         android:layout_marginBottom="@dimen/dp_12"
                         android:background="@drawable/set_bg_btn14"
                         android:textColor="#FFFFFF"
+                        android:text="确认添加"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -429,10 +496,11 @@
                     <TextView
                         android:id="@+id/total_merchandise"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dp_10"
                         android:text="商品总额"
                         android:textColor="#333333"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
 
                     <TextView
@@ -441,6 +509,7 @@
                         android:layout_height="wrap_content"
                         android:text="￥"
                         android:layout_below="@+id/total_merchandise"
+                        android:layout_marginTop="@dimen/dp_10"
                         />
 
                     <TextView
@@ -454,6 +523,7 @@
                         android:background="@drawable/set_bg_btn18"
                         android:layout_toRightOf="@+id/price_unit"
                         android:layout_below="@+id/total_merchandise"
+                        android:layout_marginTop="@dimen/dp_5"
                         />
 
                 </RelativeLayout>
@@ -468,10 +538,10 @@
                         android:id="@+id/amount_receivable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="商品总额"
+                        android:text="应收金额"
                         android:textColor="#333333"
+                        android:layout_marginLeft="@dimen/dp_10"
                         android:textSize="14sp"/>
-
 
                     <TextView
                         android:id="@+id/price_unit1"
@@ -479,6 +549,7 @@
                         android:layout_height="wrap_content"
                         android:text="￥"
                         android:layout_below="@+id/amount_receivable"
+                        android:layout_marginTop="@dimen/dp_10"
                         />
 
                     <TextView
@@ -492,6 +563,7 @@
                         android:background="@drawable/set_bg_btn18"
                         android:layout_toRightOf="@+id/price_unit1"
                         android:layout_below="@+id/amount_receivable"
+                        android:layout_marginTop="@dimen/dp_5"
                         />
 
                 </RelativeLayout>
@@ -506,8 +578,9 @@
                         android:id="@+id/actual_merchandise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="商品总额"
+                        android:text="实收金额"
                         android:textColor="#333333"
+                        android:layout_marginLeft="@dimen/dp_10"
                         android:textSize="14sp"/>
 
 
@@ -516,6 +589,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="￥"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:layout_below="@+id/actual_merchandise"
                         />
 
@@ -529,6 +603,7 @@
                         android:background="@drawable/set_bg_btn18"
                         android:layout_toRightOf="@+id/price_unit2"
                         android:layout_below="@+id/actual_merchandise"
+                        android:layout_marginTop="@dimen/dp_5"
                         />
 
                 </RelativeLayout>

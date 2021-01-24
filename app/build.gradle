@@ -113,6 +113,9 @@ dependencies {
     implementation 'com.kongzue.dialog:dialog:2.5.2'
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
 
+    implementation 'com.lxj:xpopup:2.2.14'
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
+
    // implementation 'com.tencent.bugly:crashreport:latest.release'
 
 }

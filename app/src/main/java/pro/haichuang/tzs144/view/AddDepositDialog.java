@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -13,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -22,23 +24,28 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
-import pro.haichuang.tzs144.activity.EnterOrderActivity;
-import pro.haichuang.tzs144.activity.MainActivity;
-import pro.haichuang.tzs144.activity.SalesListActivity;
-import pro.haichuang.tzs144.activity.StartDepositActivity;
-import pro.haichuang.tzs144.activity.WithDrawalOrderActivity;
 
-public class ShowMoreDialog extends DialogFragment {
+public class AddDepositDialog extends DialogFragment {
 
 
-    @BindView(R.id.sale)
-    TextView sale;
-    @BindView(R.id.make_up_order)
-    TextView makeUpOrder;
-    @BindView(R.id.open_deposit)
-    TextView openDeposit;
-    @BindView(R.id.withdrawal)
-    TextView withdrawal;
+    @BindView(R.id.delete)
+    ImageView delete;
+    @BindView(R.id.deposit_num_txt)
+    TextView depositNumTxt;
+    @BindView(R.id.deposit_num)
+    EditText depositNum;
+    @BindView(R.id.start_deposit_num_txt)
+    TextView startDepositNumTxt;
+    @BindView(R.id.start_deposit_num)
+    EditText startDepositNum;
+    @BindView(R.id.end_deposit_num_txt)
+    TextView endDepositNumTxt;
+    @BindView(R.id.end_deposit_num)
+    EditText endDepositNum;
+    @BindView(R.id.cancel_btn)
+    Button cancelBtn;
+    @BindView(R.id.input_btn)
+    Button inputBtn;
     private View view;
 
     private Context context;
@@ -49,9 +56,9 @@ public class ShowMoreDialog extends DialogFragment {
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TurnTableDilogTheme);
     }
 
-   public ShowMoreDialog(Context mContext){
+    public AddDepositDialog(Context mContext) {
         this.context = mContext;
-   }
+    }
 
 
     @Override
@@ -60,15 +67,14 @@ public class ShowMoreDialog extends DialogFragment {
         Window window = getDialog().getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.gravity = Gravity.BOTTOM;
-        params.y = 150;
         window.setAttributes(params);
         //window.setWindowAnimations(R.style.BottomDialog_Animation);
         //设置边距
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        params.width =  ViewGroup.LayoutParams.MATCH_PARENT;
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         window.setAttributes(params);
-       // getDialog().getWindow().setLayout(dm.widthPixels, (int) (dm.heightPixels * 0.28));
+        // getDialog().getWindow().setLayout(dm.widthPixels, (int) (dm.heightPixels * 0.28));
     }
 
     @Nullable
@@ -76,7 +82,7 @@ public class ShowMoreDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = super.onCreateView(inflater, container, savedInstanceState);
         if (view == null) {
-            view = inflater.inflate(R.layout.dialog_show_more, container, false);
+            view = inflater.inflate(R.layout.dialog_add_deposit, container, false);
             ButterKnife.bind(this, view);
         }
         return view;
@@ -88,6 +94,7 @@ public class ShowMoreDialog extends DialogFragment {
 
     }
 
+
     @Override
     public void onDismiss(final DialogInterface dialog) {
         super.onDismiss(dialog);
@@ -97,25 +104,21 @@ public class ShowMoreDialog extends DialogFragment {
         }
     }
 
+    @OnClick(R.id.delete)
+    public void onViewClicked() {
+        dismiss();
+    }
 
-    @OnClick({R.id.sale, R.id.make_up_order, R.id.open_deposit, R.id.withdrawal})
+    @OnClick({R.id.delete, R.id.cancel_btn, R.id.input_btn})
     public void onViewClicked(View view) {
-        Intent intent = new Intent();
+        dismiss();
         switch (view.getId()) {
-            case R.id.sale:
-                intent.setClass(context, SalesListActivity.class);
+            case R.id.delete:
                 break;
-            case R.id.make_up_order:
-                intent.setClass(context, EnterOrderActivity.class);
+            case R.id.cancel_btn:
                 break;
-            case R.id.open_deposit:
-                intent.setClass(context, StartDepositActivity.class);
-                break;
-            case R.id.withdrawal:
-                intent.setClass(context, WithDrawalOrderActivity.class);
+            case R.id.input_btn:
                 break;
         }
-        startActivity(intent);
-        dismiss();
     }
 }

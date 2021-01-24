@@ -10,18 +10,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_22"
+        android:layout_marginRight="@dimen/dp_22"
         android:background="@drawable/set_bg_btn11">
 
         <EditText
             android:id="@+id/search_edit"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_30"
+            android:layout_height="@dimen/dp_35"
             android:drawableLeft="@mipmap/search"
             android:layout_marginLeft="@dimen/dp_22"
-            android:hint="#CCCCCC"
+            android:hint="客户名称/手机号码/地址关键字"
             android:textSize="14sp"
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center"
+            android:background="@null"
             android:layout_marginRight="@dimen/dp_18"/>
 
     </LinearLayout>

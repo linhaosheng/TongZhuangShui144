@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.DepositManagementSearchAdapter;
+import pro.haichuang.tzs144.view.AddDepositDialog;
 
 /**
  * 押金本搜索管理
@@ -83,6 +84,8 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
                 finish();
                 break;
             case R.id.add_img:
+                AddDepositDialog addDepositDialog = new AddDepositDialog(this);
+                addDepositDialog.show(getSupportFragmentManager(),"");
                 break;
             case R.id.open_deposit:
                 break;
