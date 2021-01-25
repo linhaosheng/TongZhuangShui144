@@ -62,6 +62,7 @@
         <activity android:name=".activity.OrderRecordActivity" />
                 <activity android:name=".activity.ClientDetailActivity" />
         <activity android:name=".activity.AccountingListDetailActivity" />
+        <activity android:name=".activity.DeliveryOrderActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

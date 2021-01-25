@@ -50,6 +50,7 @@ public class Config {
 
 
     public static final String ACCOUNT = "account";
+    public static final String LOGIN_TIME = "login_time";
 
 
 }

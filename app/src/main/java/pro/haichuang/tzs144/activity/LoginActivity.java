@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.kongzue.dialog.v2.WaitDialog;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import pro.haichuang.tzs144.presenter.LoginPresenter;
@@ -50,6 +51,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private ArrayAdapter<String> arr_adapter;
     private boolean checked = true;
     private int selectPosition;
+    private boolean todayLogin;
 
     @Override
     protected int setLayoutResourceID() {
@@ -79,17 +81,27 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         //加载适配器
         inventorySubject.setAdapter(arr_adapter);
 
-        inventorySubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectPosition = position;
+        String login_time = SPUtils.getString(Config.LOGIN_TIME, "");
+        if (!login_time.equals("")){
+            String currentTime = Utils.transformTime(new Date());
+            if (currentTime.contains(login_time)){
+                todayLogin = true;
             }
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        if (!todayLogin){
+            inventorySubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectPosition = position;
+                }
 
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
         /**
          * 设置默认显示上一次的经销商
          */

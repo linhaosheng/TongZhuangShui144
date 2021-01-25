@@ -24,6 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.activity.DeliveryOrderActivity;
 import pro.haichuang.tzs144.activity.OrderDetailActivity;
 import pro.haichuang.tzs144.adapter.OrderInfoAdapter;
 import pro.haichuang.tzs144.view.ShowMoreOrderInfoDialog;
@@ -86,8 +87,14 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         orderInfoAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-                startActivity(intent);
+                //配送订单
+                if (id==1){
+                    Intent intent = new Intent(getActivity(), DeliveryOrderActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         orderInfoAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
