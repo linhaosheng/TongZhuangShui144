@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff">
+
+    <include layout="@layout/header"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+          <TextView
+              android:id="@+id/client_name"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="客户名称：YY超市"
+              android:textColor="#3F3F3F"
+              android:textSize="12sp"
+              android:layout_marginLeft="@dimen/dp_20"
+              android:layout_marginTop="@dimen/dp_17"/>
+
+            <TextView
+                android:id="@+id/client_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="客户类型：经销商"
+                android:textColor="#3F3F3F"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_17"/>
+
+            <TextView
+                android:id="@+id/client_persion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系人：米老鼠"
+                android:textColor="#3F3F3F"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_17"/>
+
+            <TextView
+                android:id="@+id/client_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系电话：13743432424"
+                android:textColor="#3F3F3F"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_17"/>
+
+            <TextView
+                android:id="@+id/client_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="所在片区：蜂窝A-蜂窝B"
+                android:textColor="#3F3F3F"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_17"/>
+
+            <TextView
+                android:id="@+id/develop_persion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发展人员：：唐老鸭"
+                android:textColor="#3F3F3F"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_17"/>
+
+            <TextView
+                android:id="@+id/business_persion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="业务人员：：美国队长"
+                android:textColor="#3F3F3F"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_17"
+                android:layout_marginBottom="@dimen/dp_18"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="地址"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/update_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改地址"
+                    android:layout_alignParentRight="true"
+                    android:textSize="13sp"
+                    android:textColor="#32C5FF"
+                    android:layout_marginRight="12dp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/addree_recycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
+                android:paddingBottom="@dimen/dp_15"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="维护记录"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/dp_20"/>
+
+                <TextView
+                    android:id="@+id/add_maintain_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新增"
+                    android:textStyle="bold"
+                    android:textColor="#32C5FF"
+                    android:textSize="14sp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/sp_11"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/maintain_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"/>
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

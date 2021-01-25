@@ -58,6 +58,9 @@
         <activity android:name=".activity.ReturnDetailActivity" />
         <activity android:name=".activity.AllocationRecordActivity" />
         <activity android:name=".activity.DemandRecordActivity" />
+        <activity android:name=".activity.AddMainTainRecordActivity" />
+        <activity android:name=".activity.OrderRecordActivity" />
+                <activity android:name=".activity.ClientDetailActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

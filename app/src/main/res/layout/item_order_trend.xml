@@ -51,7 +51,7 @@
             android:textColor="#E02020"
             android:textSize="12sp"
             android:layout_marginLeft="@dimen/dp_5"
-            android:text=" | 20%"/>
+            android:text=" ↑ 20%"/>
     </LinearLayout>
 
     <LinearLayout
@@ -75,7 +75,7 @@
             android:textColor="#3C9C25"
             android:textSize="12sp"
             android:layout_marginLeft="@dimen/dp_5"
-            android:text="| 20%"/>
+            android:text="↓ 20%"/>
     </LinearLayout>
 
 </LinearLayout>
