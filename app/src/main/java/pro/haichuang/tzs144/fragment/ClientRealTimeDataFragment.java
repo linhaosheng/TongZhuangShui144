@@ -2,7 +2,9 @@ package pro.haichuang.tzs144.fragment;
 
 
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,6 +42,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
 
     private List<String> trendList;
     private List<String> orderPayList;
+    private View headView;
+    private TextView updateTime;
 
 
     @Override
@@ -58,6 +62,11 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
         refresh.setOnRefreshListener(this);
         orderPaymentAdapter = new OrderPaymentAdapter();
         orderTrendAdapter  = new OrderTrendAdapter();
+
+        headView = LayoutInflater.from(getActivity()).inflate(R.layout.item_update_time,null);
+        orderTrendAdapter.addHeaderView(headView);
+        updateTime = headView.findViewById(R.id.update_time);
+
 
         recycleDataTrend.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recycleDataTrend.setAdapter(orderTrendAdapter);

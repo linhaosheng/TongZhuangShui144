@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -8,15 +9,20 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
-import pro.haichuang.tzs144.adapter.OrderInfoAdapter;
 import pro.haichuang.tzs144.adapter.OrderRecordAdapter;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 订单记录
@@ -57,7 +63,8 @@ public class OrderRecordActivity extends BaseActivity {
 
     private OrderRecordAdapter orderRecordAdapter;
     private List<String> datas;
-
+    private final static  int SELECT_START_TIME = 0x110;
+    private final static  int SELECT_END_TIME = 0x111;
 
 
     @Override
@@ -90,5 +97,36 @@ public class OrderRecordActivity extends BaseActivity {
     @OnClick(R.id.back)
     public void onViewClicked() {
         finish();
+    }
+
+
+    @OnClick({R.id.back, R.id.start_time, R.id.end_time})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.back:
+                finish();
+                break;
+            case R.id.start_time:
+                selectTime(SELECT_START_TIME);
+                break;
+            case R.id.end_time:
+                selectTime(SELECT_END_TIME);
+                break;
+        }
+    }
+    private void selectTime(int type){
+
+        TimePickerView pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                if (type==SELECT_START_TIME){
+                    startTime.setText(Utils.formatSelectTime(date));
+                }else {
+                    endTime.setText(Utils.formatSelectTime(date));
+                }
+            }
+        })
+                .build();
+        pvTime.show();
     }
 }

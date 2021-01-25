@@ -49,4 +49,7 @@ public class Config {
     public static final int LOAD_MORE = 0x118;  //加载更多
 
 
+    public static final String ACCOUNT = "account";
+
+
 }

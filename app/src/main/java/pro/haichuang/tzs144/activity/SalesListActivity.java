@@ -88,7 +88,6 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                 TimePickerView pvTime = new TimePickerBuilder(SalesListActivity.this, new OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {
-                        Toast.makeText(SalesListActivity.this, "sss", Toast.LENGTH_SHORT).show();
                     }
                 })
                         .build();

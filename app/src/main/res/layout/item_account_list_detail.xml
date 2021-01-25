@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dp_10"
+    android:layout_marginTop="@dimen/dp_10"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:background="@drawable/set_bg_btn13">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10">
+        <TextView
+            android:id="@+id/order_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单编号：13728329238"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_10"/>
+
+        <TextView
+            android:id="@+id/order_type"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_20"
+            android:text="电话订单"
+            android:layout_alignParentRight="true"
+            android:textColor="#1DC11D"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F2F2F2"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/order_num"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="#ffffff"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/name_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="张三  19102930291"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:text="经销商"
+            android:textColor="#1677FF"
+            android:background="@drawable/set_bg_btn17"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_3"
+            android:paddingBottom="3dp"
+            android:gravity="center"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="商品总额：1000元  应收收入：200元  实际收入：200元"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginRight="11dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收款明细"
+            android:textColor="#3F3F3F"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:textColor="#3F3F3F"
+                android:textSize="12sp"
+                android:lineHeight="@dimen/dp_20"
+                android:text="现金（元）：100000\n水票（张）：100\n奖券（元）：100\n月结（元）：10000"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/send_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_13"
+        android:layout_marginRight="13dp"
+        android:text="配送日期：2020/12/12 12:00-17:00"/>
+
+
+</LinearLayout>

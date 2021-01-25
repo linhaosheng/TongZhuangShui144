@@ -49,6 +49,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
     private boolean checked = true;
+    private int selectPosition;
 
     @Override
     protected int setLayoutResourceID() {
@@ -81,7 +82,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         inventorySubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                selectPosition = position;
             }
 
             @Override
@@ -89,7 +90,17 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
             }
         });
-
+        /**
+         * 设置默认显示上一次的经销商
+         */
+        String account = SPUtils.getString(Config.ACCOUNT, "");
+        if (!account.equals("")){
+            String inventoryStr = SPUtils.getString(account, "");
+            if (!inventoryStr.equals("")){
+                int index = data_list.indexOf(inventoryStr);
+                inventorySubject.setSelection( index , true );
+            }
+        }
 
     }
 
@@ -122,6 +133,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             Utils.showCenterTomast("请输入正确密码");
             return;
         }
+        SPUtils.putString(Config.ACCOUNT,account.getText().toString());
+        SPUtils.putString(account.getText().toString(),data_list.get(selectPosition));
+
         Log.i(TAG, "登录....");
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);

@@ -25,7 +25,9 @@ import pro.haichuang.tzs144.application.MyApplication;
 public class Utils {
 
     public static final String YMDHMS_BREAK = "yyyy-MM-dd HH:mm:ss";
+    public static final String YMD = "yyyy-MM-dd";
     private static SimpleDateFormat sdf = new SimpleDateFormat(YMDHMS_BREAK);// 格式化时间
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YMD);// 格式化时间
     private static Gson gson;
 
     public static Gson gsonInstane() {
@@ -37,6 +39,11 @@ public class Utils {
             }
         }
         return gson;
+    }
+
+
+    public static String formatSelectTime(Date date){
+      return   simpleDateFormat.format(date);
     }
 
     public static String transformTime(Date date){

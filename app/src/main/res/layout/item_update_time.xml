@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FEF5DA">
+
+    <TextView
+        android:id="@+id/update_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="指标更新于2020/12/12 12:12:12"
+        android:textColor="#F6A03F"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_20"
+        />
+
+</LinearLayout>

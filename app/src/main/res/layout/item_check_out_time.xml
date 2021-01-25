@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff">
+
+    <TextView
+        android:id="@+id/check_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:text="结账日期"/>
+
+
+    <TextView
+        android:id="@+id/check_out_time"
+        android:layout_width="113dp"
+        android:layout_height="@dimen/dp_40"
+        android:background="@drawable/set_bg_btn16"
+        android:gravity="center"
+        android:text="2019-06-22"
+        android:textColor="#32C5FF"
+        android:layout_toRightOf="@+id/check_out"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#32C5FF"
+        android:textSize="14sp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dp_24"
+        android:text="筛选"/>
+
+
+</RelativeLayout>
