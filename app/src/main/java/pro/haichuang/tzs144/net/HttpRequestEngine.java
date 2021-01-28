@@ -30,7 +30,6 @@ import rxhttp.wrapper.param.Param;
 public class HttpRequestEngine {
 
 
-
     /**
      * get request
      *
@@ -121,23 +120,11 @@ public class HttpRequestEngine {
                     @Override
                     public void onNext(String s) {
                         try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int code = jsonObject.getInt("code");
-                            if (code != 0) {
-                                String msg = jsonObject.getString("msg");
-                                if (httpRequestResultListener != null) {
-                                    httpRequestResultListener.error(msg);
-                                }
-                                // token 过期
-                                if (msg.equals("登录失效，请重新登录")){
-                                    gotoLogin();
-                                }
 
-                            } else {
-                                if (httpRequestResultListener != null) {
-                                    httpRequestResultListener.success(s);
-                                }
+                            if (httpRequestResultListener != null) {
+                                httpRequestResultListener.success(s);
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -266,6 +253,9 @@ public class HttpRequestEngine {
             @Override
             public Param<?> apply(Param<?> param) throws Exception {
                 return param
+                        .add("longitude",Config.LONGITUDE)
+                        .add("latitude",Config.LATITUDE)
+                        .add("verification",SPUtils.getString(Config.VERIFICATION,""))
                         .addHeader("Content-Type", "application/json");
             }
         });
@@ -273,7 +263,7 @@ public class HttpRequestEngine {
 
     private static final void gotoLogin() {
         String currentPageName = Utils.getCurrentPageName(MyApplication.getApplication());
-        if (!currentPageName.contains("LoginActivity")){
+        if (!currentPageName.contains("LoginActivity")) {
             Intent intent = new Intent(MyApplication.getInstance(), LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             MyApplication.getInstance().startActivity(intent);

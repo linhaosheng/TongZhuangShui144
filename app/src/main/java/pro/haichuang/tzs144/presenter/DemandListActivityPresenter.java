@@ -49,4 +49,30 @@ public class DemandListActivityPresenter {
             }
         });
     }
+
+
+    /**
+     * [实时库存]获取需求单商品列表
+     * @param query
+     */
+    public void findDemandGoods(String query){
+       Map<String,Object>params = new ArrayMap<>();
+       params.put("query",query);
+       HttpRequestEngine.postRequest(ConfigUrl.FIND_DEMAND_GOODS, params, new HttpRequestResultListener() {
+           @Override
+           public void start() {
+
+           }
+
+           @Override
+           public void success(String result) {
+
+           }
+
+           @Override
+           public void error(String error) {
+
+           }
+       });
+    }
 }

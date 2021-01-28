@@ -25,6 +25,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 
+
+/**
+ * 添加押金本
+ */
 public class AddDepositDialog extends DialogFragment {
 
 

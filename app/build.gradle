@@ -114,6 +114,7 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
 
     implementation 'com.lxj:xpopup:2.2.14'
+    implementation 'org.greenrobot:eventbus:3.2.0'
 
    // implementation 'com.tencent.bugly:crashreport:latest.release'
 

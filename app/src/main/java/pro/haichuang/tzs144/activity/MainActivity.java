@@ -11,6 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.kongzue.dialog.listener.OnMenuItemClickListener;
 import com.kongzue.dialog.v2.BottomMenu;
 import com.next.easynavigation.view.EasyNavigationBar;
@@ -21,6 +25,7 @@ import pro.haichuang.tzs144.fragment.AccountFragment;
 import pro.haichuang.tzs144.fragment.ClientFragment;
 import pro.haichuang.tzs144.fragment.InventoryFragment;
 import pro.haichuang.tzs144.fragment.OrderFragment;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
 import java.util.ArrayList;
@@ -40,8 +45,12 @@ import pro.haichuang.tzs144.view.ShowMoreDialog;
 public class MainActivity extends BaseActivity {
 
 
+    public LocationClient mLocationClient = null;
+    private MyLocationListener myListener = new MyLocationListener();
+
     @BindView(R.id.navigationBar)
     EasyNavigationBar navigationBar;
+    private boolean isLocation = false;
 
 
     private String[] tabText = {"订单", "库存", "账务", "客户"};
@@ -58,7 +67,46 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
+        mLocationClient = new LocationClient(getApplicationContext());
+        //声明LocationClient类
+        mLocationClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd09ll");
+        option.setScanSpan(1000);
+        option.setOpenGps(true);
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
+    }
 
+    @Override
+    protected void setUpData() {
+        MainActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
+    }
+
+    private long exitTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Utils.showCenterTomast("再按一次退出");
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
+    public void allplyPermission() {
+
+
+    }
+
+    public void initView(){
         fragments = new ArrayList<>();
         fragments.add(new OrderFragment());
         fragments.add(new InventoryFragment());
@@ -98,56 +146,12 @@ public class MainActivity extends BaseActivity {
                     public boolean onCenterTabSelectEvent(View view) {
                         ShowMoreDialog showMoreDialog = new ShowMoreDialog(MainActivity.this);
                         showMoreDialog.show(getSupportFragmentManager(),"");
-//                        BottomMenu.show(MainActivity.this, tabList, new OnMenuItemClickListener() {
-//                                @Override
-//                                public void onClick(String text, int index) {
-//                                    Intent intent = new Intent();
-//
-//                                      if (index==0){
-//                                          intent.setClass(MainActivity.this,SalesListActivity.class);
-//                                      }else if (index==1){
-//                                          intent.setClass(MainActivity.this,EnterOrderActivity.class);
-//                                      }else if (index==2){
-//                                          intent.setClass(MainActivity.this,StartDepositActivity.class);
-//                                      }else if (index==3){
-//                                          intent.setClass(MainActivity.this,WithDrawalOrderActivity.class);
-//                                      }
-//                                      startActivity(intent);
-//                                }
-//                            });
                         return false;
                     }
                 })
                 .canScroll(false)
                 .mode(EasyNavigationBar.NavigationMode.MODE_ADD)
                 .build();
-
-    }
-
-    @Override
-    protected void setUpData() {
-        MainActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
-    }
-
-    private long exitTime = 0;
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Utils.showCenterTomast("再按一次退出");
-                exitTime = System.currentTimeMillis();
-            } else {
-                finish();
-                System.exit(0);
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
-    public void allplyPermission() {
-
     }
 
     @Override
@@ -176,5 +180,22 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public class MyLocationListener extends BDAbstractLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location){
+            //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
+            //以下只列举部分获取经纬度相关（常用）的结果信息
+            //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
+            Config.LATITUDE = location.getLatitude();    //获取纬度信息
+            Config.LONGITUDE = location.getLongitude();    //获取经度信息
+
+            if (!isLocation){
+                initView();
+                isLocation = true;
+            }
+        }
     }
 }

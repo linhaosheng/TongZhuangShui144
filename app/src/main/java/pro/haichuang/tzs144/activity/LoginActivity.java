@@ -18,10 +18,17 @@ import androidx.core.content.ContextCompat;
 
 import com.kongzue.dialog.v2.WaitDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import pro.haichuang.tzs144.model.LoginModel;
+import pro.haichuang.tzs144.model.MessageEvent;
+import pro.haichuang.tzs144.model.SubjectModel;
 import pro.haichuang.tzs144.presenter.LoginPresenter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.util.SPUtils;
@@ -51,6 +58,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private LoginPresenter loginPresenter;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
+    private List<SubjectModel.DataBean>dataBeanList;
     private boolean checked = true;
     private int selectPosition;
     private boolean todayLogin;
@@ -65,10 +73,6 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     protected void setUpView() {
         //数据
         data_list = new ArrayList<String>();
-        data_list.add("经销商A");
-        data_list.add("经销商B");
-        data_list.add("经销商C");
-        data_list.add("经销商D");
 
         //适配器
         arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
@@ -93,6 +97,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
                 if (!loadSubject && !TextUtils.isEmpty(account.getText())) {
                     Log.i(TAG, "afterTextChanged==");
                     loginPresenter.loadSubjectList(account.getText().toString());
+                    loadSubject = true;
                 }
             }
         });
@@ -101,7 +106,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     @Override
     protected void setUpData() {
         loginPresenter = new LoginPresenter(this);
-        account.setText("17360155213");  //17360155214   //  15165011853
+        account.setText("10008");
         password.setText("123456");
 
         String login_time = SPUtils.getString(Config.LOGIN_TIME, "");
@@ -167,14 +172,10 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             return;
         }
         SPUtils.putString(Config.ACCOUNT, account.getText().toString());
-        SPUtils.putString(account.getText().toString(), data_list.get(selectPosition));
+        SPUtils.putString(account.getText().toString(), dataBeanList.get(selectPosition).getId());
         Log.i(TAG, "登录....");
 
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-
-       // loginPresenter.loginServer(account.getText().toString(), password.getText().toString(), data_list.get(selectPosition));
+        loginPresenter.loginServer(account.getText().toString(), password.getText().toString(), dataBeanList.get(selectPosition).getId());
     }
 
     @Override
@@ -195,5 +196,32 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     public void errorLoad(String error) {
         Utils.showCenterTomast("登录失败，请检查账户和密码是否正确");
         WaitDialog.dismiss();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        if (event!=null){
+            dataBeanList = event.subjectModel.getData();
+
+            for (SubjectModel.DataBean dataBean : event.subjectModel.getData()){
+                data_list.add(dataBean.getName());
+            }
+            arr_adapter.addAll();
+            arr_adapter.notifyDataSetChanged();
+
+        }
+        Log.i(TAG,"onMessageEvent===");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

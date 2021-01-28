@@ -52,7 +52,7 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 
     @Override
     public boolean lazyLoader() {
-        return true;
+        return false;
     }
 
     @Override

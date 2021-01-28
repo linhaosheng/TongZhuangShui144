@@ -46,7 +46,7 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public boolean lazyLoader() {
-        return false;
+        return true;
     }
 
     @Override
@@ -71,8 +71,8 @@ public class OrderFragment extends BaseFragment {
         orderList = new ArrayList<>();
         orderList.add(new OrderInfoFragment(0));
         orderList.add(new OrderInfoFragment(1));
-        orderList.add(new OrderInfoFragment(2));
         orderList.add(new OrderInfoFragment(3));
+        orderList.add(new OrderInfoFragment(4));
 
         myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(),orderList,orderTitleList);
 

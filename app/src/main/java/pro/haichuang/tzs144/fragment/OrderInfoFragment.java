@@ -16,9 +16,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.kongzue.dialog.v2.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,12 +29,15 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.DeliveryOrderActivity;
 import pro.haichuang.tzs144.activity.OrderDetailActivity;
 import pro.haichuang.tzs144.adapter.OrderInfoAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.presenter.OrderInfoFragmentPresenter;
+import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.ShowMoreOrderInfoDialog;
 
 /**
  * 订单信息页面
  */
-public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<String> {
 
 
     @BindView(R.id.recycle_data)
@@ -46,12 +51,13 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     TextView lastTime;
     TextView selectTime;
 
-
     private OrderInfoAdapter orderInfoAdapter;
     private List<String> datas;
     private View headTimeView;
+    private OrderInfoFragmentPresenter orderInfoFragmentPresenter;
 
     private int id;
+    private int currentPage = 1;
 
     public OrderInfoFragment() {
         super();
@@ -63,7 +69,11 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public boolean lazyLoader() {
-        return false;
+        if (id!=0){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
@@ -73,13 +83,14 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     protected void setUpView() {
-        refresh.setOnRefreshListener(this);
         refresh.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //             refresh.setRefreshing(true);
+                refresh.setRefreshing(true);
             }
-        }, 100);
+        },150);
+        refresh.setOnRefreshListener(this);
+
         orderInfoAdapter = new OrderInfoAdapter(getActivity(), id);
         recycleData.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         recycleData.setAdapter(orderInfoAdapter);
@@ -108,7 +119,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             }
         });
 
-        if (id == 3) {
+        if (id == 4) {
             headTimeView = LayoutInflater.from(getActivity()).inflate(R.layout.item_head_view, null);
             orderInfoAdapter.addHeaderView(headTimeView);
             lastTime = headTimeView.findViewById(R.id.last_time);
@@ -143,6 +154,9 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     protected void setUpData() {
+        orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
+        orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()),currentPage);
+
         datas = new ArrayList<>();
         datas.add("" + 0);
         datas.add("" + 1);
@@ -155,12 +169,28 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        refresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refresh.setRefreshing(false);
-            }
-        }, 2000);
+        orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()),currentPage);
     }
 
+    @Override
+    public void startLoad() {
+//       refresh.postDelayed(new Runnable() {
+//           @Override
+//           public void run() {
+//               refresh.setRefreshing(true);
+//           }
+//       },100);
+    }
+
+    @Override
+    public void successLoad(String data) {
+        refresh.setRefreshing(false);
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        refresh.setRefreshing(false);
+        Utils.showCenterTomast(error);
+
+    }
 }

@@ -3,19 +3,24 @@ package pro.haichuang.tzs144.presenter;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.LoginModel;
+import pro.haichuang.tzs144.model.MessageEvent;
+import pro.haichuang.tzs144.model.SubjectModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.SPUtils;
+import pro.haichuang.tzs144.util.Utils;
 
 public class LoginPresenter {
 
     private ILoadDataView iLoadDataView;
-
 
     public LoginPresenter(ILoadDataView mILoadDataView){
        this.iLoadDataView = mILoadDataView;
@@ -41,7 +46,17 @@ public class LoginPresenter {
 
             @Override
             public void success(String result) {
-
+                if (result!=null){
+                    LoginModel loginModel = Utils.gsonInstane().fromJson(result, LoginModel.class);
+                    if (loginModel!=null && loginModel.getResult()==1){
+                        SPUtils.putString(Config.VERIFICATION,loginModel.getData().getVerification());
+                        iLoadDataView.successLoad(result);
+                    }else {
+                        iLoadDataView.errorLoad("登录失败");
+                    }
+                }else {
+                    iLoadDataView.errorLoad("登录失败");
+                }
             }
 
             @Override
@@ -68,13 +83,19 @@ public class LoginPresenter {
 
             @Override
             public void success(String result) {
-                Log.i("TAH===","result====");
+                if (result!=null){
+                    SubjectModel subjectModel = Utils.gsonInstane().fromJson(result, SubjectModel.class);
+                    if (subjectModel!=null && subjectModel.getResult()==1){
+                        Log.i("TAH===","result====");
+                        EventBus.getDefault().post(new MessageEvent(subjectModel));
+                    }
+                }
                 SPUtils.putString(Config.SUBJECT_LIST,result);
             }
 
             @Override
             public void error(String error) {
-                Log.i("TAH===","error====");
+                Log.i("TAH===","error===="+error);
             }
         });
     }
