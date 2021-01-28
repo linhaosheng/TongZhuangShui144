@@ -53,4 +53,10 @@ public class Config {
     public static final String LOGIN_TIME = "login_time";
 
 
+
+    public static final String SUBJECT_LIST  = "subject_list";
+
+    public static final int LIMIT = 10;
+
+
 }

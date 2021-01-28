@@ -265,20 +265,8 @@ public class HttpRequestEngine {
         RxHttp.setOnParamAssembly(new Function<Param<?>, Param<?>>() {
             @Override
             public Param<?> apply(Param<?> param) throws Exception {
-                Method method = param.getMethod();
-//                if (method.isPost()){
-//
-//                }
-                String token = SPUtils.getString(Config.USER_TOKEN, "");
-                String account = SPUtils.getString(Config.USER_ACCOUNT, "");
-
-                if (param.getUrl().contains("login")) {
-                    return param;
-                }
                 return param
-                        .add("account", account)
-                        .add("token", token)
-                        .addHeader("Content-Type", "application/x-www-form-urlencoded");
+                        .addHeader("Content-Type", "application/json");
             }
         });
     }

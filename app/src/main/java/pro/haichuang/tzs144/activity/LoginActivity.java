@@ -1,7 +1,9 @@
 package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,6 +54,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private boolean checked = true;
     private int selectPosition;
     private boolean todayLogin;
+    private boolean loadSubject;
 
     @Override
     protected int setLayoutResourceID() {
@@ -60,13 +63,6 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     protected void setUpView() {
-
-    }
-
-    @Override
-    protected void setUpData() {
-        account.setText("17360155213");  //17360155214   //  15165011853
-        password.setText("123456");
         //数据
         data_list = new ArrayList<String>();
         data_list.add("经销商A");
@@ -81,15 +77,42 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         //加载适配器
         inventorySubject.setAdapter(arr_adapter);
 
+        account.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!loadSubject && !TextUtils.isEmpty(account.getText())) {
+                    Log.i(TAG, "afterTextChanged==");
+                    loginPresenter.loadSubjectList(account.getText().toString());
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void setUpData() {
+        loginPresenter = new LoginPresenter(this);
+        account.setText("17360155213");  //17360155214   //  15165011853
+        password.setText("123456");
+
         String login_time = SPUtils.getString(Config.LOGIN_TIME, "");
-        if (!login_time.equals("")){
+        if (!login_time.equals("")) {
             String currentTime = Utils.transformTime(new Date());
-            if (currentTime.contains(login_time)){
+            if (currentTime.contains(login_time)) {
                 todayLogin = true;
             }
         }
 
-        if (!todayLogin){
+        if (!todayLogin) {
             inventorySubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -106,37 +129,35 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
          * 设置默认显示上一次的经销商
          */
         String account = SPUtils.getString(Config.ACCOUNT, "");
-        if (!account.equals("")){
+        if (!account.equals("")) {
             String inventoryStr = SPUtils.getString(account, "");
-            if (!inventoryStr.equals("")){
+            if (!inventoryStr.equals("")) {
                 int index = data_list.indexOf(inventoryStr);
-                inventorySubject.setSelection( index , true );
+                inventorySubject.setSelection(index, true);
             }
         }
 
     }
 
-    @OnClick({R.id.login_btn,R.id.check_state})
+    @OnClick({R.id.login_btn, R.id.check_state})
     public void onViewClicked(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.login_btn:
-               login();
+                login();
                 break;
             case R.id.check_state:
-                if (checked){
-                    checkState.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.check));
-                }else {
-                    checkState.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.check_box));
+                if (checked) {
+                    checkState.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.check));
+                } else {
+                    checkState.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.check_box));
                 }
-                checked =!checked;
+                checked = !checked;
                 break;
         }
-
-        //
     }
 
-    private void login(){
+    private void login() {
         if (TextUtils.isEmpty(account.getText())) {
             Utils.showCenterTomast("请输入正确账号");
             return;
@@ -145,14 +166,15 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             Utils.showCenterTomast("请输入正确密码");
             return;
         }
-        SPUtils.putString(Config.ACCOUNT,account.getText().toString());
-        SPUtils.putString(account.getText().toString(),data_list.get(selectPosition));
-
+        SPUtils.putString(Config.ACCOUNT, account.getText().toString());
+        SPUtils.putString(account.getText().toString(), data_list.get(selectPosition));
         Log.i(TAG, "登录....");
+
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
-     //   loginPresenter.login(account.getText().toString(),password.getText().toString());
+
+       // loginPresenter.loginServer(account.getText().toString(), password.getText().toString(), data_list.get(selectPosition));
     }
 
     @Override
