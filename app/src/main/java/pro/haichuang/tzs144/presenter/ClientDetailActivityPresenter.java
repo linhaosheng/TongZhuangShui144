@@ -100,4 +100,30 @@ public class ClientDetailActivityPresenter {
             }
         });
     }
+
+    /**
+     * [客户]删除维护记录
+     * @param id
+     */
+    public void delMaintainLog(String id){
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+
+        HttpRequestEngine.postRequest(ConfigUrl.DEL_MAINTAIN_LOG, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
+    }
 }

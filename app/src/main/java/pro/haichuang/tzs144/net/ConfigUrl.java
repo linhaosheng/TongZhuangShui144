@@ -147,5 +147,35 @@ public class ConfigUrl {
      */
     public static final String FINF_CUSTOMER_ORDERS = "/api/app/kh/findCustomerOrders";
 
+    /**
+     * [客户]新增/编辑维护记录
+     */
+    public static final String SAVE_MAINTAIN_LOG = "/api/app/kh/saveMaintainLog";
+
+    /**
+     * /api/app/kh/delMaintainLog
+     */
+    public static final String DEL_MAINTAIN_LOG = "/api/app/kh/delMaintainLog";
+
+    /**
+     * [押金]获取开押列表
+     */
+    public static final String FIND_DEPOSIT_LIST = "/api/app/depositManage/findDepositList";
+
+    /**
+     * [押金]提交开押
+     */
+    public static final String ADD_DEPOSIT_INFO = "/api/app/depositManage/addDepositInfo";
+
+    /**
+     * [押金]提交退押
+     */
+    public static final String BACK_DEPOSIT = "/api/app/depositManage/backDeposit";
+
+    /**
+     * [押金]提交退押（手动录入）
+     */
+    public static final String BACK_DEPOSIT_FILL = "/api/app/depositManage/backDepositFill";
+
 
 }
