@@ -177,5 +177,25 @@ public class ConfigUrl {
      */
     public static final String BACK_DEPOSIT_FILL = "/api/app/depositManage/backDepositFill";
 
+    /**
+     * 客户搜索
+     */
+    public static final String SEARCH = "/api/app/customer/search";
+
+    /**
+     * 客户地址列表
+     */
+    public static final String FIND_ADDRESS = "/api/app/customer/findAddress";
+
+    /**
+     * [直接销售]-录入订单
+     */
+    public static final String ENTER_ORFER = "/api/app/order/enterOrder";
+
+    /**
+     * [直接销售]-订单详情
+     */
+    public static final String GET_ORDER_INFO = "/api/app/order/getOrderInfo";
+
 
 }
