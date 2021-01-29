@@ -44,7 +44,6 @@ import butterknife.OnClick;
  */
 public class LoginActivity extends BaseActivity implements ILoadDataView<String> {
 
-
     @BindView(R.id.account)
     EditText account;
     @BindView(R.id.password)

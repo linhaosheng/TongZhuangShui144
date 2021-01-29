@@ -33,6 +33,15 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     }
 
+    // 动态设置我们标题的方法
+    public void setPageTitle(List<String>titles)
+    {
+        mTitleList.clear();
+        mTitleList.addAll(titles);
+        notifyDataSetChanged();
+    }
+
+
     @Override
     public Fragment getItem(int position) {
         return mViewList.get(position);

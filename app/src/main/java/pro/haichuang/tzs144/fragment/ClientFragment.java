@@ -63,7 +63,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     public boolean lazyLoader() {
-        return false;
+        return true;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +12,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.next.easynavigation.utils.NavigationUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,31 +25,37 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.InventoryNumAdapter;
+import pro.haichuang.tzs144.adapter.TypeListAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.InventoryNumModel;
+import pro.haichuang.tzs144.model.TextEvent;
+import pro.haichuang.tzs144.model.UpdateTitleEvent;
+import pro.haichuang.tzs144.presenter.InventoryNumFragmentPresenter;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 库存数量
  */
-public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , ILoadDataView<InventoryNumModel> {
 
 
-    @BindView(R.id.all_commodity)
-    TextView allCommodity;
-    @BindView(R.id.bottled_water)
-    TextView bottledWater;
-    @BindView(R.id.water_tickets)
-    TextView waterTickets;
+
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
+    @BindView(R.id.list_recycle)
+    RecyclerView listRecycle;
 
+    private TypeListAdapter typeListAdapter;
     private InventoryNumAdapter inventoryNumAdapter;
-    private List<String> listData;
     private int currentIndex = 0;
+    private String id;
+    private InventoryNumFragmentPresenter inventoryNumFragmentPresenter;
+    private List<InventoryNumModel.DataBean.ListBean>allDataList;
 
-
-    public InventoryNumFragment(String id) {
-
+    public InventoryNumFragment(String mId) {
+       this.id = mId;
     }
 
     public InventoryNumFragment() {
@@ -52,7 +64,10 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 
     @Override
     public boolean lazyLoader() {
-        return false;
+        if (id.equals("0")){
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -62,7 +77,15 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 
     @Override
     protected void setUpView() {
+        refresh.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refresh.setRefreshing(true);
+            }
+        },100);
+        inventoryNumFragmentPresenter = new InventoryNumFragmentPresenter(this);
         refresh.setOnRefreshListener(this);
+        typeListAdapter = new TypeListAdapter();
         inventoryNumAdapter = new InventoryNumAdapter();
 
         recycleData.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
@@ -74,52 +97,94 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 
             }
         });
+
+        listRecycle.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
+        listRecycle.setAdapter(typeListAdapter);
+        typeListAdapter.setList(InventoryFragment.dataBeanList);
+
+        typeListAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                typeListAdapter.setSelectIndex(position);
+                typeListAdapter.notifyDataSetChanged();
+                if (position!=0){
+                    String categoryId = String.valueOf(typeListAdapter.getData().get(position).getId());
+                    inventoryNumFragmentPresenter.findGoodsWithType("",categoryId,id);
+                }
+            }
+        });
+
     }
 
     @Override
     protected void setUpData() {
-        listData = new ArrayList<>();
-        for (int i = 0;i<6;i++){
-            listData.add("");
-        }
-        inventoryNumAdapter.setList(listData);
+       if (inventoryNumAdapter.getData().size()==0){
+           inventoryNumFragmentPresenter.findGoodsWithType("","",id);
+       }
     }
 
-    @OnClick({R.id.all_commodity, R.id.bottled_water, R.id.water_tickets})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.all_commodity:
-                 if (currentIndex!=0){
-
-                 }
-                 currentIndex = 0;
-
-                break;
-            case R.id.bottled_water:
-                currentIndex = 1;
-                break;
-            case R.id.water_tickets:
-                currentIndex = 2;
-                break;
-        }
-        setBg();
-    }
 
     private void setBg(){
-        allCommodity.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
-        bottledWater.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
-        waterTickets.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
-        if (currentIndex==0){
-            allCommodity.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
-        }else if (currentIndex==1){
-            bottledWater.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
-        }else if (currentIndex==2){
-            waterTickets.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
-        }
+//        allCommodity.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
+//        bottledWater.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
+//        waterTickets.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
+//        if (currentIndex==0){
+//            allCommodity.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
+//        }else if (currentIndex==1){
+//            bottledWater.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
+//        }else if (currentIndex==2){
+//            waterTickets.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
+//        }
     }
 
     @Override
     public void onRefresh() {
+        inventoryNumFragmentPresenter.findGoodsWithType("","",id);
+    }
 
+    @Override
+    public void startLoad() {
+        refresh.setRefreshing(true);
+    }
+
+    @Override
+    public void successLoad(InventoryNumModel data) {
+        refresh.setRefreshing(false);
+       if (data!=null){
+           if (id.equals("0") && allDataList== null){
+               EventBus.getDefault().post(new UpdateTitleEvent(data));
+           }
+           allDataList = data.getData().getList();
+           inventoryNumAdapter.setList(data.getData().getList());
+       }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        refresh.setRefreshing(false);
+        Utils.showCenterTomast(error);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(TextEvent event) {
+        if (event!=null){
+            TextEvent.CurrentText currentText = event.currentText;
+            String text = currentText.text;
+            if (id.equals(String.valueOf(currentText.currentIndex))){
+                inventoryNumFragmentPresenter.findGoodsWithType(text,"",id);
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

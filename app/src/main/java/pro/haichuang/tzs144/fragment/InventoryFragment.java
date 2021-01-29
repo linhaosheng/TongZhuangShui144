@@ -1,6 +1,9 @@
 package pro.haichuang.tzs144.fragment;
 
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +18,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +32,19 @@ import pro.haichuang.tzs144.activity.AllocationActivity;
 import pro.haichuang.tzs144.activity.DemandListActivity;
 import pro.haichuang.tzs144.activity.ReturnDetailActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.MessageEvent;
+import pro.haichuang.tzs144.model.SubjectModel;
+import pro.haichuang.tzs144.model.TextEvent;
+import pro.haichuang.tzs144.model.TypeListModel;
+import pro.haichuang.tzs144.model.UpdateTitleEvent;
+import pro.haichuang.tzs144.presenter.InventoryFragmentPresenter;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 库存
  */
-public class InventoryFragment extends BaseFragment {
+public class InventoryFragment extends BaseFragment implements ILoadDataView<List<TypeListModel.DataBean>> {
 
 
     @BindView(R.id.search)
@@ -53,10 +68,12 @@ public class InventoryFragment extends BaseFragment {
     private List<Fragment> orderList;
     private List<String> orderTitleList;
 
+    private InventoryFragmentPresenter inventoryFragmentPresenter;
+    public static List<TypeListModel.DataBean> dataBeanList;
 
     @Override
     public boolean lazyLoader() {
-        return false;
+        return true;
     }
 
     @Override
@@ -66,11 +83,29 @@ public class InventoryFragment extends BaseFragment {
 
     @Override
     protected void setUpView() {
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                  EventBus.getDefault().post(new TextEvent(new TextEvent.CurrentText(searchEdit.getText().toString(),vpView.getCurrentItem())));
+            }
+        });
+    }
+
+    private void initData(){
         orderTitleList = new ArrayList<>();
-        orderTitleList.add("全部 15");
-        orderTitleList.add("可售 10");
-        orderTitleList.add("已售罄 5");
+        orderTitleList.add("全部");
+        orderTitleList.add("可售");
+        orderTitleList.add("已售罄");
 
         orderList = new ArrayList<>();
         orderList.add(new InventoryNumFragment("0"));
@@ -87,6 +122,8 @@ public class InventoryFragment extends BaseFragment {
 
     @Override
     protected void setUpData() {
+        inventoryFragmentPresenter = new InventoryFragmentPresenter(this);
+        inventoryFragmentPresenter.findGoodsCategory();
 
     }
 
@@ -127,5 +164,54 @@ public class InventoryFragment extends BaseFragment {
                             }
                         })
                 .show();
+    }
+
+    @Override
+    public void startLoad() {
+
+    }
+
+    @Override
+    public void successLoad(List<TypeListModel.DataBean> data) {
+         if (data!=null){
+             TypeListModel.DataBean dataBean = new TypeListModel.DataBean();
+             dataBean.setName("全部");
+             dataBean.setId(0);
+             data.add(dataBean);
+             dataBeanList = new ArrayList<>();
+             dataBeanList.add(dataBean);
+             dataBeanList.addAll(data);
+             data.clear();
+             initData();
+         }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        Utils.showCenterTomast(error);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UpdateTitleEvent event) {
+        if (event!=null){
+            Log.i(TAG,"onMessageEvent===");
+            tabs.getTabAt(0).setText("全部 "+event.inventoryNumModel.getData().getAllNum());
+            tabs.getTabAt(1).setText("可售 "+event.inventoryNumModel.getData().getSellNum());
+            tabs.getTabAt(2).setText("已售罄 "+event.inventoryNumModel.getData().getSellOutNum());
+        }
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

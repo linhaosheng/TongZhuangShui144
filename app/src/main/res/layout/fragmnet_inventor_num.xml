@@ -20,36 +20,12 @@
                 android:background="#F4F5F6"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/all_commodity"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_recycle"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_60"
-                    android:background="#ffffff"
-                    android:gravity="center"
-                    android:text="全部商品"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/dp_14"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/bottled_water"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_60"
-                    android:gravity="center"
-                    android:text="桶装水"
-                    android:textColor="#999999"
-                    android:textSize="@dimen/dp_14"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/water_tickets"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_60"
-                    android:gravity="center"
-                    android:text="水票"
-                    android:textColor="#999999"
-                    android:textSize="@dimen/dp_14"
-                    android:textStyle="bold" />
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
 

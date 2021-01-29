@@ -56,7 +56,7 @@ public class AccountFragment extends BaseFragment {
 
     @Override
     public boolean lazyLoader() {
-        return false;
+        return true;
     }
 
     @Override

@@ -97,7 +97,7 @@ public class Utils {
 
 
     public static void showImage(ImageView imageView,String url){
-        Glide.with(MyApplication.getApplication()).load(url).error(R.mipmap.avator).into(imageView);
+        Glide.with(MyApplication.getApplication()).load(url).error(R.mipmap.bottled_water).into(imageView);
     }
 
     public static void showAvatorImage(ImageView imageView,String url){
