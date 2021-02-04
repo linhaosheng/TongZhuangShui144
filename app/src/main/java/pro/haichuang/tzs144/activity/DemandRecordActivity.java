@@ -46,7 +46,7 @@ public class DemandRecordActivity extends BaseActivity implements SwipeRefreshLa
     @BindView(R.id.order_state)
     TextView orderState;
     @BindView(R.id.empty_view)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
 
     private DemandRecordAdapter demandRecordAdapter;
     private List<String> listData;

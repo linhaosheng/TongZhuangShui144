@@ -13,7 +13,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -25,10 +26,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="订单收款明细"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_centerVertical="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="结账"
+                        android:textColor="#32C5FF"
+                        android:textSize="12sp"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycle_data_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content" />
+
+                <include layout="@layout/item_empty"/>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

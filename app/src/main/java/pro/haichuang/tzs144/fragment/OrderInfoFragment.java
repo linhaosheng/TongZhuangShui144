@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,10 +45,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     RecyclerView recycleData;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
-    @BindView(R.id.order_state)
-    TextView orderState;
     @BindView(R.id.empty_view)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
     TextView lastTime;
     TextView selectTime;
 

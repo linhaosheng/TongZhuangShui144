@@ -218,5 +218,25 @@ public class ConfigUrl {
      */
     public static final String UPLOAD_FILE = "/api/pc/upload/uploadFile";
 
+    /**
+     * [账务]账务管理统计
+     */
+    public static final String  MANAGER_COUNT= "/api/app/finance/ssManagerCount";
+
+    /**
+     * [账务]账务管理-查询订单列表
+     */
+    public static final String FIND_SS_ORDERS = "/api/app/finance/findSsOrders";
+
+    /**
+     * [账务]历史订单统计
+     */
+    public static final String COUNT_LS_ORDER = "/api/app/finance/countLsOrder";
+
+    /**
+     * [账务]历史订单列表数据
+     */
+    public static final String FIND_LS_ORDERS = "/api/app/finance/findLsOrders";
+
 
 }

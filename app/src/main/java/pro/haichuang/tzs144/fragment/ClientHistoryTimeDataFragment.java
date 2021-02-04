@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,10 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,12 +30,17 @@ import butterknife.BindView;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.OrderPaymentAdapter;
 import pro.haichuang.tzs144.adapter.OrderTrendAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AccountHistoryModel;
+import pro.haichuang.tzs144.model.RealAccountEvent;
+import pro.haichuang.tzs144.model.TrendModel;
+import pro.haichuang.tzs144.presenter.ClientHistoryTimeDatapPresenter;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 客户历史数据
  */
-public class ClientHistoryTimeDataFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class ClientHistoryTimeDataFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , ILoadDataView<AccountHistoryModel.DataBean> {
 
 
     @BindView(R.id.refresh)
@@ -39,20 +49,23 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     RecyclerView recycleDataTrend;
     @BindView(R.id.recycle_data_detail)
     RecyclerView recycleDataDetail;
+    @BindView(R.id.empty_view)
+    RelativeLayout emptyView;
 
     private OrderPaymentAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
 
-    private List<String> trendList;
-    private List<String> orderPayList;
+
     private View headView;
     private TextView checkOutTime;
     private TextView filter;
+    private ClientHistoryTimeDatapPresenter clientHistoryTimeDatapPresenter;
+    private List<TrendModel>trendModelList;
 
 
     @Override
     public boolean lazyLoader() {
-        return false;
+        return true;
     }
 
     @Override
@@ -108,19 +121,74 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Override
     protected void setUpData() {
-        trendList = new ArrayList<>();
-        orderPayList = new ArrayList<>();
-
-        for (int i = 0;i<6;i++){
-            trendList.add("");
-            orderPayList.add("");
-        }
-//        orderTrendAdapter.setList(trendList);
-        orderPaymentAdapter.setList(orderPayList);
+        clientHistoryTimeDatapPresenter = new ClientHistoryTimeDatapPresenter(this);
+        clientHistoryTimeDatapPresenter.countLsOrder(Utils.transformTime(new Date()));
+        clientHistoryTimeDatapPresenter.findLsOrders("","","");
     }
 
     @Override
     public void onRefresh() {
+        clientHistoryTimeDatapPresenter.countLsOrder(Utils.transformTime(new Date()));
+        clientHistoryTimeDatapPresenter.findLsOrders("","","");
+    }
 
+    @Override
+    public void startLoad() {
+        refresh.setRefreshing(true);
+    }
+
+    @Override
+    public void successLoad(AccountHistoryModel.DataBean data) {
+        refresh.setRefreshing(false);
+        if (trendModelList==null){
+            trendModelList = new ArrayList<>();
+        }
+
+        TrendModel XlTrendModel = new TrendModel("现金",data.getXjVal(),data.getXjDayRatio(),data.getXjWeekRatio());
+        trendModelList.add(XlTrendModel);
+
+        TrendModel yxTrendModel = new TrendModel("平台",data.getPtVal(),data.getPtDayRatio(),data.getPtWeekRatio());
+        trendModelList.add(yxTrendModel);
+
+        TrendModel ddTrendModel = new TrendModel("月结",data.getYjVal(),data.getYjDayRatio(),data.getYjWeekRatio());
+        trendModelList.add(ddTrendModel);
+
+        TrendModel ysTrendModel = new TrendModel("水票",data.getSpVal(),data.getSpDayRatio(),data.getSpWeekRatio());
+        trendModelList.add(ysTrendModel);
+
+        TrendModel ssTrendModel = new TrendModel("奖券",data.getJqVal(),data.getJqDayRatio(),data.getJqWeekRatio());
+        trendModelList.add(ssTrendModel);
+
+        orderTrendAdapter.setList(trendModelList);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RealAccountEvent event) {
+        if (event!=null){
+            if (event.dataBean==null || event.dataBean.getData()==null || event.dataBean.getData().size()==0){
+                emptyView.setVisibility(View.VISIBLE);
+            }else {
+                emptyView.setVisibility(View.GONE);
+                orderPaymentAdapter.setList(event.dataBean.getData());
+            }
+        }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        refresh.setRefreshing(false);
+        Utils.showCenterTomast(error);
     }
 }

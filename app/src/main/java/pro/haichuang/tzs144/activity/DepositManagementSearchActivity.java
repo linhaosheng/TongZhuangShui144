@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -55,7 +56,7 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
     @BindView(R.id.order_state)
     TextView orderState;
     @BindView(R.id.empty_view)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
     @BindView(R.id.start_time)
     TextView startTime;
     @BindView(R.id.end_time)

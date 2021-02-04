@@ -44,7 +44,7 @@ public class AllocationRecordActivity extends BaseActivity implements SwipeRefre
     @BindView(R.id.order_state)
     TextView orderState;
     @BindView(R.id.empty_view)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
 
     private AllocationRecordAdapter allocationRecordAdapter;
     private List<String>listData;
