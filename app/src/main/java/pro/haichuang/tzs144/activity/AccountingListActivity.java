@@ -16,6 +16,7 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.kongzue.dialog.v2.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,12 +27,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AccountingListAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AccountListModel;
+import pro.haichuang.tzs144.presenter.AccountingListPresenter;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 账务列表 页面
  */
-public class AccountingListActivity extends BaseActivity {
+public class AccountingListActivity extends BaseActivity implements ILoadDataView<List<AccountListModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -52,11 +56,13 @@ public class AccountingListActivity extends BaseActivity {
     TextView endTime;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
+    @BindView(R.id.empty_view)
+    RelativeLayout emptyView;
 
     private AccountingListAdapter accountingListAdapter;
-    private List<String> dataList;
     private final static  int SELECT_START_TIME = 0x110;
     private final static  int SELECT_END_TIME = 0x111;
+    private AccountingListPresenter accountingListPresenter;
 
 
     @Override
@@ -67,6 +73,7 @@ public class AccountingListActivity extends BaseActivity {
     @Override
     protected void setUpView() {
         title.setText("账务列表");
+        endTime.setText(Utils.formatSelectTime(new Date()));
 
         accountingListAdapter = new AccountingListAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
@@ -83,11 +90,8 @@ public class AccountingListActivity extends BaseActivity {
 
     @Override
     protected void setUpData() {
-        dataList = new ArrayList<>();
-        for (int i = 0; i <6;i++){
-            dataList.add("");
-        }
-        accountingListAdapter.setList(dataList);
+        accountingListPresenter = new AccountingListPresenter(this);
+        accountingListPresenter.findOrderAccounts(startTime.getText().toString(),endTime.getText().toString());
     }
 
 
@@ -115,10 +119,32 @@ public class AccountingListActivity extends BaseActivity {
                     startTime.setText(Utils.formatSelectTime(date));
                 }else {
                     endTime.setText(Utils.formatSelectTime(date));
+                    accountingListPresenter.findOrderAccounts(startTime.getText().toString(),endTime.getText().toString());
                 }
             }
         })
                 .build();
         pvTime.show();
+    }
+
+    @Override
+    public void startLoad() {
+        WaitDialog.show(this,"获取中...");
+    }
+
+    @Override
+    public void successLoad(List<AccountListModel.DataBean> data) {
+        WaitDialog.dismiss();
+        if (data==null || data.size()==0){
+            emptyView.setVisibility(View.VISIBLE);
+        }else {
+            emptyView.setVisibility(View.GONE);
+            accountingListAdapter.setList(data);
+        }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        WaitDialog.dismiss();
     }
 }

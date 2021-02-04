@@ -28,7 +28,7 @@
             android:layout_height="@dimen/dp_40"
             android:background="@drawable/set_bg_btn16"
             android:gravity="center"
-            android:text="2019-06-22"
+            android:text="2019-10-22"
             android:layout_marginLeft="@dimen/dp_10"
             android:textColor="#32C5FF"
             android:textSize="14sp" />
@@ -58,6 +58,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#F8F8F8" />
+
+    <include layout="@layout/item_center_empty"/>
+    
 </LinearLayout>

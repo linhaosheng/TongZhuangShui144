@@ -1,0 +1,57 @@
+package pro.haichuang.tzs144.presenter;
+
+import android.util.ArrayMap;
+
+import java.util.Map;
+
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AccountListModel;
+import pro.haichuang.tzs144.net.ConfigUrl;
+import pro.haichuang.tzs144.net.HttpRequestEngine;
+import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Utils;
+
+public class AccountingListPresenter {
+
+
+    private ILoadDataView iLoadDataView;
+
+    public AccountingListPresenter(ILoadDataView iLoadDataView){
+      this.iLoadDataView = iLoadDataView;
+    }
+
+    /**
+     * [账目]账目列表
+     * @param startTime
+     * @param endTime
+     */
+    public final void findOrderAccounts(String startTime,String endTime){
+
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("startTime",startTime);
+        params.put("endTime",endTime);
+
+
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_ORDER_ACCOUNT, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+                iLoadDataView.startLoad();
+            }
+
+            @Override
+            public void success(String result) {
+                AccountListModel accountListModel = Utils.gsonInstane().fromJson(result, AccountListModel.class);
+                if (accountListModel.getResult()==1){
+                    iLoadDataView.successLoad(accountListModel.getData());
+                }else {
+                    iLoadDataView.errorLoad("获取错误");
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iLoadDataView.errorLoad(error);
+            }
+        });
+    }
+}
