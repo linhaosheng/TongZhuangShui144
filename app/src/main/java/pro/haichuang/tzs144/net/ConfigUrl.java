@@ -243,5 +243,10 @@ public class ConfigUrl {
      */
     public static final String  FIND_ORDER_ACCOUNT = "/api/app/finance/findOrderAccounts";
 
+    /**
+     * [账目]账目详情
+     */
+    public static final String  GET_ACCOUNT_INFOv = "/api/app/finance/getAccountInfo";
+
 
 }

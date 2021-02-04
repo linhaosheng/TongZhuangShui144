@@ -82,6 +82,7 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 Intent intent = new Intent(AccountingListActivity.this,AccountingListDetailActivity.class);
+                intent.putExtra("id","");
                 startActivity(intent);
             }
         });

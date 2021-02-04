@@ -62,5 +62,5 @@
         android:background="#F8F8F8" />
 
     <include layout="@layout/item_center_empty"/>
-    
+
 </LinearLayout>

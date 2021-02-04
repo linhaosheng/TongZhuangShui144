@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.kongzue.dialog.v2.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,12 +23,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AccountingListDetailAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AccountListDetailModel;
+import pro.haichuang.tzs144.presenter.AccountingListDetailPresenter;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 账目详情
  */
-public class AccountingListDetailActivity extends BaseActivity {
+public class AccountingListDetailActivity extends BaseActivity implements ILoadDataView<AccountListDetailModel> {
 
     @BindView(R.id.back)
     ImageView back;
@@ -73,9 +77,11 @@ public class AccountingListDetailActivity extends BaseActivity {
     TextView bill;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
+    @BindView(R.id.empty_view)
+    RelativeLayout emptyView;
+    private AccountingListDetailPresenter accountingListDetailPresenter;
 
     private AccountingListDetailAdapter accountingListDetailAdapter;
-    private List<String> dataList;
     private final static  int SELECT_START_TIME = 0x110;
     private final static  int SELECT_END_TIME = 0x111;
 
@@ -91,6 +97,7 @@ public class AccountingListDetailActivity extends BaseActivity {
         tips.setVisibility(View.VISIBLE);
         tips.setTextSize(12);
         tips.setText("销账");
+        endTime.setText(Utils.formatSelectTime(new Date()));
 
         accountingListDetailAdapter = new AccountingListDetailAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
@@ -99,11 +106,9 @@ public class AccountingListDetailActivity extends BaseActivity {
 
     @Override
     protected void setUpData() {
-        dataList = new ArrayList<>();
-        for (int i = 0; i <4;i++){
-            dataList.add("");
-        }
-        accountingListDetailAdapter.setList(dataList);
+        String id = getIntent().getStringExtra("id");
+        accountingListDetailPresenter = new AccountingListDetailPresenter(this);
+        accountingListDetailPresenter.getAccountInfo(id);
     }
 
 
@@ -142,5 +147,42 @@ public class AccountingListDetailActivity extends BaseActivity {
         })
                 .build();
         pvTime.show();
+    }
+
+    @Override
+    public void startLoad() {
+        WaitDialog.show(this,"获取中...");
+    }
+
+    @Override
+    public void successLoad(AccountListDetailModel data) {
+
+        WaitDialog.dismiss();
+        AccountListDetailModel.DataBean dataBean = data.getData().get(0);
+        cash.setText(dataBean.getXjPrice()+"元");
+        //coupon.setText(dataBean.);
+        wechatPay.setText(dataBean.getWxPrice()+"元");
+        wateTicket.setText(dataBean.getWaterNum()+"元");
+        meituanPay.setText(dataBean.getMtPrice()+"元");
+        rewardNum.setText(dataBean.getCouponNum()+"元");
+        elmePay.setText(dataBean.getElPrice()+"元");
+        monthPay.setText(dataBean.getMonthNum()+"元");
+
+        if (dataBean.getList()==null || dataBean.getList().size()==0){
+            emptyView.setVisibility(View.VISIBLE);
+        }else {
+            emptyView.setVisibility(View.GONE);
+            accountingListDetailAdapter.setList(dataBean.getList());
+        }
+        if (dataBean.getTime()==null){
+            orderTime.setText("结账日期："+Utils.transformTime(new Date()));
+        }else {
+            orderTime.setText("结账日期："+dataBean.getTime());
+        }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        WaitDialog.dismiss();
     }
 }

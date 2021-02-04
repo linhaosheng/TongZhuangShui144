@@ -8,7 +8,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -349,9 +350,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle_data"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="#F8F8F8"
                 android:layout_marginBottom="@dimen/dp_20"/>
+
+            <include layout="@layout/item_empty"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
