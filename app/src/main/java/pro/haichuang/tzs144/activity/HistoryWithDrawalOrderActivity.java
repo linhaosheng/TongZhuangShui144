@@ -3,20 +3,25 @@ package pro.haichuang.tzs144.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.kongzue.dialog.v2.WaitDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.presenter.HistoryWithDrawalOrderActivityPresenter;
 import pro.haichuang.tzs144.view.LSettingItem;
 
 /**
  * 历史退押记录
  */
-public class HistoryWithDrawalOrderActivity extends BaseActivity {
+public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoadDataView<String> {
 
 
     @BindView(R.id.back)
@@ -49,6 +54,10 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity {
     LSettingItem mortgageType;
     @BindView(R.id.with_drawal_btn)
     Button withDrawalBtn;
+    @BindView(R.id.deposit_money)
+    EditText depositMoney;
+
+    private HistoryWithDrawalOrderActivityPresenter historyWithDrawalOrderActivityPresenter;
 
     @Override
     protected int setLayoutResourceID() {
@@ -57,11 +66,12 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
-
+       title.setText("退押");
     }
 
     @Override
     protected void setUpData() {
+        historyWithDrawalOrderActivityPresenter = new HistoryWithDrawalOrderActivityPresenter(this);
 
     }
 
@@ -76,5 +86,20 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity {
             case R.id.with_drawal_btn:
                 break;
         }
+    }
+
+    @Override
+    public void startLoad() {
+        WaitDialog.show(this,"提交中...");
+    }
+
+    @Override
+    public void successLoad(String data) {
+        WaitDialog.dismiss();
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        WaitDialog.dismiss();
     }
 }

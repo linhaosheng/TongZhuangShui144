@@ -49,6 +49,5 @@ public class OrderInfoFragmentPresenter {
                 iLoadDataView.errorLoad(error);
             }
         });
-
     }
 }

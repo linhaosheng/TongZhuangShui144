@@ -2,14 +2,26 @@ package pro.haichuang.tzs144.activity;
 
 
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.kongzue.dialog.listener.OnMenuItemClickListener;
+import com.kongzue.dialog.v2.BottomMenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.model.ClientTypeModel;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.SPUtils;
+import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.LSettingItem;
 
 /**
@@ -51,6 +63,11 @@ public class AddClientActivity extends BaseActivity {
     @BindView(R.id.detail_address)
     LSettingItem detailAddress;
 
+    private ClientTypeModel clientTypeModel;
+    private List<String> clientlist;
+    private List<String>monopolyList;
+
+
     @Override
     protected int setLayoutResourceID() {
         return R.layout.activity_add_client;
@@ -58,7 +75,45 @@ public class AddClientActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
-      title.setText("新增客户");
+        String clientTypeJson = SPUtils.getString(Config.CLIENT_TYPE, "");
+
+        if (!clientTypeJson.equals("")) {
+            clientTypeModel = Utils.gsonInstane().fromJson(clientTypeJson, ClientTypeModel.class);
+            clientlist = new ArrayList<>();
+            for (ClientTypeModel.DataBean dataBean : clientTypeModel.getData()) {
+                clientlist.add(dataBean.getName());
+            }
+        }
+        title.setText("新增客户");
+        clientType.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+
+                if (!clientTypeJson.equals("")) {
+                    BottomMenu.show(AddClientActivity.this, clientlist, new OnMenuItemClickListener() {
+                        @Override
+                        public void onClick(String text, int index) {
+
+                        }
+                    }, true);
+                }
+            }
+        });
+        monopolyList = new ArrayList<>();
+        monopolyList.add("是");
+        monopolyList.add("否");
+        monopoly.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+
+                    BottomMenu.show(AddClientActivity.this, monopolyList, new OnMenuItemClickListener() {
+                        @Override
+                        public void onClick(String text, int index) {
+
+                        }
+                    }, true);
+            }
+        });
     }
 
     @Override

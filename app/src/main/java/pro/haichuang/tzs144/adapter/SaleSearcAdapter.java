@@ -6,11 +6,12 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import org.jetbrains.annotations.NotNull;
 
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.model.SaleDataModel;
 
 /**
  * 客户销售搜索适配器
  */
-public class SaleSearcAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class SaleSearcAdapter extends BaseQuickAdapter<SaleDataModel.DataBean, BaseViewHolder> {
 
 
     public SaleSearcAdapter() {
@@ -18,8 +19,12 @@ public class SaleSearcAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, String baseMedia) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, SaleDataModel.DataBean dataBean) {
 
+        baseViewHolder.setText(R.id.name,dataBean.getName())
+                .setText(R.id.phone,dataBean.getPhone())
+                .setText(R.id.address,dataBean.getAddress())
+                .setText(R.id.detail_address,dataBean.getAddressName() +" >");
     }
 
 }

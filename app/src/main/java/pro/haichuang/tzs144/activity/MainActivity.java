@@ -24,6 +24,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.fragment.AccountFragment;
 import pro.haichuang.tzs144.fragment.ClientFragment;
 import pro.haichuang.tzs144.fragment.InventoryFragment;
+import pro.haichuang.tzs144.fragment.MainActivityPresenter;
 import pro.haichuang.tzs144.fragment.OrderFragment;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
@@ -45,13 +46,11 @@ import pro.haichuang.tzs144.view.ShowMoreDialog;
 public class MainActivity extends BaseActivity {
 
 
-    public LocationClient mLocationClient = null;
-    private MyLocationListener myListener = new MyLocationListener();
 
     @BindView(R.id.navigationBar)
     EasyNavigationBar navigationBar;
     private boolean isLocation = false;
-
+    private MainActivityPresenter mainActivityPresenter;
 
     private String[] tabText = {"订单", "库存", "账务", "客户"};
     private int[] selectIcon = {R.mipmap.order_p, R.mipmap.inventory_p, R.mipmap.account_p, R.mipmap.client_p};
@@ -67,21 +66,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
-        mLocationClient = new LocationClient(getApplicationContext());
-        //声明LocationClient类
-        mLocationClient.registerLocationListener(myListener);
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        option.setCoorType("bd09ll");
-        option.setScanSpan(1000);
-        option.setOpenGps(true);
-        mLocationClient.setLocOption(option);
-        mLocationClient.start();
+
     }
 
     @Override
     protected void setUpData() {
         MainActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
+        mainActivityPresenter = new MainActivityPresenter();
+        mainActivityPresenter.findKhTypes();
     }
 
     private long exitTime = 0;
@@ -102,8 +94,7 @@ public class MainActivity extends BaseActivity {
 
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
     public void allplyPermission() {
-
-
+      initView();
     }
 
     public void initView(){
@@ -182,20 +173,4 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public class MyLocationListener extends BDAbstractLocationListener {
-
-        @Override
-        public void onReceiveLocation(BDLocation location){
-            //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
-            //以下只列举部分获取经纬度相关（常用）的结果信息
-            //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
-            Config.LATITUDE = location.getLatitude();    //获取纬度信息
-            Config.LONGITUDE = location.getLongitude();    //获取经度信息
-
-            if (!isLocation){
-                initView();
-                isLocation = true;
-            }
-        }
-    }
 }

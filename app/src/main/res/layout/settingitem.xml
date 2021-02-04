@@ -77,6 +77,22 @@
         android:layout_marginRight="@dimen/dp_20"
         android:visibility="gone" />
 
+    <EditText
+        android:id="@+id/edit_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/rightlayout"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/dp_30"
+        android:textSize="14sp"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:hint="请输入"
+        android:visibility="gone"
+        android:textColorHint="#333333"
+        />
+
     <View
         android:id="@+id/underline"
         android:layout_width="match_parent"

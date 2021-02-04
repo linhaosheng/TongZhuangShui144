@@ -182,6 +182,8 @@
         <attr name="rightTextSize" format="dimension" />
         <attr name="rightTextColor" format="color" />
         <attr name="rightIconSize" format="dimension" />
+        <attr name="showEditInput" format="boolean"/>
+
     </declare-styleable>
 
 

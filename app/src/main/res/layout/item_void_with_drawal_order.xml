@@ -38,7 +38,7 @@
                 android:textAlignment="center"
                 android:gravity="center"
                 android:layout_marginTop="13dp"
-                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:background="@drawable/set_bg_btn19"/>
 
         </LinearLayout>

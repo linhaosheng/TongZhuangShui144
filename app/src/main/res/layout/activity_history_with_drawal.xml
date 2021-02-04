@@ -75,8 +75,9 @@
            app:leftText="押金编号"
            app:leftTextMarginLeft="@dimen/dp_10"
            app:rightStyle="iconHide"
-           app:isShowRightText = "true"
+           app:isShowRightText = "false"
            app:rightText="请输入"
+           app:showEditInput="true"
            app:rightIconSize="@dimen/dp_22" />
 
 
@@ -88,8 +89,9 @@
            app:leftText="押金本编号"
            app:leftTextMarginLeft="@dimen/dp_10"
            app:rightStyle="iconHide"
-           app:isShowRightText = "true"
+           app:isShowRightText = "false"
            app:rightText="请输入"
+           app:showEditInput="true"
            app:rightIconSize="@dimen/dp_22" />
 
 
@@ -101,8 +103,9 @@
            app:leftText="客户名称"
            app:leftTextMarginLeft="@dimen/dp_10"
            app:rightStyle="iconHide"
-           app:isShowRightText = "true"
+           app:isShowRightText = "false"
            app:rightText="请输入"
+           app:showEditInput="true"
            app:rightIconSize="@dimen/dp_22" />
 
        <pro.haichuang.tzs144.view.LSettingItem
@@ -113,8 +116,9 @@
            app:leftText="开押单价"
            app:leftTextMarginLeft="@dimen/dp_10"
            app:rightStyle="iconHide"
-           app:isShowRightText = "true"
+           app:isShowRightText = "false"
            app:rightText="请输入"
+           app:showEditInput="true"
            app:rightIconSize="@dimen/dp_22" />
 
        <pro.haichuang.tzs144.view.LSettingItem
@@ -125,8 +129,9 @@
            app:leftText="数量"
            app:leftTextMarginLeft="@dimen/dp_10"
            app:rightStyle="iconHide"
-           app:isShowRightText = "true"
+           app:isShowRightText = "false"
            app:rightText="请输入"
+           app:showEditInput="true"
            app:rightIconSize="@dimen/dp_22" />
 
 
@@ -139,7 +144,7 @@
            app:leftTextMarginLeft="@dimen/dp_10"
            app:rightStyle="iconHide"
            app:isShowRightText = "true"
-           app:rightText="请选择 >"
+           app:rightText="请选择"
            app:rightIconSize="@dimen/dp_22" />
 
        <LinearLayout
@@ -151,15 +156,16 @@
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="退押金"
+               android:text="退押金:"
                android:textColor="#333333"
                android:textSize="14sp"
                android:layout_marginTop="25dp"
                android:layout_marginBottom="@dimen/dp_24"/>
 
            <EditText
+               android:id="@+id/deposit_money"
                android:layout_width="@dimen/dp_100"
-               android:layout_height="@dimen/dp_25"
+               android:layout_height="wrap_content"
                android:layout_marginTop="30dp"
                android:layout_marginLeft="@dimen/dp_10"/>
            

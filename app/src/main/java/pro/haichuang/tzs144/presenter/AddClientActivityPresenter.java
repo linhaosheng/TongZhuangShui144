@@ -15,28 +15,6 @@ public class AddClientActivityPresenter {
 
     }
 
-    /**
-     * [客户]获取客户类型
-     */
-    public void findKhTypes(){
-
-        HttpRequestEngine.postRequest(ConfigUrl.FIND_KH_TYPES, null, new HttpRequestResultListener() {
-            @Override
-            public void start() {
-
-            }
-
-            @Override
-            public void success(String result) {
-
-            }
-
-            @Override
-            public void error(String error) {
-
-            }
-        });
-    }
 
     /**
      * [客户]获取所在片区列表

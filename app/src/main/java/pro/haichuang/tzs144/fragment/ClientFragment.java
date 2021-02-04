@@ -28,11 +28,18 @@ import pro.haichuang.tzs144.adapter.MyPagerAdapter;
 import pro.haichuang.tzs144.adapter.OrderNumTrendAdapter;
 import pro.haichuang.tzs144.adapter.OrderPaymentAdapter;
 import pro.haichuang.tzs144.adapter.OrderTrendAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.ClientTrendModel;
+import pro.haichuang.tzs144.model.ClientTypeSearchModel;
+import pro.haichuang.tzs144.model.TrendModel;
+import pro.haichuang.tzs144.presenter.ClientFragmentPresenter;
+import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.ClientFilterDialog;
 
 /**
  * 客户
  */
-public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<ClientTrendModel> {
 
 
     @BindView(R.id.back)
@@ -53,12 +60,17 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     SwipeRefreshLayout refresh;
     @BindView(R.id.left_text)
     TextView leftText;
+    @BindView(R.id.filter)
+    ImageView filter;
 
     private OrderNumTrendAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
 
-    private List<String> trendList;
+    private ClientFragmentPresenter clientFragmentPresenter;
+
+    private List<TrendModel> trendList;
     private List<String> orderPayList;
+    private int currentPage = 1;
 
 
     @Override
@@ -108,18 +120,22 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     protected void setUpData() {
+        clientFragmentPresenter = new ClientFragmentPresenter(this);
+        clientFragmentPresenter.countKh();
+        clientFragmentPresenter.findKhList("","2019-10-10","2021-01-20","","0",currentPage);
+
+
         trendList = new ArrayList<>();
         orderPayList = new ArrayList<>();
 
         for (int i = 0;i<6;i++){
-            trendList.add("");
+
             orderPayList.add("");
         }
-        orderTrendAdapter.setList(trendList);
         orderPaymentAdapter.setList(orderPayList);
     }
 
-    @OnClick({R.id.left_text, R.id.tip_img})
+    @OnClick({R.id.left_text, R.id.tip_img,R.id.filter})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.left_text:
@@ -128,11 +144,58 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                 break;
             case R.id.tip_img:
                 break;
+            case R.id.filter:
+                ClientFilterDialog clientFilterDialog = new ClientFilterDialog(getActivity(), new ClientFilterDialog.ClientTypeListener() {
+                    @Override
+                    public void filterSearch(ClientTypeSearchModel clientTypeSearchModel) {
+
+                    }
+                });
+                clientFilterDialog.show(getChildFragmentManager(),"");
+                break;
         }
     }
 
     @Override
     public void onRefresh() {
 
+    }
+
+    @Override
+    public void startLoad() {
+        refresh.setRefreshing(true);
+    }
+
+    @Override
+    public void successLoad(ClientTrendModel data) {
+        refresh.setRefreshing(false);
+        if (data!=null){
+            ClientTrendModel.DataBean data1 = data.getData();
+            TrendModel countTrendModel = new TrendModel("总客户",String.valueOf(data1.getKhCount()),data1.getKhDayCount(),data1.getKhWeekCount());
+            trendList.add(countTrendModel);
+
+            TrendModel yxTrendModel = new TrendModel("有效户",String.valueOf(data1.getYxCount()),data1.getYxDayCount(),data1.getYxWeekCount());
+            trendList.add(yxTrendModel);
+
+            TrendModel whTrendModel = new TrendModel("维护户数",String.valueOf(data1.getWhCount()),data1.getWhDayCount(),data1.getWhWeekCount());
+            trendList.add(whTrendModel);
+
+            TrendModel jxsTrendModel = new TrendModel("经销商",String.valueOf(data1.getJxsCount()),data1.getJxsDayCount(),data1.getJxsWeekCount());
+            trendList.add(jxsTrendModel);
+
+            TrendModel xyTrendModel = new TrendModel("协议客户",String.valueOf(data1.getXyCount()),data1.getXyDayCount(),data1.getXyWeekCount());
+            trendList.add(xyTrendModel);
+
+            TrendModel zdTrendModel = new TrendModel("终端客户",String.valueOf(data1.getZdCount()),data1.getZdDayCount(),data1.getZdWeekCount());
+            trendList.add(zdTrendModel);
+
+            orderTrendAdapter.setList(trendList);
+        }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        refresh.setRefreshing(false);
+        Utils.showCenterTomast(error);
     }
 }

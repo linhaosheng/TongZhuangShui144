@@ -63,7 +63,7 @@
             android:background="@drawable/set_bg_btn14"/>
 
         <Button
-            android:id="@+id/historical_deposit"
+            android:id="@+id/detention_record"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="@dimen/dp_28"
@@ -74,7 +74,7 @@
             android:background="@drawable/set_bg_btn14"/>
 
         <Button
-            android:id="@+id/detention_record"
+            android:id="@+id/historical_deposit"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="@dimen/dp_28"

@@ -49,6 +49,7 @@ public class VoidWithDrawalOrderActivity extends BaseActivity implements SwipeRe
 
     @Override
     protected void setUpView() {
+
         voidWithDrawalOrderAdapter = new VoidWithDrawalOrderAdapter();
         refresh.setOnRefreshListener(this);
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));

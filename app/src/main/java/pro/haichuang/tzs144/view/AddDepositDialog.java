@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,10 +21,15 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.net.ConfigUrl;
+import pro.haichuang.tzs144.net.HttpRequestEngine;
+import pro.haichuang.tzs144.net.HttpRequestResultListener;
 
 
 /**
@@ -115,14 +121,50 @@ public class AddDepositDialog extends DialogFragment {
 
     @OnClick({R.id.delete, R.id.cancel_btn, R.id.input_btn})
     public void onViewClicked(View view) {
-        dismiss();
+
         switch (view.getId()) {
             case R.id.delete:
+                dismiss();
                 break;
             case R.id.cancel_btn:
+                dismiss();
                 break;
             case R.id.input_btn:
+
+            //    addDepositBook();
                 break;
         }
     }
+
+    /**
+     * 添加押金本
+     * @param number
+     * @param numCount
+     * @param endNumber
+     */
+    public void addDepositBook(String number,String numCount,String endNumber){
+
+        Map<String,Object> params = new ArrayMap<>();
+        params.put("number",number);
+        params.put("numCount",numCount);
+
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_SHOP, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
+
+    }
+
 }

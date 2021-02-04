@@ -98,7 +98,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             trendList.add("");
             orderPayList.add("");
         }
-        orderTrendAdapter.setList(trendList);
+//        orderTrendAdapter.setList(trendList);
         orderPaymentAdapter.setList(orderPayList);
     }
 

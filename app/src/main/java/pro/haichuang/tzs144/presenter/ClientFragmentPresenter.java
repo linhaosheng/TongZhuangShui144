@@ -4,14 +4,19 @@ import android.util.ArrayMap;
 
 import java.util.Map;
 
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.ClientTrendModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Utils;
 
 public class ClientFragmentPresenter {
 
-    public ClientFragmentPresenter(){
+    private ILoadDataView iLoadDataView;
 
+    public ClientFragmentPresenter(ILoadDataView mILoadDataView){
+          this.iLoadDataView = mILoadDataView;
     }
 
     /**
@@ -22,17 +27,29 @@ public class ClientFragmentPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.COUNT_KH, null, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                iLoadDataView.startLoad();
             }
 
             @Override
             public void success(String result) {
+                 try {
+                     ClientTrendModel clientTrendModel = Utils.gsonInstane().fromJson(result, ClientTrendModel.class);
+                     if (clientTrendModel!=null){
+                         if (clientTrendModel.getResult()==1){
+                             iLoadDataView.successLoad(clientTrendModel);
+                         }else {
+                             iLoadDataView.errorLoad("加载错误");
+                         }
+                     }
 
+                 }catch (Exception e){
+                     e.printStackTrace();
+                 }
             }
 
             @Override
             public void error(String error) {
-
+                iLoadDataView.errorLoad(error);
             }
         });
     }

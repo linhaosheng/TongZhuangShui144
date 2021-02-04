@@ -115,7 +115,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
             trendList.add("");
             orderPayList.add("");
         }
-        orderTrendAdapter.setList(trendList);
+//        orderTrendAdapter.setList(trendList);
         orderPaymentAdapter.setList(orderPayList);
     }
 

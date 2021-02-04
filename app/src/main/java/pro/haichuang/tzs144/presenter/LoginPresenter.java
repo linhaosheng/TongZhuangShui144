@@ -78,6 +78,7 @@ public class LoginPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.SUBJECT_LIST, params, new HttpRequestResultListener() {
             @Override
             public void start() {
+                iLoadDataView.startLoad();
                 Log.i("TAH===","start====");
             }
 
@@ -95,6 +96,7 @@ public class LoginPresenter {
 
             @Override
             public void error(String error) {
+                iLoadDataView.errorLoad(error);
                 Log.i("TAH===","error===="+error);
             }
         });

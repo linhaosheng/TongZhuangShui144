@@ -23,7 +23,6 @@
             android:hint="客户名称/手机号码/地址关键字"
             android:textSize="14sp"
             android:drawablePadding="@dimen/dp_10"
-            android:gravity="center"
             android:background="@null"
             android:layout_marginRight="@dimen/dp_18"/>
 

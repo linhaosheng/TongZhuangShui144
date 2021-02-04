@@ -103,6 +103,12 @@ public class ConfigUrl {
     public static final String ADD_DESPOSIT_BOOK = "/api/app/depositManage/addDepositBook";
 
     /**
+     * [押金]获取开押本列表
+     */
+    public static final String FIND_DEPOSIT_BOOK_LIST = "/api/app/depositManage/findDepositBookList";
+
+
+    /**
      * [客户]列表统计
      */
     public static final String COUNT_KH = "/api/app/kh/countKh";
@@ -196,6 +202,21 @@ public class ConfigUrl {
      * [直接销售]-订单详情
      */
     public static final String GET_ORDER_INFO = "/api/app/order/getOrderInfo";
+
+    /**
+     * [直接销售]-选择商品列表
+     */
+    public static final String FIND_SHOP = "/api/app/order/findGoods";
+
+    /**
+     * [直接销售]-根据品类查询商品
+     */
+    public static final String FIND_WATER_TICKET = "/api/app/order/findGoodsByCategory";
+
+    /**
+     * 上传接口
+     */
+    public static final String UPLOAD_FILE = "/api/pc/upload/uploadFile";
 
 
 }

@@ -2,6 +2,8 @@ package pro.haichuang.tzs144.activity;
 
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +18,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.presenter.StartDepositSearchActivityPresenter;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 开押管理
  */
-public class StartDepositSearchActivity extends BaseActivity {
+public class StartDepositSearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<String> {
 
 
     @BindView(R.id.back)
@@ -40,6 +45,8 @@ public class StartDepositSearchActivity extends BaseActivity {
     @BindView(R.id.empty_view)
     LinearLayout emptyView;
 
+    private StartDepositSearchActivityPresenter startDepositSearchActivityPresenter;
+
     @Override
     protected int setLayoutResourceID() {
         return R.layout.activity_start_deposite_search;
@@ -47,12 +54,28 @@ public class StartDepositSearchActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
+        refresh.setOnRefreshListener(this);
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString());
+            }
+        });
     }
 
     @Override
     protected void setUpData() {
-
+        startDepositSearchActivityPresenter = new StartDepositSearchActivityPresenter(this);
     }
 
 
@@ -68,4 +91,26 @@ public class StartDepositSearchActivity extends BaseActivity {
                 break;
         }
     }
+
+    @Override
+    public void onRefresh() {
+
+    }
+
+    @Override
+    public void startLoad() {
+        refresh.setRefreshing(true);
+    }
+
+    @Override
+    public void successLoad(String data) {
+        refresh.setRefreshing(false);
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        Utils.showCenterTomast(error);
+        refresh.setRefreshing(false);
+    }
+
 }

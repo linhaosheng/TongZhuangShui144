@@ -205,15 +205,15 @@ public class HttpRequestEngine {
      * @param
      * @param httpRequestResultListener
      */
-    public static void uploadFile(String url, List<UpFile> pathFileParams, List<Uri> uriFileParams, HttpRequestResultListener httpRequestResultListener) {
+    public static void uploadFile(String url, UpFile upFile, HttpRequestResultListener httpRequestResultListener) {
 
-        addHeadParams();
-        RxHttpFormParam rxHttpFormParam = RxHttp.postForm(url);
+        addFileHeadParams();
 
         //android 10 版本 通过获取的图片URI 来上传，否则通过图片路径来上传
         Log.i("TAG===", "version 28");
-        rxHttpFormParam.addFile(pathFileParams);
-        rxHttpFormParam.asString()
+        RxHttp.postForm(url)
+                .addFile(upFile)
+                .asString()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<String>() {
                     @Override
@@ -255,8 +255,27 @@ public class HttpRequestEngine {
                 return param
                         .add("longitude",Config.LONGITUDE)
                         .add("latitude",Config.LATITUDE)
+                        .add("limit",Config.LIMIT)
                         .add("verification",SPUtils.getString(Config.VERIFICATION,""))
                         .addHeader("Content-Type", "application/json");
+            }
+        });
+    }
+
+    /**
+     * set common params
+     */
+    private static void addFileHeadParams() {
+
+        RxHttp.setOnParamAssembly(new Function<Param<?>, Param<?>>() {
+            @Override
+            public Param<?> apply(Param<?> param) throws Exception {
+                return param
+                        .add("longitude",Config.LONGITUDE)
+                        .add("latitude",Config.LATITUDE)
+                        .add("limit",Config.LIMIT)
+                        .add("verification",SPUtils.getString(Config.VERIFICATION,""))
+                        .addHeader("Content-Type", "multipart/form-data");
             }
         });
     }

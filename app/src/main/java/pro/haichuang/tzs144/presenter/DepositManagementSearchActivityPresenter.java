@@ -4,32 +4,34 @@ import android.util.ArrayMap;
 
 import java.util.Map;
 
+import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
 
 public class DepositManagementSearchActivityPresenter {
 
-    public DepositManagementSearchActivityPresenter(){
+    private ILoadDataView iLoadDataView;
+
+    public DepositManagementSearchActivityPresenter(ILoadDataView mILoadDataView){
+         this.iLoadDataView = mILoadDataView;
 
     }
 
+
     /**
-     * 添加押金本
-     * @param number
-     * @param numCount
-     * @param endNumber
+     * [押金]获取开押本列表
      */
-    public void addDepositBook(String number,String numCount,String endNumber){
-
+    public void findDepositBookList(int page,long startTime,long endTime){
         Map<String,Object>params = new ArrayMap<>();
-        params.put("number",number);
-        params.put("numCount",numCount);
+        params.put("page",page);
+        params.put("startTime",startTime);
+        params.put("endTime",endTime);
 
-        HttpRequestEngine.postRequest(ConfigUrl.ADD_DESPOSIT_BOOK, params, new HttpRequestResultListener() {
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_DEPOSIT_BOOK_LIST, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                iLoadDataView.startLoad();
             }
 
             @Override
@@ -39,10 +41,9 @@ public class DepositManagementSearchActivityPresenter {
 
             @Override
             public void error(String error) {
-
+                iLoadDataView.errorLoad(error);
             }
         });
-
     }
 
 

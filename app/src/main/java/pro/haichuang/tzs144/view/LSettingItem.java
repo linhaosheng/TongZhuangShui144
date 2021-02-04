@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,6 +71,9 @@ public class LSettingItem extends RelativeLayout {
     /*选中状态*/
     private boolean mChecked;
     /*点击事件*/
+
+    private EditText editinput;
+
     private OnLSettingItemClick mOnLSettingItemClick;
 
     public LSettingItem(Context context) {
@@ -218,6 +222,12 @@ public class LSettingItem extends RelativeLayout {
                 }else {
                     mTvLeftInfoText.setVisibility(GONE);
                 }
+            }else if (attr==R.styleable.LSettingView_showEditInput){
+                if (a.getBoolean(attr,false)){
+                    editinput.setVisibility(VISIBLE);
+                }else {
+                    editinput.setVisibility(GONE);
+                }
             }
         }
         a.recycle();
@@ -273,6 +283,7 @@ public class LSettingItem extends RelativeLayout {
         mRightIcon_check = mView.findViewById(R.id.rightcheck);
         mRightIcon_switch = mView.findViewById(R.id.rightswitch);
         mTvLeftInfoText = mView.findViewById(R.id.tv_left_info);
+        editinput = mView.findViewById(R.id.edit_input);
     }
 
     /**
@@ -332,6 +343,14 @@ public class LSettingItem extends RelativeLayout {
 
     public interface OnLSettingItemClick {
         void click(boolean isChecked, View view);
+    }
+
+    /**
+     * 获取文本输入框
+     * @return
+     */
+    public String getEditText(){
+        return editinput.getText().toString();
     }
 
     /**

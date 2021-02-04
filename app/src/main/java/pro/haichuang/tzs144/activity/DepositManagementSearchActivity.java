@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,13 +27,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.DepositManagementSearchAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.presenter.DepositManagementSearchActivityPresenter;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.AddDepositDialog;
 
 /**
  * 押金本搜索管理  押金本管理
  */
-public class DepositManagementSearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class DepositManagementSearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<String> {
 
 
     @BindView(R.id.back)
@@ -59,9 +62,11 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
     TextView endTime;
     private final static  int SELECT_START_TIME = 0x110;
     private final static  int SELECT_END_TIME = 0x111;
+    private int currentPage = 1;
 
     private DepositManagementSearchAdapter depositManagementSearchAdapter;
     private List<String> listData;
+    private DepositManagementSearchActivityPresenter depositManagementSearchActivityPresenter;
 
     @Override
     protected int setLayoutResourceID() {
@@ -84,6 +89,10 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
             listData.add("");
         }
         depositManagementSearchAdapter.setList(listData);
+
+        depositManagementSearchActivityPresenter = new DepositManagementSearchActivityPresenter(this);
+        depositManagementSearchActivityPresenter.findDepositBookList(currentPage,1548758717000l,System.currentTimeMillis());
+
     }
 
 
@@ -98,8 +107,14 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
                 addDepositDialog.show(getSupportFragmentManager(), "");
                 break;
             case R.id.open_deposit:
+                //开押管理
+                Intent intent = new Intent(this,StartDepositSearchActivity.class);
+                startActivity(intent);
                 break;
             case R.id.refund_orders:
+                //退押定单列表
+                Intent intent1 = new Intent(this,WithDrawalOrderActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.start_time:
                 selectTime(SELECT_START_TIME);
@@ -134,5 +149,20 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
         })
                 .build();
         pvTime.show();
+    }
+
+    @Override
+    public void startLoad() {
+
+    }
+
+    @Override
+    public void successLoad(String data) {
+
+    }
+
+    @Override
+    public void errorLoad(String error) {
+
     }
 }

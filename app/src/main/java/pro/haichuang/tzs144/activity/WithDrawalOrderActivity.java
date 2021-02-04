@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -81,10 +82,16 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
                 finish();
                 break;
             case R.id.add_with_drawal:
+                Intent intent = new Intent(this,AddWithDrawalOrderActivity.class);
+                startActivity(intent);
                 break;
             case R.id.historical_deposit:
+                Intent intent1 = new Intent(this,HistoryWithDrawalOrderActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.detention_record:
+                Intent intent2 = new Intent(this,VoidWithDrawalOrderActivity.class);
+                startActivity(intent2);
                 break;
         }
     }

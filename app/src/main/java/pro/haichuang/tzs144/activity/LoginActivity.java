@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.kongzue.dialog.v2.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -63,6 +67,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private boolean todayLogin;
     private boolean loadSubject;
 
+    public LocationClient mLocationClient = null;
+    private MyLocationListener myListener = new MyLocationListener();
+
     @Override
     protected int setLayoutResourceID() {
         return R.layout.activity_login;
@@ -70,6 +77,18 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     protected void setUpView() {
+
+        mLocationClient = new LocationClient(getApplicationContext());
+        //声明LocationClient类
+        mLocationClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd09ll");
+        option.setScanSpan(1000);
+        option.setOpenGps(true);
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
+
         //数据
         data_list = new ArrayList<String>();
 
@@ -171,7 +190,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             return;
         }
         SPUtils.putString(Config.ACCOUNT, account.getText().toString());
-        SPUtils.putString(account.getText().toString(), dataBeanList.get(selectPosition).getId());
+        if (dataBeanList!=null){
+            SPUtils.putString(account.getText().toString(), dataBeanList.get(selectPosition).getId());
+        }
         Log.i(TAG, "登录....");
 
         loginPresenter.loginServer(account.getText().toString(), password.getText().toString(), dataBeanList.get(selectPosition).getId());
@@ -179,7 +200,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     public void startLoad() {
-        WaitDialog.show(this, "登录中....");
+        WaitDialog.show(this, "加载中....");
     }
 
     @Override
@@ -199,6 +220,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
+        WaitDialog.dismiss();
         if (event!=null){
             dataBeanList = event.subjectModel.getData();
 
@@ -222,5 +244,17 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    public class MyLocationListener extends BDAbstractLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location){
+            //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
+            //以下只列举部分获取经纬度相关（常用）的结果信息
+            //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
+            Config.LATITUDE = location.getLatitude();    //获取纬度信息
+            Config.LONGITUDE = location.getLongitude();    //获取经度信息
+        }
     }
 }

@@ -4,14 +4,17 @@ import android.util.ArrayMap;
 
 import java.util.Map;
 
+import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
 
 public class HistoryWithDrawalOrderActivityPresenter {
 
-    public HistoryWithDrawalOrderActivityPresenter(){
+    private ILoadDataView iLoadDataView;
 
+    public HistoryWithDrawalOrderActivityPresenter(ILoadDataView mILoadDataView){
+       this.iLoadDataView = mILoadDataView;
     }
 
 

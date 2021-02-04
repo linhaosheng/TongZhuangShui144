@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AddWithDrawalOrderAdapter;
+import pro.haichuang.tzs144.presenter.AddWithDrawalOrderActivityPresenter;
 
 /**
  * 新增退押记录
@@ -51,6 +52,7 @@ public class AddWithDrawalOrderActivity extends BaseActivity {
 
     private AddWithDrawalOrderAdapter addWithDrawalOrderAdapter;
     private List<String> listData;
+    private AddWithDrawalOrderActivityPresenter addWithDrawalOrderActivityPresenter;
 
 
     @Override
@@ -60,6 +62,7 @@ public class AddWithDrawalOrderActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
+        title.setText("退押");
         addWithDrawalOrderAdapter = new AddWithDrawalOrderAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(addWithDrawalOrderAdapter);
@@ -72,6 +75,9 @@ public class AddWithDrawalOrderActivity extends BaseActivity {
             listData.add("");
         }
         addWithDrawalOrderAdapter.setList(listData);
+
+        addWithDrawalOrderActivityPresenter = new AddWithDrawalOrderActivityPresenter();
+
     }
 
 
