@@ -3,6 +3,8 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,6 +21,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +34,7 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.DepositManagementSearchAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.DepositManagerModel;
 import pro.haichuang.tzs144.presenter.DepositManagementSearchActivityPresenter;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.AddDepositDialog;
@@ -36,7 +42,7 @@ import pro.haichuang.tzs144.view.AddDepositDialog;
 /**
  * 押金本搜索管理  押金本管理
  */
-public class DepositManagementSearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<String> {
+public class DepositManagementSearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<List<DepositManagerModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -66,7 +72,6 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
     private int currentPage = 1;
 
     private DepositManagementSearchAdapter depositManagementSearchAdapter;
-    private List<String> listData;
     private DepositManagementSearchActivityPresenter depositManagementSearchActivityPresenter;
 
     @Override
@@ -81,19 +86,40 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
 
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(depositManagementSearchAdapter);
+        endTime.setText(Utils.transformTime(new Date()));
+
+        depositManagementSearchAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                String id = depositManagementSearchAdapter.getData().get(position).getId() +"";
+                Intent intent = new Intent(DepositManagementSearchActivity.this,DepositManagementDetailActivity.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void setUpData() {
-        listData = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            listData.add("");
-        }
-        depositManagementSearchAdapter.setList(listData);
-
         depositManagementSearchActivityPresenter = new DepositManagementSearchActivityPresenter(this);
-        depositManagementSearchActivityPresenter.findDepositBookList(currentPage,1548758717000l,System.currentTimeMillis());
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+              if (searchEdit.getText()!=null){
+                  depositManagementSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),currentPage,startTime.getText().toString(),endTime.getText().toString());
+              }
+            }
+        });
     }
 
 
@@ -158,8 +184,8 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
     }
 
     @Override
-    public void successLoad(String data) {
-
+    public void successLoad(List<DepositManagerModel.DataBean> data) {
+        depositManagementSearchAdapter.setList(data);
     }
 
     @Override

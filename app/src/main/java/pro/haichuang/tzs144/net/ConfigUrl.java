@@ -248,5 +248,10 @@ public class ConfigUrl {
      */
     public static final String  GET_ACCOUNT_INFOv = "/api/app/finance/getAccountInfo";
 
+    /**
+     * [押金]押金本详情
+     */
+    public static final String DEPOSIT_BOOK_INFO = "/api/app/depositManage/getDepositBookInfo";
+
 
 }

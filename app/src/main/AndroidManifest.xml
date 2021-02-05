@@ -64,6 +64,7 @@
         <activity android:name=".activity.AccountingListDetailActivity" />
         <activity android:name=".activity.DeliveryOrderActivity" />
         <activity android:name=".activity.StartDepositSearchActivity" />
+        <activity android:name=".activity.DepositManagementDetailActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
