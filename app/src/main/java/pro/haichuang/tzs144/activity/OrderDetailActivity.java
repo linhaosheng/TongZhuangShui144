@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.activity;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,15 +10,34 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.kongzue.dialog.v2.WaitDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.adapter.AddOrderAdapter;
+import pro.haichuang.tzs144.adapter.OrderDetailAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.MessageEvent;
+import pro.haichuang.tzs144.model.OrderDetailModel;
+import pro.haichuang.tzs144.model.StatusEvent;
+import pro.haichuang.tzs144.model.SubjectModel;
+import pro.haichuang.tzs144.presenter.OrderDetailPresenter;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 订单详情
  */
-public class OrderDetailActivity extends BaseActivity {
+public class OrderDetailActivity extends BaseActivity implements ILoadDataView<OrderDetailModel.DataBean> {
 
 
     @BindView(R.id.back)
@@ -44,10 +64,6 @@ public class OrderDetailActivity extends BaseActivity {
     TextView address;
     @BindView(R.id.address_detail)
     TextView addressDetail;
-    @BindView(R.id.time)
-    TextView time;
-    @BindView(R.id.time_send)
-    TextView timeSend;
     @BindView(R.id.time_out)
     TextView timeOut;
     @BindView(R.id.name_view)
@@ -62,22 +78,7 @@ public class OrderDetailActivity extends BaseActivity {
     TextView priceNum;
     @BindView(R.id.line)
     View line;
-    @BindView(R.id.ticket_num)
-    TextView ticketNum;
-    @BindView(R.id.mortgage)
-    TextView mortgage;
-    @BindView(R.id.reward_ticket)
-    TextView rewardTicket;
-    @BindView(R.id.ticket_img)
-    ImageView ticketImg;
-    @BindView(R.id.mortgage2)
-    TextView mortgage2;
-    @BindView(R.id.month_ticket)
-    TextView monthTicket;
-    @BindView(R.id.month_img)
-    ImageView monthImg;
-    @BindView(R.id.mortgage3)
-    TextView mortgage3;
+
     @BindView(R.id.product_info_view)
     RelativeLayout productInfoView;
     @BindView(R.id.product_name_confirm)
@@ -98,18 +99,20 @@ public class OrderDetailActivity extends BaseActivity {
     RelativeLayout priceView;
     @BindView(R.id.order_num_data)
     TextView orderNumData;
-    @BindView(R.id.order_source)
-    TextView orderSource;
-    @BindView(R.id.pay_way)
-    TextView payWay;
-    @BindView(R.id.finish_time)
-    TextView finishTime;
+    @BindView(R.id.record_time)
+    TextView recordTime;
+    @BindView(R.id.record_persion)
+    TextView recordPersion;
+    @BindView(R.id.finish_distance)
+    TextView finishDistance;
     @BindView(R.id.order_view)
     LinearLayout orderView;
-    @BindView(R.id.take_orders)
-    Button takeOrders;
-    @BindView(R.id.transfer_order)
-    Button transferOrder;
+    @BindView(R.id.recycle_data)
+    RecyclerView recycleData;
+    private OrderDetailAdapter orderDetailAdapter;
+
+    private OrderDetailPresenter orderDetailPresenter;
+    private  String id;
 
     @Override
     protected int setLayoutResourceID() {
@@ -119,25 +122,87 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void setUpView() {
         title.setText("订单详情");
+        tips.setText("作废");
+        tips.setVisibility(View.VISIBLE);
+        tips.setTextSize(12);
 
+        orderDetailAdapter = new OrderDetailAdapter();
+        recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        recycleData.setAdapter(orderDetailAdapter);
     }
 
     @Override
     protected void setUpData() {
-
+        id = getIntent().getStringExtra("id");
+        orderDetailPresenter = new OrderDetailPresenter(this);
+        orderDetailPresenter.getOrderInfo(id);
     }
 
 
-    @OnClick({R.id.back, R.id.take_orders, R.id.transfer_order})
+    @OnClick({R.id.back, R.id.tips})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
-            case R.id.take_orders:
-                break;
-            case R.id.transfer_order:
+            case R.id.tips:
+                WaitDialog.show(this,"提交中...");
+                orderDetailPresenter.directSelling(id);
                 break;
         }
+    }
+
+    @Override
+    public void startLoad() {
+        WaitDialog.show(this, "加载中...");
+    }
+
+    @Override
+    public void successLoad(OrderDetailModel.DataBean data) {
+        WaitDialog.dismiss();
+
+        name.setText(data.getCustomerName());
+        orderNum.setText(data.getCustomerPhone());
+        type.setText(data.getCustomerTypeName());
+        address.setText(data.getAddressName());
+        addressDetail.setText(data.getAddress());
+
+        tatalPrice.setText("¥" + data.getTotalPrice());
+        needPrice.setText("¥" + data.getReceivablePrice());
+        orderNumData.setText("订单编号：" + data.getOrderNo());
+        recordTime.setText("录入时间：" + data.getTime());
+        recordPersion.setText("录入人：" + data.getCreateName());
+        finishDistance.setText("录入时与客户距离：" + data.getSalesDistance() + "M");
+        orderDetailAdapter.setList(data.getGoodsList());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        WaitDialog.dismiss();
+        if (event != null) {
+            if (event.status == Config.LOAD_SUCCESS) {
+                Utils.showCenterTomast("定单作废成功");
+            } else {
+                Utils.showCenterTomast("定单作废失败");
+            }
+        }
+        Log.i(TAG, "onMessageEvent===");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        WaitDialog.dismiss();
     }
 }

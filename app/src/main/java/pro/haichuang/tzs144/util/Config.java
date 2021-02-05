@@ -26,6 +26,9 @@ public class Config {
 
     public static final String PERSION_INFO = "persion_info";
 
+    public static final int LOAD_SUCCESS = 0x1110;
+    public static final int LOAD_FAIL = 0x1111;
+
 
 
 

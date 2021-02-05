@@ -204,6 +204,11 @@ public class ConfigUrl {
     public static final String GET_ORDER_INFO = "/api/app/order/getOrderInfo";
 
     /**
+     * [首页]-作废订单
+     */
+    public static final String DIRECT_SELLING = "/api/app/order/directSelling";
+
+    /**
      * [直接销售]-选择商品列表
      */
     public static final String FIND_SHOP = "/api/app/order/findGoods";
