@@ -24,6 +24,7 @@ import pro.haichuang.tzs144.application.MyApplication;
 
 public class Utils {
 
+    private static final double EARTH_RADIUS = 6378137;//赤道半径
     public static final String YMDHMS_BREAK = "yyyy-MM-dd HH:mm:ss";
     public static final String YMD = "yyyy-MM-dd";
     private static SimpleDateFormat sdf = new SimpleDateFormat(YMDHMS_BREAK);// 格式化时间
@@ -129,4 +130,19 @@ public class Utils {
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
         return cn.getClassName();
     }
+
+    public static float GetDistance(double lon1, double lat1, double lon2, double lat2) {
+        double radLat1 = rad(lat1);
+        double radLat2 = rad(lat2);
+        double a = radLat1 - radLat2;
+        double b = rad(lon1) - rad(lon2);
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+        s = s * EARTH_RADIUS;
+        return (float) s;//单位米
+    }
+
+    private static double rad(double d) {
+        return d * Math.PI / 180.0;
+    }
+
 }

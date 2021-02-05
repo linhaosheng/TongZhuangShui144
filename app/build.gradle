@@ -110,7 +110,7 @@ dependencies {
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     implementation 'jsc.kit.wheel:wheel-view:0.5.4'
-    implementation 'com.kongzue.dialog:dialog:2.5.2'
+    implementation 'com.kongzue.dialog_v3x:dialog:3.2.4'
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
 
     implementation 'com.lxj:xpopup:2.2.14'

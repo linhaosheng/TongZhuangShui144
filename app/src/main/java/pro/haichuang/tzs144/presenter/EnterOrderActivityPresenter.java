@@ -3,15 +3,21 @@ package pro.haichuang.tzs144.presenter;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.IUpLoadFileView;
 import pro.haichuang.tzs144.model.AddOrderModel;
+import pro.haichuang.tzs144.model.OrderStatusModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.UploadFileModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 import rxhttp.wrapper.entity.UpFile;
 
@@ -30,22 +36,38 @@ public class EnterOrderActivityPresenter {
      */
     public void enterOrder(AddOrderModel addOrderModel){
 
+        if (addOrderModel==null){
+            return;
+        }
         Map<String,Object> params = new ArrayMap<>();
+        params.put("orderType",addOrderModel.getOrderType());
+        params.put("customerId",addOrderModel.getCustomerId());
+        params.put("addressId",addOrderModel.getAddressId());
+        params.put("goodsList",addOrderModel.getGoodsList());
 
         HttpRequestEngine.postRequest(ConfigUrl.ENTER_ORFER, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                iUpLoadFileView.startLoad();
             }
 
             @Override
             public void success(String result) {
-
+                try {
+                    OrderStatusModel orderStatusModel = Utils.gsonInstane().fromJson(result, OrderStatusModel.class);
+                    if (orderStatusModel.getResult()==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS));
+                    }else {
+                        iUpLoadFileView.errorLoad("提交失败");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void error(String error) {
-
+                iUpLoadFileView.errorLoad(error);
             }
         });
     }

@@ -166,7 +166,7 @@
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxandroid:2.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.Vincent7Wong:EasyNavigation:2.0.5@aar" level="project" />
     <orderEntry type="library" name="Gradle: jsc.kit.wheel:wheel-view:0.5.4@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.kongzue.dialog:dialog:2.5.2@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.kongzue.dialog_v3x:dialog:3.2.4@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.contrarywind:Android-PickerView:4.1.9@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.contrarywind:wheelview:4.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.lxj:xpopup:2.2.14@aar" level="project" />

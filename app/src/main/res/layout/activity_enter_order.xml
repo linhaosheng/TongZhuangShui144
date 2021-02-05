@@ -540,7 +540,7 @@
                         android:id="@+id/total_merchandise_num"
                         android:layout_width="@dimen/dp_70"
                         android:layout_height="@dimen/dp_35"
-                        android:text="123.00"
+                        android:text="0.00"
                         android:textColor="#333333"
                         android:textSize="14sp"
                         android:gravity="center"
@@ -580,7 +580,7 @@
                         android:id="@+id/amount_receivable_num"
                         android:layout_width="@dimen/dp_70"
                         android:layout_height="@dimen/dp_35"
-                        android:text="123.00"
+                        android:text="0.00"
                         android:textColor="#333333"
                         android:textSize="14sp"
                         android:gravity="center"
@@ -618,9 +618,10 @@
                         />
 
                     <TextView
+                        android:id="@+id/actual_amount"
                         android:layout_width="@dimen/dp_70"
                         android:layout_height="@dimen/dp_35"
-                        android:text="123.00"
+                        android:text="0.00"
                         android:textColor="#333333"
                         android:textSize="14sp"
                         android:gravity="center"

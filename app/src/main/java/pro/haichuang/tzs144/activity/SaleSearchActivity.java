@@ -56,17 +56,14 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
     EditText searchEdit;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
-    @BindView(R.id.order_state)
-    TextView orderState;
     @BindView(R.id.empty_view)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
 
     private SaleSearchActivityPresenter searchActivityPresenter;
 
     private SaleSearcAdapter saleSearcAdapter;
-
 
 
     @Override

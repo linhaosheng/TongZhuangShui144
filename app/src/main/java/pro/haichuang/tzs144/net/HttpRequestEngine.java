@@ -253,8 +253,8 @@ public class HttpRequestEngine {
             @Override
             public Param<?> apply(Param<?> param) throws Exception {
                 return param
-                        .add("longitude",Config.LONGITUDE)
-                        .add("latitude",Config.LATITUDE)
+                        .add("longitude",Config.LONGITUDE+"")
+                        .add("latitude",Config.LATITUDE+"")
                         .add("limit",Config.LIMIT)
                         .add("verification",SPUtils.getString(Config.VERIFICATION,""))
                         .addHeader("Content-Type", "application/json");

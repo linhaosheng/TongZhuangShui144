@@ -15,8 +15,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.kongzue.dialog.listener.OnMenuItemClickListener;
-import com.kongzue.dialog.v2.BottomMenu;
+import com.kongzue.dialog.v3.BottomMenu;
 import com.next.easynavigation.view.EasyNavigationBar;
 
 import pro.haichuang.tzs144.R;

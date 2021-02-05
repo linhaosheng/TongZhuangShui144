@@ -6,13 +6,14 @@ import android.content.Context;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.chad.library.adapter.base.module.LoadMoreModuleConfig;
-import com.kongzue.dialog.v2.DialogSettings;
-//import com.tencent.bugly.crashreport.CrashReport;
+import com.kongzue.dialog.util.DialogSettings;
 
 import pro.bilibili.boxing.BoxingMediaLoader;
 import pro.bilibili.boxing.loader.IBoxingMediaLoader;
 import pro.haichuang.tzs144.view.CustomLoadMoreView;
 import pro.haichuang.tzs144.util.BoxingGlideLoader;
+
+import static com.kongzue.dialog.util.DialogSettings.STYLE.STYLE_IOS;
 
 
 public class MyApplication extends Application {
@@ -27,9 +28,7 @@ public class MyApplication extends Application {
         this.application = this;
         IBoxingMediaLoader loader = new BoxingGlideLoader();
         BoxingMediaLoader.getInstance().init(loader);
-        DialogSettings.style = DialogSettings.STYLE_IOS;
-        DialogSettings.tip_theme = DialogSettings.THEME_LIGHT;
-        DialogSettings.use_blur = true;
+        DialogSettings.style = STYLE_IOS;
       //  CrashReport.initCrashReport(getApplicationContext(), "98a2abb9a8", true);
         LoadMoreModuleConfig.setDefLoadMoreView(new CustomLoadMoreView());
 

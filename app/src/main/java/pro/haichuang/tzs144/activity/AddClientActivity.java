@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kongzue.dialog.listener.OnMenuItemClickListener;
-import com.kongzue.dialog.v2.BottomMenu;
+import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
+import com.kongzue.dialog.v3.BottomMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +64,8 @@ public class AddClientActivity extends BaseActivity {
     LSettingItem detailAddress;
 
     private ClientTypeModel clientTypeModel;
-    private List<String> clientlist;
-    private List<String>monopolyList;
+    private List<CharSequence> clientlist;
+    private List<CharSequence>monopolyList;
 
 
     @Override
@@ -95,7 +95,7 @@ public class AddClientActivity extends BaseActivity {
                         public void onClick(String text, int index) {
 
                         }
-                    }, true);
+                    });
                 }
             }
         });
@@ -111,7 +111,7 @@ public class AddClientActivity extends BaseActivity {
                         public void onClick(String text, int index) {
 
                         }
-                    }, true);
+                    });
             }
         });
     }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,7 +38,7 @@ public class VoidWithDrawalOrderActivity extends BaseActivity implements SwipeRe
     @BindView(R.id.order_state)
     TextView orderState;
     @BindView(R.id.empty_view)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
 
     private VoidWithDrawalOrderAdapter voidWithDrawalOrderAdapter;
     private List<String>listData;

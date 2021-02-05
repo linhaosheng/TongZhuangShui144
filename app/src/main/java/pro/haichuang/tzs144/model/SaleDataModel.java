@@ -8,7 +8,7 @@ public class SaleDataModel {
     /**
      * result : 1
      * message : 搜索成功!
-     * data : [{"address":"四川省成都市武侯区桂溪街道四川省匹客办公家具有限公司环球中心E3(新世纪环球中心)","phone":"13551262123","name":"测试","addressName":"测试地址","id":18}]
+     * data : [{"address":"四川省成都市武侯区桂溪街道四川省匹客办公家具有限公司环球中心E3(新世纪环球中心)","phone":"13551262123","latitude":0,"name":"测试","addressName":"测试地址","id":18,"type":"协议客户","addressId":15,"longitude":0}]
      */
 
     private int result;
@@ -43,16 +43,24 @@ public class SaleDataModel {
         /**
          * address : 四川省成都市武侯区桂溪街道四川省匹客办公家具有限公司环球中心E3(新世纪环球中心)
          * phone : 13551262123
+         * latitude : 0
          * name : 测试
          * addressName : 测试地址
          * id : 18
+         * type : 协议客户
+         * addressId : 15
+         * longitude : 0
          */
 
         private String address;
         private String phone;
+        private int latitude;
         private String name;
         private String addressName;
         private int id;
+        private String type;
+        private int addressId;
+        private int longitude;
 
         public String getAddress() {
             return address;
@@ -68,6 +76,14 @@ public class SaleDataModel {
 
         public void setPhone(String phone) {
             this.phone = phone;
+        }
+
+        public int getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(int latitude) {
+            this.latitude = latitude;
         }
 
         public String getName() {
@@ -92,6 +108,30 @@ public class SaleDataModel {
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public int getAddressId() {
+            return addressId;
+        }
+
+        public void setAddressId(int addressId) {
+            this.addressId = addressId;
+        }
+
+        public int getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(int longitude) {
+            this.longitude = longitude;
         }
     }
 }

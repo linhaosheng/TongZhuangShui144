@@ -29,11 +29,11 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
         String waterNum = "水票x"+item.getDeductWater().getNum();
         String discountNum = "抵扣 -"+item.getDeductWater().getDeductNum();
 
-        String recycleNum = item.getMaterials().get(0).getMaterialName() +"x"+item.getMaterials().get(0).getNum() ;
+//        String recycleNum = item.getMaterials().get(0).getMaterialName() +"x"+item.getMaterials().get(0).getNum() ;
         helper.setText(R.id.name,item.getGoodName())
                 .setText(R.id.shop_num,priceNum)
                 .setText(R.id.total_price,totalPrice)
-                .setText(R.id.recycle_num,recycleNum)
+      //          .setText(R.id.recycle_num,recycleNum)
                 .setText(R.id.water_num,waterNum)
                 .setText(R.id.discount_num,discountNum);
 

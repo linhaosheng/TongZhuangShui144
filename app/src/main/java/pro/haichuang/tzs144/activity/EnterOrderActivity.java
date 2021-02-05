@@ -14,7 +14,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kongzue.dialog.v2.WaitDialog;
+import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
+import com.kongzue.dialog.util.BaseDialog;
+import com.kongzue.dialog.v3.MessageDialog;
+import com.kongzue.dialog.v3.WaitDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +38,16 @@ import pro.haichuang.tzs144.adapter.AddOrderAdapter;
 import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.IUpLoadFileView;
 import pro.haichuang.tzs144.model.AddOrderModel;
+import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.SaleDataModel;
 import pro.haichuang.tzs144.model.ShopModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.UploadFileModel;
 import pro.haichuang.tzs144.model.UploadOrderModel;
 import pro.haichuang.tzs144.presenter.EnterOrderActivityPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.AddOrderDepositDialog;
 import pro.haichuang.tzs144.view.AddShopDialog;
 import pro.haichuang.tzs144.view.LSettingItem;
 import pro.haichuang.tzs144.view.SelectWaterTicketDialog;
@@ -140,6 +150,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     TextView actualMerchandise;
     @BindView(R.id.price_unit2)
     TextView priceUnit2;
+    @BindView(R.id.actual_amount)
+    TextView actualAmount;
     @BindView(R.id.receive_payment)
     Button receivePayment;
     @BindView(R.id.shop_amount_view)
@@ -169,6 +181,9 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private ShopModel.DataBean mDataBea;
     public final static int SELECT_ADDRESS_INFO = 0x1110;
     private SaleDataModel.DataBean dataBean;
+    private float totalPrice;
+    private float amount_receivable;
+    private float actual_amount;
 
     @Override
     protected int setLayoutResourceID() {
@@ -204,7 +219,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     protected void setUpData() {
         uploadOrderModel = new UploadOrderModel();
        enterOrderActivityPresenter = new EnterOrderActivityPresenter(this);
-
     }
 
 
@@ -221,7 +235,12 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectPicture(REQUEST_CODE_CHOOSE_PICTURE_MONTH);
                 break;
             case R.id.receive_payment:
-              //  addOrderClick();
+                int distance = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, dataBean.getLongitude(), dataBean.getLatitude());
+                if (distance>400){
+                    caculateDistance(distance);
+                }else {
+                    addOrderClick();
+                }
                 break;
             case R.id.tip_img:
                 Intent intent = new Intent(this,SaleSearchActivity.class);
@@ -269,18 +288,22 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 if (goodsListBeans==null){
                     goodsListBeans = new ArrayList<>();
                 }
+                if (mDataBea==null){
+                    Utils.showCenterTomast("请选择派送客户");
+                    return;
+                }
                 AddOrderModel.GoodsListBean goodsListBean = new AddOrderModel.GoodsListBean();
                 goodsListBean.setGoodName(mDataBea.getName()+mDataBea.getSpecs());
                 goodsListBean.setGoodsId(String.valueOf(shopId));
                 goodsListBean.setNum(shopNum.getText().toString());
                 goodsListBean.setGoodsPrice(shopPrice.getText().toString());
-                AddOrderModel.GoodsListBean.MaterialsBean materialsBean = new AddOrderModel.GoodsListBean.MaterialsBean();
-                materialsBean.setMaterialId("00");
-                materialsBean.setNum("10");
-                materialsBean.setMaterialName("桶装水");
-                List<AddOrderModel.GoodsListBean.MaterialsBean>materialsBeanList = new ArrayList<>();
-                materialsBeanList.add(materialsBean);
-                goodsListBean.setMaterials(materialsBeanList);
+//                AddOrderModel.GoodsListBean.MaterialsBean materialsBean = new AddOrderModel.GoodsListBean.MaterialsBean();
+//                materialsBean.setMaterialId("00");
+//                materialsBean.setNum("10");
+//                materialsBean.setMaterialName("桶装水");
+//                List<AddOrderModel.GoodsListBean.MaterialsBean>materialsBeanList = new ArrayList<>();
+//                materialsBeanList.add(materialsBean);
+//                goodsListBean.setMaterials(materialsBeanList);
 
                 AddOrderModel.GoodsListBean.DeductWaterBean deductWaterBean = new AddOrderModel.GoodsListBean.DeductWaterBean();
                 deductWaterBean.setWaterGoodsId(String.valueOf(waterId));
@@ -304,7 +327,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 addOrderAdapter.setList(goodsListBeans);
 
                 shopDetail.setVisibility(View.GONE);
-                //shop_amount_view.setVisibility(View.GONE);
+
+                for (AddOrderModel.GoodsListBean goodsListBean1 : goodsListBeans){
+                   totalPrice += Integer.parseInt(goodsListBean1.getNum()) * Float.parseFloat(goodsListBean1.getGoodsPrice());
+                    amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()) + Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum()));
+                    actual_amount += totalPrice - (amount_receivable + Integer.parseInt(goodsListBean1.getDeductMonth().getDeductNum()));
+                }
+                totalMerchandiseNum.setText(totalPrice +"");
+                amountReceivableNum.setText(amount_receivable +"");
+                actualAmount.setText(actual_amount+"");
+
+                shop_amount_view.setVisibility(View.VISIBLE);
+                initViewData();
                 break;
             case R.id.select_client:
                 Intent intent2 = new Intent(this,SaleSearchActivity.class);
@@ -313,6 +347,60 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         }
     }
 
+    private void initViewData(){
+        uploadReward.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
+        uploadMonth.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
+        selectReward = false;
+        selectMonth = false;
+        upload_reward_view.setVisibility(View.GONE);
+        rewardDeductionNunm.setVisibility(View.GONE);
+        selectWaterNum.setRightText("");
+        selectDeductionNunm.setRightText("");
+    }
+
+    private void addOrderClick() {
+
+        AddOrderModel addOrderModel = new AddOrderModel();
+        addOrderModel.setOrderType("0");
+        addOrderModel.setCustomerId(dataBean.getId()+"");
+        addOrderModel.setAddressId(dataBean.getAddressId()+"");
+        addOrderModel.setGoodsList(goodsListBeans);
+
+        enterOrderActivityPresenter.enterOrder(addOrderModel);
+    }
+
+    /**
+     * 计算当前距离是否合法
+     * @param distance
+     */
+    private final void caculateDistance(int distance){
+
+        String content = "您当前位置与客户相差"+distance+"M，确定继续收款?";
+
+        MessageDialog.
+                show(this, "提示", content, "确定", "取消")
+                .setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
+            @Override
+            public boolean onClick(BaseDialog baseDialog, View v) {
+                return false;
+            }
+        })
+        .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+            @Override
+            public boolean onClick(BaseDialog baseDialog, View v) {
+                addOrderClick();
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 提示是否要显示开押弹框
+     */
+    private final void showOrderDepositDialog(){
+        AddOrderDepositDialog depositDialog = new AddOrderDepositDialog(this);
+        depositDialog.show(getSupportFragmentManager(),"");
+    }
 
     /**
      * 打开相册选择图片
@@ -349,13 +437,14 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 phone.setText(dataBean.getPhone());
                 addressName.setText(dataBean.getAddressName());
                 addressDetail.setText(dataBean.getAddress());
+                type.setText(dataBean.getType());
             }
         }
     }
 
     @Override
     public void startLoad() {
-        WaitDialog.show(this,"上传中...");
+        WaitDialog.show(this,"提交中...");
     }
 
     @Override
@@ -367,6 +456,28 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
            monthUrl = data.getFileUrl();
         }
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        if (event!=null){
+            if (event.status==Config.LOAD_SUCCESS){
+                Utils.showCenterTomast("提交成功");
+                finish();
+            }
+        }
     }
 
     @Override

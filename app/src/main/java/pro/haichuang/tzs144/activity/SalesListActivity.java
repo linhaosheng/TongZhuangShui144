@@ -18,6 +18,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
+import com.kongzue.dialog.v3.BottomMenu;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 
@@ -30,11 +32,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.SaleListItemAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.ClientTypeModel;
+import pro.haichuang.tzs144.model.SaleListModel;
+import pro.haichuang.tzs144.presenter.SalesListActivityPresenter;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.SPUtils;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 直接销售列表
  */
-public class SalesListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class SalesListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<List<SaleListModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -49,17 +58,19 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
     RecyclerView recycleData;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
-    @BindView(R.id.order_state)
-    TextView orderState;
     @BindView(R.id.empty_view)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
 
+    private TextView client_type;
     TextView timeSort;
-
     View addHeadView;
 
     private SaleListItemAdapter saleListItemAdapter;
-    private List<String> datas;
+    private SalesListActivityPresenter salesListActivityPresenter;
+
+    private ClientTypeModel clientTypeModel;
+    private List<CharSequence> clientlist;
+    private String clientTypeJson;
 
     @Override
     protected int setLayoutResourceID() {
@@ -79,6 +90,7 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(saleListItemAdapter);
         addHeadView =  LayoutInflater.from(this).inflate(R.layout.item_head_sale_list, null);
+        client_type = addHeadView.findViewById(R.id.client_type);
         saleListItemAdapter.addHeaderView(addHeadView);
         timeSort = addHeadView.findViewById(R.id.time_sort);
         timeSort.setOnClickListener(new View.OnClickListener() {
@@ -95,15 +107,33 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
             }
         });
 
+        client_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!clientTypeJson.equals("")) {
+                    BottomMenu.show(SalesListActivity.this, clientlist, new OnMenuItemClickListener() {
+                        @Override
+                        public void onClick(String text, int index) {
+
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     @Override
     protected void setUpData() {
-        datas = new ArrayList<>();
-        for (int i = 0;i<5; i++){
-            datas.add("");
+        salesListActivityPresenter = new SalesListActivityPresenter(this);
+       // salesListActivityPresenter.findDirectSales();
+
+        clientTypeJson = SPUtils.getString(Config.CLIENT_TYPE, "");
+        clientTypeModel = Utils.gsonInstane().fromJson(clientTypeJson, ClientTypeModel.class);
+        clientlist = new ArrayList<>();
+        for (ClientTypeModel.DataBean dataBean : clientTypeModel.getData()) {
+            clientlist.add(dataBean.getName());
         }
-        saleListItemAdapter.setList(datas);
 
     }
 
@@ -145,4 +175,25 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
           }
       },2000);
     }
+
+    @Override
+    public void startLoad() {
+      refresh.setRefreshing(true);
+    }
+
+    @Override
+    public void successLoad(List<SaleListModel.DataBean> data) {
+        refresh.setRefreshing(false);
+       if (data!=null){
+           saleListItemAdapter.setList(data);
+       }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        refresh.setRefreshing(false);
+        Utils.showCenterTomast(error);
+    }
+
+
 }

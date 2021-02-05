@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +44,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
     @BindView(R.id.order_state)
     TextView orderState;
     @BindView(R.id.empty_view)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
 
     private StartDepositSearchActivityPresenter startDepositSearchActivityPresenter;
 
