@@ -99,6 +99,7 @@ public class DeliveryOrderActivity extends BaseActivity {
     LinearLayout orderView;
     @BindView(R.id.finish_deliver)
     Button finishDeliver;
+    private String orderNumId;
 
     @Override
     protected int setLayoutResourceID() {
@@ -108,7 +109,7 @@ public class DeliveryOrderActivity extends BaseActivity {
     @Override
     protected void setUpView() {
        title.setText("订单详情");
-
+        orderNumId = getIntent().getStringExtra("id");
     }
 
     @Override

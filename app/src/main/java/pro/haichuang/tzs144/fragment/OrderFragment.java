@@ -43,7 +43,6 @@ public class OrderFragment extends BaseFragment {
     private List<String>orderTitleList;
 
 
-
     @Override
     public boolean lazyLoader() {
         return true;

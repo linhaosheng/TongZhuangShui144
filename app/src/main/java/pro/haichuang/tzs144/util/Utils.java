@@ -3,8 +3,10 @@ package pro.haichuang.tzs144.util;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -145,4 +147,15 @@ public class Utils {
         return d * Math.PI / 180.0;
     }
 
+
+    /**
+     * 拨打电话
+     * @param phoneNum
+     */
+    public static void callPhone(String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        MyApplication.getApplication().startActivity(intent);
+    }
 }

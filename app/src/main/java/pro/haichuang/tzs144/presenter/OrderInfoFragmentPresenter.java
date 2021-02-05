@@ -1,15 +1,19 @@
 package pro.haichuang.tzs144.presenter;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.util.ArrayMap;
 
 import java.util.Map;
 
+import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.OrderInfoModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
 import pro.haichuang.tzs144.util.Config;
-import pro.haichuang.tzs144.util.SPUtils;
+import pro.haichuang.tzs144.util.Utils;
 
 public class OrderInfoFragmentPresenter {
 
@@ -41,6 +45,16 @@ public class OrderInfoFragmentPresenter {
 
             @Override
             public void success(String result) {
+                try {
+                    OrderInfoModel orderInfoModel = Utils.gsonInstane().fromJson(result, OrderInfoModel.class);
+                    if (orderInfoModel!=null && orderInfoModel.getResult()==1){
+                        iLoadDataView.successLoad(orderInfoModel.getData());
+                    }else {
+                        iLoadDataView.errorLoad("获取错误");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 iLoadDataView.successLoad(result);
             }
 
@@ -50,4 +64,5 @@ public class OrderInfoFragmentPresenter {
             }
         });
     }
+
 }

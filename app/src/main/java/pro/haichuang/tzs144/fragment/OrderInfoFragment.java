@@ -31,6 +31,7 @@ import pro.haichuang.tzs144.activity.DeliveryOrderActivity;
 import pro.haichuang.tzs144.activity.OrderDetailActivity;
 import pro.haichuang.tzs144.adapter.OrderInfoAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.OrderInfoModel;
 import pro.haichuang.tzs144.presenter.OrderInfoFragmentPresenter;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.ShowMoreOrderInfoDialog;
@@ -38,7 +39,7 @@ import pro.haichuang.tzs144.view.ShowMoreOrderInfoDialog;
 /**
  * 订单信息页面
  */
-public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<String> {
+public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<List<OrderInfoModel.DataBean>> {
 
 
     @BindView(R.id.recycle_data)
@@ -51,7 +52,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     TextView selectTime;
 
     private OrderInfoAdapter orderInfoAdapter;
-    private List<String> datas;
     private View headTimeView;
     private OrderInfoFragmentPresenter orderInfoFragmentPresenter;
 
@@ -98,11 +98,14 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 //配送订单
+                String orderNumId = orderInfoAdapter.getData().get(position).getId();
                 if (id==1){
                     Intent intent = new Intent(getActivity(), DeliveryOrderActivity.class);
+                    intent.putExtra("id",orderNumId);
                     startActivity(intent);
                 }else {
                     Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                    intent.putExtra("id",orderNumId);
                     startActivity(intent);
                 }
             }
@@ -114,6 +117,9 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 if (id==R.id.order_detail_info){
                     ShowMoreOrderInfoDialog showMoreOrderInfoDialog = new ShowMoreOrderInfoDialog(getActivity());
                     showMoreOrderInfoDialog.show(getChildFragmentManager(),"");
+                }else if (id==R.id.call_phone){
+                    String customerPhone = orderInfoAdapter.getData().get(position).getCustomerPhone();
+                    Utils.callPhone(customerPhone);
                 }
             }
         });
@@ -155,15 +161,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     protected void setUpData() {
         orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
         orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()),currentPage);
-
-        datas = new ArrayList<>();
-        datas.add("" + 0);
-        datas.add("" + 1);
-        datas.add("" + 2);
-        datas.add("" + 0);
-        datas.add("" + 1);
-        datas.add("" + 2);
-        orderInfoAdapter.setList(datas);
     }
 
     @Override
@@ -182,8 +179,9 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void successLoad(String data) {
+    public void successLoad(List<OrderInfoModel.DataBean> data) {
         refresh.setRefreshing(false);
+        orderInfoAdapter.setList(data);
     }
 
     @Override
