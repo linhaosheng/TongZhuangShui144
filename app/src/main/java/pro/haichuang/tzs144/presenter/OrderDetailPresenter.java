@@ -9,6 +9,7 @@ import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.OrderDetailModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
@@ -76,9 +77,9 @@ public class OrderDetailPresenter {
                     JSONObject jsonObject = new JSONObject(result);
                     int result1 = jsonObject.getInt("result");
                     if (result1==1){
-                        EventBus.getDefault().post(Config.LOAD_SUCCESS);
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS));
                     }else {
-                        EventBus.getDefault().post(Config.LOAD_FAIL);
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL));
                     }
                 }catch (Exception e){
                     e.printStackTrace();

@@ -55,7 +55,6 @@ public class OrderInfoFragmentPresenter {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                iLoadDataView.successLoad(result);
             }
 
             @Override

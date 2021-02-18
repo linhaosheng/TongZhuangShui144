@@ -69,6 +69,16 @@ public class OrderDetailModel {
         private String createName;
         private int realPrice;
         private List<GoodsListBean> goodsList;
+        private int orderStatus;
+
+
+        public int getOrderStatus() {
+            return orderStatus;
+        }
+
+        public void setOrderStatus(int orderStatus) {
+            this.orderStatus = orderStatus;
+        }
 
         public String getAddress() {
             return address;
@@ -191,12 +201,12 @@ public class OrderDetailModel {
             private int waterNum;
             private int waterDeductNum;
             private int goodsPrice;
-            private Object couponDeductNum;
+            private int couponDeductNum;
             private String couponImg;
             private String goodsName;
             private int goodsNum;
             private String monthImg;
-            private Object monthDeductNum;
+            private int monthDeductNum;
             private List<String> materialList;
 
             public int getWaterNum() {
@@ -227,7 +237,7 @@ public class OrderDetailModel {
                 return couponDeductNum;
             }
 
-            public void setCouponDeductNum(Object couponDeductNum) {
+            public void setCouponDeductNum(int couponDeductNum) {
                 this.couponDeductNum = couponDeductNum;
             }
 
@@ -263,11 +273,11 @@ public class OrderDetailModel {
                 this.monthImg = monthImg;
             }
 
-            public Object getMonthDeductNum() {
+            public int getMonthDeductNum() {
                 return monthDeductNum;
             }
 
-            public void setMonthDeductNum(Object monthDeductNum) {
+            public void setMonthDeductNum(int monthDeductNum) {
                 this.monthDeductNum = monthDeductNum;
             }
 

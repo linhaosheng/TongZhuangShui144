@@ -82,12 +82,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     protected void setUpView() {
-        refresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refresh.setRefreshing(true);
-            }
-        },150);
         refresh.setOnRefreshListener(this);
 
         orderInfoAdapter = new OrderInfoAdapter(getActivity(), id);
@@ -170,6 +164,12 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public void startLoad() {
+        refresh.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refresh.setRefreshing(true);
+            }
+        },50);
 //       refresh.postDelayed(new Runnable() {
 //           @Override
 //           public void run() {
@@ -181,7 +181,12 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void successLoad(List<OrderInfoModel.DataBean> data) {
         refresh.setRefreshing(false);
-        orderInfoAdapter.setList(data);
+        if (data!=null && data.size()>0){
+            orderInfoAdapter.setList(data);
+            emptyView.setVisibility(View.GONE);
+        }else {
+            emptyView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

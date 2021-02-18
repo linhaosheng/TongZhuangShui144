@@ -17,6 +17,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +33,10 @@ import pro.haichuang.tzs144.adapter.OrderNumTrendAdapter;
 import pro.haichuang.tzs144.adapter.OrderPaymentAdapter;
 import pro.haichuang.tzs144.adapter.OrderTrendAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.ClientEvent;
 import pro.haichuang.tzs144.model.ClientTrendModel;
 import pro.haichuang.tzs144.model.ClientTypeSearchModel;
+import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.TrendModel;
 import pro.haichuang.tzs144.presenter.ClientFragmentPresenter;
 import pro.haichuang.tzs144.util.Utils;
@@ -62,6 +68,8 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     TextView leftText;
     @BindView(R.id.filter)
     ImageView filter;
+    @BindView(R.id.empty_view)
+    RelativeLayout emptyView;
 
     private OrderNumTrendAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
@@ -69,7 +77,6 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     private ClientFragmentPresenter clientFragmentPresenter;
 
     private List<TrendModel> trendList;
-    private List<String> orderPayList;
     private int currentPage = 1;
 
 
@@ -124,15 +131,8 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         clientFragmentPresenter.countKh();
         clientFragmentPresenter.findKhList("","2019-10-10","2021-01-20","","0",currentPage);
 
-
         trendList = new ArrayList<>();
-        orderPayList = new ArrayList<>();
 
-        for (int i = 0;i<6;i++){
-
-            orderPayList.add("");
-        }
-        orderPaymentAdapter.setList(orderPayList);
     }
 
     @OnClick({R.id.left_text, R.id.tip_img,R.id.filter})
@@ -197,5 +197,34 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void errorLoad(String error) {
         refresh.setRefreshing(false);
         Utils.showCenterTomast(error);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ClientEvent event) {
+        if (event!=null){
+             if (event.dataBean==null){
+                 Utils.showCenterTomast("获取客户列表失败");
+                 emptyView.setVisibility(View.VISIBLE);
+             }else {
+                 if (event.dataBean.getData()!=null && event.dataBean.getData().size()>0){
+                     emptyView.setVisibility(View.GONE);
+                     orderPaymentAdapter.setList(event.dataBean.getData());
+                 }else {
+                     emptyView.setVisibility(View.VISIBLE);
+                 }
+             }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

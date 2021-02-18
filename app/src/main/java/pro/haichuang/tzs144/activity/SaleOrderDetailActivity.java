@@ -1,15 +1,14 @@
 package pro.haichuang.tzs144.activity;
 
 
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,24 +19,20 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
-import pro.haichuang.tzs144.adapter.AddOrderAdapter;
 import pro.haichuang.tzs144.adapter.OrderDetailAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
-import pro.haichuang.tzs144.model.MessageEvent;
 import pro.haichuang.tzs144.model.OrderDetailModel;
 import pro.haichuang.tzs144.model.StatusEvent;
-import pro.haichuang.tzs144.model.SubjectModel;
 import pro.haichuang.tzs144.presenter.OrderDetailPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
- * 订单详情
+ * 直接销售订单详情
  */
-public class OrderDetailActivity extends BaseActivity implements ILoadDataView<OrderDetailModel.DataBean> {
+public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataView<OrderDetailModel.DataBean> {
 
 
     @BindView(R.id.back)
@@ -64,8 +59,6 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     TextView address;
     @BindView(R.id.address_detail)
     TextView addressDetail;
-    @BindView(R.id.time_out)
-    TextView timeOut;
     @BindView(R.id.name_view)
     RelativeLayout nameView;
 
@@ -76,7 +69,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     @BindView(R.id.actual_price)
     TextView actualPrice;
     @BindView(R.id.price_view)
-    RelativeLayout priceView;
+    LinearLayout priceView;
     @BindView(R.id.order_num_data)
     TextView orderNumData;
     @BindView(R.id.record_time)
@@ -96,14 +89,13 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
 
     @Override
     protected int setLayoutResourceID() {
-        return R.layout.activity_order_detail;
+        return R.layout.activity_sale_order_detail;
     }
 
     @Override
     protected void setUpView() {
         title.setText("订单详情");
         tips.setText("作废");
-        tips.setVisibility(View.VISIBLE);
         tips.setTextSize(12);
 
         orderDetailAdapter = new OrderDetailAdapter();
@@ -147,14 +139,21 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         address.setText(data.getAddressName());
         addressDetail.setText(data.getAddress());
 
-        tatalPrice.setText("¥" + data.getTotalPrice());
-        needPrice.setText("¥" + data.getReceivablePrice());
+        tatalPrice.setText("商品金额: ¥ " + data.getTotalPrice());
+        needPrice.setText("应收金额: ¥ " + data.getReceivablePrice());
+        actualPrice.setText("实收金额: ¥ "+data.getRealPrice());
         orderNumData.setText("订单编号：" + data.getOrderNo());
         recordTime.setText("录入时间：" + data.getTime());
         recordPersion.setText("录入人：" + data.getCreateName());
         finishDistance.setText("录入时与客户距离：" + data.getSalesDistance() + "M");
         orderDetailAdapter.setList(data.getGoodsList());
-        actualPrice.setText("¥"+data.getRealPrice());
+
+        if (data.getOrderStatus()==1){
+            tips.setVisibility(View.GONE);
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.void_state));
+        }else {
+            tips.setVisibility(View.VISIBLE);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -163,6 +162,8 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         if (event != null) {
             if (event.status == Config.LOAD_SUCCESS) {
                 Utils.showCenterTomast("定单作废成功");
+                tips.setVisibility(View.GONE);
+                orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.void_state));
             } else {
                 Utils.showCenterTomast("定单作废失败");
             }

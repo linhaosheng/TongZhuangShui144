@@ -24,6 +24,13 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
     @Override
     protected void convert(@NonNull BaseViewHolder helper, AddOrderModel.GoodsListBean item) {
 
+        if (item.getDeductWater().getWaterGoodsId().equals("-1")){
+            helper.getView(R.id.water_view).setVisibility(View.GONE);
+        }else {
+            helper.getView(R.id.water_view).setVisibility(View.VISIBLE);
+        }
+
+
         String priceNum = "¥"+item.getGoodsPrice()+"x"+item.getNum();
         String totalPrice = "¥"+Float.parseFloat(item.getGoodsPrice())*Integer.parseInt(item.getNum());
         String waterNum = "水票x"+item.getDeductWater().getNum();
@@ -37,14 +44,24 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
                 .setText(R.id.water_num,waterNum)
                 .setText(R.id.discount_num,discountNum);
 
-        ImageView rewardImg = helper.getView(R.id.reward_img);
-        Utils.showImage(rewardImg,item.getDeductCoupon().getCouponImg());
-//        String rewardDiscount =
-//        helper.setText(R.id.reward_discount,)
+
+        if (item.getDeductCoupon()==null){
+            helper.getView(R.id.reward_view).setVisibility(View.GONE);
+        }else {
+            helper.getView(R.id.reward_view).setVisibility(View.VISIBLE);
+            ImageView rewardImg = helper.getView(R.id.reward_img);
+            Utils.showImage(rewardImg,item.getDeductCoupon().getCouponImg());
+        }
+
+        if (item.getDeductMonth()==null){
+            helper.getView(R.id.month_view).setVisibility(View.GONE);
+        }else {
+            helper.getView(R.id.month_view).setVisibility(View.VISIBLE);
+            ImageView monthImg = helper.getView(R.id.month_img);
+            Utils.showImage(monthImg,item.getDeductMonth().getMonthImg());
 
 
-        ImageView monthImg = helper.getView(R.id.month_img);
-        Utils.showImage(monthImg,item.getDeductCoupon().getCouponImg());
+        }
 
 
     }

@@ -1,195 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/dp_10"
-    android:layout_marginRight="@dimen/dp_10"
     android:layout_marginTop="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
     android:background="@drawable/set_bg_btn13">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="@dimen/dp_17"
         android:text="农夫山泉桶装水 1.8L"
         android:textColor="#3F3F3F"
-        android:textSize="14sp"
-        android:layout_marginTop="@dimen/dp_17"
-        android:layout_marginLeft="12dp"/>
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/shop_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_18"
-        android:textColor="#3F3F3F"
-        android:layout_toRightOf="@+id/name"
         android:layout_marginLeft="@dimen/dp_80"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_toRightOf="@+id/name"
         android:text="¥30x10"
-        />
+        android:textColor="#3F3F3F" />
 
     <TextView
         android:id="@+id/total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="¥300"
-        android:textStyle="bold"
-        android:textColor="#3F3F3F"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
-        android:textSize="18sp"/>
+        android:layout_marginRight="@dimen/dp_10"
+        android:text="¥300"
+        android:textColor="#3F3F3F"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/recycle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="12dp"
         android:text="回收"
         android:textColor="#FF9419"
-        android:layout_below="@+id/name"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/recycle_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="直饮桶x5   直饮桶x5"
         android:layout_below="@+id/name"
-        android:layout_toRightOf="@+id/recycle"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="12dp"
-        android:layout_marginLeft="15dp"/>
+        android:layout_toRightOf="@+id/recycle"
+        android:text="直饮桶x5   直饮桶x5" />
 
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E6E6E6"
         android:layout_below="@+id/recycle_num"
-        android:layout_marginTop="@dimen/dp_10"/>
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="#E6E6E6" />
 
 
-    <TextView
-        android:id="@+id/water_num"
+    <RelativeLayout
+        android:id="@+id/water_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="水票x10"
-        android:textColor="#E02020"
-        android:textSize="12sp"
-        android:layout_marginLeft="12sp"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_below="@+id/line"/>
+        android:layout_below="@+id/line">
+
+        <TextView
+            android:id="@+id/water_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12sp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="水票x10"
+            android:textColor="#E02020"
+            android:textSize="12sp" />
 
 
-    <TextView
-        android:id="@+id/discount_num"
+        <TextView
+            android:id="@+id/discount_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="抵扣 -5"
+            android:textColor="#E02020"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/reward_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="抵扣 -5"
-        android:textColor="#E02020"
-        android:textSize="12sp"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_below="@+id/line"/>
+        android:layout_below="@+id/water_view">
 
-    <TextView
-        android:id="@+id/reward_txt"
+        <TextView
+            android:id="@+id/reward_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="奖券"
+            android:textColor="#3F3F3F"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/reward_img"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_toRightOf="@+id/reward_txt"
+            android:scaleType="fitXY"
+            android:src="@mipmap/bottled_water" />
+
+        <TextView
+            android:id="@+id/reward_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="抵扣 -1"
+            android:textColor="#3F3F3F"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/month_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="奖券"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="@dimen/dp_20"
-        android:textColor="#3F3F3F"
-        android:textSize="12sp"
-        android:layout_below="@+id/water_num"/>
-    
-    <ImageView
-        android:id="@+id/reward_img"
-        android:layout_width="@dimen/dp_50"
-        android:layout_height="@dimen/dp_50"
-        android:scaleType="fitXY"
-        android:src="@mipmap/bottled_water"
-        android:layout_below="@+id/water_num"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_toRightOf="@+id/reward_txt"
-        android:layout_marginLeft="16dp"/>
+        android:layout_below="@+id/reward_view">
 
-    <TextView
-        android:id="@+id/reward_discount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="#3F3F3F"
-        android:textSize="12sp"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_below="@+id/water_num"
-        android:layout_marginTop="@dimen/dp_10"
-        android:text="抵扣 -1"/>
+        <TextView
+            android:id="@+id/month_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="月结"
+            android:textColor="#3F3F3F"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/month_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="月结"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="@dimen/dp_20"
-        android:textColor="#3F3F3F"
-        android:textSize="12sp"
-        android:layout_below="@+id/reward_img"/>
-
-    <ImageView
-        android:id="@+id/month_img"
-        android:layout_width="@dimen/dp_50"
-        android:layout_height="@dimen/dp_50"
-        android:scaleType="fitXY"
-        android:src="@mipmap/bottled_water"
-        android:layout_below="@+id/reward_img"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_toRightOf="@+id/month_txt"
-        android:layout_marginLeft="16dp"/>
+        <ImageView
+            android:id="@+id/month_img"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_toRightOf="@+id/month_txt"
+            android:scaleType="fitXY"
+            android:src="@mipmap/bottled_water" />
 
 
-    <TextView
-        android:id="@+id/month_discount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="#3F3F3F"
-        android:textSize="12sp"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_below="@+id/reward_img"
-        android:layout_marginTop="@dimen/dp_10"
-        android:text="抵扣 -1"/>
+        <TextView
+            android:id="@+id/month_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="抵扣 -1"
+            android:textColor="#3F3F3F"
+            android:textSize="12sp" />
 
+    </RelativeLayout>
 
     <Button
         android:id="@+id/edit"
         android:layout_width="@dimen/dp_70"
         android:layout_height="@dimen/dp_30"
+        android:layout_below="@+id/month_view"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_130"
+        android:background="@drawable/set_bg_btn29"
         android:text="编辑"
         android:textColor="#32C5FF"
-        android:layout_below="@+id/month_img"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/set_bg_btn29"
-        android:textSize="12sp"
-        android:layout_marginRight="@dimen/dp_130"
-        />
+        android:layout_marginTop="@dimen/dp_10"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/delete"
         android:layout_width="@dimen/dp_70"
         android:layout_height="@dimen/dp_30"
-        android:text="删除"
-        android:textColor="#32C5FF"
-        android:layout_below="@+id/month_img"
+        android:layout_below="@+id/month_view"
         android:layout_alignParentRight="true"
-        android:background="@drawable/set_bg_btn29"
-        android:textSize="12sp"
         android:layout_marginRight="@dimen/dp_20"
         android:layout_marginBottom="@dimen/dp_20"
-        />
+        android:background="@drawable/set_bg_btn29"
+        android:text="删除"
+        android:textColor="#32C5FF"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textSize="12sp" />
 
 </RelativeLayout>

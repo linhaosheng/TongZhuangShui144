@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
 import com.kongzue.dialog.v3.BottomMenu;
 import com.lxj.xpopup.XPopup;
@@ -71,6 +74,10 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
     private ClientTypeModel clientTypeModel;
     private List<CharSequence> clientlist;
     private String clientTypeJson;
+    private String cutomerType;
+    private String startTime;
+    private String endTime;
+    private int page = 1;
 
     @Override
     protected int setLayoutResourceID() {
@@ -80,16 +87,16 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     protected void setUpView() {
         title.setText("直接销售列表");
-        title.setTextColor(ContextCompat.getColor(this,R.color.blank2));
+        title.setTextColor(ContextCompat.getColor(this, R.color.blank2));
 
         tipImg.setVisibility(View.VISIBLE);
-        tipImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.add_order));
+        tipImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.add_order));
         refresh.setOnRefreshListener(this);
 
         saleListItemAdapter = new SaleListItemAdapter();
-        recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+        recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(saleListItemAdapter);
-        addHeadView =  LayoutInflater.from(this).inflate(R.layout.item_head_sale_list, null);
+        addHeadView = LayoutInflater.from(this).inflate(R.layout.item_head_sale_list, null);
         client_type = addHeadView.findViewById(R.id.client_type);
         saleListItemAdapter.addHeaderView(addHeadView);
         timeSort = addHeadView.findViewById(R.id.time_sort);
@@ -100,9 +107,9 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                 TimePickerView pvTime = new TimePickerBuilder(SalesListActivity.this, new OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {
+
                     }
-                })
-                        .build();
+                }).build();
                 pvTime.show();
             }
         });
@@ -114,19 +121,27 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                     BottomMenu.show(SalesListActivity.this, clientlist, new OnMenuItemClickListener() {
                         @Override
                         public void onClick(String text, int index) {
-
+                            cutomerType = text;
+                            salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, page);
                         }
                     });
                 }
             }
         });
-
+        saleListItemAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                String orderNumId = saleListItemAdapter.getData().get(position).getId();
+                Intent intent = new Intent(SalesListActivity.this,SaleOrderDetailActivity.class);
+                intent.putExtra("id",orderNumId);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void setUpData() {
         salesListActivityPresenter = new SalesListActivityPresenter(this);
-       // salesListActivityPresenter.findDirectSales();
 
         clientTypeJson = SPUtils.getString(Config.CLIENT_TYPE, "");
         clientTypeModel = Utils.gsonInstane().fromJson(clientTypeJson, ClientTypeModel.class);
@@ -134,7 +149,10 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         for (ClientTypeModel.DataBean dataBean : clientTypeModel.getData()) {
             clientlist.add(dataBean.getName());
         }
-
+        cutomerType = clientlist.get(0).toString();
+        startTime = "2020-10-10";
+        endTime = Utils.formatSelectTime(new Date());
+        salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, page);
     }
 
 
@@ -153,10 +171,10 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                                     @Override
                                     public void onSelect(int position, String text) {
                                         Intent intent = new Intent();
-                                        if (position==0){
-                                          intent.setClass(SalesListActivity.this,EnterOrderActivity.class);
-                                        }else if (position==1){
-                                            intent.setClass(SalesListActivity.this,EnterOrderActivity.class);
+                                        if (position == 0) {
+                                            intent.setClass(SalesListActivity.this, EnterOrderActivity.class);
+                                        } else if (position == 1) {
+                                            intent.setClass(SalesListActivity.this, EnterOrderActivity.class);
                                         }
                                         startActivity(intent);
                                     }
@@ -168,25 +186,23 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-      refresh.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-              refresh.setRefreshing(false);
-          }
-      },2000);
+        salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, page);
     }
 
     @Override
     public void startLoad() {
-      refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
     }
 
     @Override
     public void successLoad(List<SaleListModel.DataBean> data) {
         refresh.setRefreshing(false);
-       if (data!=null){
-           saleListItemAdapter.setList(data);
-       }
+        saleListItemAdapter.setList(data);
+        if (data != null && data.size() > 0) {
+            emptyView.setVisibility(View.GONE);
+        } else {
+            emptyView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -194,6 +210,5 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         refresh.setRefreshing(false);
         Utils.showCenterTomast(error);
     }
-
 
 }

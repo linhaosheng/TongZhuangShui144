@@ -2,10 +2,16 @@ package pro.haichuang.tzs144.presenter;
 
 import android.util.ArrayMap;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AccountOrderModel;
+import pro.haichuang.tzs144.model.ClientEvent;
+import pro.haichuang.tzs144.model.ClientListModel;
 import pro.haichuang.tzs144.model.ClientTrendModel;
+import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
@@ -81,12 +87,17 @@ public class ClientFragmentPresenter {
 
             @Override
             public void success(String result) {
-
+                ClientListModel clientListModel = Utils.gsonInstane().fromJson(result, ClientListModel.class);
+                if (clientListModel.getResult()==1){
+                    EventBus.getDefault().post(new ClientEvent(clientListModel));
+                }else {
+                    EventBus.getDefault().post(new ClientEvent(null));
+                }
             }
 
             @Override
             public void error(String error) {
-
+                EventBus.getDefault().post(new ClientEvent(null));
             }
         });
     }
