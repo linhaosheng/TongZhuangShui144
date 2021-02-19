@@ -1,174 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <include layout="@layout/header"/>
+    <include layout="@layout/header" />
 
 
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/client_type"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="客户类型"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "true"
-        app:rightText="请选择 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+        android:layout_height="match_parent">
 
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/location_type"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="所在片区"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "true"
-        app:rightText="请选择 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/clinet_name"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="客户名称"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "false"
-        app:showEditInput="true"
-        app:rightText="请选择 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/client_type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="true"
+                app:isShowUnderLine="true"
+                app:leftText="*客户类型"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请选择 >" />
 
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/clinet_contact"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="联系人"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "false"
-        app:showEditInput="true"
-        app:rightText="请选择 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/location_type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="true"
+                app:isShowUnderLine="true"
+                app:leftText="*所在片区"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请选择 >" />
 
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/phone"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="联系电话"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "false"
-        app:showEditInput="true"
-        app:rightText="请选择 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/clinet_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="false"
+                app:isShowUnderLine="true"
+                app:leftText="*客户名称"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请选择 >"
+                app:showEditInput="true" />
 
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/clinet_contact"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="false"
+                app:isShowUnderLine="true"
+                app:leftText="*联系人"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请选择 >"
+                app:showEditInput="true" />
 
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/monopoly"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="是否专卖"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "true"
-        app:rightText="请选择 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="false"
+                app:isShowUnderLine="true"
+                app:leftText="*联系电话"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请选择 >"
+                app:showEditInput="true" />
 
 
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/develop_persion"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="发展人员"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "true"
-        app:rightText="请选择 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/monopoly"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="true"
+                app:isShowUnderLine="true"
+                app:leftText="*是否专卖"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请选择 >" />
 
 
-
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/business"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="业务人员"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "true"
-        app:rightText="请选择 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
-
-
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="地址"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "true"
-        app:rightText="请添加 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
-
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/address_name"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="地址名称"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "false"
-        app:showEditInput="true"
-        app:rightText="请添加 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/develop_persion"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="true"
+                app:isShowUnderLine="true"
+                app:leftText="发展人员"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请选择 >" />
 
 
-    <pro.haichuang.tzs144.view.LSettingItem
-        android:id="@+id/detail_address"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        app:LtextColor="#000000"
-        app:leftText="详细地址"
-        app:leftTextMarginLeft="@dimen/dp_10"
-        app:rightStyle="iconHide"
-        app:isShowRightText = "true"
-        app:rightText="请添加 >"
-        app:isShowUnderLine="true"
-        app:rightIconSize="@dimen/dp_22" />
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/business"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="true"
+                app:isShowUnderLine="true"
+                app:leftText="业务人员"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请选择 >" />
 
-    <Button
-        android:id="@+id/add_btn"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
-        android:layout_marginLeft="@dimen/dp_48"
-        android:background="@drawable/set_bg_btn14"
-        android:text="添加"
-        android:textColor="#fff"
-        android:layout_marginTop="@dimen/dp_40"
-        android:layout_marginRight="@dimen/dp_48"/>
+
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:LtextColor="#000000"
+                app:isShowRightText="true"
+                app:isShowUnderLine="true"
+                app:leftText="*地址"
+                app:leftTextMarginLeft="@dimen/dp_10"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightStyle="iconHide"
+                app:rightText="请添加 >" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <Button
+                android:id="@+id/add_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginLeft="@dimen/dp_48"
+                android:layout_marginTop="@dimen/dp_40"
+                android:layout_marginRight="@dimen/dp_48"
+                android:background="@drawable/set_bg_btn14"
+                android:text="添加"
+                android:textColor="#fff" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

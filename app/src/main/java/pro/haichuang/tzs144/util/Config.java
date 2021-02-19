@@ -23,6 +23,8 @@ public class Config {
     public static  double LONGITUDE = 0;
 
 
+    public static final String FIND_AREA = "find_area";
+
     public static final String FIND_STAFFS = "find_staffs";
 
     public static final String CLIENT_TYPE = "client_type";
@@ -31,6 +33,8 @@ public class Config {
 
     public static final int LOAD_SUCCESS = 0x1110;
     public static final int LOAD_FAIL = 0x1111;
+
+    public static final String ADDRESS_JSON = "address_json";
 
 
 

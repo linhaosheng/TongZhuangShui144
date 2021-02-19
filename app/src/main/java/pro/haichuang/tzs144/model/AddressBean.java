@@ -2,12 +2,22 @@ package pro.haichuang.tzs144.model;
 
 public class AddressBean {
 
+    private String addressName;
     private String address;
     private String distance;
     private String addressInfo;
     private double longitude;
     private double latitude;
     private boolean isSelect = false;
+
+
+    public String getAddressName() {
+        return addressName;
+    }
+
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
+    }
 
     public boolean isSelect() {
         return isSelect;

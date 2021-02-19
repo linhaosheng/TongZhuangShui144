@@ -126,7 +126,7 @@ public class ConfigUrl {
     /**
      * [客户]获取所在片区列表
      */
-    public static final String FIND_AREAS = "findAreas";
+    public static final String FIND_AREAS = "/api/app/kh/findAreas";
 
     /**
      * [客户]新增客户

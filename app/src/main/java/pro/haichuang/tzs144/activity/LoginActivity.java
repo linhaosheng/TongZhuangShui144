@@ -246,6 +246,12 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        mLocationClient.stop();
+        super.onDestroy();
+    }
+
     public class MyLocationListener extends BDAbstractLocationListener {
 
         @Override

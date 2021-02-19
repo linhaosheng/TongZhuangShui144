@@ -353,6 +353,7 @@ public class LSettingItem extends RelativeLayout {
         return editinput.getText().toString();
     }
 
+
     /**
      * sp转px
      *

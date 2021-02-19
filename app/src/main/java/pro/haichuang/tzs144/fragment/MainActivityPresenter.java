@@ -1,5 +1,9 @@
 package pro.haichuang.tzs144.fragment;
 
+import android.util.ArrayMap;
+
+import java.util.Map;
+
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
@@ -58,5 +62,29 @@ public class MainActivityPresenter {
 
             }
         });
+    }
+
+    /**
+     * [客户]获取所在片区列表
+     * @param
+     */
+    public void findAreas(){
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_AREAS, null, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                SPUtils.putString(Config.FIND_AREA,result);
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
+
     }
 }

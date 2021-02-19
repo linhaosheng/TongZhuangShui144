@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/address_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:LtextColor="#000000"
+        app:isShowRightText="false"
+        app:isShowUnderLine="true"
+        app:leftText="*地址名称"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightIconSize="@dimen/dp_22"
+        app:rightStyle="iconHide"
+        app:rightText="请输入"
+        app:showEditInput="true" />
+
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/detail_address"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:LtextColor="#000000"
+        app:isShowRightText="true"
+        app:isShowUnderLine="true"
+        app:leftText="*详细地址"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightIconSize="@dimen/dp_22"
+        app:rightStyle="iconHide"
+        app:rightText="请选择 >" />
+</LinearLayout>

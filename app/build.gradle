@@ -75,7 +75,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
-    implementation project(path: ':lib_qrcode')
     implementation project(path: ':lib_boxing_photobrowser')
     implementation files('libs/BaiduLBS_Android.jar')
 

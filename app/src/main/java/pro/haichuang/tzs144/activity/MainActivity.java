@@ -74,6 +74,7 @@ public class MainActivity extends BaseActivity {
         mainActivityPresenter = new MainActivityPresenter();
         mainActivityPresenter.findKhTypes();
         mainActivityPresenter.getAllClient();
+        mainActivityPresenter.findAreas();
     }
 
     private long exitTime = 0;
