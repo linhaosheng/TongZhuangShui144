@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: ./lib_qrcode/libs/zbardecoder.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib_qrcode/libs/zbardecoder.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
