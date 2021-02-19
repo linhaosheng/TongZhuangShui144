@@ -1,8 +1,12 @@
 package pro.haichuang.tzs144.fragment;
 
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -70,6 +74,10 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     ImageView filter;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
+    @BindView(R.id.search_view)
+    LinearLayout searchView;
+    @BindView(R.id.search_edit)
+    EditText searchEdit;
 
     private OrderNumTrendAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
@@ -77,7 +85,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     private ClientFragmentPresenter clientFragmentPresenter;
 
     private List<TrendModel> trendList;
-    private int currentPage = 1;
+    private int currentPage = 0;
 
 
     @Override
@@ -129,13 +137,30 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     protected void setUpData() {
         clientFragmentPresenter = new ClientFragmentPresenter(this);
         clientFragmentPresenter.countKh();
-        clientFragmentPresenter.findKhList("","2019-10-10","2021-01-20","","0",currentPage);
-
+        clientFragmentPresenter.findKhList("测试  ","2019-10-10","2021-01-20","","0",currentPage);
         trendList = new ArrayList<>();
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (searchEdit.getText()!=null){
+                    clientFragmentPresenter.findKhList(searchEdit.getText().toString(),"2019-10-10","2021-01-20","","0",1);
+                }
+            }
+        });
 
     }
 
-    @OnClick({R.id.left_text, R.id.tip_img,R.id.filter})
+    @OnClick({R.id.left_text, R.id.tip_img,R.id.filter,R.id.cancel})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.left_text:
@@ -143,6 +168,8 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                 startActivity(intent);
                 break;
             case R.id.tip_img:
+                searchView.setVisibility(View.VISIBLE);
+                headView.setVisibility(View.GONE);
                 break;
             case R.id.filter:
                 ClientFilterDialog clientFilterDialog = new ClientFilterDialog(getActivity(), new ClientFilterDialog.ClientTypeListener() {
@@ -152,6 +179,10 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                     }
                 });
                 clientFilterDialog.show(getChildFragmentManager(),"");
+                break;
+            case R.id.cancel:
+                searchView.setVisibility(View.GONE);
+                headView.setVisibility(View.VISIBLE);
                 break;
         }
     }

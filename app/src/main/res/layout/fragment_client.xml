@@ -7,6 +7,40 @@
 
     <include layout="@layout/header" />
 
+    <LinearLayout
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_22"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_40"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/search_edit"
+            android:layout_width="@dimen/dp_300"
+            android:layout_height="@dimen/dp_35"
+            android:drawableLeft="@mipmap/search"
+            android:hint="请输入商品关键字"
+            android:textSize="13sp"
+            android:drawablePadding="@dimen/dp_10"
+            android:background="@drawable/set_bg_btn11"
+            android:paddingLeft="@dimen/dp_20"
+            android:gravity="left|center"
+            android:layout_marginRight="@dimen/dp_18"/>
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="#32C5FF"
+            android:textSize="15sp"
+            android:layout_marginRight="@dimen/dp_12"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"

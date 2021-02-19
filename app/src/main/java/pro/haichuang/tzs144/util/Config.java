@@ -22,6 +22,9 @@ public class Config {
     public static  double LATITUDE = 0;
     public static  double LONGITUDE = 0;
 
+
+    public static final String FIND_STAFFS = "find_staffs";
+
     public static final String CLIENT_TYPE = "client_type";
 
     public static final String PERSION_INFO = "persion_info";

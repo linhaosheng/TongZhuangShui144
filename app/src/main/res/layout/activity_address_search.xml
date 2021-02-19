@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/header"/>
+
+    <LinearLayout
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_22"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_10"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/search_edit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35"
+            android:drawableLeft="@mipmap/search"
+            android:hint="搜索地址"
+            android:textSize="13sp"
+            android:drawablePadding="@dimen/dp_10"
+            android:background="@drawable/set_bg_btn11"
+            android:paddingLeft="@dimen/dp_20"
+            android:gravity="left|center"
+            android:layout_marginRight="@dimen/dp_18"/>
+
+    </LinearLayout>
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_300"
+        android:layout_marginTop="@dimen/dp_20"
+        android:clickable="true"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

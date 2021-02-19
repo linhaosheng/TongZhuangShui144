@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.ClientTypeModel;
+import pro.haichuang.tzs144.model.StaffModel;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
@@ -66,6 +68,7 @@ public class AddClientActivity extends BaseActivity {
     private ClientTypeModel clientTypeModel;
     private List<CharSequence> clientlist;
     private List<CharSequence>monopolyList;
+    private List<CharSequence>businessList;
 
 
     @Override
@@ -114,6 +117,48 @@ public class AddClientActivity extends BaseActivity {
                     });
             }
         });
+
+        businessList = new ArrayList<>();
+        String findStaffJson = SPUtils.getString(Config.FIND_STAFFS, "");
+        if (!findStaffJson.equals("")){
+            StaffModel staffModel = Utils.gsonInstane().fromJson(findStaffJson, StaffModel.class);
+            for (StaffModel.DataBean dataBean:staffModel.getData()){
+                businessList.add(dataBean.getName());
+            }
+        }
+
+        business.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+                BottomMenu.show(AddClientActivity.this, businessList, new OnMenuItemClickListener() {
+                    @Override
+                    public void onClick(String text, int index) {
+
+                    }
+                });
+            }
+        });
+
+        developPersion.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+                BottomMenu.show(AddClientActivity.this, businessList, new OnMenuItemClickListener() {
+                    @Override
+                    public void onClick(String text, int index) {
+
+                    }
+                });
+            }
+        });
+
+        detailAddress.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+                Intent intent = new Intent(AddClientActivity.this,AddressSearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

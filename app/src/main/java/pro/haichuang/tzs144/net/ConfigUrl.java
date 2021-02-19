@@ -258,5 +258,10 @@ public class ConfigUrl {
      */
     public static final String DEPOSIT_BOOK_INFO = "/api/app/depositManage/getDepositBookInfo";
 
+    /**
+     * [实时库存]获取所有有效员工
+     */
+    public static final String FIND_STAFFS = "/api/app/kc/findStaffs";
+
 
 }

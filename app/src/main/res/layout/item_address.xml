@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="天府广场"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dp_12" />
+
+    <TextView
+        android:id="@+id/address_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="成都市青羊区人民南路一段86号"
+        android:textColor="#83898F"
+        android:textSize="12sp"
+        android:layout_below="@+id/address"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_12"
+        />
+
+
+    <ImageView
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/check_box"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_centerVertical="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E5E5E5"
+        android:layout_below="@+id/address_detail"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"/>
+
+
+</RelativeLayout>

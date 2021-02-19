@@ -39,10 +39,25 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
         app:LtextColor="#000000"
+        app:leftText="客户名称"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightStyle="iconHide"
+        app:isShowRightText = "false"
+        app:showEditInput="true"
+        app:rightText="请选择 >"
+        app:isShowUnderLine="true"
+        app:rightIconSize="@dimen/dp_22" />
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/clinet_contact"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:LtextColor="#000000"
         app:leftText="联系人"
         app:leftTextMarginLeft="@dimen/dp_10"
         app:rightStyle="iconHide"
-        app:isShowRightText = "true"
+        app:isShowRightText = "false"
+        app:showEditInput="true"
         app:rightText="请选择 >"
         app:isShowUnderLine="true"
         app:rightIconSize="@dimen/dp_22" />
@@ -55,7 +70,8 @@
         app:leftText="联系电话"
         app:leftTextMarginLeft="@dimen/dp_10"
         app:rightStyle="iconHide"
-        app:isShowRightText = "true"
+        app:isShowRightText = "false"
+        app:showEditInput="true"
         app:rightText="请选择 >"
         app:isShowUnderLine="true"
         app:rightIconSize="@dimen/dp_22" />
@@ -125,7 +141,8 @@
         app:leftText="地址名称"
         app:leftTextMarginLeft="@dimen/dp_10"
         app:rightStyle="iconHide"
-        app:isShowRightText = "true"
+        app:isShowRightText = "false"
+        app:showEditInput="true"
         app:rightText="请添加 >"
         app:isShowUnderLine="true"
         app:rightIconSize="@dimen/dp_22" />

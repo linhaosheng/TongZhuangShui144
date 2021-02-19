@@ -73,6 +73,7 @@ public class MainActivity extends BaseActivity {
         MainActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
         mainActivityPresenter = new MainActivityPresenter();
         mainActivityPresenter.findKhTypes();
+        mainActivityPresenter.getAllClient();
     }
 
     private long exitTime = 0;

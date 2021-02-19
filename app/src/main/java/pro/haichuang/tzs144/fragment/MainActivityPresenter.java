@@ -36,4 +36,27 @@ public class MainActivityPresenter {
             }
         });
     }
+
+    /**
+     * [实时库存]获取所有有效员工
+     */
+    public void getAllClient(){
+
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_STAFFS, null, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+              SPUtils.putString(Config.FIND_STAFFS,result);
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
+    }
 }
