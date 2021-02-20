@@ -263,5 +263,10 @@ public class ConfigUrl {
      */
     public static final String FIND_STAFFS = "/api/app/kc/findStaffs";
 
+    /**
+     * [首页]-配送
+     */
+    public static final String DELIVERY_ORDER = "/api/app/order/deliveryOrder";
+
 
 }

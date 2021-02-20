@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,6 +70,8 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     @BindView(R.id.name_view)
     RelativeLayout nameView;
 
+    @BindView(R.id.time_send)
+    TextView timeSend;
     @BindView(R.id.tatal_price)
     TextView tatalPrice;
     @BindView(R.id.need_price)
@@ -81,14 +84,21 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     TextView orderNumData;
     @BindView(R.id.record_time)
     TextView recordTime;
-    @BindView(R.id.record_persion)
-    TextView recordPersion;
-    @BindView(R.id.finish_distance)
-    TextView finishDistance;
+    @BindView(R.id.order_source)
+    TextView orderSource;
+    @BindView(R.id.pay_way)
+    TextView payWay;
     @BindView(R.id.order_view)
     LinearLayout orderView;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
+    @BindView(R.id.take_order)
+    Button takeOrder;
+    @BindView(R.id.switch_order)
+    Button switchOrder;
+    @BindView(R.id.void_delivery_view)
+    LinearLayout voidDeliveryView;
+
     private OrderDetailAdapter orderDetailAdapter;
 
     private OrderDetailPresenter orderDetailPresenter;
@@ -103,7 +113,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     protected void setUpView() {
         title.setText("订单详情");
         tips.setText("作废");
-        tips.setVisibility(View.VISIBLE);
+        tips.setVisibility(View.GONE);
         tips.setTextSize(12);
 
         orderDetailAdapter = new OrderDetailAdapter();
@@ -119,13 +129,20 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     }
 
 
-    @OnClick({R.id.back, R.id.tips})
+    @OnClick({R.id.back, R.id.tips,R.id.switch_order,R.id.take_order,R.id.delivery_btn,R.id.void_sale_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
-            case R.id.tips:
+            case R.id.switch_order:
+                break;
+            case R.id.take_order:
+                orderDetailPresenter.takeOrder(id);
+                break;
+            case R.id.delivery_btn:
+                break;
+            case R.id.void_sale_btn:
                 WaitDialog.show(this,"提交中...");
                 orderDetailPresenter.directSelling(id);
                 break;
@@ -146,25 +163,64 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         type.setText(data.getCustomerTypeName());
         address.setText(data.getAddressName());
         addressDetail.setText(data.getAddress());
+        timeSend.setText(data.getTimeRange());
+        timeOut.setText(data.getTimeStatus());
 
         tatalPrice.setText("¥" + data.getTotalPrice());
         needPrice.setText("¥" + data.getReceivablePrice());
         orderNumData.setText("订单编号：" + data.getOrderNo());
-        recordTime.setText("录入时间：" + data.getTime());
-        recordPersion.setText("录入人：" + data.getCreateName());
-        finishDistance.setText("录入时与客户距离：" + data.getSalesDistance() + "M");
+        recordTime.setText("完成时间：" + data.getCompleteTime());
+        orderSource.setText("订单来源: "+data.getOrderType());
+        payWay.setText("支付方式：" + data.getPayMode());
         orderDetailAdapter.setList(data.getGoodsList());
         actualPrice.setText("¥"+data.getRealPrice());
+
+        timeOut.setVisibility(View.VISIBLE);
+        if (data.getDeliveryStatus()==0){
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.pend_order));
+        }else if (data.getDeliveryStatus()==1){
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.nedd_delivery));
+        }else if (data.getDeliveryStatus()==2){
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.have_finish));
+        }else if (data.getDeliveryStatus()==3){
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.have_cancel));
+        }
+
+        if (id.equals("0")){
+            takeOrder.setText("接单");
+        }else if (id.equals("1")){
+            takeOrder.setText("配送");
+        }
+        if (data.getTimeStatus().contains("已超时") && data.getDeliveryStatus()==1){
+            voidDeliveryView.setVisibility(View.VISIBLE);
+            takeOrder.setVisibility(View.GONE);
+        }else {
+            voidDeliveryView.setVisibility(View.GONE);
+        }
+        if (data.getDeliveryStatus()==2){
+            voidDeliveryView.setVisibility(View.GONE);
+            takeOrder.setVisibility(View.GONE);
+            switchOrder.setVisibility(View.GONE);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StatusEvent event) {
         WaitDialog.dismiss();
         if (event != null) {
-            if (event.status == Config.LOAD_SUCCESS) {
-                Utils.showCenterTomast("定单作废成功");
-            } else {
-                Utils.showCenterTomast("定单作废失败");
+            if (event.type==2){
+                if (event.status == Config.LOAD_SUCCESS) {
+                    Utils.showCenterTomast("定单作废成功");
+                } else {
+                    Utils.showCenterTomast("定单作废失败");
+                }
+            }else if (event.type==1){
+                if (event.status == Config.LOAD_SUCCESS) {
+                    Utils.showCenterTomast("接单成功");
+                    finish();
+                } else {
+                    Utils.showCenterTomast("定单作废失败");
+                }
             }
         }
         Log.i(TAG, "onMessageEvent===");

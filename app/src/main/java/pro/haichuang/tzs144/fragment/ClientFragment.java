@@ -85,7 +85,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     private ClientFragmentPresenter clientFragmentPresenter;
 
     private List<TrendModel> trendList;
-    private int currentPage = 0;
+    private int currentPage = 1;
 
 
     @Override
@@ -189,7 +189,8 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
-
+        clientFragmentPresenter.countKh();
+        clientFragmentPresenter.findKhList("测试  ","2019-10-10","2021-01-20","","0",1);
     }
 
     @Override
@@ -201,6 +202,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void successLoad(ClientTrendModel data) {
         refresh.setRefreshing(false);
         if (data!=null){
+            trendList.clear();
             ClientTrendModel.DataBean data1 = data.getData();
             TrendModel countTrendModel = new TrendModel("总客户",String.valueOf(data1.getKhCount()),data1.getKhDayCount(),data1.getKhWeekCount());
             trendList.add(countTrendModel);

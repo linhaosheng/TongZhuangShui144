@@ -77,9 +77,9 @@ public class OrderDetailPresenter {
                     JSONObject jsonObject = new JSONObject(result);
                     int result1 = jsonObject.getInt("result");
                     if (result1==1){
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS));
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,2));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL));
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,2));
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -91,5 +91,81 @@ public class OrderDetailPresenter {
                 iLoadDataView.errorLoad(error);
             }
         });
+    }
+
+    /**
+     * 订单接单
+     * @param id
+     */
+    public void takeOrder(String id){
+
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+
+        HttpRequestEngine.postRequest(ConfigUrl.TAKE_ORDER, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+                iLoadDataView.startLoad();
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int result1 = jsonObject.getInt("result");
+                    if (result1==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,1));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,1));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iLoadDataView.errorLoad(error);
+            }
+        });
+
+    }
+
+    /**
+     * 配送
+     * @param id
+     */
+    public void deliveryOrder(String id){
+
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+
+        HttpRequestEngine.postRequest(ConfigUrl.DELIVERY_ORDER, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+                iLoadDataView.startLoad();
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int result1 = jsonObject.getInt("result");
+                    if (result1==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,3));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,3));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iLoadDataView.errorLoad(error);
+            }
+        });
+
     }
 }

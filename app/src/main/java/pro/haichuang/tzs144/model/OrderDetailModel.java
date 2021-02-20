@@ -8,7 +8,7 @@ public class OrderDetailModel {
     /**
      * result : 1
      * message : 获取成功!
-     * data : {"address":"四川省成都市武侯区肖家河街道恩威集团(创业路)","orderNo":"LR202101131509004","totalPrice":10,"goodsList":[{"waterNum":1,"waterDeductNum":1,"goodsPrice":1,"couponDeductNum":null,"couponImg":"","materialList":[""],"goodsName":"新商品-A","goodsNum":10,"monthImg":"","monthDeductNum":null}],"salesDistance":0,"customerName":"老李","customerTypeName":"终端客户","customerPhone":"15123456789","addressName":"测试地址","receivablePrice":1,"time":"2021-01-13 16:16:25","createName":"骑龙3","realPrice":9}
+     * data : {"deliveryStatus":"","address":"四川省成都市武侯区肖家河街道恩威集团(创业路)","orderNo":"LR202101131509004","timeTitle":"今天","timeRange":"","timeStatus":"","orderType":"","payMode":"","completeTime":"","totalPrice":10,"goodsList":[{"waterNum":1,"waterDeductNum":1,"goodsPrice":1,"couponDeductNum":null,"couponImg":"","materialList":[""],"goodsName":"新商品-A","goodsNum":10,"monthImg":"","monthDeductNum":null}],"customerName":"老李","customerTypeName":"终端客户","customerPhone":"15123456789","addressName":"测试地址","receivablePrice":1,"realPrice":9,"distance":""}
      */
 
     private int result;
@@ -41,43 +41,51 @@ public class OrderDetailModel {
 
     public static class DataBean {
         /**
+         * deliveryStatus :
          * address : 四川省成都市武侯区肖家河街道恩威集团(创业路)
          * orderNo : LR202101131509004
+         * timeTitle : 今天
+         * timeRange :
+         * timeStatus :
+         * orderType :
+         * payMode :
+         * completeTime :
          * totalPrice : 10
          * goodsList : [{"waterNum":1,"waterDeductNum":1,"goodsPrice":1,"couponDeductNum":null,"couponImg":"","materialList":[""],"goodsName":"新商品-A","goodsNum":10,"monthImg":"","monthDeductNum":null}]
-         * salesDistance : 0
          * customerName : 老李
          * customerTypeName : 终端客户
          * customerPhone : 15123456789
          * addressName : 测试地址
          * receivablePrice : 1
-         * time : 2021-01-13 16:16:25
-         * createName : 骑龙3
          * realPrice : 9
+         * distance :
          */
 
+        private int deliveryStatus;
         private String address;
         private String orderNo;
+        private String timeTitle;
+        private String timeRange;
+        private String timeStatus;
+        private String orderType;
+        private String payMode;
+        private String completeTime;
         private int totalPrice;
-        private int salesDistance;
         private String customerName;
         private String customerTypeName;
         private String customerPhone;
         private String addressName;
         private int receivablePrice;
-        private String time;
-        private String createName;
         private int realPrice;
+        private String distance;
         private List<GoodsListBean> goodsList;
-        private int orderStatus;
 
-
-        public int getOrderStatus() {
-            return orderStatus;
+        public int getDeliveryStatus() {
+            return deliveryStatus;
         }
 
-        public void setOrderStatus(int orderStatus) {
-            this.orderStatus = orderStatus;
+        public void setDeliveryStatus(int deliveryStatus) {
+            this.deliveryStatus = deliveryStatus;
         }
 
         public String getAddress() {
@@ -96,20 +104,60 @@ public class OrderDetailModel {
             this.orderNo = orderNo;
         }
 
+        public String getTimeTitle() {
+            return timeTitle;
+        }
+
+        public void setTimeTitle(String timeTitle) {
+            this.timeTitle = timeTitle;
+        }
+
+        public String getTimeRange() {
+            return timeRange;
+        }
+
+        public void setTimeRange(String timeRange) {
+            this.timeRange = timeRange;
+        }
+
+        public String getTimeStatus() {
+            return timeStatus;
+        }
+
+        public void setTimeStatus(String timeStatus) {
+            this.timeStatus = timeStatus;
+        }
+
+        public String getOrderType() {
+            return orderType;
+        }
+
+        public void setOrderType(String orderType) {
+            this.orderType = orderType;
+        }
+
+        public String getPayMode() {
+            return payMode;
+        }
+
+        public void setPayMode(String payMode) {
+            this.payMode = payMode;
+        }
+
+        public String getCompleteTime() {
+            return completeTime;
+        }
+
+        public void setCompleteTime(String completeTime) {
+            this.completeTime = completeTime;
+        }
+
         public int getTotalPrice() {
             return totalPrice;
         }
 
         public void setTotalPrice(int totalPrice) {
             this.totalPrice = totalPrice;
-        }
-
-        public int getSalesDistance() {
-            return salesDistance;
-        }
-
-        public void setSalesDistance(int salesDistance) {
-            this.salesDistance = salesDistance;
         }
 
         public String getCustomerName() {
@@ -152,28 +200,20 @@ public class OrderDetailModel {
             this.receivablePrice = receivablePrice;
         }
 
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-
-        public String getCreateName() {
-            return createName;
-        }
-
-        public void setCreateName(String createName) {
-            this.createName = createName;
-        }
-
         public int getRealPrice() {
             return realPrice;
         }
 
         public void setRealPrice(int realPrice) {
             this.realPrice = realPrice;
+        }
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
         }
 
         public List<GoodsListBean> getGoodsList() {
@@ -201,12 +241,12 @@ public class OrderDetailModel {
             private int waterNum;
             private int waterDeductNum;
             private int goodsPrice;
-            private int couponDeductNum;
+            private Object couponDeductNum;
             private String couponImg;
             private String goodsName;
             private int goodsNum;
             private String monthImg;
-            private int monthDeductNum;
+            private Object monthDeductNum;
             private List<String> materialList;
 
             public int getWaterNum() {
@@ -237,7 +277,7 @@ public class OrderDetailModel {
                 return couponDeductNum;
             }
 
-            public void setCouponDeductNum(int couponDeductNum) {
+            public void setCouponDeductNum(Object couponDeductNum) {
                 this.couponDeductNum = couponDeductNum;
             }
 
@@ -273,11 +313,11 @@ public class OrderDetailModel {
                 this.monthImg = monthImg;
             }
 
-            public int getMonthDeductNum() {
+            public Object getMonthDeductNum() {
                 return monthDeductNum;
             }
 
-            public void setMonthDeductNum(int monthDeductNum) {
+            public void setMonthDeductNum(Object monthDeductNum) {
                 this.monthDeductNum = monthDeductNum;
             }
 

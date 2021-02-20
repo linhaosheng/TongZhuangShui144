@@ -152,7 +152,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
         if (trendModelList==null){
             trendModelList = new ArrayList<>();
         }
-
+        trendModelList.clear();
         TrendModel XlTrendModel = new TrendModel("销量",data.getXlVal(),data.getXlDayRatio(),data.getXlWeekRatio());
         trendModelList.add(XlTrendModel);
 

@@ -143,6 +143,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
         if (trendModelList==null){
             trendModelList = new ArrayList<>();
         }
+        trendModelList.clear();
 
         TrendModel XlTrendModel = new TrendModel("现金",data.getXjVal(),data.getXjDayRatio(),data.getXjWeekRatio());
         trendModelList.add(XlTrendModel);

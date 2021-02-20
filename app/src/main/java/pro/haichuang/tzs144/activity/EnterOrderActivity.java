@@ -403,8 +403,12 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
      * @param distance
      */
     private final void caculateDistance(int distance){
-
-        String content = "您当前位置与客户相差"+distance+"M，确定继续收款?";
+        String content ="";
+        if (distance>1000){
+            content = "您当前位置与客户相差"+(float)distance/1000+"M，确定继续收款?";
+        }else {
+            content = "您当前位置与客户相差"+distance+"M，确定继续收款?";
+        }
 
         MessageDialog.
                 show(this, "提示", content, "确定", "取消")

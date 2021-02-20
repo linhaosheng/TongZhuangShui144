@@ -18,7 +18,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <RelativeLayout
                 android:id="@+id/name_view"
                 android:layout_width="match_parent"
@@ -236,39 +235,97 @@
                     android:layout_marginLeft="@dimen/dp_20"/>
 
                 <TextView
+                    android:id="@+id/order_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="订单来源: 微商城"
+                    android:textSize="@dimen/dp_12"
+                    android:textColor="#3F3F3F"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/pay_way"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="支付方式：微信支付"
+                    android:textSize="@dimen/dp_12"
+                    android:textColor="#3F3F3F"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    />
+
+                <TextView
                     android:id="@+id/record_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="录入时间：2020-11-24 12:00:00"
+                    android:text="完成时间：2020-11-24 12:00:00"
                     android:textSize="@dimen/dp_12"
                     android:textColor="#3F3F3F"
+                    android:layout_marginBottom="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_15"
                     android:layout_marginLeft="@dimen/dp_20"/>
 
-                <TextView
-                    android:id="@+id/record_persion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="录入人：李四"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:layout_marginBottom="@dimen/dp_20"/>
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/finish_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="录入时与客户距离：400M"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:layout_marginBottom="@dimen/dp_20"
-                    android:visibility="gone"/>
+            <LinearLayout
+                android:id="@+id/void_delivery_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="47dp"
+                android:layout_marginRight="@dimen/dp_40"
+                android:layout_marginTop="@dimen/dp_40"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/delivery_btn"
+                    android:layout_width="134dp"
+                    android:layout_height="@dimen/dp_40"
+                    android:background="@drawable/set_bg_btn14"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:text="配送"/>
+
+                <Button
+                    android:id="@+id/void_sale_btn"
+                    android:layout_width="134dp"
+                    android:layout_height="@dimen/dp_40"
+                    android:background="@drawable/set_bg_btn17"
+                    android:textColor="#32C5FF"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="作废转直销"/>
 
             </LinearLayout>
+
+
+            <Button
+                android:id="@+id/take_order"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginLeft="47dp"
+                android:layout_marginRight="@dimen/dp_40"
+                android:background="@drawable/set_bg_btn14"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:layout_marginTop="@dimen/dp_40"
+                android:text="接单"/>
+
+
+            <Button
+                android:id="@+id/switch_order"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginLeft="47dp"
+                android:layout_marginRight="@dimen/dp_40"
+                android:background="@drawable/set_bg_btn17"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="转订单"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
