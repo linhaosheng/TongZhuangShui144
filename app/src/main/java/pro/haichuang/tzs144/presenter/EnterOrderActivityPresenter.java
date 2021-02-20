@@ -56,7 +56,7 @@ public class EnterOrderActivityPresenter {
                 try {
                     OrderStatusModel orderStatusModel = Utils.gsonInstane().fromJson(result, OrderStatusModel.class);
                     if (orderStatusModel.getResult()==1){
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS));
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,2));
                     }else {
                         iUpLoadFileView.errorLoad("提交失败");
                     }

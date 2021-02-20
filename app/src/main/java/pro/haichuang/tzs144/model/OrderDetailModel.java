@@ -61,6 +61,10 @@ public class OrderDetailModel {
          * distance :
          */
 
+        private int orderStatus;
+        private int salesDistance;
+        private String createName;
+        private String time;
         private int deliveryStatus;
         private String address;
         private String orderNo;
@@ -79,6 +83,38 @@ public class OrderDetailModel {
         private int realPrice;
         private String distance;
         private List<GoodsListBean> goodsList;
+
+        public int getOrderStatus() {
+            return orderStatus;
+        }
+
+        public void setOrderStatus(int orderStatus) {
+            this.orderStatus = orderStatus;
+        }
+
+        public int getSalesDistance() {
+            return salesDistance;
+        }
+
+        public void setSalesDistance(int salesDistance) {
+            this.salesDistance = salesDistance;
+        }
+
+        public String getCreateName() {
+            return createName;
+        }
+
+        public void setCreateName(String createName) {
+            this.createName = createName;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
 
         public int getDeliveryStatus() {
             return deliveryStatus;
