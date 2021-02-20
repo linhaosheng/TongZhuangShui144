@@ -2,12 +2,14 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,8 +17,13 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kongzue.dialog.v3.WaitDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +36,9 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AccountingListAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.AccountListModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.presenter.AccountingListPresenter;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
@@ -85,6 +94,17 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
                 Intent intent = new Intent(AccountingListActivity.this,AccountingListDetailActivity.class);
                 intent.putExtra("id",id);
                 startActivity(intent);
+            }
+        });
+        accountingListAdapter.addChildClickViewIds(R.id.write_off);
+        accountingListAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                if (view.getId()==R.id.write_off){
+                    String id = accountingListAdapter.getData().get(position).getId();
+                    WaitDialog.show(AccountingListActivity.this,"加载中...");
+                    accountingListPresenter.cancelAccount(id);
+                }
             }
         });
 
@@ -148,5 +168,30 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
     @Override
     public void errorLoad(String error) {
         WaitDialog.dismiss();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        WaitDialog.dismiss();
+        if (event != null) {
+            if (event.status == Config.LOAD_SUCCESS) {
+                Utils.showCenterTomast("销账成功");
+            } else {
+                Utils.showCenterTomast("销账失败");
+            }
+        }
+        Log.i(TAG, "onMessageEvent===");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

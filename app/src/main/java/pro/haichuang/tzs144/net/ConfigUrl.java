@@ -278,5 +278,10 @@ public class ConfigUrl {
      */
     public static final String ACCOUNT_CANCEL = "/api/app/finance/cancel";
 
+    /**
+     * [账目]销账
+     */
+    public static final String CANCEL_ACCOUNT = "/api/app/finance/cancelAccount";
+
 
 }

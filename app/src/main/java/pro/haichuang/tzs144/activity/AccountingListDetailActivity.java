@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,6 +19,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kongzue.dialog.v3.WaitDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +34,9 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AccountingListDetailAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.AccountListDetailModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.presenter.AccountingListDetailPresenter;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
@@ -88,6 +95,7 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
     private AccountingListDetailAdapter accountingListDetailAdapter;
     private final static  int SELECT_START_TIME = 0x110;
     private final static  int SELECT_END_TIME = 0x111;
+    private String id;
 
 
     @Override
@@ -119,7 +127,7 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
 
     @Override
     protected void setUpData() {
-        String id = getIntent().getStringExtra("id");
+        id = getIntent().getStringExtra("id");
         accountingListDetailPresenter = new AccountingListDetailPresenter(this);
         accountingListDetailPresenter.getAccountInfo(id);
     }
@@ -132,6 +140,8 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
                 finish();
                 break;
             case R.id.tips:
+                WaitDialog.show(this,"加载中...");
+                accountingListDetailPresenter.cancelAccount(id);
                 break;
             case R.id.start_time:
                 selectTime(SELECT_START_TIME);
@@ -155,6 +165,7 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
                    startTime.setText(Utils.formatSelectTime(date));
                  }else {
                      endTime.setText(Utils.formatSelectTime(date));
+                     accountingListDetailPresenter.getAccountInfo(id);
                  }
             }
         })
@@ -192,6 +203,31 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
         }else {
             orderTime.setText("结账日期："+dataBean.getTime());
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        WaitDialog.dismiss();
+        if (event != null && event.type==7) {
+            if (event.status == Config.LOAD_SUCCESS) {
+                Utils.showCenterTomast("销账成功");
+            } else {
+                Utils.showCenterTomast("销账失败");
+            }
+        }
+        Log.i(TAG, "onMessageEvent===");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

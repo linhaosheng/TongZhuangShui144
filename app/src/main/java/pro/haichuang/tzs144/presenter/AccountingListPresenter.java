@@ -2,13 +2,18 @@ package pro.haichuang.tzs144.presenter;
 
 import android.util.ArrayMap;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
+
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.AccountListModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
 public class AccountingListPresenter {
@@ -31,7 +36,6 @@ public class AccountingListPresenter {
         params.put("startTime",startTime);
         params.put("endTime",endTime);
 
-
         HttpRequestEngine.postRequest(ConfigUrl.FIND_ORDER_ACCOUNT, params, new HttpRequestResultListener() {
             @Override
             public void start() {
@@ -51,6 +55,40 @@ public class AccountingListPresenter {
             @Override
             public void error(String error) {
                 iLoadDataView.errorLoad(error);
+            }
+        });
+    }
+
+    /**
+     * [账目]销账
+     */
+    public final void cancelAccount(String id){
+
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+        HttpRequestEngine.postRequest(ConfigUrl.CANCEL_ACCOUNT, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+               try {
+                   JSONObject jsonObject = new JSONObject(result);
+                  if (jsonObject.getInt("result")==1){
+                      EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,6));
+                  }else {
+                      EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,6));
+                  }
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+            }
+
+            @Override
+            public void error(String error) {
+                EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,6));
             }
         });
     }
