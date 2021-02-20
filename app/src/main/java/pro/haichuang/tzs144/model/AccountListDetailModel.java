@@ -52,6 +52,7 @@ public class AccountListDetailModel {
          * list : [{"no":"","type":"","customerName":"","phone":"","customerType":"","totalPrice":"","receivablePrice":"","realPrice":"","xjPrice":"","waterNum":"","couponNum":"","monthNum":""}]
          */
 
+
         private String time;
         private String xjPrice;
         private String wxPrice;
@@ -150,6 +151,7 @@ public class AccountListDetailModel {
              * monthNum :
              */
 
+            private String id;
             private String no;
             private String type;
             private String customerName;
@@ -162,6 +164,14 @@ public class AccountListDetailModel {
             private String waterNum;
             private String couponNum;
             private String monthNum;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
 
             public String getNo() {
                 return no;

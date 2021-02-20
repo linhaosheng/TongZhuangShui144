@@ -32,6 +32,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.AddClientActivity;
+import pro.haichuang.tzs144.activity.ClientDetailActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
 import pro.haichuang.tzs144.adapter.OrderNumTrendAdapter;
 import pro.haichuang.tzs144.adapter.OrderPaymentAdapter;
@@ -70,8 +71,6 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     SwipeRefreshLayout refresh;
     @BindView(R.id.left_text)
     TextView leftText;
-    @BindView(R.id.filter)
-    ImageView filter;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
     @BindView(R.id.search_view)
@@ -127,7 +126,10 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         orderPaymentAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-
+                 String clientID = orderPaymentAdapter.getData().get(position).getId();
+                 Intent intent = new Intent(getActivity(), ClientDetailActivity.class);
+                 intent.putExtra("id",clientID);
+                 startActivity(intent);
             }
         });
     }

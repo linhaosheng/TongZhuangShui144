@@ -8,8 +8,9 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import org.jetbrains.annotations.NotNull;
 
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.model.ClientDetailModel;
 
-public class AddressListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataBean.AddressListBean, BaseViewHolder> {
 
 
     public AddressListAdapter() {
@@ -17,13 +18,15 @@ public class AddressListAdapter extends BaseQuickAdapter<String, BaseViewHolder>
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, String baseMedia) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, ClientDetailModel.DataBean.AddressListBean data) {
         int position = baseViewHolder.getPosition();
         if (position==0){
             baseViewHolder.getView(R.id.default_address).setVisibility(View.VISIBLE);
         }else {
             baseViewHolder.getView(R.id.default_address).setVisibility(View.GONE);
         }
+        baseViewHolder.setText(R.id.address,data.getAddressName())
+                .setText(R.id.address_detail,data.getAddress());
 
     }
 }

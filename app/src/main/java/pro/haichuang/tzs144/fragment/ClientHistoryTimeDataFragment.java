@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.fragment;
 
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -28,14 +29,17 @@ import java.util.List;
 
 import butterknife.BindView;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.activity.SaleOrderDetailActivity;
 import pro.haichuang.tzs144.adapter.OrderPaymentAdapter;
 import pro.haichuang.tzs144.adapter.OrderTrendAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.AccountHistoryModel;
+import pro.haichuang.tzs144.model.ClientTypeSearchModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.TrendModel;
 import pro.haichuang.tzs144.presenter.ClientHistoryTimeDatapPresenter;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.ClientFilterDialog;
 
 /**
  * 客户历史数据
@@ -51,6 +55,8 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     RecyclerView recycleDataDetail;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
+    @BindView(R.id.bill_order)
+    TextView billOrder;
 
     private OrderPaymentAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
@@ -75,7 +81,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Override
     protected void setUpView() {
-
+        billOrder.setVisibility(View.GONE);
         refresh.setOnRefreshListener(this);
         orderPaymentAdapter = new OrderPaymentAdapter();
         orderTrendAdapter  = new OrderTrendAdapter();
@@ -97,6 +103,19 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
             }
         });
         filter = headView.findViewById(R.id.filter);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClientFilterDialog clientFilterDialog = new ClientFilterDialog(getActivity(), new ClientFilterDialog.ClientTypeListener() {
+                    @Override
+                    public void filterSearch(ClientTypeSearchModel clientTypeSearchModel) {
+
+                    }
+                });
+                clientFilterDialog.show(getChildFragmentManager(),"");
+
+            }
+        });
 
         recycleDataTrend.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recycleDataTrend.setAdapter(orderTrendAdapter);
@@ -104,7 +123,10 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
         orderTrendAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-
+                String orderNumId = orderPaymentAdapter.getData().get(position).getId();
+                Intent intent = new Intent(getActivity(), SaleOrderDetailActivity.class);
+                intent.putExtra("id",orderNumId);
+                startActivity(intent);
             }
         });
 

@@ -153,7 +153,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/_shop_last_date"
+                        android:id="@+id/shop_last_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"

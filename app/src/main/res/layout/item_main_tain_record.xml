@@ -28,7 +28,7 @@
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="编辑"
+        android:text="删除"
         android:layout_alignParentRight="true"
         android:textColor="#E02020"
         android:textSize="12sp"

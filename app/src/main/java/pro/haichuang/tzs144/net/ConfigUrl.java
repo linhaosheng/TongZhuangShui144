@@ -268,5 +268,15 @@ public class ConfigUrl {
      */
     public static final String DELIVERY_ORDER = "/api/app/order/deliveryOrder";
 
+    /**
+     * [账务]账务管理 - 结账
+     */
+    public static final String SETTLE = "/api/app/finance/settle";
+
+    /**
+     * [账务]账务管理 - 作废
+     */
+    public static final String ACCOUNT_CANCEL = "/api/app/finance/cancel";
+
 
 }

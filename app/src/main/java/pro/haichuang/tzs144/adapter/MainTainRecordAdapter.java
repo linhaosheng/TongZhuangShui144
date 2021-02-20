@@ -8,8 +8,9 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import org.jetbrains.annotations.NotNull;
 
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.model.ClientDetailModel;
 
-public class MainTainRecordAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class MainTainRecordAdapter extends BaseQuickAdapter<ClientDetailModel.DataBean.MaintainListBean, BaseViewHolder> {
 
 
     public MainTainRecordAdapter() {
@@ -17,7 +18,9 @@ public class MainTainRecordAdapter extends BaseQuickAdapter<String, BaseViewHold
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, String baseMedia) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, ClientDetailModel.DataBean.MaintainListBean data) {
 
+        baseViewHolder.setText(R.id.time,data.getTime())
+                .setText(R.id.record_txt,data.getMaintainInfo());
     }
 }

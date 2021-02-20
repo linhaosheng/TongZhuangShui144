@@ -4,14 +4,20 @@ import android.util.ArrayMap;
 
 import java.util.Map;
 
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.OrderRecordModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Utils;
 
 public class OrderRecordActivityPresenter {
 
-    public OrderRecordActivityPresenter(){
+    private ILoadDataView iLoadDataView;
 
+
+    public OrderRecordActivityPresenter(ILoadDataView mILoadDataView){
+        this.iLoadDataView = mILoadDataView;
     }
 
     /**
@@ -32,17 +38,22 @@ public class OrderRecordActivityPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.FINF_CUSTOMER_ORDERS, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                iLoadDataView.startLoad();
             }
 
             @Override
             public void success(String result) {
-
+                OrderRecordModel orderRecordModel = Utils.gsonInstane().fromJson(result, OrderRecordModel.class);
+                if (orderRecordModel.getResult()==1){
+                    iLoadDataView.successLoad(orderRecordModel.getData());
+                }else {
+                    iLoadDataView.errorLoad("获取失败");
+                }
             }
 
             @Override
             public void error(String error) {
-
+                iLoadDataView.errorLoad(error);
             }
         });
 

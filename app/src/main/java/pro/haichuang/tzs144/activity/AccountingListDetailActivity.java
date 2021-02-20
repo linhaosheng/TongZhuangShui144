@@ -1,17 +1,21 @@
 package pro.haichuang.tzs144.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
@@ -102,6 +106,15 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
         accountingListDetailAdapter = new AccountingListDetailAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(accountingListDetailAdapter);
+        accountingListDetailAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                String orderNumId = accountingListDetailAdapter.getData().get(position).getId();
+                Intent intent = new Intent(AccountingListDetailActivity.this, SaleOrderDetailActivity.class);
+                intent.putExtra("id",orderNumId);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

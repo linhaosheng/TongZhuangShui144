@@ -1,17 +1,22 @@
 package pro.haichuang.tzs144.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,12 +27,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.OrderRecordAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.OrderRecordModel;
+import pro.haichuang.tzs144.presenter.OrderRecordActivityPresenter;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 订单记录
  */
-public class OrderRecordActivity extends BaseActivity {
+public class OrderRecordActivity extends BaseActivity implements ILoadDataView<OrderRecordModel.DataBean> {
 
 
     @BindView(R.id.back)
@@ -54,17 +62,20 @@ public class OrderRecordActivity extends BaseActivity {
     TextView endTime;
     @BindView(R.id.shop_num)
     TextView shopNum;
-    @BindView(R.id._shop_last_date)
+    @BindView(R.id.shop_last_date)
     TextView ShopLastDate;
     @BindView(R.id.shop_last_week)
     TextView shopLastWeek;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
 
+    private String customerId;
+
     private OrderRecordAdapter orderRecordAdapter;
-    private List<String> datas;
     private final static  int SELECT_START_TIME = 0x110;
     private final static  int SELECT_END_TIME = 0x111;
+    private OrderRecordActivityPresenter orderRecordActivityPresenter;
+    private int currentPage = 1;
 
 
     @Override
@@ -78,19 +89,26 @@ public class OrderRecordActivity extends BaseActivity {
         orderRecordAdapter = new OrderRecordAdapter(this);
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(orderRecordAdapter);
-
+        orderRecordAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                String orderNumId = orderRecordAdapter.getData().get(position).getId();
+                Intent intent = new Intent(OrderRecordActivity.this, SaleOrderDetailActivity.class);
+                intent.putExtra("id",orderNumId);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void setUpData() {
-        datas = new ArrayList<>();
-        datas.add("" + 0);
-        datas.add("" + 1);
-        datas.add("" + 2);
-        datas.add("" + 0);
-        datas.add("" + 1);
-        datas.add("" + 2);
-        orderRecordAdapter.setList(datas);
+        customerId = getIntent().getStringExtra("id");
+        if (customerId==null){
+            return;
+        }
+        orderRecordActivityPresenter = new OrderRecordActivityPresenter(this);
+        endTime.setText(Utils.formatSelectTime(new Date()));
+        orderRecordActivityPresenter.findCustomerOrders(customerId,startTime.getText().toString(),endTime.getText().toString(),currentPage);
     }
 
 
@@ -123,10 +141,34 @@ public class OrderRecordActivity extends BaseActivity {
                     startTime.setText(Utils.formatSelectTime(date));
                 }else {
                     endTime.setText(Utils.formatSelectTime(date));
+                    orderRecordActivityPresenter.findCustomerOrders(customerId,startTime.getText().toString(),endTime.getText().toString(),currentPage);
                 }
             }
         })
                 .build();
         pvTime.show();
+    }
+
+    @Override
+    public void startLoad() {
+        WaitDialog.show(this,"加载中...");
+    }
+
+    @Override
+    public void successLoad(OrderRecordModel.DataBean data) {
+        WaitDialog.dismiss();
+        orderNum.setText(data.getOrderCount());
+        lastDate.setText(data.getDayOrderRatio());
+        lastWeek.setText(data.getWeekOrderRatio());
+        shopNum.setText(data.getSaleCount());
+        ShopLastDate.setText(data.getDaySaleRatio());
+        shopLastWeek.setText(data.getWeekSaleRatio());
+        orderRecordAdapter.setList(data.getOrderList());
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        WaitDialog.dismiss();
+        Utils.showCenterTomast(error);
     }
 }

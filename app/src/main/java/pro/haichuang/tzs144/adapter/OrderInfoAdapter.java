@@ -48,7 +48,7 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             order_state_img.setVisibility(View.VISIBLE);
         }
 
-        String order_num = "订单编号："+dataBean.getId();
+        String order_num = "订单编号："+dataBean.getOrderNo();
         String order_state = "";
         if (dataBean.getOrderType().equals("0")){
             order_state = "直接销售";
@@ -75,10 +75,6 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
                 .setText(R.id.address,dataBean.getAddress())
                 .setText(R.id.distance,distance)
                 .setText(R.id.order_detail_info,order_detail_info);
-
-
-
-
 
     }
 }

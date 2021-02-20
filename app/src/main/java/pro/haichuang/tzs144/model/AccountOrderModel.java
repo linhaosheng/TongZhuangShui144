@@ -54,6 +54,7 @@ public class AccountOrderModel {
          * monthNum :
          */
 
+        private String id;
         private String no;
         private String type;
         private String customerName;
@@ -65,6 +66,14 @@ public class AccountOrderModel {
         private String waterNum;
         private String couponNum;
         private String monthNum;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getNo() {
             return no;

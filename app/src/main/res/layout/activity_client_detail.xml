@@ -71,7 +71,7 @@
                 android:id="@+id/develop_persion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="发展人员：：唐老鸭"
+                android:text="发展人员：唐老鸭"
                 android:textColor="#3F3F3F"
                 android:textSize="12sp"
                 android:layout_marginLeft="@dimen/dp_20"
@@ -81,7 +81,7 @@
                 android:id="@+id/business_persion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="业务人员：：美国队长"
+                android:text="业务人员：美国队长"
                 android:textColor="#3F3F3F"
                 android:textSize="12sp"
                 android:layout_marginLeft="@dimen/dp_20"
@@ -153,7 +153,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"/>
-
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
