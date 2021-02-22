@@ -1,14 +1,16 @@
 package pro.haichuang.tzs144.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +20,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AllocationRecordAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AllocationRecordModel;
+import pro.haichuang.tzs144.presenter.AllocationRecordActivityPresenter;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 调拨记录
  */
-public class AllocationRecordActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class AllocationRecordActivity extends BaseActivity implements ILoadDataView<List<AllocationRecordModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -39,15 +45,15 @@ public class AllocationRecordActivity extends BaseActivity implements SwipeRefre
     RelativeLayout headView;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout refresh;
-    @BindView(R.id.order_state)
-    TextView orderState;
+    @BindView(R.id.empty)
+    ImageView empty;
+    @BindView(R.id.empty_info)
+    TextView emptyInfo;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
-
     private AllocationRecordAdapter allocationRecordAdapter;
-    private List<String>listData;
+    private AllocationRecordActivityPresenter allocationRecordActivityPresenter;
+    private int currentPage = 1;
 
     @Override
     protected int setLayoutResourceID() {
@@ -56,20 +62,16 @@ public class AllocationRecordActivity extends BaseActivity implements SwipeRefre
 
     @Override
     protected void setUpView() {
-        refresh.setOnRefreshListener(this);
         title.setText("调拨记录");
-        allocationRecordAdapter = new AllocationRecordAdapter();
-        recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+        allocationRecordAdapter = new AllocationRecordAdapter(this);
+        recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(allocationRecordAdapter);
     }
 
     @Override
     protected void setUpData() {
-        listData = new ArrayList<>();
-        listData.add("");
-        listData.add("");
-        listData.add("");
-        allocationRecordAdapter.setList(listData);
+        allocationRecordActivityPresenter = new AllocationRecordActivityPresenter(this);
+        allocationRecordActivityPresenter.findAllotGoodsLog(currentPage);
     }
 
 
@@ -78,13 +80,26 @@ public class AllocationRecordActivity extends BaseActivity implements SwipeRefre
         finish();
     }
 
+
     @Override
-    public void onRefresh() {
-        refresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refresh.setRefreshing(false);
-            }
-        },2000);
+    public void startLoad() {
+        WaitDialog.show(this,"加载中...");
+    }
+
+    @Override
+    public void successLoad(List<AllocationRecordModel.DataBean> data) {
+        WaitDialog.dismiss();
+        if (data!=null && data.size()>0){
+            emptyView.setVisibility(View.GONE);
+            allocationRecordAdapter.setList(data);
+        }else {
+            emptyView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        WaitDialog.dismiss();
+        Utils.showCenterTomast(error);
     }
 }

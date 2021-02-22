@@ -29,6 +29,7 @@
         android:text="调拨至库存主体：全家超市" />
 
     <RelativeLayout
+        android:id="@+id/shop_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/set_bg_btn16"
