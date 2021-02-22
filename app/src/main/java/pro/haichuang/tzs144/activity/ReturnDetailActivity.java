@@ -20,11 +20,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.ReturnDetailAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.ReturnDetailModel;
+import pro.haichuang.tzs144.presenter.ReturnDetailActivityPresenter;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 取水还桶明细
  */
-public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<List<ReturnDetailModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -43,7 +47,8 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
     RelativeLayout emptyView;
 
     private ReturnDetailAdapter returnDetailAdapter;
-    private List<String>listData;
+    private ReturnDetailActivityPresenter returnDetailActivityPresenter;
+
 
     @Override
     protected int setLayoutResourceID() {
@@ -60,11 +65,8 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
     @Override
     protected void setUpData() {
-        listData = new ArrayList<>();
-        listData.add("");
-        listData.add("");
-        listData.add("");
-        returnDetailAdapter.setList(listData);
+        returnDetailActivityPresenter = new ReturnDetailActivityPresenter(this);
+        //returnDetailActivityPresenter.findQsstLogs();
     }
 
 
@@ -76,17 +78,35 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 finish();
                 break;
             case R.id.filter:
+
                 break;
         }
     }
 
     @Override
     public void onRefresh() {
-        refresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refresh.setRefreshing(false);
-            }
-        },2000);
+       // returnDetailActivityPresenter.findQsstLogs();
+    }
+
+    @Override
+    public void startLoad() {
+        refresh.setRefreshing(true);
+    }
+
+    @Override
+    public void successLoad(List<ReturnDetailModel.DataBean> data) {
+        refresh.setRefreshing(false);
+        returnDetailAdapter.setList(data);
+        if (data!=null && data.size()>0){
+            emptyView.setVisibility(View.GONE);
+        }else {
+            emptyView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        refresh.setRefreshing(false);
+        Utils.showCenterTomast(error);
     }
 }

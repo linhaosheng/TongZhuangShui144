@@ -1,6 +1,8 @@
 package pro.haichuang.tzs144.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,14 +10,28 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
+import com.kongzue.dialog.v3.BottomMenu;
 import com.kongzue.dialog.v3.WaitDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.GoodsShopEvent;
+import pro.haichuang.tzs144.model.GoodsShopModel;
+import pro.haichuang.tzs144.model.SaleDataModel;
 import pro.haichuang.tzs144.presenter.HistoryWithDrawalOrderActivityPresenter;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.LSettingItem;
 
 /**
@@ -52,12 +68,20 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
     LSettingItem mortgageNum;
     @BindView(R.id.mortgage_type)
     LSettingItem mortgageType;
+    @BindView(R.id.mortgage_goods)
+    LSettingItem mortgageGoods;
     @BindView(R.id.with_drawal_btn)
     Button withDrawalBtn;
     @BindView(R.id.deposit_money)
     EditText depositMoney;
 
     private HistoryWithDrawalOrderActivityPresenter historyWithDrawalOrderActivityPresenter;
+    private List<CharSequence>depositType;
+    private List<CharSequence>depositGoodShopList;
+    private  GoodsShopModel goodsShopModel;
+    private String goodsId;
+    private String customerId;
+    private  String type;
 
     @Override
     protected int setLayoutResourceID() {
@@ -67,14 +91,51 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
     @Override
     protected void setUpView() {
        title.setText("退押");
+        mortgageGoods.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+                BottomMenu.show(HistoryWithDrawalOrderActivity.this, depositGoodShopList, new OnMenuItemClickListener() {
+                    @Override
+                    public void onClick(String text, int index) {
+                        mortgageGoods.setRightText(text);
+                        goodsId = goodsShopModel.getData().get(index).getId() +"";
+                    }
+                });
+            }
+        });
     }
 
     @Override
     protected void setUpData() {
         historyWithDrawalOrderActivityPresenter = new HistoryWithDrawalOrderActivityPresenter(this);
-
+        historyWithDrawalOrderActivityPresenter.findDepositGoods();
+        String dataBeanJson = getIntent().getStringExtra(Config.PERSION_INFO);
+        if (dataBeanJson!=null){
+            SaleDataModel.DataBean dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+            name.setText(dataBean.getName());
+            phone.setText(dataBean.getPhone());
+            address.setText(dataBean.getAddressName());
+            addressDetail.setText(dataBean.getAddress());
+            customerId = dataBean.getId()+"";
+        }
+        depositType = new ArrayList<>();
+        depositType.add("押金");
+        depositType.add("借条");
+        depositType.add("暂欠");
+        mortgageType.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+                BottomMenu.show(HistoryWithDrawalOrderActivity.this, depositType, new OnMenuItemClickListener() {
+                    @Override
+                    public void onClick(String text, int index) {
+                        mortgageType.setRightText(text);
+                        type = index+"";
+                    }
+                });
+            }
+        });
+        depositGoodShopList = new ArrayList<>();
     }
-
 
 
     @OnClick({R.id.back, R.id.with_drawal_btn})
@@ -84,6 +145,32 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
                 finish();
                 break;
             case R.id.with_drawal_btn:
+                String no = guaranteePersionPhone.getEditText();
+                if (no==null || no.equals("")){
+                    Utils.showCenterTomast("请输入押金编号");
+                    return;
+                }
+                String bookNo = depositNumber.getEditText();
+                if (bookNo==null || bookNo.equals("")){
+                    Utils.showCenterTomast("请输入押金本编号");
+                    return;
+                }
+                String num = mortgageNum.getEditText();
+                if (num==null || num.equals("")){
+                    Utils.showCenterTomast("请输入数量");
+                    return;
+                }
+                String price = mortgagePrice.getEditText();
+                if (price==null || price.equals("")){
+                    Utils.showCenterTomast("请输入价格");
+                    return;
+                }
+
+                if (mortgageType.getRightText().contains("请选择")){
+                    Utils.showCenterTomast("请输入开押类型");
+                    return;
+                }
+                historyWithDrawalOrderActivityPresenter.saveHistory(no,bookNo,customerId,goodsId,price,num,type);
                 break;
         }
     }
@@ -96,10 +183,41 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
     @Override
     public void successLoad(String data) {
         WaitDialog.dismiss();
+        Utils.showCenterTomast(data);
+        finish();
     }
 
     @Override
     public void errorLoad(String error) {
         WaitDialog.dismiss();
+        Utils.showCenterTomast(error);
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(GoodsShopEvent event) {
+        WaitDialog.dismiss();
+        if (event != null) {
+            goodsShopModel = event.goodsShopModel;
+            if (goodsShopModel.getData()!=null){
+                for (GoodsShopModel.DataBean dataBean : goodsShopModel.getData()){
+                    depositGoodShopList.add(dataBean.getName());
+                }
+            }
+        }
+        Log.i(TAG, "onMessageEvent===");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
 }

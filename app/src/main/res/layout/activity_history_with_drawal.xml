@@ -109,6 +109,19 @@
            app:rightIconSize="@dimen/dp_22" />
 
        <pro.haichuang.tzs144.view.LSettingItem
+           android:id="@+id/mortgage_goods"
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/dp_50"
+           app:LtextColor="#000000"
+           app:leftText="开押物品"
+           app:leftTextMarginLeft="@dimen/dp_10"
+           app:rightStyle="iconHide"
+           app:isShowRightText = "true"
+           app:rightText="请选择"
+           app:showEditInput="false"
+           app:rightIconSize="@dimen/dp_22" />
+
+       <pro.haichuang.tzs144.view.LSettingItem
            android:id="@+id/mortgage_price"
            android:layout_width="match_parent"
            android:layout_height="@dimen/dp_50"

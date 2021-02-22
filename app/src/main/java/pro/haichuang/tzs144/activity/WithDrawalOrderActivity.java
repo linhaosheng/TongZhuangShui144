@@ -3,6 +3,8 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,11 +26,16 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.DepositManagementSearchAdapter;
 import pro.haichuang.tzs144.adapter.WithDrawalOrderAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.WithDrawalOrderModel;
+import pro.haichuang.tzs144.presenter.WithDrawalOrderPresenter;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 退押订单列表
  */
-public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener , ILoadDataView<List<WithDrawalOrderModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -45,13 +52,11 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
     RecyclerView recycleData;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
-    @BindView(R.id.order_state)
-    TextView orderState;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
 
     private WithDrawalOrderAdapter withDrawalOrderAdapter;
-    private List<String> listData;
+    private WithDrawalOrderPresenter withDrawalOrderPresenter;
 
     @Override
     protected int setLayoutResourceID() {
@@ -60,7 +65,7 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
 
     @Override
     protected void setUpView() {
-        withDrawalOrderAdapter = new WithDrawalOrderAdapter();
+        withDrawalOrderAdapter = new WithDrawalOrderAdapter(this);
         refresh.setOnRefreshListener(this);
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(withDrawalOrderAdapter);
@@ -68,11 +73,25 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
 
     @Override
     protected void setUpData() {
-        listData = new ArrayList<>();
-        for (int i = 0;i<6;i++){
-            listData.add("");
-        }
-        withDrawalOrderAdapter.setList(listData);
+        withDrawalOrderPresenter = new WithDrawalOrderPresenter(this);
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+             if (searchEdit.getText()!=null){
+                 withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString());
+             }
+            }
+        });
     }
 
 
@@ -83,27 +102,52 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
                 finish();
                 break;
             case R.id.add_with_drawal:
-                Intent intent = new Intent(this,AddWithDrawalOrderActivity.class);
+                Intent intent = new Intent(this,SaleSearchActivity.class);
+                intent.putExtra("type","add_with_drawal");
                 startActivity(intent);
                 break;
             case R.id.historical_deposit:
-                Intent intent1 = new Intent(this,HistoryWithDrawalOrderActivity.class);
-                startActivity(intent1);
+                Intent intent2 = new Intent(this,SaleSearchActivity.class);
+                intent2.putExtra("type","historical_deposit");
+                startActivity(intent2);
+
                 break;
             case R.id.detention_record:
-                Intent intent2 = new Intent(this,VoidWithDrawalOrderActivity.class);
-                startActivity(intent2);
+                Intent intent3 = new Intent(this,VoidWithDrawalOrderActivity.class);
+                startActivity(intent3);
                 break;
         }
     }
 
     @Override
     public void onRefresh() {
-       refresh.postDelayed(new Runnable() {
-           @Override
-           public void run() {
-               refresh.setRefreshing(false);
-           }
-       },2000);
+     refresh.postDelayed(new Runnable() {
+         @Override
+         public void run() {
+             refresh.setRefreshing(false);
+         }
+     },2000);
+    }
+
+    @Override
+    public void startLoad() {
+        refresh.setRefreshing(true);
+    }
+
+    @Override
+    public void successLoad(List<WithDrawalOrderModel.DataBean> data) {
+        refresh.setRefreshing(false);
+        if (data==null || data.size()==0){
+            emptyView.setVisibility(View.VISIBLE);
+        }else {
+            emptyView.setVisibility(View.GONE);
+        }
+        withDrawalOrderAdapter.setList(data);
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        refresh.setRefreshing(false);
+        Utils.showCenterTomast(error);
     }
 }

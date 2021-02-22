@@ -43,7 +43,6 @@
                     android:textColor="#999999"
                     android:textSize="14sp" />
 
-
                 <TextView
                     android:id="@+id/address"
                     android:layout_width="@dimen/dp_100"
@@ -73,7 +72,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#F8F8F8"
-                android:layout_below="@+id/client_info"/>
+                android:layout_below="@+id/client_info"
+                />
+
+            <include layout="@layout/item_empty"/>
 
             <Button
                 android:id="@+id/with_drawal_btn"

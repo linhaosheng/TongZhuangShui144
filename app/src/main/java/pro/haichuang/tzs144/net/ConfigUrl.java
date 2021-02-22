@@ -178,10 +178,28 @@ public class ConfigUrl {
      */
     public static final String BACK_DEPOSIT = "/api/app/depositManage/backDeposit";
 
+
+    /**
+     * [押金]退押
+     */
+    public static final String RETURN_DEPOSIT = "/api/app/depositManage/returnDeposits";
+
+
+    /**
+     * [押金]新增退押 - 列表数据
+     */
+    public static final String FIND_BY_RETURN_DEPOSITS = "/api/app/depositManage/findByKhReturnDeposits";
+
     /**
      * [押金]提交退押（手动录入）
      */
     public static final String BACK_DEPOSIT_FILL = "/api/app/depositManage/backDepositFill";
+
+    /**
+     *[押金]存储历史退押
+     */
+    public static final String SAVE_HISTORY = "/api/app/depositManage/saveHistory";
+
 
     /**
      * 客户搜索
@@ -282,6 +300,18 @@ public class ConfigUrl {
      * [账目]销账
      */
     public static final String CANCEL_ACCOUNT = "/api/app/finance/cancelAccount";
+
+
+    /**
+     * [押金]退押订单列表
+     */
+    public static final String  FIND_RETURN_DEPOSITS = "/api/app/depositManage/findReturnDeposits";
+
+    /**
+     * [押金]查询开押商品
+     */
+    public static final String FIND_DEPOSIT_GOODS = "/api/app/depositManage/findDepositGoods";
+
 
 
 }

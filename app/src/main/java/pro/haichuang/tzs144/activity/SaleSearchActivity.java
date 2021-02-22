@@ -64,6 +64,7 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
     private SaleSearchActivityPresenter searchActivityPresenter;
 
     private SaleSearcAdapter saleSearcAdapter;
+    private String type;
 
 
     @Override
@@ -73,6 +74,7 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
 
     @Override
     protected void setUpView() {
+        type = getIntent().getStringExtra("type");
         title.setText("客户销售");
         tipImg.setVisibility(View.VISIBLE);
         tipImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.more));
@@ -86,10 +88,21 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
                 SaleDataModel.DataBean dataBean = saleSearcAdapter.getData().get(position);
                 String dataStr = Utils.gsonInstane().toJson(dataBean);
 
-                Intent intent = new Intent();
-                intent.putExtra(Config.PERSION_INFO,dataStr);
-                SaleSearchActivity.this.setResult(RESULT_OK, intent);
-                SaleSearchActivity.this.finish();
+                if (type!=null && type.equals("add_with_drawal")){
+
+                    Intent intent = new Intent(SaleSearchActivity.this,AddWithDrawalOrderActivity.class);
+                    intent.putExtra(Config.PERSION_INFO,dataStr);
+                    startActivity(intent);
+                }else if (type!=null && type.equals("historical_deposit")){
+                    Intent intent1 = new Intent(SaleSearchActivity.this,HistoryWithDrawalOrderActivity.class);
+                    intent1.putExtra(Config.PERSION_INFO,dataStr);
+                    startActivity(intent1);
+                }else {
+                    Intent intent = new Intent();
+                    intent.putExtra(Config.PERSION_INFO,dataStr);
+                    SaleSearchActivity.this.setResult(RESULT_OK, intent);
+                    SaleSearchActivity.this.finish();
+                }
             }
         });
 
@@ -146,7 +159,6 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
     public void successLoad(List<SaleDataModel.DataBean> data) {
         refresh.setRefreshing(false);
         saleSearcAdapter.setList(data);
-
     }
 
     @Override
