@@ -166,8 +166,6 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
 
                     }
                 });
-                //listData.add("");
-                //demandListAdapter.setList(listData);
                 break;
             case R.id.input_btn:
 

@@ -28,8 +28,10 @@ public class Utils {
 
     private static final double EARTH_RADIUS = 6378137;//赤道半径
     public static final String YMDHMS_BREAK = "yyyy-MM-dd HH:mm:ss";
+    public static final String YMDHMS_BREAK2 = "yyyy-MM-dd HH:mm";
     public static final String YMD = "yyyy-MM-dd";
     private static SimpleDateFormat sdf = new SimpleDateFormat(YMDHMS_BREAK);// 格式化时间
+    private static SimpleDateFormat sdf2 = new SimpleDateFormat(YMDHMS_BREAK2);// 格式化时间
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YMD);// 格式化时间
     private static Gson gson;
 
@@ -53,6 +55,12 @@ public class Utils {
         String formatTime = sdf.format(date);
         return formatTime;
     }
+
+    public static String transformTime2(Date date){
+        String formatTime = sdf2.format(date);
+        return formatTime;
+    }
+
 
     /**
      * 像素转换

@@ -26,6 +26,7 @@
         android:id="@+id/end_time"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
+        android:background="#fff"
         app:LtextColor="#333333"
         app:leftText="预计送达结束时间"
         app:leftTextMarginLeft="@dimen/dp_20"

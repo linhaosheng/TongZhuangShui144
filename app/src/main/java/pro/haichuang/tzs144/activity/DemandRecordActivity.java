@@ -2,14 +2,15 @@ package pro.haichuang.tzs144.activity;
 
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
-import pro.haichuang.tzs144.adapter.AllocationRecordAdapter;
 import pro.haichuang.tzs144.adapter.DemandRecordAdapter;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.DemandRecordModel;
+import pro.haichuang.tzs144.presenter.DemandRecordActivityPresenter;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 需求记录
  */
-public class DemandRecordActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class DemandRecordActivity extends BaseActivity implements ILoadDataView<List<DemandRecordModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -41,15 +45,15 @@ public class DemandRecordActivity extends BaseActivity implements SwipeRefreshLa
     RelativeLayout headView;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout refresh;
-    @BindView(R.id.order_state)
-    TextView orderState;
+    @BindView(R.id.empty)
+    ImageView empty;
+    @BindView(R.id.empty_info)
+    TextView emptyInfo;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
-
     private DemandRecordAdapter demandRecordAdapter;
-    private List<String> listData;
+    private int currentPage = 1;
+    private DemandRecordActivityPresenter demandRecordActivityPresenter;
 
     @Override
     protected int setLayoutResourceID() {
@@ -58,20 +62,17 @@ public class DemandRecordActivity extends BaseActivity implements SwipeRefreshLa
 
     @Override
     protected void setUpView() {
-      refresh.setOnRefreshListener(this);
+
         title.setText("需求记录");
-        demandRecordAdapter = new DemandRecordAdapter();
-        recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+        demandRecordAdapter = new DemandRecordAdapter(this);
+        recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(demandRecordAdapter);
     }
 
     @Override
     protected void setUpData() {
-        listData = new ArrayList<>();
-        listData.add("");
-        listData.add("");
-        listData.add("");
-        demandRecordAdapter.setList(listData);
+        demandRecordActivityPresenter = new DemandRecordActivityPresenter(this);
+        demandRecordActivityPresenter.findDemands(currentPage);
     }
 
 
@@ -81,12 +82,24 @@ public class DemandRecordActivity extends BaseActivity implements SwipeRefreshLa
     }
 
     @Override
-    public void onRefresh() {
-        refresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refresh.setRefreshing(false);
-            }
-        },2000);
+    public void startLoad() {
+        WaitDialog.show(this,"加载中...");
+    }
+
+    @Override
+    public void successLoad(List<DemandRecordModel.DataBean> data) {
+        WaitDialog.dismiss();
+        if (data!=null && data.size()>0){
+            emptyView.setVisibility(View.GONE);
+            demandRecordAdapter.setList(data);
+        }else {
+            emptyView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        WaitDialog.dismiss();
+        Utils.showCenterTomast(error);
     }
 }

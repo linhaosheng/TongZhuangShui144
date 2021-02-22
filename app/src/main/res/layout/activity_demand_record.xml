@@ -7,18 +7,12 @@
 
     <include layout="@layout/header"/>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/head_view">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent"
+            android:layout_below="@+id/head_view"/>
 
     <include layout="@layout/item_empty"/>
 
