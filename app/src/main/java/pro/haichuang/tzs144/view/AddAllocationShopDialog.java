@@ -42,7 +42,7 @@ import pro.haichuang.tzs144.util.Utils;
 /**
  * 添加商品
  */
-public class AddShopDialog extends DialogFragment {
+public class AddAllocationShopDialog extends DialogFragment {
 
 
     @BindView(R.id.recycle_data)
@@ -56,6 +56,7 @@ public class AddShopDialog extends DialogFragment {
     private Context context;
     private SelectShopListener selectShopListener;
     private int selectShopPosition;
+    private List<ShopModel.DataBean>dataBeans;
 
 
     @Override
@@ -64,9 +65,10 @@ public class AddShopDialog extends DialogFragment {
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TurnTableDilogTheme);
     }
 
-    public AddShopDialog(Context mContext,SelectShopListener selectShopListener) {
+    public AddAllocationShopDialog(Context mContext,List<ShopModel.DataBean>dataBeans, SelectShopListener selectShopListener) {
         this.context = mContext;
         this.selectShopListener = selectShopListener;
+        this.dataBeans = dataBeans;
     }
 
 
@@ -102,8 +104,7 @@ public class AddShopDialog extends DialogFragment {
         addShopDialogAdapter = new AddShopDialogAdapter(context);
         recycleData.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(addShopDialogAdapter);
-        loadShpData();
-
+        addShopDialogAdapter.setList(dataBeans);
         addShopDialogAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
@@ -157,33 +158,6 @@ public class AddShopDialog extends DialogFragment {
         }
     }
 
-    /**
-     * 查找商品
-     *
-     */
-    public void loadShpData() {
-        Map<String,Object> map = new ArrayMap<>();
-        map.put("query","");
-
-        HttpRequestEngine.postRequest(ConfigUrl.FIND_SHOP, map
-                , new HttpRequestResultListener() {
-            @Override
-            public void start() {
-
-            }
-
-            @Override
-            public void success(String result) {
-                ShopModel shopModel = Utils.gsonInstane().fromJson(result, ShopModel.class);
-                addShopDialogAdapter.setList(shopModel.getData());
-            }
-
-            @Override
-            public void error(String error) {
-
-            }
-        });
-    }
 
     public interface  SelectShopListener{
         void selectShop(ShopModel.DataBean dataBean);

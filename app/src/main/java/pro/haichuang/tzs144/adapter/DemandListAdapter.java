@@ -6,11 +6,12 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import org.jetbrains.annotations.NotNull;
 
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.model.GoodBeanModel;
 
 /**
  * 需求列表适配器
  */
-public class DemandListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class DemandListAdapter extends BaseQuickAdapter<GoodBeanModel, BaseViewHolder> {
 
 
     public DemandListAdapter() {
@@ -18,7 +19,7 @@ public class DemandListAdapter extends BaseQuickAdapter<String, BaseViewHolder> 
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, String baseMedia) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, GoodBeanModel baseMedia) {
 
     }
 }

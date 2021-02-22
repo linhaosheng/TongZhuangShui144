@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,6 +11,7 @@
     <pro.haichuang.tzs144.view.LSettingItem
         android:id="@+id/subject"
         android:layout_width="match_parent"
+        android:layout_below="@+id/head_view"
         android:layout_height="@dimen/dp_50"
         android:background="#fff"
         app:LtextColor="#333333"
@@ -31,14 +32,23 @@
         android:textSize="12sp"
         android:layout_marginLeft="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_10"
+        android:layout_below="@+id/subject"
         android:background="@drawable/set_bg_btn14"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_data"
         android:background="#F8F8F8"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_shop"/>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_20">
 
     <Button
         android:id="@+id/input_btn"
@@ -59,9 +69,10 @@
         android:layout_marginLeft="@dimen/dp_50"
         android:layout_marginRight="@dimen/dp_50"
         android:text="取消"
-        android:background="@drawable/set_bg_btn17"
+        android:background="@drawable/set_bg_btn30"
         android:textColor="#32C5FF"
         android:layout_marginTop="@dimen/dp_20"
         android:textSize="16sp"/>
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

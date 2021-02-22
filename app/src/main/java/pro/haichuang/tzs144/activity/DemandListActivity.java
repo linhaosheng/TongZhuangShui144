@@ -78,7 +78,7 @@ public class DemandListActivity extends BaseActivity {
                 switch (view.getId()){
                     case R.id.delete:
                         listData.remove(0);
-                        demandListAdapter.setList(listData);
+                      //  demandListAdapter.setList(listData);
                         break;
                 }
             }
@@ -89,7 +89,7 @@ public class DemandListActivity extends BaseActivity {
     protected void setUpData() {
         listData = new ArrayList<>();
         listData.add("");
-        demandListAdapter.setList(listData);
+       // demandListAdapter.setList(listData);
     }
 
 
@@ -109,7 +109,7 @@ public class DemandListActivity extends BaseActivity {
                 break;
             case R.id.add_shop:
                 listData.add("");
-                demandListAdapter.setList(listData);
+        //        demandListAdapter.setList(listData);
                 break;
         }
     }

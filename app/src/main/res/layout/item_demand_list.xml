@@ -18,7 +18,7 @@
         app:leftText="商品"
         app:leftTextMarginLeft="@dimen/dp_20"
         app:rightStyle="iconHide"
-        app:isShowRightText = "true"
+        app:isShowRightText = "false"
         app:rightText="请选择"
         app:isShowUnderLine="true"
         app:rightIconSize="@dimen/dp_22" />
@@ -62,7 +62,7 @@
                 android:layout_height="@dimen/dp_20"
                 android:background="@drawable/set_bg_btn26"
                 android:gravity="center"
-                android:text="1234"
+                android:text="0"
                 android:textColor="#32C5FF"
                 android:textSize="12sp" />
 
