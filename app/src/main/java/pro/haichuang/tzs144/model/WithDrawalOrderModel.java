@@ -74,6 +74,15 @@ public class WithDrawalOrderModel {
         private int status;
         private boolean isAdd;
         private boolean checked;
+        private String cancelTime;
+
+        public String getCancelTime() {
+            return cancelTime;
+        }
+
+        public void setCancelTime(String cancelTime) {
+            this.cancelTime = cancelTime;
+        }
 
         public boolean isAdd() {
             return isAdd;

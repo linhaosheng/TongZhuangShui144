@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#fff">
 
     <RelativeLayout
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -41,22 +42,23 @@
 
         </LinearLayout>
 
-
     </RelativeLayout>
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F8F8F8">
+        android:layout_height="wrap_content"
+        android:background="#F8F8F8"
+        android:layout_below="@+id/search_view">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include layout="@layout/item_empty" />
 
-</LinearLayout>
+</RelativeLayout>

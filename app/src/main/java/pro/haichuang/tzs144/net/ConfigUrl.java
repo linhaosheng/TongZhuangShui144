@@ -312,6 +312,10 @@ public class ConfigUrl {
      */
     public static final String FIND_DEPOSIT_GOODS = "/api/app/depositManage/findDepositGoods";
 
+    /**
+     * [押金]获取作废退押单
+     */
+    public static final String FIND_CANCEL_LIST =  "/api/app/depositManage/findCancelList";
 
 
 }
