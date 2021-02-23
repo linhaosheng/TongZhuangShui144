@@ -171,7 +171,7 @@ public class ConfigUrl {
     /**
      * [押金]提交开押
      */
-    public static final String ADD_DEPOSIT_INFO = "/api/app/depositManage/addDepositInfo";
+    public static final String ADD_DEPOSIT_INFO = "/api/app/depositManage/saveDepositYj";
 
     /**
      * [押金]提交退押

@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.EnterOrderActivity;
 import pro.haichuang.tzs144.activity.MainActivity;
+import pro.haichuang.tzs144.activity.SaleSearchActivity;
 import pro.haichuang.tzs144.activity.SalesListActivity;
 import pro.haichuang.tzs144.activity.StartDepositActivity;
 import pro.haichuang.tzs144.activity.WithDrawalOrderActivity;
@@ -109,7 +110,8 @@ public class ShowMoreDialog extends DialogFragment {
                 intent.setClass(context, EnterOrderActivity.class);
                 break;
             case R.id.open_deposit:
-                intent.setClass(context, StartDepositActivity.class);
+                intent.putExtra("type","open_deposit");
+                intent.setClass(context, SaleSearchActivity.class);
                 break;
             case R.id.withdrawal:
                 intent.setClass(context, WithDrawalOrderActivity.class);
