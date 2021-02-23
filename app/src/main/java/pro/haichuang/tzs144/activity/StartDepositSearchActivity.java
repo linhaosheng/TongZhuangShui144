@@ -12,21 +12,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.adapter.StartDepositSearchAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.WithDrawalOrderModel;
 import pro.haichuang.tzs144.presenter.StartDepositSearchActivityPresenter;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 开押管理
  */
-public class StartDepositSearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<String> {
+public class StartDepositSearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ILoadDataView<List<WithDrawalOrderModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -41,12 +46,11 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
     RecyclerView recycleData;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
-    @BindView(R.id.order_state)
-    TextView orderState;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
 
     private StartDepositSearchActivityPresenter startDepositSearchActivityPresenter;
+    private StartDepositSearchAdapter  startDepositSearchAdapter;
 
     @Override
     protected int setLayoutResourceID() {
@@ -55,6 +59,9 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
 
     @Override
     protected void setUpView() {
+        startDepositSearchAdapter = new StartDepositSearchAdapter(this);
+        recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        recycleData.setAdapter(startDepositSearchAdapter);
         refresh.setOnRefreshListener(this);
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -69,7 +76,9 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
 
             @Override
             public void afterTextChanged(Editable s) {
-                startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString());
+                if (searchEdit.getText()!=null){
+                    startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString());
+                }
             }
         });
     }
@@ -95,7 +104,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
 
     @Override
     public void onRefresh() {
-
+        startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString());
     }
 
     @Override
@@ -104,8 +113,14 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
     }
 
     @Override
-    public void successLoad(String data) {
+    public void successLoad(List<WithDrawalOrderModel.DataBean> dataBeans) {
         refresh.setRefreshing(false);
+        if (dataBeans==null || dataBeans.size()==0){
+            emptyView.setVisibility(View.VISIBLE);
+        }else {
+            emptyView.setVisibility(View.GONE);
+        }
+        startDepositSearchAdapter.setList(dataBeans);
     }
 
     @Override

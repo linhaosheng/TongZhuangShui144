@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_30"
@@ -51,10 +52,12 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/deposit_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_15">
+        android:paddingBottom="@dimen/dp_15"
+        android:layout_below="@+id/search_view">
 
         <Button
             android:id="@+id/open_deposit"
@@ -122,16 +125,17 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:background="#F8F8F8">
+        android:background="#F8F8F8"
+        android:layout_below="@+id/deposit_view">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include layout="@layout/item_empty" />
 
-</LinearLayout>
+</RelativeLayout>

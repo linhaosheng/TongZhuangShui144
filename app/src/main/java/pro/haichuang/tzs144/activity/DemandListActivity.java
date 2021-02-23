@@ -106,8 +106,9 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 switch (view.getId()){
                     case R.id.delete:
-                        listData.remove(0);
-                      //  demandListAdapter.setList(listData);
+                        List<GoodBeanModel> data = demandListAdapter.getData();
+                        data.remove(position);
+                        demandListAdapter.setList(data);
                         break;
                 }
             }

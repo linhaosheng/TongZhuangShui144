@@ -166,7 +166,7 @@ public class ConfigUrl {
     /**
      * [押金]获取开押列表
      */
-    public static final String FIND_DEPOSIT_LIST = "/api/app/depositManage/findDepositList";
+    public static final String FIND_DEPOSIT_LIST = "/api/app/depositManage/findDepositYjList";
 
     /**
      * [押金]提交开押

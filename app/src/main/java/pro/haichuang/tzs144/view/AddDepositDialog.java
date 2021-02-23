@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -21,6 +22,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.kongzue.dialog.v3.WaitDialog;
+
+import org.json.JSONObject;
+
 import java.util.Map;
 
 import butterknife.BindView;
@@ -30,6 +35,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Utils;
 
 
 /**
@@ -131,7 +137,31 @@ public class AddDepositDialog extends DialogFragment {
                 break;
             case R.id.input_btn:
 
-            //    addDepositBook();
+                if (TextUtils.isEmpty(depositNum.getText())){
+                    Utils.showCenterTomast("请输入押金本编号");
+                    return;
+                }
+                if (TextUtils.isEmpty(startDepositNum.getText())){
+                    Utils.showCenterTomast("请输入开始编号");
+                    return;
+                }
+                if (TextUtils.isEmpty(endDepositNum.getText())){
+                    Utils.showCenterTomast("请输入结束编号");
+                    return;
+                }
+
+                try {
+                   double startNum =  Double.parseDouble(startDepositNum.getText().toString());
+                   double endNum = Double.parseDouble(endDepositNum.getText().toString());
+                    String number = depositNumTxt.getText().toString();
+                    double num = endNum - startNum;
+                    addDepositBook(number,String.valueOf(num));
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Utils.showCenterTomast("请输入正确的数字开始编号和结束编号");
+                }
+
                 break;
         }
     }
@@ -140,9 +170,9 @@ public class AddDepositDialog extends DialogFragment {
      * 添加押金本
      * @param number
      * @param numCount
-     * @param endNumber
+     * @param
      */
-    public void addDepositBook(String number,String numCount,String endNumber){
+    public void addDepositBook(String number,String numCount){
 
         Map<String,Object> params = new ArrayMap<>();
         params.put("number",number);
@@ -151,17 +181,27 @@ public class AddDepositDialog extends DialogFragment {
         HttpRequestEngine.postRequest(ConfigUrl.FIND_SHOP, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                Utils.showCenterTomast("提交中...");
             }
 
             @Override
             public void success(String result) {
-
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.getInt("result")==1){
+                        Utils.showCenterTomast("添加成功");
+                        AddDepositDialog.this.dismiss();
+                    }else {
+                        Utils.showCenterTomast("提交失败");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void error(String error) {
-
+                Utils.showCenterTomast("提交失败");
             }
         });
 

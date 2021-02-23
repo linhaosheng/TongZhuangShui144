@@ -59,8 +59,6 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
     RecyclerView recycleData;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
-    @BindView(R.id.order_state)
-    TextView orderState;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
     @BindView(R.id.start_time)
@@ -86,7 +84,7 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
 
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(depositManagementSearchAdapter);
-        endTime.setText(Utils.transformTime(new Date()));
+        endTime.setText(Utils.formatSelectTime(new Date()));
 
         depositManagementSearchAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -154,12 +152,7 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
 
     @Override
     public void onRefresh() {
-       refresh.postDelayed(new Runnable() {
-           @Override
-           public void run() {
-               refresh.setRefreshing(false);
-           }
-       },1500);
+        depositManagementSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),currentPage,startTime.getText().toString(),endTime.getText().toString());
     }
 
     private void selectTime(int type){
@@ -180,16 +173,23 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
 
     @Override
     public void startLoad() {
-
+        refresh.setRefreshing(true);
     }
 
     @Override
     public void successLoad(List<DepositManagerModel.DataBean> data) {
+        refresh.setRefreshing(false);
         depositManagementSearchAdapter.setList(data);
+        if (data==null || data.size()==0){
+            emptyView.setVisibility(View.VISIBLE);
+        }else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void errorLoad(String error) {
-
+        refresh.setRefreshing(false);
+       Utils.showCenterTomast(error);
     }
 }

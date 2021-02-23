@@ -185,6 +185,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private float totalPrice;
     private float amount_receivable;
     private float actual_amount;
+    private int orderType;
 
     @Override
     protected int setLayoutResourceID() {
@@ -218,6 +219,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
 
     @Override
     protected void setUpData() {
+        orderType = getIntent().getIntExtra("order_type",0);
         uploadOrderModel = new UploadOrderModel();
        enterOrderActivityPresenter = new EnterOrderActivityPresenter(this);
     }
@@ -390,7 +392,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private void addOrderClick() {
 
         AddOrderModel addOrderModel = new AddOrderModel();
-        addOrderModel.setOrderType("0");
+        addOrderModel.setOrderType(String.valueOf(orderType));
         addOrderModel.setCustomerId(dataBean.getId()+"");
         addOrderModel.setAddressId(dataBean.getAddressId()+"");
         addOrderModel.setGoodsList(goodsListBeans);

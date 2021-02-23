@@ -5,9 +5,11 @@ import android.util.ArrayMap;
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.WithDrawalOrderModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Utils;
 
 public class StartDepositSearchActivityPresenter {
 
@@ -19,11 +21,11 @@ public class StartDepositSearchActivityPresenter {
 
     /**
      * [押金]获取开押列表
-     * @param depositBookNum
+     * @param query
      */
-    public void findDepositBookList(String depositBookNum ){
+    public void findDepositBookList(String query ){
         Map<String,Object>params = new ArrayMap<>();
-        params.put("depositBookNum",depositBookNum);
+        params.put("query",query);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_DEPOSIT_LIST, params, new HttpRequestResultListener() {
             @Override
@@ -33,7 +35,12 @@ public class StartDepositSearchActivityPresenter {
 
             @Override
             public void success(String result) {
-
+                WithDrawalOrderModel withDrawalOrderModel = Utils.gsonInstane().fromJson(result, WithDrawalOrderModel.class);
+                if (withDrawalOrderModel.getResult()==1){
+                    iLoadDataView.successLoad(withDrawalOrderModel.getData());
+                }else {
+                    iLoadDataView.errorLoad(withDrawalOrderModel.getMessage());
+                }
             }
 
             @Override
