@@ -175,12 +175,13 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
     public void successLoad(List<TypeListModel.DataBean> data) {
          if (data!=null){
              TypeListModel.DataBean dataBean = new TypeListModel.DataBean();
-             dataBean.setName("全部");
+             dataBean.setName("全部商品");
              dataBean.setId(0);
-             data.add(dataBean);
              dataBeanList = new ArrayList<>();
+
              dataBeanList.add(dataBean);
              dataBeanList.addAll(data);
+
              data.clear();
              initData();
          }

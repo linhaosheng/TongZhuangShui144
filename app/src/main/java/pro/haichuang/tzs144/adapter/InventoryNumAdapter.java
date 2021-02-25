@@ -26,7 +26,7 @@ public class InventoryNumAdapter extends BaseQuickAdapter<InventoryNumModel.Data
         Utils.showImage(view,dataBean.getImg());
 
         String num = "库存:"+dataBean.getStockNum()+"        月售:"+dataBean.getSalesNum();
-        baseViewHolder.setText(R.id.name,dataBean.getGoodsName())
+        baseViewHolder.setText(R.id.name,dataBean.getGoodsName() +" "+dataBean.getSpecsName())
                 .setText(R.id.bottled_water_num,num);
 
     }

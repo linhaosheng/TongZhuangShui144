@@ -27,13 +27,14 @@ public class ReturnDetailActivityPresenter {
      * @param staffId
      * @param page
      */
-    public void findQsstLogs(String startTime,String endTime,String staffId,int page ){
+    public void findQsstLogs(String startTime,String endTime,String staffId,int page ,String query){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("startTime",startTime);
         params.put("endTime",endTime);
         params.put("staffId",staffId);
         params.put("page",page);
+        params.put("query",query);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_QSST_LOGS, params, new HttpRequestResultListener() {
             @Override

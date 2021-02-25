@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -40,14 +41,18 @@ public class OrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel.DataBe
         .setText(R.id.reward_discount,reward_discount);
 
         ImageView rewardImg = helper.getView(R.id.reward_img);
-        Utils.showImage(rewardImg,item.getCouponImg());
-//        String rewardDiscount =
-//        helper.setText(R.id.reward_discount,)
-
+        if (item.getCouponImg()!=null){
+            Utils.showImage(rewardImg,item.getCouponImg());
+        }else {
+            helper.getView(R.id.reward_view).setVisibility(View.GONE);
+        }
 
         ImageView monthImg = helper.getView(R.id.month_img);
-        Utils.showImage(monthImg,item.getMonthImg());
-
+        if (item.getMonthImg()!=null){
+            Utils.showImage(monthImg,item.getMonthImg());
+        }else {
+            helper.getView(R.id.month_view).setVisibility(View.GONE);
+        }
 
     }
 }

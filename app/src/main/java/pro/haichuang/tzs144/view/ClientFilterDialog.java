@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -167,10 +169,18 @@ public class ClientFilterDialog extends DialogFragment {
                 dismiss();
                 break;
             case R.id.start_time:
+                endTime.setTextColor(Color.parseColor("#6D7278"));
+                startTime.setTextColor(Color.parseColor("#32C5FF"));
+                startTime.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn36));
+                endTime.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn37));
                 selectTime(SELECT_START_TIME);
                 this.getDialog().hide();
                 break;
             case R.id.end_time:
+                startTime.setTextColor(Color.parseColor("#6D7278"));
+                endTime.setTextColor(Color.parseColor("#32C5FF"));
+                startTime.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn37));
+                endTime.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn36));
                 selectTime(SELECT_END_TIME);
                 this.getDialog().hide();
                 break;

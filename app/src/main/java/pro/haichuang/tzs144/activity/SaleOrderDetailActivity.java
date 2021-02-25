@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -96,7 +97,8 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     protected void setUpView() {
         title.setText("订单详情");
         tips.setText("作废");
-        tips.setTextSize(12);
+        tips.setTextSize(14);
+        tips.setTextColor(Color.parseColor("#3F3F3F"));
 
         orderDetailAdapter = new OrderDetailAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));

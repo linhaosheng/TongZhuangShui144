@@ -55,9 +55,12 @@
                     android:layout_height="wrap_content"
                     android:text="经销商"
                     android:textColor="#1677FF"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:layout_toRightOf="@+id/order_num"
+                    android:background="@drawable/set_bg_btn32"
                     android:layout_marginTop="@dimen/dp_10"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:paddingRight="@dimen/dp_5"
                     android:layout_marginLeft="@dimen/dp_20"/>
 
                 <ImageView

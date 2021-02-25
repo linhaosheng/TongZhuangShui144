@@ -77,12 +77,6 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 
     @Override
     protected void setUpView() {
-        refresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refresh.setRefreshing(true);
-            }
-        },100);
         inventoryNumFragmentPresenter = new InventoryNumFragmentPresenter(this);
         refresh.setOnRefreshListener(this);
         typeListAdapter = new TypeListAdapter();
@@ -113,7 +107,6 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
                 }
             }
         });
-
     }
 
     @Override
@@ -121,20 +114,6 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
        if (inventoryNumAdapter.getData().size()==0){
            inventoryNumFragmentPresenter.findGoodsWithType("","",id);
        }
-    }
-
-
-    private void setBg(){
-//        allCommodity.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
-//        bottledWater.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
-//        waterTickets.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grep10));
-//        if (currentIndex==0){
-//            allCommodity.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
-//        }else if (currentIndex==1){
-//            bottledWater.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
-//        }else if (currentIndex==2){
-//            waterTickets.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.set_bg_color));
-//        }
     }
 
     @Override

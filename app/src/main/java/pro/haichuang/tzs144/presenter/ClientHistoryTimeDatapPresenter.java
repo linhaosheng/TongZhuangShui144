@@ -41,6 +41,11 @@ public class ClientHistoryTimeDatapPresenter {
             public void success(String result) {
                 AccountHistoryModel accountHistoryModel =   Utils.gsonInstane().fromJson(result, AccountHistoryModel.class);
                 if (accountHistoryModel!=null && accountHistoryModel.getResult()==1){
+                    AccountHistoryModel.DataBean data = accountHistoryModel.getData();
+                    data.setCouponPrice("0.0");
+                    data.setCouponDayRatio("0");
+                    data.setCouponWeekRatio("0");
+                    accountHistoryModel.setData(data);
                     iLoadDataView.successLoad(accountHistoryModel.getData());
                 }else {
                     iLoadDataView.errorLoad("获取错误");

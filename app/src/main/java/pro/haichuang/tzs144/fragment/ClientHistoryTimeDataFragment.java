@@ -182,6 +182,9 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
         TrendModel ssTrendModel = new TrendModel("奖券",data.getJqVal(),data.getJqDayRatio(),data.getJqWeekRatio());
         trendModelList.add(ssTrendModel);
 
+        TrendModel coupondModel = new TrendModel("优惠券",data.getCouponPrice(),data.getCouponDayRatio(),data.getCouponWeekRatio());
+        trendModelList.add(coupondModel);
+
         orderTrendAdapter.setList(trendModelList);
     }
 

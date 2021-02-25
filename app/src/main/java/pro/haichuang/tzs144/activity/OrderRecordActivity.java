@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -125,9 +127,17 @@ public class OrderRecordActivity extends BaseActivity implements ILoadDataView<O
                 finish();
                 break;
             case R.id.start_time:
+                endTime.setTextColor(Color.parseColor("#6D7278"));
+                startTime.setTextColor(Color.parseColor("#32C5FF"));
+                startTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn36));
+                endTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn37));
                 selectTime(SELECT_START_TIME);
                 break;
             case R.id.end_time:
+                startTime.setTextColor(Color.parseColor("#6D7278"));
+                endTime.setTextColor(Color.parseColor("#32C5FF"));
+                startTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn37));
+                endTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn36));
                 selectTime(SELECT_END_TIME);
                 break;
         }

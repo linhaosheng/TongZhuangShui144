@@ -29,7 +29,6 @@ public class InventoryFragmentPresenter {
             @Override
             public void success(String result) {
                 try {
-
                     TypeListModel typeListModel = Utils.gsonInstane().fromJson(result, TypeListModel.class);
                     if (typeListModel.getResult()==1){
                         iLoadDataView.successLoad(typeListModel.getData());

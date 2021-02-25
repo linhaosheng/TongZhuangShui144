@@ -45,6 +45,7 @@ import pro.haichuang.tzs144.model.ShopModel;
 import pro.haichuang.tzs144.model.ShopModelEvent;
 import pro.haichuang.tzs144.presenter.DemandListActivityPresenter;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.AddAllocationShopDialog;
 import pro.haichuang.tzs144.view.LSettingItem;
 
 /**
@@ -81,8 +82,8 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
     private Date endDate;
     private DemandListActivityPresenter demandListActivityPresenter;
 
-    private List<GoodBeanModel>goodBeanModelList;
-    private List<CharSequence>goodList;
+    private List<GoodBeanModel> goodBeanModelList;
+    private List<CharSequence> goodList;
     private ShopModel shopModel;
 
     @Override
@@ -92,19 +93,19 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
 
     @Override
     protected void setUpView() {
-      title.setText("填写需求单");
+        title.setText("填写需求单");
         tips.setVisibility(View.VISIBLE);
         tips.setText("需求记录");
         tips.setTextSize(12);
 
         demandListAdapter = new DemandListAdapter();
-        recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+        recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(demandListAdapter);
         demandListAdapter.addChildClickViewIds(R.id.delete);
         demandListAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.delete:
                         List<GoodBeanModel> data = demandListAdapter.getData();
                         data.remove(position);
@@ -123,10 +124,10 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
                         startDate = date;
                         startTime.setRightText(Utils.transformTime2(date));
                     }
-                }) .setType(new boolean[]{true, true, true, true, true, false})// 默认全部显示
+                }).setType(new boolean[]{true, true, true, true, true, false})// 默认全部显示
                         .isCyclic(true)//是否循环滚动
                         .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                        .setLabel("年","月","日","时","分","秒")//默认设置为年月日时分秒
+                        .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
                         .build();
                 pvTime.show();
 
@@ -141,10 +142,10 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
                         endDate = date;
                         endTime.setRightText(Utils.transformTime2(date));
                     }
-                }) .setType(new boolean[]{true, true, true, true, true, false})// 默认全部显示
+                }).setType(new boolean[]{true, true, true, true, true, false})// 默认全部显示
                         .isCyclic(true)//是否循环滚动
                         .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                        .setLabel("年","月","日","时","分","秒")//默认设置为年月日时分秒
+                        .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
                         .build();
                 pvTime.show();
             }
@@ -160,43 +161,54 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
     }
 
 
-    @OnClick({R.id.back, R.id.tips, R.id.input_btn, R.id.cancel_btn,R.id.add_shop})
+    @OnClick({R.id.back, R.id.tips, R.id.input_btn, R.id.cancel_btn, R.id.add_shop})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.tips:
-                Intent intent = new Intent(this,DemandRecordActivity.class);
+                Intent intent = new Intent(this, DemandRecordActivity.class);
                 startActivity(intent);
                 break;
             case R.id.input_btn:
-                if (startDate==null){
+                if (startDate == null) {
                     Utils.showCenterTomast("请选择预计送达开始时间");
                     return;
                 }
-                if (endDate==null){
+                if (endDate == null) {
                     Utils.showCenterTomast("请选择预计送达结束时间");
                     return;
                 }
-                if (endDate.getTime() - startDate.getTime() <=0){
+                if (endDate.getTime() - startDate.getTime() <= 0) {
                     Utils.showCenterTomast("预计送达结束时间不能小于开始时间");
                     return;
                 }
-                demandListActivityPresenter.demand(startTime.getRightText(),endTime.getRightText(),goodBeanModelList);
+                demandListActivityPresenter.demand(startTime.getRightText(), endTime.getRightText(), goodBeanModelList);
                 break;
             case R.id.cancel_btn:
                 finish();
                 break;
             case R.id.add_shop:
-                BottomMenu.show(this, goodList, new OnMenuItemClickListener() {
+                if (shopModel.getData()==null){
+                    return;
+                }
+                AddAllocationShopDialog  addAllocationShopDialog = new AddAllocationShopDialog(this, shopModel.getData(), new AddAllocationShopDialog.SelectShopListener() {
                     @Override
-                    public void onClick(String text, int index) {
-                        ShopModel.DataBean dataBean = shopModel.getData().get(index);
-                        goodBeanModelList.add(new GoodBeanModel(dataBean.getId()+"",0));
+                    public void selectShop(ShopModel.DataBean dataBean) {
+                        goodBeanModelList.add(new GoodBeanModel(dataBean.getId() + "", 0));
                         demandListAdapter.setList(goodBeanModelList);
                     }
                 });
+                addAllocationShopDialog.show(getSupportFragmentManager(),"");
+//                BottomMenu.show(this, goodList, new OnMenuItemClickListener() {
+//                    @Override
+//                    public void onClick(String text, int index) {
+//                        ShopModel.DataBean dataBean = shopModel.getData().get(index);
+//                        goodBeanModelList.add(new GoodBeanModel(dataBean.getId() + "", 0));
+//                        demandListAdapter.setList(goodBeanModelList);
+//                    }
+//                });
                 break;
         }
     }
@@ -204,11 +216,11 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ShopModelEvent event) {
         if (event != null) {
-             shopModel = event.shopModel;
-            if (shopModel!=null &&  shopModel.getData()!=null){
-               for (ShopModel.DataBean dataBean : shopModel.getData()){
-                   goodList.add(dataBean.getName() + "   "+ dataBean.getSpecs());
-               }
+            shopModel = event.shopModel;
+            if (shopModel != null && shopModel.getData() != null) {
+                for (ShopModel.DataBean dataBean : shopModel.getData()) {
+                    goodList.add(dataBean.getName() + "   " + dataBean.getSpecs());
+                }
             }
         }
     }
@@ -227,7 +239,7 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
 
     @Override
     public void startLoad() {
-        WaitDialog.show(this,"提交中...");
+        WaitDialog.show(this, "提交中...");
     }
 
     @Override

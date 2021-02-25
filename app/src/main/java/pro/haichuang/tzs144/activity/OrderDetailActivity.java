@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -114,7 +115,8 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         title.setText("订单详情");
         tips.setText("作废");
         tips.setVisibility(View.GONE);
-        tips.setTextSize(12);
+        tips.setTextSize(14);
+        tips.setTextColor(Color.parseColor("#3F3F3F"));
 
         orderDetailAdapter = new OrderDetailAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -145,6 +147,9 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
             case R.id.void_sale_btn:
                 WaitDialog.show(this,"提交中...");
                 orderDetailPresenter.directSelling(id);
+                break;
+            case R.id.tips:
+
                 break;
         }
     }

@@ -72,6 +72,35 @@ public class AccountHistoryModel {
         private String jqDayRatio;
         private String jqWeekRatio;
 
+        private String couponPrice;  //优惠券价格
+        private String couponDayRatio;  //比昨日
+        private String couponWeekRatio;  //比上周
+
+
+        public String getCouponPrice() {
+            return couponPrice;
+        }
+
+        public void setCouponPrice(String couponPrice) {
+            this.couponPrice = couponPrice;
+        }
+
+        public String getCouponDayRatio() {
+            return couponDayRatio;
+        }
+
+        public void setCouponDayRatio(String couponDayRatio) {
+            this.couponDayRatio = couponDayRatio;
+        }
+
+        public String getCouponWeekRatio() {
+            return couponWeekRatio;
+        }
+
+        public void setCouponWeekRatio(String couponWeekRatio) {
+            this.couponWeekRatio = couponWeekRatio;
+        }
+
         public String getXjVal() {
             return xjVal;
         }

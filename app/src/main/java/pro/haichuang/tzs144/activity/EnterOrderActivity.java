@@ -225,9 +225,50 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     }
 
 
-    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.reward_tickets,R.id.monthly,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client})
+    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.reward_tickets,R.id.monthly,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add,R.id.reduce_tong,R.id.shop_add_tong})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.reduce:
+                try {
+                    int shopNumData = Integer.parseInt(shopNum.getText().toString());
+                    if (shopNumData==0){
+                        return;
+                    }else {
+                        shopNum.setText(String.valueOf(shopNumData-1));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.shop_add:
+                try {
+                    int shopNumData = Integer.parseInt(shopNum.getText().toString());
+                    shopNum.setText(String.valueOf(shopNumData+1));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.reduce_tong:
+               try {
+                   int shopNumTongData = Integer.parseInt(shopNumTong.getText().toString());
+                   if (shopNumTongData==0){
+                       return;
+                   }else {
+                       shopNumTong.setText(String.valueOf(shopNumTongData-1));
+                   }
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+                break;
+            case R.id.shop_add_tong:
+                try {
+                    int shopNumTongData = Integer.parseInt(shopNumTong.getText().toString());
+                    shopNumTong.setText(String.valueOf(shopNumTongData+1));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                break;
+
             case R.id.back:
                 finish();
                 break;
@@ -238,6 +279,14 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectPicture(REQUEST_CODE_CHOOSE_PICTURE_MONTH);
                 break;
             case R.id.receive_payment:
+                if (goodsListBeans==null || goodsListBeans.size()==0){
+                    Utils.showCenterTomast("请添加商品");
+                    return;
+                }
+                if (shopDetail.getVisibility()==View.VISIBLE){
+                    Utils.showCenterTomast("请点击确认添加按钮");
+                    return;
+                }
                 int distance = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, dataBean.getLongitude(), dataBean.getLatitude());
                 if (distance>400){
                     caculateDistance(distance);
@@ -257,6 +306,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 AddShopDialog addShopDialog = new AddShopDialog(this, new AddShopDialog.SelectShopListener() {
                     @Override
                     public void selectShop(ShopModel.DataBean dataBean) {
+                        monthly.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
+                        rewardTickets.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
                         shopDetail.setVisibility(View.VISIBLE);
                         shop_amount_view.setVisibility(View.VISIBLE);
                         shopName.setText(dataBean.getName());
@@ -269,9 +320,11 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.reward_tickets:
                 if (selectReward){
+                    rewardTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
                     upload_reward_view.setVisibility(View.GONE);
                     rewardDeductionNunm.setVisibility(View.GONE);
                 }else {
+                    rewardTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
                     upload_reward_view.setVisibility(View.VISIBLE);
                     rewardDeductionNunm.setVisibility(View.VISIBLE);
                 }
@@ -279,9 +332,11 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.monthly:
                 if (selectMonth){
+                    monthly.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
                     upload_month_view.setVisibility(View.GONE);
                     monthDeductionNunm.setVisibility(View.GONE);
                 }else {
+                    monthly.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
                     upload_month_view.setVisibility(View.VISIBLE);
                     monthDeductionNunm.setVisibility(View.VISIBLE);
                 }

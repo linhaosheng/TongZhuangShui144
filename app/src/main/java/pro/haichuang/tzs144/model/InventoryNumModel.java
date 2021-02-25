@@ -98,6 +98,15 @@ public class InventoryNumModel {
             private String img;
             private int id;
             private String goodsName;
+            private String specsName;
+
+            public String getSpecsName() {
+                return specsName;
+            }
+
+            public void setSpecsName(String specsName) {
+                this.specsName = specsName;
+            }
 
             public int getStockNum() {
                 return stockNum;

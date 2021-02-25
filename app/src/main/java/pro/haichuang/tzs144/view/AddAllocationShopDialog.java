@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.ArrayMap;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +38,7 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AddShopDialogAdapter;
 import pro.haichuang.tzs144.model.ShopModel;
+import pro.haichuang.tzs144.model.ShopModelEvent;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
@@ -51,6 +57,8 @@ public class AddAllocationShopDialog extends DialogFragment {
     Button cancelBtn;
     @BindView(R.id.input_btn)
     Button inputBtn;
+    @BindView(R.id.search_edit)
+    EditText searchEdit;
     private AddShopDialogAdapter addShopDialogAdapter;
     private View view;
     private Context context;
@@ -122,6 +130,25 @@ public class AddAllocationShopDialog extends DialogFragment {
                 addShopDialogAdapter.setList(data);
             }
         });
+
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (searchEdit.getText()!=null){
+                    findDemandGoods(searchEdit.getText().toString());
+                }
+            }
+        });
     }
 
     @Override
@@ -163,4 +190,30 @@ public class AddAllocationShopDialog extends DialogFragment {
         void selectShop(ShopModel.DataBean dataBean);
     }
 
+
+    /**
+     * [实时库存]获取需求单商品列表
+     * @param query
+     */
+    public void findDemandGoods(String query){
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("query",query);
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_DEMAND_GOODS, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                ShopModel shopModel = Utils.gsonInstane().fromJson(result, ShopModel.class);
+                addShopDialogAdapter.setList(shopModel.getData());
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
+    }
 }

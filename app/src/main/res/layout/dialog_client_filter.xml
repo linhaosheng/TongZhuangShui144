@@ -47,7 +47,7 @@
             android:id="@+id/start_time"
             android:layout_width="113dp"
             android:layout_height="@dimen/dp_40"
-            android:background="@drawable/set_bg_btn16"
+            android:background="@drawable/set_bg_btn36"
             android:gravity="center"
             android:text="2019-06-22"
             android:layout_marginLeft="@dimen/dp_13"
@@ -63,12 +63,11 @@
             android:layout_marginRight="@dimen/dp_10"
             android:background="#979797" />
 
-
         <TextView
             android:id="@+id/end_time"
             android:layout_width="113dp"
             android:layout_height="@dimen/dp_40"
-            android:background="@drawable/set_bg_btn16"
+            android:background="@drawable/set_bg_btn37"
             android:gravity="center"
             android:text="2019-06-22"
             android:textColor="#6D7278"

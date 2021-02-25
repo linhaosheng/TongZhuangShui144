@@ -195,7 +195,11 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         }
         Log.i(TAG, "登录....");
 
-        loginPresenter.loginServer(account.getText().toString(), password.getText().toString(), dataBeanList.get(selectPosition).getId());
+        if (dataBeanList!=null){
+            loginPresenter.loginServer(account.getText().toString(), password.getText().toString(), dataBeanList.get(selectPosition).getId());
+        }else {
+            Utils.showCenterTomast("获取数据超时，请退出，重新登录");
+        }
     }
 
     @Override

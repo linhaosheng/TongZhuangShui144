@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.activity;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -142,9 +143,13 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
                 startActivity(intent1);
                 break;
             case R.id.start_time:
+                endTime.setTextColor(Color.parseColor("#6D7278"));
+                startTime.setTextColor(Color.parseColor("#32C5FF"));
                 selectTime(SELECT_START_TIME);
                 break;
             case R.id.end_time:
+                startTime.setTextColor(Color.parseColor("#6D7278"));
+                endTime.setTextColor(Color.parseColor("#32C5FF"));
                 selectTime(SELECT_END_TIME);
                 break;
         }
