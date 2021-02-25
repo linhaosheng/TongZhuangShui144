@@ -260,7 +260,7 @@ public class AddClientActivity extends BaseActivity implements ILoadDataView<Str
                 if (addressBeanList.size() > 0) {
                     AddressBean addressBean = addressBeanList.get(addressBeanList.size() - 1);
                     if (addressBean.getAddress() == null) {
-                        Utils.showCenterTomast("请输入地址名称");
+                        Utils.showCenterTomast("请输入地址名称和详细地址");
                         return;
                     } else {
                         addressBeanList.add(new AddressBean());

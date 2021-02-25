@@ -136,15 +136,21 @@ public class ClientFilterDialog extends DialogFragment {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 ClientTypeModel.DataBean dataBean = clientFilterAdapter.getData().get(position);
-                dataBean.setCheck(true);
-                clientFilterAdapter.setData(position,dataBean);
-                String khTypeId = "";
-                if (clientTypeSearchModel.getKhTypeId()!=null){
-                     khTypeId = clientTypeSearchModel.getKhTypeId() + ","+dataBean.getId();
+                if (dataBean.isCheck()){
+                    dataBean.setCheck(false);
                 }else {
-                     khTypeId = String.valueOf(dataBean.getId());
+                    dataBean.setCheck(true);
                 }
-                clientTypeSearchModel.setKhTypeId(khTypeId);
+                clientFilterAdapter.setData(position,dataBean);
+                if (dataBean.isCheck()){
+                    String khTypeId = "";
+                    if (clientTypeSearchModel.getKhTypeId()!=null){
+                        khTypeId = clientTypeSearchModel.getKhTypeId() + ","+dataBean.getId();
+                    }else {
+                        khTypeId = String.valueOf(dataBean.getId());
+                    }
+                    clientTypeSearchModel.setKhTypeId(khTypeId);
+                }
             }
         });
 

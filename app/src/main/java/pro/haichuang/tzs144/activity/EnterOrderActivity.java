@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,11 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialog.util.BaseDialog;
 import com.kongzue.dialog.v3.MessageDialog;
@@ -197,7 +201,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
       title.setText("直接销售");
       tipImg.setVisibility(View.VISIBLE);
       tipImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.search));
-        selectTicket.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+      selectTicket.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
                 SelectWaterTicketDialog selectWaterTicketDialog = new SelectWaterTicketDialog(EnterOrderActivity.this, new SelectWaterTicketDialog.SelectShopListener() {
@@ -214,6 +218,70 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         addOrderAdapter = new AddOrderAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(addOrderAdapter);
+        addOrderAdapter.addChildClickViewIds(R.id.delete,R.id.edit);
+        addOrderAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                switch (view.getId()){
+                    case R.id.delete:
+                        goodsListBeans.remove(position);
+                        addOrderAdapter.setList(goodsListBeans);
+                        caculateShopMount();
+                        if (goodsListBeans.size()==0){
+                            shop_amount_view.setVisibility(View.GONE);
+                        }
+                        break;
+                    case R.id.edit:
+                        AddOrderModel.GoodsListBean goodsListBean = goodsListBeans.get(position);
+
+                        if (goodsListBean.getDeductWater()!=null){
+                            Log.i("TAG====","getDeductMonth======");
+                            waterId = Integer.parseInt(goodsListBean.getDeductWater().getWaterGoodsId());
+                            selectWaterNum.setRightText(goodsListBean.getDeductWater().getNum());
+                            selectDeductionNunm.setRightText(goodsListBean.getDeductWater().getDeductNum());
+                        }
+
+                        if (goodsListBean.getDeductMonth()!=null){
+                            monthly.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn17));
+                            upload_month_view.setVisibility(View.VISIBLE);
+                            monthDeductionNunm.setVisibility(View.VISIBLE);
+                            Utils.showImage(uploadMonth,goodsListBean.getDeductCoupon().getCouponImg());
+                            monthDeductionNunm.setRightText(goodsListBean.getDeductMonth().getDeductNum());
+                        }else {
+                            monthly.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
+                            upload_month_view.setVisibility(View.GONE);
+                            monthDeductionNunm.setVisibility(View.GONE);
+                        }
+
+                        if (goodsListBean.getDeductCoupon()!=null){
+                            rewardTickets.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn17));
+                            upload_reward_view.setVisibility(View.VISIBLE);
+                            rewardDeductionNunm.setVisibility(View.VISIBLE);
+                            Utils.showImage(uploadReward,goodsListBean.getDeductCoupon().getCouponImg());
+                            rewardDeductionNunm.setRightText(goodsListBean.getDeductCoupon().getDeductNum());
+                        }else {
+                            rewardTickets.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
+                            upload_reward_view.setVisibility(View.GONE);
+                            rewardDeductionNunm.setVisibility(View.GONE);
+                        }
+
+                        shopDetail.setVisibility(View.VISIBLE);
+                        shop_amount_view.setVisibility(View.VISIBLE);
+
+                        shopName.setText(goodsListBean.getGoodName());
+                        shopCapacity.setText(goodsListBean.getSpecs());
+                        shopPrice.setText(goodsListBean.getGoodsPrice()+"");
+
+                        shopId = Integer.parseInt(goodsListBean.getGoodsId());
+
+                        goodsListBeans.remove(position);
+                        addOrderAdapter.setList(goodsListBeans);
+                        caculateShopMount();
+
+                        break;
+                }
+            }
+        });
 
     }
 
@@ -355,6 +423,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 goodsListBean.setGoodsId(String.valueOf(shopId));
                 goodsListBean.setNum(shopNum.getText().toString());
                 goodsListBean.setGoodsPrice(shopPrice.getText().toString());
+                goodsListBean.setSpecs(mDataBea.getSpecs());
 //                AddOrderModel.GoodsListBean.MaterialsBean materialsBean = new AddOrderModel.GoodsListBean.MaterialsBean();
 //                materialsBean.setMaterialId("00");
 //                materialsBean.setNum("10");
@@ -381,6 +450,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     waterId = -1;
                     selectWaterNum.setRightText("");
                     selectDeductionNunm.setRightText("");
+                }else {
+                    Log.i("TAG===","waterId====-1");
                 }
 
                 if (!rewardUrl.equals("")){
@@ -403,25 +474,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 addOrderAdapter.setList(goodsListBeans);
 
                 shopDetail.setVisibility(View.GONE);
-
-                for (AddOrderModel.GoodsListBean goodsListBean1 : goodsListBeans){
-                    totalPrice += Integer.parseInt(goodsListBean1.getNum()) * Float.parseFloat(goodsListBean1.getGoodsPrice());
-                    if (goodsListBean1.getDeductCoupon()!=null){
-                        amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()) + Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum()));
-                    }else {
-                        amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()));
-                    }
-
-                    if (goodsListBean1.getDeductMonth()!=null){
-                        actual_amount += totalPrice - (amount_receivable + Integer.parseInt(goodsListBean1.getDeductMonth().getDeductNum()));
-                    }else {
-                        actual_amount += totalPrice - amount_receivable;
-                    }
-
-                }
-                totalMerchandiseNum.setText(totalPrice +"");
-                amountReceivableNum.setText(amount_receivable +"");
-                actualAmount.setText(actual_amount+"");
+                caculateShopMount();
 
                 shop_amount_view.setVisibility(View.VISIBLE);
                 initViewData();
@@ -431,6 +484,35 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 startActivityForResult(intent2,SELECT_ADDRESS_INFO);
                 break;
         }
+    }
+
+    private void caculateShopMount() {
+        totalPrice = 0;
+        amount_receivable = 0;
+        actual_amount = 0;
+        for (AddOrderModel.GoodsListBean goodsListBean1 : goodsListBeans){
+            if (goodsListBean1.getDeductWater()==null){
+                Utils.showCenterTomast("请选择水票");
+                break;
+            }
+
+            totalPrice += Integer.parseInt(goodsListBean1.getNum()) * Float.parseFloat(goodsListBean1.getGoodsPrice());
+            if (goodsListBean1.getDeductCoupon()!=null){
+                amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()) + Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum()));
+            }else {
+                amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()));
+            }
+
+            if (goodsListBean1.getDeductMonth()!=null){
+                actual_amount += totalPrice - (amount_receivable + Integer.parseInt(goodsListBean1.getDeductMonth().getDeductNum()));
+            }else {
+                actual_amount += totalPrice - amount_receivable;
+            }
+
+        }
+        totalMerchandiseNum.setText(totalPrice +"");
+        amountReceivableNum.setText(amount_receivable +"");
+        actualAmount.setText(actual_amount+"");
     }
 
     private void initViewData(){

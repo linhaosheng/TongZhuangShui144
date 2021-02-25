@@ -30,7 +30,7 @@ public class OrderNumTrendAdapter extends BaseQuickAdapter<ClientListModel.DataB
                 .setText(R.id.dealer,dataBean.getTypeName())
                 .setText(R.id.order_num,orderNum)
                 .setText(R.id.sale_num,saleCount)
-                .setText(R.id.last_month_num,String.valueOf(dataBean.getMonthRatio()))
+                .setText(R.id.last_month_num,String.valueOf(dataBean.getMonthRatio() ))
                 .setText(R.id.last_year_num,String.valueOf(dataBean.getYearRatio()))
         .setText(R.id.sale_last_month_num,String.valueOf(dataBean.getMonthSaleRatio()))
         .setText(R.id.sale_last_year_num,String.valueOf(dataBean.getSaleYearRatio()));

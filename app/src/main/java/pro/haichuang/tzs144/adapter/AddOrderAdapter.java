@@ -24,12 +24,11 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
     @Override
     protected void convert(@NonNull BaseViewHolder helper, AddOrderModel.GoodsListBean item) {
 
-        if (item.getDeductWater().getWaterGoodsId().equals("-1")){
+        if ("-1".equals(item.getDeductWater().getWaterGoodsId())){
             helper.getView(R.id.water_view).setVisibility(View.GONE);
         }else {
             helper.getView(R.id.water_view).setVisibility(View.VISIBLE);
         }
-
 
         String priceNum = "¥"+item.getGoodsPrice()+"x"+item.getNum();
         String totalPrice = "¥"+Float.parseFloat(item.getGoodsPrice())*Integer.parseInt(item.getNum());
@@ -59,10 +58,6 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
             helper.getView(R.id.month_view).setVisibility(View.VISIBLE);
             ImageView monthImg = helper.getView(R.id.month_img);
             Utils.showImage(monthImg,item.getDeductMonth().getMonthImg());
-
-
         }
-
-
     }
 }

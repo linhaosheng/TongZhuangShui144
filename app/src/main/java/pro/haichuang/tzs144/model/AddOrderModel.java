@@ -74,10 +74,19 @@ public class AddOrderModel {
         private String goodsId;
         private String num;
         private String goodsPrice;
+        private String specs;
         private DeductWaterBean deductWater;
         private DeductCouponBean deductCoupon;
         private DeductMonthBean deductMonth;
         private List<MaterialsBean> materials;
+
+        public String getSpecs() {
+            return specs;
+        }
+
+        public void setSpecs(String specs) {
+            this.specs = specs;
+        }
 
         public String getGoodName() {
             return goodName;

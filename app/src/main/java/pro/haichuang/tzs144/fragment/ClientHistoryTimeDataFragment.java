@@ -123,10 +123,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
         orderTrendAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                String orderNumId = orderPaymentAdapter.getData().get(position).getId();
-                Intent intent = new Intent(getActivity(), SaleOrderDetailActivity.class);
-                intent.putExtra("id",orderNumId);
-                startActivity(intent);
+
             }
         });
 
@@ -136,7 +133,10 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
         orderPaymentAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-
+                String orderNumId = orderPaymentAdapter.getData().get(position).getId();
+                Intent intent = new Intent(getActivity(), SaleOrderDetailActivity.class);
+                intent.putExtra("id",orderNumId);
+                startActivity(intent);
             }
         });
     }

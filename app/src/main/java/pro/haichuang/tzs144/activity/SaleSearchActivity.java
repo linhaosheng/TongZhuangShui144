@@ -75,7 +75,7 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
     @Override
     protected void setUpView() {
         type = getIntent().getStringExtra("type");
-        title.setText("客户销售");
+        title.setText("客户搜索");
         tipImg.setVisibility(View.VISIBLE);
         tipImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.more));
         refresh.setOnRefreshListener(this);
