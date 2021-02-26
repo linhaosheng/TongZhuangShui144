@@ -42,8 +42,6 @@ public class VoidWithDrawalOrderActivity extends BaseActivity implements SwipeRe
     RecyclerView recycleData;
     @BindView(R.id.refresh)
     SwipeRefreshLayout refresh;
-    @BindView(R.id.order_state)
-    TextView orderState;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
 

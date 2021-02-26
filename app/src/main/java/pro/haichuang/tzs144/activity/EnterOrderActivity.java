@@ -171,6 +171,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     LinearLayout selectClient;
     private AddOrderAdapter addOrderAdapter;
 
+    private boolean selectWater;
     private boolean selectReward;
     private boolean selectMonth;
 
@@ -184,6 +185,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private int shopId;
     private int waterId = -1;
     private ShopModel.DataBean mDataBea;
+    private ShopModel.DataBean shopDataBean;
     public final static int SELECT_ADDRESS_INFO = 0x1110;
     private SaleDataModel.DataBean dataBean;
     private float totalPrice;
@@ -305,7 +307,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     }
 
 
-    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.reward_tickets,R.id.monthly,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add,R.id.reduce_tong,R.id.shop_add_tong})
+    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add,R.id.reduce_tong,R.id.shop_add_tong})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.reduce:
@@ -386,6 +388,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 AddShopDialog addShopDialog = new AddShopDialog(this, new AddShopDialog.SelectShopListener() {
                     @Override
                     public void selectShop(ShopModel.DataBean dataBean) {
+                        shopDataBean = dataBean;
                         monthly.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
                         rewardTickets.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
                         shopDetail.setVisibility(View.VISIBLE);
@@ -397,6 +400,20 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     }
                 });
                 addShopDialog.show(getSupportFragmentManager(),"");
+                break;
+            case R.id.water_tickets:
+                if (selectWater){
+                    waterTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
+                    selectTicket.setVisibility(View.GONE);
+                    selectWaterNum.setVisibility(View.GONE);
+                    selectDeductionNunm.setVisibility(View.GONE);
+                }else {
+                    waterTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
+                    selectTicket.setVisibility(View.VISIBLE);
+                    selectWaterNum.setVisibility(View.VISIBLE);
+                    selectDeductionNunm.setVisibility(View.VISIBLE);
+                }
+                selectWater = !selectWater;
                 break;
             case R.id.reward_tickets:
                 if (selectReward){
@@ -427,15 +444,15 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     goodsListBeans = new ArrayList<>();
                 }
                 if (mDataBea==null){
-                    Utils.showCenterTomast("请选择水票类型");
-                    return;
+                 //   Utils.showCenterTomast("请选择水票类型");
+                    //return;
                 }
                 AddOrderModel.GoodsListBean goodsListBean = new AddOrderModel.GoodsListBean();
-                goodsListBean.setGoodName(mDataBea.getName()+mDataBea.getSpecs());
+                goodsListBean.setGoodName(shopDataBean.getName()+shopDataBean.getSpecs());
                 goodsListBean.setGoodsId(String.valueOf(shopId));
                 goodsListBean.setNum(shopNum.getText().toString());
                 goodsListBean.setGoodsPrice(shopPrice.getText().toString());
-                goodsListBean.setSpecs(mDataBea.getSpecs());
+                goodsListBean.setSpecs(shopDataBean.getSpecs());
 //                AddOrderModel.GoodsListBean.MaterialsBean materialsBean = new AddOrderModel.GoodsListBean.MaterialsBean();
 //                materialsBean.setMaterialId("00");
 //                materialsBean.setNum("10");
@@ -443,15 +460,15 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
 //                List<AddOrderModel.GoodsListBean.MaterialsBean>materialsBeanList = new ArrayList<>();
 //                materialsBeanList.add(materialsBean);
 //                goodsListBean.setMaterials(materialsBeanList);
-                if (selectWaterNum.getEditText().equals("")){
-                    Utils.showCenterTomast("请输入水票数量");
-                    return;
-                }
+//                if (selectWaterNum.getEditText().equals("")){
+//                    Utils.showCenterTomast("请输入水票数量");
+//                    return;
+//                }
 
-                if (selectDeductionNunm.getEditText().equals("")){
-                    Utils.showCenterTomast("请输入抵扣数量");
-                    return;
-                }
+//                if (selectDeductionNunm.getEditText().equals("")){
+//                    Utils.showCenterTomast("请输入抵扣数量");
+//                    return;
+//                }
 
                 if (waterId!=-1){
                     AddOrderModel.GoodsListBean.DeductWaterBean deductWaterBean = new AddOrderModel.GoodsListBean.DeductWaterBean();
@@ -504,16 +521,26 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         actual_amount = 0;
         for (AddOrderModel.GoodsListBean goodsListBean1 : goodsListBeans){
             if (goodsListBean1.getDeductWater()==null){
-                Utils.showCenterTomast("请选择水票");
-                break;
+               // Utils.showCenterTomast("请选择水票");
+               // break;
             }
              //总价格 : 所有商品金额之和
-            totalPrice += Integer.parseInt(goodsListBean1.getNum()) * Float.parseFloat(goodsListBean1.getGoodsPrice());
-            if (goodsListBean1.getDeductCoupon()!=null){
-                //应收价格  商品总额-（水票+奖券抵扣金额）
-                amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()) + Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum()));
+            float currentAmount = Integer.parseInt(goodsListBean1.getNum()) * Float.parseFloat(goodsListBean1.getGoodsPrice());
+
+            totalPrice += currentAmount;
+            if (goodsListBean1.getDeductWater()!=null){
+                if (goodsListBean1.getDeductCoupon()!=null){
+                    //应收价格  商品总额-（水票+奖券抵扣金额）
+                    amount_receivable += currentAmount - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()) + Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum()));
+                }else {
+                    amount_receivable += currentAmount - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()));
+                }
             }else {
-                amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()));
+                if (goodsListBean1.getDeductCoupon()!=null){
+                    amount_receivable += currentAmount - Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum());
+                }else {
+                    amount_receivable +=  currentAmount;
+                }
             }
 
             if (goodsListBean1.getDeductMonth()!=null){

@@ -7,6 +7,7 @@ import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.chad.library.adapter.base.module.LoadMoreModuleConfig;
 import com.kongzue.dialog.util.DialogSettings;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import pro.bilibili.boxing.BoxingMediaLoader;
 import pro.bilibili.boxing.loader.IBoxingMediaLoader;
@@ -29,7 +30,7 @@ public class MyApplication extends Application {
         IBoxingMediaLoader loader = new BoxingGlideLoader();
         BoxingMediaLoader.getInstance().init(loader);
         DialogSettings.style = STYLE_IOS;
-      //  CrashReport.initCrashReport(getApplicationContext(), "98a2abb9a8", true);
+        CrashReport.initCrashReport(getApplicationContext(), "01918d3053", true);
         LoadMoreModuleConfig.setDefLoadMoreView(new CustomLoadMoreView());
 
         SDKInitializer.initialize(this);

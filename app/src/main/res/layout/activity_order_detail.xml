@@ -88,6 +88,7 @@
                     android:textSize="14sp"
                     android:layout_toRightOf="@+id/address"
                     android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_below="@+id/name"/>
 

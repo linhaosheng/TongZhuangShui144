@@ -68,11 +68,12 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public boolean lazyLoader() {
-        if (id!=0){
-            return true;
-        }else {
-            return false;
-        }
+//        if (id!=0){
+//            return true;
+//        }else {
+//            return false;
+//        }
+        return false;
     }
 
     @Override

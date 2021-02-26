@@ -24,16 +24,26 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
     @Override
     protected void convert(@NonNull BaseViewHolder helper, AddOrderModel.GoodsListBean item) {
 
-        if ("-1".equals(item.getDeductWater().getWaterGoodsId())){
-            helper.getView(R.id.water_view).setVisibility(View.GONE);
-        }else {
+        if (item.getDeductWater()!=null){
             helper.getView(R.id.water_view).setVisibility(View.VISIBLE);
+            if ("-1".equals(item.getDeductWater().getWaterGoodsId())){
+                helper.getView(R.id.water_view).setVisibility(View.GONE);
+            }else {
+                helper.getView(R.id.water_view).setVisibility(View.VISIBLE);
+            }
+        }else {
+            helper.getView(R.id.water_view).setVisibility(View.GONE);
         }
 
         String priceNum = "¥"+item.getGoodsPrice()+"x"+item.getNum();
         String totalPrice = "¥"+Float.parseFloat(item.getGoodsPrice())*Integer.parseInt(item.getNum());
-        String waterNum = "水票x"+item.getDeductWater().getNum();
-        String discountNum = "抵扣 -"+item.getDeductWater().getDeductNum();
+
+        String waterNum = "";
+        String discountNum = "";
+        if (item.getDeductWater()!=null){
+             waterNum = "水票x"+item.getDeductWater().getNum();
+             discountNum = "抵扣 -"+item.getDeductWater().getDeductNum();
+        }
 
 //        String recycleNum = item.getMaterials().get(0).getMaterialName() +"x"+item.getMaterials().get(0).getNum() ;
         helper.setText(R.id.name,item.getGoodName())

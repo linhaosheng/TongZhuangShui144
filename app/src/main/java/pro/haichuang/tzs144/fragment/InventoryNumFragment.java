@@ -64,10 +64,11 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 
     @Override
     public boolean lazyLoader() {
-        if (id.equals("0")){
-            return false;
-        }
-        return true;
+//        if (id.equals("0")){
+//            return false;
+//        }
+//        return true;
+        return false;
     }
 
     @Override
@@ -111,7 +112,7 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 
     @Override
     protected void setUpData() {
-       if (inventoryNumAdapter.getData().size()==0){
+       if (inventoryNumAdapter.getData()==null || inventoryNumAdapter.getData().size()==0){
            inventoryNumFragmentPresenter.findGoodsWithType("","",id);
        }
     }

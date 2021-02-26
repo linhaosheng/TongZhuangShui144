@@ -80,6 +80,7 @@
                     android:layout_marginLeft="32dp"
                     android:text="湖南省长沙市岳麓区麓谷大道1928号"
                     android:textColor="#3F3F3F"
+                    android:layout_marginRight="@dimen/dp_10"
                     android:lines="1"
                     android:ellipsize="end"
                     android:drawableRight="@mipmap/next"
@@ -316,7 +317,7 @@
                     android:id="@+id/water_tickets"
                     android:layout_width="@dimen/dp_60"
                     android:layout_height="@dimen/dp_24"
-                    android:background="@drawable/set_bg_btn17"
+                    android:background="@drawable/set_bg_btn33"
                     android:gravity="center"
                     android:text="水票"
                     android:textColor="#32C5FF"
@@ -362,7 +363,8 @@
                     app:isShowUnderLine="true"
                     app:leftText="水票"
                     app:rightIconSize="@dimen/dp_22"
-                    app:rightText="请选择" />
+                    app:rightText="请选择"
+                    android:visibility="gone"/>
 
 
                 <pro.haichuang.tzs144.view.LSettingItem
@@ -376,7 +378,8 @@
                     app:rightIconSize="@dimen/dp_22"
                     app:isShowRightText = "false"
                     app:rightText="请输入"
-                    app:showEditInput="true"/>
+                    app:showEditInput="true"
+                    android:visibility="gone"/>
 
 
                 <pro.haichuang.tzs144.view.LSettingItem
@@ -390,7 +393,8 @@
                     app:leftText="抵扣数量"
                     app:rightIconSize="@dimen/dp_22"
                     app:rightText="请输入"
-                    app:showEditInput="true"/>
+                    app:showEditInput="true"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:id="@+id/upload_reward_view"
