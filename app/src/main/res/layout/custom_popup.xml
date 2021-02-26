@@ -70,14 +70,27 @@
             android:textColor="#3F3F3F"
             android:layout_marginTop="@dimen/dp_20"/>
 
-        <Spinner
-            android:id="@+id/inventory_subject"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="@dimen/dp_23"
-            android:layout_marginRight="@dimen/dp_22"
-            android:background="@drawable/set_bg_btn11"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/inventory_subject"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="@dimen/dp_23"
+                android:layout_marginRight="@dimen/dp_22"
+                android:background="@drawable/set_bg_btn11"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/down3"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="@dimen/dp_40"/>
+        </RelativeLayout>
 
     </LinearLayout>
 </LinearLayout>

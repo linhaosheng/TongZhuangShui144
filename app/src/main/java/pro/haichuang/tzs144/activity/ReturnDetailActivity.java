@@ -107,7 +107,7 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 break;
             case R.id.filter:
                 new XPopup.Builder(this)
-                        .atView(filter)
+                        .atView(searchEdit)
                         .asCustom(new CustomPopup(this,this))
                         .show();
                 break;

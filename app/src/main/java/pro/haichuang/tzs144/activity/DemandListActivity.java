@@ -77,7 +77,6 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
     @BindView(R.id.add_shop)
     Button addShop;
     private DemandListAdapter demandListAdapter;
-    private List<String> listData;
     private Date startDate;
     private Date endDate;
     private DemandListActivityPresenter demandListActivityPresenter;

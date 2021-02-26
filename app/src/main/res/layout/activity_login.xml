@@ -88,12 +88,24 @@
             android:text="绑定库存主体"
             android:textColor="#3F3F3F"/>
 
-        <Spinner
-            android:id="@+id/inventory_subject"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/set_bg_btn11"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/inventory_subject"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/set_bg_btn11" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/down3"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_20"/>
+        </RelativeLayout>
 
 
         <LinearLayout

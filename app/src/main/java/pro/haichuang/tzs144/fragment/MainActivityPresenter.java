@@ -85,6 +85,27 @@ public class MainActivityPresenter {
 
             }
         });
+    }
 
+    /**
+     * [实时库存]-调拨主体列表
+     */
+    public void findStockMainList(){
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_STOCK_MAIN_LIST, null, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                SPUtils.putString(Config.STOCK_MAIN_LIST,result);
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
     }
 }

@@ -317,5 +317,10 @@ public class ConfigUrl {
      */
     public static final String FIND_CANCEL_LIST =  "/api/app/depositManage/findCancelList";
 
+    /**
+     *  [实时库存]-调拨主体列表
+     */
+    public static final String FIND_STOCK_MAIN_LIST = "/api/app/kc/findStockMainList";
+
 
 }

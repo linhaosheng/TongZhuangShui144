@@ -282,7 +282,19 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
             }
         });
+        initAddressInfo();
+    }
 
+    private void initAddressInfo() {
+        String dataBeanJson = getIntent().getStringExtra(Config.PERSION_INFO);
+        if (dataBeanJson!=null){
+            dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+            name.setText(dataBean.getName());
+            phone.setText(dataBean.getPhone());
+            addressName.setText(dataBean.getAddressName());
+            addressDetail.setText(dataBean.getAddress());
+            type.setText(dataBean.getType());
+        }
     }
 
     @Override
@@ -368,7 +380,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.address_detail:
                 Intent intent1 = new Intent(this,SelectAddressActivity.class);
-                startActivity(intent1);
+               // startActivity(intent1);
                 break;
             case R.id.add_shop_btn:
                 AddShopDialog addShopDialog = new AddShopDialog(this, new AddShopDialog.SelectShopListener() {
@@ -495,15 +507,17 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 Utils.showCenterTomast("请选择水票");
                 break;
             }
-
+             //总价格 : 所有商品金额之和
             totalPrice += Integer.parseInt(goodsListBean1.getNum()) * Float.parseFloat(goodsListBean1.getGoodsPrice());
             if (goodsListBean1.getDeductCoupon()!=null){
+                //应收价格  商品总额-（水票+奖券抵扣金额）
                 amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()) + Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum()));
             }else {
                 amount_receivable += totalPrice - (Integer.parseInt(goodsListBean1.getDeductWater().getNum()));
             }
 
             if (goodsListBean1.getDeductMonth()!=null){
+                //实收价格  商品总额-应收—月结；
                 actual_amount += totalPrice - (amount_receivable + Integer.parseInt(goodsListBean1.getDeductMonth().getDeductNum()));
             }else {
                 actual_amount += totalPrice - amount_receivable;
@@ -544,7 +558,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private final void caculateDistance(int distance){
         String content ="";
         if (distance>1000){
-            content = "您当前位置与客户相差"+(float)distance/1000+"M，确定继续收款?";
+            content = "您当前位置与客户相差"+(float)distance/1000+"KM，确定继续收款?";
         }else {
             content = "您当前位置与客户相差"+distance+"M，确定继续收款?";
         }

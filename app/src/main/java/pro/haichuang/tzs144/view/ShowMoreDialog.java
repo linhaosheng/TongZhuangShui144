@@ -105,11 +105,13 @@ public class ShowMoreDialog extends DialogFragment {
         switch (view.getId()) {
             case R.id.sale:
                 intent.putExtra("order_type",0);
-                intent.setClass(context, EnterOrderActivity.class);
+                intent.putExtra("type","add_order");
+                intent.setClass(context, SaleSearchActivity.class);
                 break;
             case R.id.make_up_order:
                 intent.putExtra("order_type",1);
-                intent.setClass(context, EnterOrderActivity.class);
+                intent.putExtra("type","add_order");
+                intent.setClass(context, SaleSearchActivity.class);
                 break;
             case R.id.open_deposit:
                 intent.putExtra("type","open_deposit");

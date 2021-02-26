@@ -37,6 +37,7 @@ import pro.haichuang.tzs144.model.AllocationShopEvent;
 import pro.haichuang.tzs144.model.AllocationShopModel;
 import pro.haichuang.tzs144.model.GoodBeanModel;
 import pro.haichuang.tzs144.model.StatusEvent;
+import pro.haichuang.tzs144.model.StockMainModel;
 import pro.haichuang.tzs144.model.SubjectModel;
 import pro.haichuang.tzs144.presenter.AllocationActivityPresenter;
 import pro.haichuang.tzs144.util.Config;
@@ -76,7 +77,7 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
     private DemandListAdapter demandListAdapter;
     private List<CharSequence> subjectList;
     private String subjectId;
-    private SubjectModel subjectModel;
+    private StockMainModel stockMainModel;
     private AllocationActivityPresenter allocationActivityPresenter;
     private AllocationShopModel allocationShopModel;
     private List<GoodBeanModel>goodBeanModelList;
@@ -112,12 +113,12 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
             }
         });
 
-        String subjectListJson = SPUtils.getString(Config.SUBJECT_LIST, "");
+        String subjectListJson = SPUtils.getString(Config.STOCK_MAIN_LIST, "");
         if (!subjectListJson.equals("")) {
             subjectList = new ArrayList<>();
-            subjectModel = Utils.gsonInstane().fromJson(subjectListJson, SubjectModel.class);
-            for (SubjectModel.DataBean dataBean : subjectModel.getData()) {
-                subjectList.add(dataBean.getName());
+            stockMainModel = Utils.gsonInstane().fromJson(subjectListJson, StockMainModel.class);
+            for (StockMainModel.DataBean dataBean : stockMainModel.getData()) {
+                subjectList.add(dataBean.getStockName());
             }
         }
 
@@ -129,7 +130,7 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
                     BottomMenu.show(AllocationActivity.this, subjectList, new OnMenuItemClickListener() {
                         @Override
                         public void onClick(String text, int index) {
-                            subjectId = subjectModel.getData().get(index).getId();
+                            subjectId = stockMainModel.getData().get(index).getId()+"";
                             subject.setRightText(text);
                         }
                     });

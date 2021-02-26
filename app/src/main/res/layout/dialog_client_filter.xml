@@ -51,14 +51,14 @@
             android:gravity="center"
             android:text="2019-06-22"
             android:layout_marginLeft="@dimen/dp_13"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_8"
+            android:paddingRight="@dimen/dp_8"
             android:textColor="#32C5FF"
             android:textSize="14sp" />
 
 
         <View
-            android:layout_width="@dimen/dp_30"
+            android:layout_width="@dimen/dp_20"
             android:layout_height="1dp"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dp_10"
@@ -73,8 +73,8 @@
             android:gravity="center"
             android:text="2019-06-22"
             android:textColor="#6D7278"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_8"
+            android:paddingRight="@dimen/dp_8"
             android:textSize="14sp" />
 
     </LinearLayout>

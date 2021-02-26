@@ -101,7 +101,14 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
                     Intent intent1 = new Intent(SaleSearchActivity.this,StartDepositActivity.class);
                     intent1.putExtra(Config.PERSION_INFO,dataStr);
                     startActivity(intent1);
-                } else{
+                } else if (type!=null && type.equals("add_order")){
+                    int order_type = getIntent().getIntExtra("order_type", 0);
+                    Intent intent1 = new Intent(SaleSearchActivity.this,EnterOrderActivity.class);
+                    intent1.putExtra("order_type",order_type);
+                    intent1.putExtra(Config.PERSION_INFO,dataStr);
+                    startActivity(intent1);
+
+                }else {
                     Intent intent = new Intent();
                     intent.putExtra(Config.PERSION_INFO,dataStr);
                     SaleSearchActivity.this.setResult(RESULT_OK, intent);

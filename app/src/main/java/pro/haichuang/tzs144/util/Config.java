@@ -23,6 +23,8 @@ public class Config {
     public static  double LONGITUDE = 0;
 
 
+    public static final String STOCK_MAIN_LIST = "stock_main_list";
+
     public static final String FIND_AREA = "find_area";
 
     public static final String FIND_STAFFS = "find_staffs";

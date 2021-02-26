@@ -173,11 +173,13 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                                         Intent intent = new Intent();
                                         if (position == 0) {
                                             intent.putExtra("order_type",0);
-                                            intent.setClass(SalesListActivity.this, EnterOrderActivity.class);
+                                            intent.putExtra("type","add_order");
+                                            intent.setClass(SalesListActivity.this, SaleSearchActivity.class);
 
                                         } else if (position == 1) {
                                             intent.putExtra("order_type",1);
-                                            intent.setClass(SalesListActivity.this, EnterOrderActivity.class);
+                                            intent.putExtra("type","add_order");
+                                            intent.setClass(SalesListActivity.this, SaleSearchActivity.class);
                                         }
                                         startActivity(intent);
                                     }
