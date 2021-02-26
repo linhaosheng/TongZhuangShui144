@@ -144,7 +144,6 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
                 finish();
                 break;
             case R.id.tip_img:
-
                 break;
         }
     }

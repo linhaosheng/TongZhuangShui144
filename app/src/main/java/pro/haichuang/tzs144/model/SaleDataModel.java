@@ -118,7 +118,7 @@ public class SaleDataModel {
             this.type = type;
         }
 
-        public double getAddressId() {
+        public int getAddressId() {
             return addressId;
         }
 
