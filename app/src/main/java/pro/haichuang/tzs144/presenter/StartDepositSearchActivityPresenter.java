@@ -23,9 +23,10 @@ public class StartDepositSearchActivityPresenter {
      * [押金]获取开押列表
      * @param query
      */
-    public void findDepositBookList(String query ){
+    public void findDepositBookList(String query,int page ){
         Map<String,Object>params = new ArrayMap<>();
         params.put("query",query);
+        params.put("page",page);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_DEPOSIT_LIST, params, new HttpRequestResultListener() {
             @Override

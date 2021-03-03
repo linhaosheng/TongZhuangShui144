@@ -19,9 +19,9 @@ public class DepositManagementSearchAdapter extends BaseQuickAdapter<DepositMana
     protected void convert(@NotNull BaseViewHolder baseViewHolder, DepositManagerModel.DataBean dataBean) {
 
         String deposit_number = "押金本编号："+dataBean.getDepNo();
-        String start_code = "开始编码："+dataBean.getStartNo();
-        String end_code = "结束编码 ："+dataBean.getEndNo();
-        String code_time = "领入时间："+dataBean.getCreateTime();
+        String start_code = "   开始编码："+dataBean.getStartNo();
+        String end_code = "   结束编码："+dataBean.getEndNo();
+        String code_time = "   领入时间："+dataBean.getCreateTime();
         baseViewHolder.setText(R.id.deposit_number,deposit_number)
                 .setText(R.id.start_code,start_code)
                 .setText(R.id.end_code,end_code)

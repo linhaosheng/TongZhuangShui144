@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -51,6 +52,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
 
     private StartDepositSearchActivityPresenter startDepositSearchActivityPresenter;
     private StartDepositSearchAdapter  startDepositSearchAdapter;
+    private int currentPage = 1;
 
     @Override
     protected int setLayoutResourceID() {
@@ -77,7 +79,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
             @Override
             public void afterTextChanged(Editable s) {
                 if (searchEdit.getText()!=null){
-                    startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString());
+                    startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),currentPage);
                 }
             }
         });
@@ -86,6 +88,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
     @Override
     protected void setUpData() {
         startDepositSearchActivityPresenter = new StartDepositSearchActivityPresenter(this);
+        startDepositSearchActivityPresenter.findDepositBookList("",currentPage);
     }
 
 
@@ -96,15 +99,21 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
                 finish();
                 break;
             case R.id.open_deposit:
+                Intent intent = new Intent(this,SaleSearchActivity.class) ;
+                intent.putExtra("type","open_deposit");
+                startActivity(intent);
                 break;
             case R.id.refund_orders:
+                Intent intent2 = new Intent(this,SaleSearchActivity.class);
+                intent2.putExtra("type","add_with_drawal");
+                startActivity(intent2);
                 break;
         }
     }
 
     @Override
     public void onRefresh() {
-        startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString());
+        startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),currentPage);
     }
 
     @Override
