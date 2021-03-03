@@ -83,7 +83,7 @@
                     android:layout_marginRight="@dimen/dp_10"
                     android:lines="1"
                     android:ellipsize="end"
-                    android:drawableRight="@mipmap/next"
+                    android:drawableRight="@mipmap/next2"
                     android:textSize="14sp" />
 
             </LinearLayout>
