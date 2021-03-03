@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -100,7 +101,7 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
         demandListAdapter = new DemandListAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(demandListAdapter);
-        demandListAdapter.addChildClickViewIds(R.id.delete);
+        demandListAdapter.addChildClickViewIds(R.id.delete,R.id.reduce,R.id.shop_add);
         demandListAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
@@ -109,6 +110,28 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
                         List<GoodBeanModel> data = demandListAdapter.getData();
                         data.remove(position);
                         demandListAdapter.setList(data);
+                        break;
+                    case R.id.reduce:
+                        List<GoodBeanModel> data1 = demandListAdapter.getData();
+                        GoodBeanModel goodBeanModel = data1.get(position);
+                        if (goodBeanModel.getNum()==0){
+                            return;
+                        }else {
+                            int num = goodBeanModel.getNum() -1;
+                            goodBeanModel.setNum(num);
+                            demandListAdapter.setData(position,goodBeanModel);
+                        }
+                        break;
+                    case R.id.shop_add:
+
+                        List<GoodBeanModel> data2 = demandListAdapter.getData();
+                        GoodBeanModel goodBeanModel1 = data2.get(position);
+                        int num = goodBeanModel1.getNum()+1;
+                        goodBeanModel1.setNum(num);
+                        Log.i(TAG,"shop_add====="+num);
+                        data2.set(position,goodBeanModel1);
+                        demandListAdapter.setList(data2);
+
                         break;
                 }
             }
@@ -157,6 +180,7 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
         demandListActivityPresenter.findDemandGoods("");
         goodList = new ArrayList<>();
         goodBeanModelList = new ArrayList<>();
+        demandListAdapter.setList(goodBeanModelList);
     }
 
 
@@ -183,7 +207,7 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
                     Utils.showCenterTomast("预计送达结束时间不能小于开始时间");
                     return;
                 }
-                demandListActivityPresenter.demand(startTime.getRightText(), endTime.getRightText(), goodBeanModelList);
+                demandListActivityPresenter.demand(startTime.getRightText(), endTime.getRightText(), demandListAdapter.getData());
                 break;
             case R.id.cancel_btn:
                 finish();
@@ -192,11 +216,19 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
                 if (shopModel.getData()==null){
                     return;
                 }
-                AddAllocationShopDialog  addAllocationShopDialog = new AddAllocationShopDialog(this, shopModel.getData(), new AddAllocationShopDialog.SelectShopListener() {
+                List<ShopModel.DataBean>dataBeanList = new ArrayList<>();
+                for (ShopModel.DataBean dataBean:shopModel.getData()){
+                    dataBean.setCheck(false);
+                    dataBeanList.add(dataBean);
+                }
+                AddAllocationShopDialog  addAllocationShopDialog = new AddAllocationShopDialog(this, dataBeanList, new AddAllocationShopDialog.SelectShopListener() {
                     @Override
-                    public void selectShop(ShopModel.DataBean dataBean) {
-                        goodBeanModelList.add(new GoodBeanModel(dataBean.getId() + "", 0));
-                        demandListAdapter.setList(goodBeanModelList);
+                    public void selectShop(List<ShopModel.DataBean> dataBeanList) {
+                        List<GoodBeanModel> data = demandListAdapter.getData();
+                        for (ShopModel.DataBean dataBean : dataBeanList){
+                            data.add(new GoodBeanModel(dataBean.getId() + "", 0));
+                        }
+                        demandListAdapter.setList(data);
                     }
                 });
                 addAllocationShopDialog.show(getSupportFragmentManager(),"");

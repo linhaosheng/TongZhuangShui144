@@ -29,6 +29,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -177,7 +178,13 @@ public class AddAllocationShopDialog extends DialogFragment {
                 break;
             case R.id.input_btn:
                 if (selectShopListener!=null){
-                    selectShopListener.selectShop(addShopDialogAdapter.getData().get(selectShopPosition));
+                    List<ShopModel.DataBean>dataBeanList = new ArrayList<>();
+                    for (ShopModel.DataBean dataBean : addShopDialogAdapter.getData()){
+                        if (dataBean.isCheck()){
+                            dataBeanList.add(dataBean);
+                        }
+                    }
+                    selectShopListener.selectShop(dataBeanList);
                 }
                 dismiss();
                 //    addDepositBook();
@@ -187,7 +194,7 @@ public class AddAllocationShopDialog extends DialogFragment {
 
 
     public interface  SelectShopListener{
-        void selectShop(ShopModel.DataBean dataBean);
+        void selectShop(List<ShopModel.DataBean> dataBeanList);
     }
 
 

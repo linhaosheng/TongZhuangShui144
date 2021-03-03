@@ -177,6 +177,7 @@
         </attr>
         <attr name="isShowLeftInfoText" format="boolean" />
         <attr name="isShowRightText" format="boolean" />
+        <attr name="isShowRightBtn" format="boolean" />
         <attr name="isShowRightLogo" format="boolean" />
         <attr name="rightText" format="string" />
         <attr name="rightTextSize" format="dimension" />

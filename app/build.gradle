@@ -1,15 +1,18 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("tongzhuangshui144.keystore");
+
+
 android {
     signingConfigs {
         release {
-            storeFile file('tongzhuangshui144.keystore')
+            storeFile file(keystorePropertiesFile)
             storePassword "haichuang"
             keyAlias "tongzhuangshui144"
             keyPassword "haichuang"
         }
         debug {
-            storeFile file('tongzhuangshui144.keystore')
+            storeFile file(keystorePropertiesFile)
             storePassword "haichuang"
             keyAlias "tongzhuangshui144"
             keyPassword "haichuang"
@@ -54,7 +57,7 @@ android {
             minifyEnabled false    //Turn on obfuscation
             shrinkResources false  //Remove useless resources
             zipAlignEnabled false  //Compression optimization
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

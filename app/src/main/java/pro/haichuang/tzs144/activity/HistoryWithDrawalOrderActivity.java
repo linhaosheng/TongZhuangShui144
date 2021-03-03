@@ -103,6 +103,33 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
                 });
             }
         });
+        mortgagePrice.setEditTextListner(new LSettingItem.EditTextListner() {
+            @Override
+            public void editListner(String text) {
+                try {
+                    float goodPrice = Float.parseFloat(text);
+                    int goodNum = Integer.parseInt(mortgageNum.getEditText());
+                    float total = goodPrice * goodNum;
+                    depositMoney.setText(total+"¥");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        mortgageNum.setEditTextListner(new LSettingItem.EditTextListner() {
+            @Override
+            public void editListner(String text) {
+                try {
+                    float goodPrice = Float.parseFloat(mortgagePrice.getEditText());
+                    int goodNum = Integer.parseInt(text);
+                    float total = goodPrice * goodNum;
+                    depositMoney.setText(total+"¥");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     @Override

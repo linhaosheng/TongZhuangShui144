@@ -11,7 +11,16 @@ public class ClientTrendModel {
 
     private int result;
     private String message;
+    private String time;
     private DataBean data;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public int getResult() {
         return result;

@@ -63,16 +63,6 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:background="@drawable/set_bg_btn14"/>
 
-        <Button
-            android:id="@+id/detention_record"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/dp_28"
-            android:text="作废退押记录"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
-            android:layout_marginRight="@dimen/dp_20"
-            android:background="@drawable/set_bg_btn14"/>
 
         <Button
             android:id="@+id/historical_deposit"
@@ -80,6 +70,17 @@
             android:layout_weight="1"
             android:layout_height="@dimen/dp_28"
             android:text="历史押金单录入"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:layout_marginRight="@dimen/dp_20"
+            android:background="@drawable/set_bg_btn14"/>
+
+        <Button
+            android:id="@+id/detention_record"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/dp_28"
+            android:text="作废退押记录"
             android:textColor="#ffffff"
             android:textSize="12sp"
             android:layout_marginRight="@dimen/dp_20"

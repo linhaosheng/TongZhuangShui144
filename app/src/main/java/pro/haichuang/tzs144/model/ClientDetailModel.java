@@ -8,12 +8,12 @@ public class ClientDetailModel {
     /**
      * result : 1
      * message : 获取成功!
-     * data : [{"id":"","customerName":"","customerType":"","contacts":"","phone":"","area":"","inviter":"","business":"","addressList":[{"id":"","addressName":"","address":""}],"maintainList":[{"id":"","time":"","maintainInfo":""}]}]
+     * data : {"area":"七里桥-银城市场","customerType":"终端客户","business":"","phone":"17398765465","addressList":[{"address":"成都市双流区 骑龙-地铁站","addressName":"成都","id":20}],"inviter":"管理员","id":26,"customerName":"李先生","contacts":"木子李","maintainList":[]}
      */
 
     private int result;
     private String message;
-    private List<DataBean> data;
+    private DataBean data;
 
     public int getResult() {
         return result;
@@ -31,44 +31,84 @@ public class ClientDetailModel {
         this.message = message;
     }
 
-    public List<DataBean> getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(List<DataBean> data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
     public static class DataBean {
         /**
-         * id :
-         * customerName :
-         * customerType :
-         * contacts :
-         * phone :
-         * area :
-         * inviter :
+         * area : 七里桥-银城市场
+         * customerType : 终端客户
          * business :
-         * addressList : [{"id":"","addressName":"","address":""}]
-         * maintainList : [{"id":"","time":"","maintainInfo":""}]
+         * phone : 17398765465
+         * addressList : [{"address":"成都市双流区 骑龙-地铁站","addressName":"成都","id":20}]
+         * inviter : 管理员
+         * id : 26
+         * customerName : 李先生
+         * contacts : 木子李
+         * maintainList : []
          */
 
-        private String id;
-        private String customerName;
-        private String customerType;
-        private String contacts;
-        private String phone;
         private String area;
-        private String inviter;
+        private String customerType;
         private String business;
+        private String phone;
+        private String inviter;
+        private int id;
+        private String customerName;
+        private String contacts;
         private List<AddressListBean> addressList;
         private List<MaintainListBean> maintainList;
 
-        public String getId() {
+        public String getArea() {
+            return area;
+        }
+
+        public void setArea(String area) {
+            this.area = area;
+        }
+
+        public String getCustomerType() {
+            return customerType;
+        }
+
+        public void setCustomerType(String customerType) {
+            this.customerType = customerType;
+        }
+
+        public String getBusiness() {
+            return business;
+        }
+
+        public void setBusiness(String business) {
+            this.business = business;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getInviter() {
+            return inviter;
+        }
+
+        public void setInviter(String inviter) {
+            this.inviter = inviter;
+        }
+
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
@@ -80,52 +120,12 @@ public class ClientDetailModel {
             this.customerName = customerName;
         }
 
-        public String getCustomerType() {
-            return customerType;
-        }
-
-        public void setCustomerType(String customerType) {
-            this.customerType = customerType;
-        }
-
         public String getContacts() {
             return contacts;
         }
 
         public void setContacts(String contacts) {
             this.contacts = contacts;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-
-        public String getArea() {
-            return area;
-        }
-
-        public void setArea(String area) {
-            this.area = area;
-        }
-
-        public String getInviter() {
-            return inviter;
-        }
-
-        public void setInviter(String inviter) {
-            this.inviter = inviter;
-        }
-
-        public String getBusiness() {
-            return business;
-        }
-
-        public void setBusiness(String business) {
-            this.business = business;
         }
 
         public List<AddressListBean> getAddressList() {
@@ -146,21 +146,21 @@ public class ClientDetailModel {
 
         public static class AddressListBean {
             /**
-             * id :
-             * addressName :
-             * address :
+             * address : 成都市双流区 骑龙-地铁站
+             * addressName : 成都
+             * id : 20
              */
 
-            private String id;
-            private String addressName;
             private String address;
+            private String addressName;
+            private int id;
 
-            public String getId() {
-                return id;
+            public String getAddress() {
+                return address;
             }
 
-            public void setId(String id) {
-                this.id = id;
+            public void setAddress(String address) {
+                this.address = address;
             }
 
             public String getAddressName() {
@@ -171,12 +171,12 @@ public class ClientDetailModel {
                 this.addressName = addressName;
             }
 
-            public String getAddress() {
-                return address;
+            public int getId() {
+                return id;
             }
 
-            public void setAddress(String address) {
-                this.address = address;
+            public void setId(int id) {
+                this.id = id;
             }
         }
 

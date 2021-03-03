@@ -79,6 +79,7 @@
                 android:text="比上月"
                 android:textColor="#3F3F3F"
                 android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:layout_below="@+id/order_num"
                 android:layout_marginTop="@dimen/dp_10"
                 />
@@ -90,6 +91,7 @@
                 android:layout_below="@+id/last_month"
                 android:layout_marginTop="@dimen/dp_10"
                 android:textColor="#E02020"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:textSize="@dimen/sp_16"
                 android:text="39%"/>
 

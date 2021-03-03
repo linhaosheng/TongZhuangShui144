@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -73,8 +76,10 @@ public class LSettingItem extends RelativeLayout {
     /*点击事件*/
 
     private EditText editinput;
+    Button rightBtn;
 
     private OnLSettingItemClick mOnLSettingItemClick;
+    private EditTextListner editTextListner;
 
     public LSettingItem(Context context) {
         this(context, null);
@@ -116,6 +121,10 @@ public class LSettingItem extends RelativeLayout {
 
     public void setmOnLSettingItemClick(OnLSettingItemClick mOnLSettingItemClick) {
         this.mOnLSettingItemClick = mOnLSettingItemClick;
+    }
+
+    public void setEditTextListner(EditTextListner mEditTextListner){
+        this.editTextListner = mEditTextListner;
     }
 
     /**
@@ -228,6 +237,12 @@ public class LSettingItem extends RelativeLayout {
                 }else {
                     editinput.setVisibility(GONE);
                 }
+            }else if (attr==R.styleable.LSettingView_isShowRightBtn){
+                if (a.getBoolean(attr,false)){
+                    rightBtn.setVisibility(VISIBLE);
+                }else {
+                    rightBtn.setVisibility(GONE);
+                }
             }
         }
         a.recycle();
@@ -283,8 +298,40 @@ public class LSettingItem extends RelativeLayout {
         mRightIcon_check = mView.findViewById(R.id.rightcheck);
         mRightIcon_switch = mView.findViewById(R.id.rightswitch);
         mTvLeftInfoText = mView.findViewById(R.id.tv_left_info);
+        rightBtn = mView.findViewById(R.id.tv_right_btn);
         editinput = mView.findViewById(R.id.edit_input);
+
+        rightBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnLSettingItemClick!=null){
+                    mOnLSettingItemClick.click(true,v);
+                }
+            }
+        });
+        editinput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+              if (editinput.getText()!=null){
+                 if (editTextListner!=null){
+                     editTextListner.editListner(editinput.getText().toString());
+                 }
+              }
+            }
+        });
     }
+
+
 
     /**
      * 处理点击事件
@@ -363,6 +410,10 @@ public class LSettingItem extends RelativeLayout {
     private int sp2px(float sp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
                 getResources().getDisplayMetrics());
+    }
+
+    public static interface EditTextListner{
+        void editListner(String text);
     }
 }
 

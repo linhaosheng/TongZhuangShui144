@@ -119,6 +119,34 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
                 });
             }
         });
+
+        price.setEditTextListner(new LSettingItem.EditTextListner() {
+            @Override
+            public void editListner(String text) {
+                try {
+                    float goodPrice = Float.parseFloat(text);
+                    int goodNum = Integer.parseInt(num.getEditText());
+                    float total = goodPrice * goodNum;
+                    money.setRightText(total+"元");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        num.setEditTextListner(new LSettingItem.EditTextListner() {
+            @Override
+            public void editListner(String text) {
+                try {
+                    float goodPrice = Float.parseFloat(price.getEditText());
+                    int goodNum = Integer.parseInt(text);
+                    float total = goodPrice * goodNum;
+                    money.setRightText(total+"元");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
         money.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
@@ -126,7 +154,7 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
                    float goodPrice = Float.parseFloat(price.getEditText());
                    int goodNum = Integer.parseInt(num.getEditText());
                    float total = goodPrice * goodNum;
-                   money.setRightText(String.valueOf(total+"元"));
+                   money.setRightText(total+"元");
                    priceData = String.valueOf(total);
 
                }catch (Exception e){

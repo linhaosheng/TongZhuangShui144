@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.fragment;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -85,6 +87,9 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     private List<TrendModel> trendList;
     private int currentPage = 1;
+    private View headTimeView;
+    private TextView updateTime;
+    private String endTime;
 
 
     @Override
@@ -109,6 +114,10 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         refresh.setOnRefreshListener(this);
         orderPaymentAdapter = new OrderNumTrendAdapter();
         orderTrendAdapter  = new OrderTrendAdapter();
+
+        headTimeView = LayoutInflater.from(getActivity()).inflate(R.layout.item_update_time, null);
+        orderTrendAdapter.addHeaderView(headTimeView);
+        updateTime = headTimeView.findViewById(R.id.update_time);
 
         recycleTendIncome.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recycleTendIncome.setAdapter(orderTrendAdapter);
@@ -137,9 +146,10 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     protected void setUpData() {
+        endTime = Utils.formatSelectTime(new Date());
         clientFragmentPresenter = new ClientFragmentPresenter(this);
         clientFragmentPresenter.countKh();
-        clientFragmentPresenter.findKhList("测试  ","2019-10-10","2021-01-20","","0",currentPage);
+        clientFragmentPresenter.findKhList("","2019-10-10",endTime,"","0",currentPage);
         trendList = new ArrayList<>();
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -223,6 +233,12 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
             TrendModel zdTrendModel = new TrendModel("终端客户",String.valueOf(data1.getZdCount()),data1.getZdDayCount(),data1.getZdWeekCount());
             trendList.add(zdTrendModel);
+
+            if (data.getTime() == null) {
+                updateTime.setText("指标更新于" + Utils.transformTime(new Date()));
+            } else {
+                updateTime.setText("指标更新于" + data.getTime());
+            }
 
             orderTrendAdapter.setList(trendList);
         }

@@ -21,7 +21,7 @@
         android:id="@+id/check_out_time"
         android:layout_width="113dp"
         android:layout_height="@dimen/dp_40"
-        android:background="@drawable/set_bg_btn16"
+        android:background="@drawable/set_bg_btn36"
         android:gravity="center"
         android:text="2019-06-22"
         android:textColor="#32C5FF"

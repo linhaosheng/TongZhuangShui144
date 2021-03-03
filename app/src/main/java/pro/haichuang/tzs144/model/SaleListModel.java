@@ -56,6 +56,7 @@ public class SaleListModel {
          */
 
         private String id;
+        private String no;
         private String orderType;
         private String customerName;
         private String customerPhone;
@@ -67,6 +68,14 @@ public class SaleListModel {
         private String realPrice;
         private String createTime;
         private String salesDistance;
+
+        public String getNo() {
+            return no;
+        }
+
+        public void setNo(String no) {
+            this.no = no;
+        }
 
         public String getId() {
             return id;

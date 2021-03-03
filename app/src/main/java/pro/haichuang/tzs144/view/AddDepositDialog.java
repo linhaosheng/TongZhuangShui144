@@ -65,6 +65,7 @@ public class AddDepositDialog extends DialogFragment {
     private View view;
 
     private Context context;
+    private AddDepositListener addDepositListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,8 +73,10 @@ public class AddDepositDialog extends DialogFragment {
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TurnTableDilogTheme);
     }
 
-    public AddDepositDialog(Context mContext) {
+    public AddDepositDialog(Context mContext,AddDepositListener mAddDepositListener) {
         this.context = mContext;
+        this.addDepositListener = mAddDepositListener;
+
     }
 
 
@@ -151,11 +154,11 @@ public class AddDepositDialog extends DialogFragment {
                 }
 
                 try {
-                   double startNum =  Double.parseDouble(startDepositNum.getText().toString());
-                   double endNum = Double.parseDouble(endDepositNum.getText().toString());
+                    int startNum =  Integer.parseInt(startDepositNum.getText().toString());
+                    int endNum = Integer.parseInt(endDepositNum.getText().toString());
                     String number = depositNumTxt.getText().toString();
-                    double num = endNum - startNum;
-                    addDepositBook(number,String.valueOf(num));
+                    int num = endNum - startNum;
+                    addDepositBook(String.valueOf(num),number);
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -168,17 +171,17 @@ public class AddDepositDialog extends DialogFragment {
 
     /**
      * 添加押金本
-     * @param number
-     * @param numCount
+     * @param num   编号数量
+     * @param number  押金本编号
      * @param
      */
-    public void addDepositBook(String number,String numCount){
+    public void addDepositBook(String num,String number){
 
         Map<String,Object> params = new ArrayMap<>();
+        params.put("num",num);
         params.put("number",number);
-        params.put("numCount",numCount);
 
-        HttpRequestEngine.postRequest(ConfigUrl.FIND_SHOP, params, new HttpRequestResultListener() {
+        HttpRequestEngine.postRequest(ConfigUrl.ADD_DESPOSIT_BOOK, params, new HttpRequestResultListener() {
             @Override
             public void start() {
                 Utils.showCenterTomast("提交中...");
@@ -191,7 +194,14 @@ public class AddDepositDialog extends DialogFragment {
                     if (jsonObject.getInt("result")==1){
                         Utils.showCenterTomast("添加成功");
                         AddDepositDialog.this.dismiss();
+                        if (addDepositListener!=null){
+                            addDepositListener.addDespositStatus("success");
+                        }
+
                     }else {
+                        if (addDepositListener!=null){
+                            addDepositListener.addDespositStatus("fail");
+                        }
                         Utils.showCenterTomast("提交失败");
                     }
                 }catch (Exception e){
@@ -204,7 +214,9 @@ public class AddDepositDialog extends DialogFragment {
                 Utils.showCenterTomast("提交失败");
             }
         });
-
     }
 
+    public static interface AddDepositListener{
+        void addDespositStatus(String status);
+    }
 }

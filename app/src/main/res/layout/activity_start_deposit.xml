@@ -13,10 +13,9 @@
         android:id="@+id/client_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginRight="12dp"
         android:layout_below="@+id/head_view"
+        android:paddingBottom="@dimen/dp_10"
         android:background="#fff">
 
         <TextView
@@ -25,6 +24,7 @@
             android:layout_height="wrap_content"
             android:text="张三"
             android:textColor="#3F3F3F"
+            android:layout_marginLeft="@dimen/dp_12"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -47,17 +47,20 @@
             android:text="麓谷大道店"
             android:textColor="#3F3F3F"
             android:textSize="14sp"
+            android:layout_marginLeft="@dimen/dp_12"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/address_detail"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/phone"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_toRightOf="@+id/name"
             android:text="湖南省长沙市岳麓区麓谷大道1928号"
             android:textColor="#999999"
+            android:drawableRight="@mipmap/next2"
+            android:layout_marginRight="20dp"
             android:textSize="14sp" />
 
     </RelativeLayout>
@@ -135,7 +138,7 @@
         app:leftTextMarginLeft="@dimen/dp_10"
         app:rightStyle="iconHide"
         app:isShowRightText = "true"
-        app:rightText="点击计算"
+        app:rightText="自动计算"
         app:isShowUnderLine="true"
         app:rightIconSize="@dimen/dp_22" />
 

@@ -70,6 +70,8 @@ public class OrderRecordActivity extends BaseActivity implements ILoadDataView<O
     TextView shopLastWeek;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
+    @BindView(R.id.empty_view)
+    RelativeLayout emptyView;
 
     private String customerId;
 
@@ -174,6 +176,11 @@ public class OrderRecordActivity extends BaseActivity implements ILoadDataView<O
         ShopLastDate.setText(data.getDaySaleRatio());
         shopLastWeek.setText(data.getWeekSaleRatio());
         orderRecordAdapter.setList(data.getOrderList());
+        if (data.getOrderList()==null || data.getOrderList().size()==0){
+            emptyView.setVisibility(View.VISIBLE);
+        }else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
     @Override

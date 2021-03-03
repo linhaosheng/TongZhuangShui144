@@ -7,7 +7,6 @@
 
     <include layout="@layout/header"/>
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_data"
             android:layout_width="match_parent"

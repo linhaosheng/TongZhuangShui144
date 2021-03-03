@@ -142,8 +142,10 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
         addWithDrawalOrderAdapter.setList(data);
         if (data==null || data.size()==0){
             emptyView.setVisibility(View.VISIBLE);
+            withDrawalBtn.setVisibility(View.GONE);
         }else {
             emptyView.setVisibility(View.GONE);
+            withDrawalBtn.setVisibility(View.VISIBLE);
         }
     }
 

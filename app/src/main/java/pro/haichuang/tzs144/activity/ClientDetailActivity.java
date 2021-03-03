@@ -30,7 +30,7 @@ import pro.haichuang.tzs144.util.Utils;
 /**
  * 客户详情
  */
-public class ClientDetailActivity extends BaseActivity implements ILoadDataView<List<ClientDetailModel.DataBean>> {
+public class ClientDetailActivity extends BaseActivity implements ILoadDataView<ClientDetailModel.DataBean> {
 
 
     @BindView(R.id.back)
@@ -132,10 +132,10 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
     }
 
     @Override
-    public void successLoad(List<ClientDetailModel.DataBean> data) {
+    public void successLoad(ClientDetailModel.DataBean dataBean) {
         WaitDialog.dismiss();
-        if (data!=null && data.size()>0){
-            ClientDetailModel.DataBean dataBean = data.get(0);
+        if (dataBean!=null){
+
             addressListAdapter.setList(dataBean.getAddressList());
             mainTainRecordAdapter.setList(dataBean.getMaintainList());
 

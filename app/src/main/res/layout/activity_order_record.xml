@@ -8,20 +8,22 @@
     <include layout="@layout/header" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/time_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_10"
+                android:layout_centerHorizontal="true"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -34,7 +36,7 @@
                         android:id="@+id/start_time"
                         android:layout_width="113dp"
                         android:layout_height="@dimen/dp_40"
-                        android:background="@drawable/set_bg_btn16"
+                        android:background="@drawable/set_bg_btn37"
                         android:gravity="center"
                         android:text="2019-06-22"
                         android:textColor="#32C5FF"
@@ -117,7 +119,7 @@
                         android:id="@+id/end_time"
                         android:layout_width="113dp"
                         android:layout_height="@dimen/dp_40"
-                        android:background="@drawable/set_bg_btn16"
+                        android:background="@drawable/set_bg_btn36"
                         android:gravity="center"
                         android:text="2019-06-22"
                         android:textColor="#6D7278"
@@ -188,11 +190,38 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle_data"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="#F8F8F8"
+                android:layout_below="@+id/time_view"
                 android:paddingBottom="@dimen/dp_30"/>
 
-        </LinearLayout>
+           <RelativeLayout
+               android:id="@+id/empty_view"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/time_view"
+               android:layout_centerInParent="true"
+               android:layout_marginTop="@dimen/dp_50">
+
+               <ImageView
+                   android:id="@+id/empty"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@mipmap/empty"
+                   android:layout_centerHorizontal="true"/>
+
+               <TextView
+                   android:id="@+id/empty_info"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="空空如也"
+                   android:layout_below="@+id/empty"
+                   android:layout_centerHorizontal="true"
+                   android:layout_marginTop="@dimen/dp_10"
+                   android:textSize="12sp"/>
+           </RelativeLayout>
+
+        </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

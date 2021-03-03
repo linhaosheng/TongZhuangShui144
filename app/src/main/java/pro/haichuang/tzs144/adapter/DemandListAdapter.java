@@ -21,5 +21,7 @@ public class DemandListAdapter extends BaseQuickAdapter<GoodBeanModel, BaseViewH
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, GoodBeanModel baseMedia) {
 
+        baseViewHolder.setText(R.id.shop_num,baseMedia.getNum()+"");
+
     }
 }

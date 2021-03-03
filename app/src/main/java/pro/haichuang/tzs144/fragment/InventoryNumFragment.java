@@ -50,6 +50,7 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
     private TypeListAdapter typeListAdapter;
     private InventoryNumAdapter inventoryNumAdapter;
     private int currentIndex = 0;
+    private String categoryId = "";
     private String id;
     private InventoryNumFragmentPresenter inventoryNumFragmentPresenter;
     private List<InventoryNumModel.DataBean.ListBean>allDataList;
@@ -103,7 +104,7 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
                 typeListAdapter.setSelectIndex(position);
                 typeListAdapter.notifyDataSetChanged();
                 if (position!=0){
-                    String categoryId = String.valueOf(typeListAdapter.getData().get(position).getId());
+                     categoryId = String.valueOf(typeListAdapter.getData().get(position).getId());
                     inventoryNumFragmentPresenter.findGoodsWithType("",categoryId,id);
                 }
             }
@@ -113,13 +114,13 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
     @Override
     protected void setUpData() {
        if (inventoryNumAdapter.getData()==null || inventoryNumAdapter.getData().size()==0){
-           inventoryNumFragmentPresenter.findGoodsWithType("","",id);
+           inventoryNumFragmentPresenter.findGoodsWithType("",categoryId,id);
        }
     }
 
     @Override
     public void onRefresh() {
-        inventoryNumFragmentPresenter.findGoodsWithType("","",id);
+        inventoryNumFragmentPresenter.findGoodsWithType("",categoryId,id);
     }
 
     @Override
@@ -131,9 +132,10 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
     public void successLoad(InventoryNumModel data) {
         refresh.setRefreshing(false);
        if (data!=null){
-           if (id.equals("0") && allDataList== null){
-               EventBus.getDefault().post(new UpdateTitleEvent(data));
-           }
+//           if (id.equals("0") && allDataList== null){
+//               EventBus.getDefault().post(new UpdateTitleEvent(data));
+//           }
+           EventBus.getDefault().post(new UpdateTitleEvent(data));
            allDataList = data.getData().getList();
            inventoryNumAdapter.setList(data.getData().getList());
        }

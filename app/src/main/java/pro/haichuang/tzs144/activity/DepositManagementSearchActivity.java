@@ -119,6 +119,7 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
               }
             }
         });
+        depositManagementSearchActivityPresenter.findDepositBookList("",1,startTime.getText().toString(),endTime.getText().toString());
     }
 
 
@@ -129,7 +130,14 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
                 finish();
                 break;
             case R.id.add_img:
-                AddDepositDialog addDepositDialog = new AddDepositDialog(this);
+                AddDepositDialog addDepositDialog = new AddDepositDialog(this, new AddDepositDialog.AddDepositListener() {
+                    @Override
+                    public void addDespositStatus(String status) {
+                        if ("success".equals(status)){
+                            depositManagementSearchActivityPresenter.findDepositBookList("",1,startTime.getText().toString(),endTime.getText().toString());
+                        }
+                    }
+                });
                 addDepositDialog.show(getSupportFragmentManager(), "");
                 break;
             case R.id.open_deposit:

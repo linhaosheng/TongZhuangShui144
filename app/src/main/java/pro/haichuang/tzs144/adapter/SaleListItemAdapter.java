@@ -18,7 +18,7 @@ public class SaleListItemAdapter extends BaseQuickAdapter<SaleListModel.DataBean
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, SaleListModel.DataBean dataBean) {
 
-        String order_num = "订单编号："+dataBean.getId();
+        String order_num = "订单编号："+dataBean.getNo();
         String order_state = "";
         if (dataBean.getOrderType().equals("0")){
             order_state = "直接销售";
@@ -38,7 +38,7 @@ public class SaleListItemAdapter extends BaseQuickAdapter<SaleListModel.DataBean
         String need_price = "应收金额："+dataBean.getReceivablePrice();
         String actual_price = "实收金额："+dataBean.getRealPrice();
         String time = "录入时间："+dataBean.getCreateTime();
-        String sale_distance = "销售距离: "+dataBean.getSalesDistance();
+        String sale_distance = "销售距离："+dataBean.getSalesDistance();
 
         baseViewHolder.setText(R.id.order_num,order_num)
                 .setText(R.id.order_state,order_state)

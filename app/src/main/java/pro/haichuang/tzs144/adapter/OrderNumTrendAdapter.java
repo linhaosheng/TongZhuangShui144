@@ -1,6 +1,8 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.graphics.Color;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
@@ -30,15 +32,45 @@ public class OrderNumTrendAdapter extends BaseQuickAdapter<ClientListModel.DataB
                 .setText(R.id.dealer,dataBean.getTypeName())
                 .setText(R.id.order_num,orderNum)
                 .setText(R.id.sale_num,saleCount)
-                .setText(R.id.last_month_num,String.valueOf(dataBean.getMonthRatio() ))
-                .setText(R.id.last_year_num,String.valueOf(dataBean.getYearRatio()))
-        .setText(R.id.sale_last_month_num,String.valueOf(dataBean.getMonthSaleRatio()))
-        .setText(R.id.sale_last_year_num,String.valueOf(dataBean.getSaleYearRatio()));
+                .setText(R.id.last_month_num,dataBean.getMonthRatio()+"%")
+                .setText(R.id.last_year_num,dataBean.getYearRatio()+"%")
+        .setText(R.id.sale_last_month_num,dataBean.getMonthSaleRatio()+"%")
+        .setText(R.id.sale_last_year_num,dataBean.getSaleYearRatio()+"%");
+
+
+        TextView last_month_num = baseViewHolder.getView(R.id.last_month_num);
+        TextView last_year_num = baseViewHolder.getView(R.id.last_year_num);
+        TextView sale_last_month_num = baseViewHolder.getView(R.id.sale_last_month_num);
+        TextView sale_last_year_num = baseViewHolder.getView(R.id.sale_last_year_num);
 
         if (dataBean.getIsMaintain()){
             baseViewHolder.getView(R.id.order_state).setVisibility(View.VISIBLE);
         }else {
             baseViewHolder.getView(R.id.order_state).setVisibility(View.GONE);
+        }
+
+        if (dataBean.getMonthRatio().contains("+")){
+            last_month_num.setTextColor(Color.parseColor("#E02020"));
+        }else {
+            last_month_num.setTextColor(Color.parseColor("#3C9C25"));
+        }
+
+        if (dataBean.getYearRatio().contains("+")){
+            last_year_num.setTextColor(Color.parseColor("#E02020"));
+        }else {
+            last_year_num.setTextColor(Color.parseColor("#3C9C25"));
+        }
+
+        if (dataBean.getMonthSaleRatio().contains("+")){
+            sale_last_month_num.setTextColor(Color.parseColor("#E02020"));
+        }else {
+            sale_last_month_num.setTextColor(Color.parseColor("#3C9C25"));
+        }
+
+        if (dataBean.getSaleYearRatio().contains("+")){
+            sale_last_year_num.setTextColor(Color.parseColor("#E02020"));
+        }else {
+            sale_last_year_num.setTextColor(Color.parseColor("#3C9C25"));
         }
 
     }
