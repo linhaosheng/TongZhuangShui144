@@ -287,6 +287,16 @@ public class ConfigUrl {
     public static final String DELIVERY_ORDER = "/api/app/order/deliveryOrder";
 
     /**
+     * [直接销售]-加载绑定回收材料
+     */
+    public static final String FIND_GOODS_MATERIAL = "/api/app/order/findGoodsMaterial";
+
+    /**
+     * 转订单
+     */
+    public static final String TURN_ORDER = "/api/app/order/turnOrder";
+
+    /**
      * [账务]账务管理 - 结账
      */
     public static final String SETTLE = "/api/app/finance/settle";

@@ -154,6 +154,43 @@ public class ClientDetailModel {
             private String address;
             private String addressName;
             private int id;
+            private String latitude;
+            private String longitude;
+            private boolean upadteAddress;
+            private boolean isEdit;
+
+
+            public boolean isEdit() {
+                return isEdit;
+            }
+
+            public void setEdit(boolean edit) {
+                isEdit = edit;
+            }
+
+            public boolean isUpadteAddress() {
+                return upadteAddress;
+            }
+
+            public void setUpadteAddress(boolean upadteAddress) {
+                this.upadteAddress = upadteAddress;
+            }
+
+            public String getLatitude() {
+                return latitude;
+            }
+
+            public void setLatitude(String latitude) {
+                this.latitude = latitude;
+            }
+
+            public String getLongitude() {
+                return longitude;
+            }
+
+            public void setLongitude(String longitude) {
+                this.longitude = longitude;
+            }
 
             public String getAddress() {
                 return address;

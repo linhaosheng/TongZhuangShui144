@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 
@@ -113,6 +114,10 @@ public class Utils {
 
     public static void showAvatorImage(ImageView imageView,String url){
         Glide.with(MyApplication.getApplication()).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).error(R.mipmap.avator).into(imageView);
+    }
+
+    public static void showRectangleImage(ImageView imageView,String url){
+        Glide.with(MyApplication.getApplication()).load(url).apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).error(R.mipmap.avator).into(imageView);//四周都是圆角的圆角矩形图片
     }
 
     public static void showTvImage(ImageView imageView,String url){

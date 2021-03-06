@@ -25,6 +25,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.OrderDetailAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.OrderDetailModel;
+import pro.haichuang.tzs144.model.RefreshEvent;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.presenter.OrderDetailPresenter;
 import pro.haichuang.tzs144.util.Config;
@@ -166,6 +167,7 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
                 Utils.showCenterTomast("定单作废成功");
                 tips.setVisibility(View.GONE);
                 orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.void_state));
+                EventBus.getDefault().post(new RefreshEvent("refresh",0));
             } else {
                 Utils.showCenterTomast("定单作废失败");
             }

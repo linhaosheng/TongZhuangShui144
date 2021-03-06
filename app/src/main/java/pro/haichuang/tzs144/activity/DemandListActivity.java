@@ -226,7 +226,7 @@ public class DemandListActivity extends BaseActivity implements ILoadDataView<St
                     public void selectShop(List<ShopModel.DataBean> dataBeanList) {
                         List<GoodBeanModel> data = demandListAdapter.getData();
                         for (ShopModel.DataBean dataBean : dataBeanList){
-                            data.add(new GoodBeanModel(dataBean.getId() + "", 0));
+                            data.add(new GoodBeanModel("",dataBean.getId() + "", 0));
                         }
                         demandListAdapter.setList(data);
                     }

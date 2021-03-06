@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,11 +21,18 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
 import com.kongzue.dialog.v3.BottomMenu;
+import com.kongzue.dialog.v3.WaitDialog;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,11 +45,15 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.SaleListItemAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.ClientTypeModel;
+import pro.haichuang.tzs144.model.RefreshEvent;
 import pro.haichuang.tzs144.model.SaleListModel;
+import pro.haichuang.tzs144.model.ShopModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.presenter.SalesListActivityPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.TimeDialog;
 
 /**
  * 直接销售列表
@@ -78,6 +90,8 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
     private String startTime;
     private String endTime;
     private int page = 1;
+    private boolean lastPage;
+
 
     @Override
     protected int setLayoutResourceID() {
@@ -104,13 +118,15 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
             @Override
             public void onClick(View v) {
                 //时间选择器
-                TimePickerView pvTime = new TimePickerBuilder(SalesListActivity.this, new OnTimeSelectListener() {
+                TimeDialog timeDialog = new TimeDialog(SalesListActivity.this, new TimeDialog.SelectTimeListener() {
                     @Override
-                    public void onTimeSelect(Date date, View v) {
-
+                    public void selectTime(String mStartTime, String mEndTime) {
+                        startTime = mStartTime;
+                        endTime = mEndTime;
+                        salesListActivityPresenter.findDirectSales(cutomerType, mStartTime, mEndTime, 1);
                     }
-                }).build();
-                pvTime.show();
+                });
+                timeDialog.show(getSupportFragmentManager(), "");
             }
         });
 
@@ -137,6 +153,31 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                 startActivity(intent);
             }
         });
+
+        saleListItemAdapter.addChildClickViewIds(R.id.order_state);
+        saleListItemAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                if (view.getId()==R.id.order_state){
+                    String orderNumId = saleListItemAdapter.getData().get(position).getId();
+                    salesListActivityPresenter.directSelling(orderNumId);
+                }
+            }
+        });
+
+        saleListItemAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    page++;
+                    salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, page);
+                }
+            }
+        });
+        saleListItemAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        saleListItemAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+
     }
 
     @Override
@@ -191,6 +232,8 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
+        lastPage = false;
+        page=1;
         salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, page);
     }
 
@@ -202,11 +245,26 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     public void successLoad(List<SaleListModel.DataBean> data) {
         refresh.setRefreshing(false);
-        saleListItemAdapter.setList(data);
-        if (data != null && data.size() > 0) {
-            emptyView.setVisibility(View.GONE);
-        } else {
-            emptyView.setVisibility(View.VISIBLE);
+        if (data==null || data.size()==0){
+            lastPage = true;
+        }
+        if (page==1){
+            if (data != null && data.size() > 0) {
+                emptyView.setVisibility(View.GONE);
+            } else {
+                emptyView.setVisibility(View.VISIBLE);
+            }
+            saleListItemAdapter.setList(data);
+            if (data.size()<10){
+                lastPage = true;
+                saleListItemAdapter.getLoadMoreModule().loadMoreEnd();
+            }
+        }else {
+            saleListItemAdapter.addData(data);
+            saleListItemAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+        if (lastPage){
+            saleListItemAdapter.getLoadMoreModule().loadMoreEnd();
         }
     }
 
@@ -216,4 +274,49 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         Utils.showCenterTomast(error);
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        WaitDialog.dismiss();
+        if (event != null) {
+            if (event.status == Config.LOAD_SUCCESS) {
+                Utils.showCenterTomast("定单作废成功");
+                page=1;
+                lastPage=false;
+                salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, 1);
+            } else {
+                Utils.showCenterTomast("定单作废失败");
+            }
+        }
+        Log.i(TAG, "onMessageEvent===");
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RefreshEvent event) {
+        WaitDialog.dismiss();
+        if (event != null) {
+           if ("refresh".equals(event.status)){
+               page=1;
+               lastPage=false;
+               salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, 1);
+           }
+        }
+        Log.i(TAG, "onMessageEvent===");
+    }
+
 }
+

@@ -70,7 +70,7 @@ public class LoginPresenter {
      * 登录-获取主体列表
      * @param userName
      */
-    public void loadSubjectList(String userName){
+    public void loadSubjectList(String userName,boolean showDialog){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("userName",userName);
@@ -78,7 +78,9 @@ public class LoginPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.SUBJECT_LIST, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-                iLoadDataView.startLoad();
+                if (showDialog){
+                    iLoadDataView.startLoad();
+                }
                 Log.i("TAH===","start====");
             }
 
@@ -89,9 +91,11 @@ public class LoginPresenter {
                     if (subjectModel!=null && subjectModel.getResult()==1){
                         Log.i("TAH===","result====");
                         EventBus.getDefault().post(new MessageEvent(subjectModel));
+                        SPUtils.putString(Config.SUBJECT_LIST,result);
+                    }else {
+                        EventBus.getDefault().post(new MessageEvent(null));
                     }
                 }
-                SPUtils.putString(Config.SUBJECT_LIST,result);
             }
 
             @Override

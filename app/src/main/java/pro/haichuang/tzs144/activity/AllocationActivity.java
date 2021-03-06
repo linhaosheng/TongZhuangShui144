@@ -163,7 +163,7 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
                     @Override
                     public void onClick(String text, int index) {
                         AllocationShopModel.DataBean dataBean = allocationShopModel.getData().get(index);
-                        goodBeanModelList.add(new GoodBeanModel(dataBean.getId(),0));
+                        goodBeanModelList.add(new GoodBeanModel(text,dataBean.getId(),0));
                         demandListAdapter.setList(goodBeanModelList);
 
                     }

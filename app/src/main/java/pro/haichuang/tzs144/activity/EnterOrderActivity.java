@@ -284,11 +284,11 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
             }
         });
-        initAddressInfo();
+        initAddressInfo(getIntent());
     }
 
-    private void initAddressInfo() {
-        String dataBeanJson = getIntent().getStringExtra(Config.PERSION_INFO);
+    private void initAddressInfo(Intent intent) {
+        String dataBeanJson = intent.getStringExtra(Config.PERSION_INFO);
         if (dataBeanJson!=null){
             dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
             name.setText(dataBean.getName());
@@ -382,7 +382,10 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.address_detail:
                 Intent intent1 = new Intent(this,SelectAddressActivity.class);
-               // startActivity(intent1);
+                if (dataBean!=null){
+                    intent1.putExtra("customerId",dataBean.getId());
+                }
+                startActivityForResult(intent1,1000);
                 break;
             case R.id.add_shop_btn:
                 AddShopDialog addShopDialog = new AddShopDialog(this, new AddShopDialog.SelectShopListener() {
@@ -551,7 +554,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             }
 
         }
-        totalMerchandiseNum.setText(totalPrice +"");
+
         amountReceivableNum.setText(amount_receivable +"");
         actualAmount.setText(actual_amount+"");
     }
@@ -625,7 +628,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             List<BaseMedia> data =null;
             config.withMaxCount(1);
             Boxing.of(config).withIntent(MyApplication.getApplication(), BoxingActivity.class, (ArrayList) data).start(this, type);
-
     }
 
     @Override
@@ -651,6 +653,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 addressName.setText(dataBean.getAddressName());
                 addressDetail.setText(dataBean.getAddress());
                 type.setText(dataBean.getType());
+            }else if (requestCode==1000){
+                Log.i(TAG,"initAddressInfo");
+                String dataBeanJson = data.getStringExtra(Config.PERSION_INFO);
+                SaleDataModel.DataBean dataBean1 = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+
+                addressName.setText(dataBean1.getAddressName());
+                addressDetail.setText(dataBean1.getAddress());
+                dataBean.setAddress(dataBean1.getAddress());
+                dataBean.setAddressName(dataBean1.getAddressName());
+                dataBean.setId(dataBean1.getId());
+                dataBean.setLatitude(dataBean1.getLatitude());
+                dataBean.setLongitude(dataBean1.getLongitude());
             }
         }
     }

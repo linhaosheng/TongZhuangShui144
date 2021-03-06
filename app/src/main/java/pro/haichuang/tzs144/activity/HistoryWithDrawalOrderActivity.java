@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
 import com.kongzue.dialog.v3.BottomMenu;
@@ -82,6 +85,7 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
     private String goodsId;
     private String customerId;
     private  String type;
+    private SaleDataModel.DataBean dataBean;
 
     @Override
     protected int setLayoutResourceID() {
@@ -138,7 +142,7 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
         historyWithDrawalOrderActivityPresenter.findDepositGoods();
         String dataBeanJson = getIntent().getStringExtra(Config.PERSION_INFO);
         if (dataBeanJson!=null){
-            SaleDataModel.DataBean dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+            dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
             name.setText(dataBean.getName());
             phone.setText(dataBean.getPhone());
             address.setText(dataBean.getAddressName());
@@ -165,7 +169,7 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
     }
 
 
-    @OnClick({R.id.back, R.id.with_drawal_btn})
+    @OnClick({R.id.back, R.id.with_drawal_btn,R.id.address_detail})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -198,6 +202,13 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
                     return;
                 }
                 historyWithDrawalOrderActivityPresenter.saveHistory(no,bookNo,customerId,goodsId,price,num,type);
+                break;
+            case R.id.address_detail:
+                Intent intent1 = new Intent(this,SelectAddressActivity.class);
+                if (dataBean!=null){
+                    intent1.putExtra("customerId",dataBean.getId());
+                }
+                startActivityForResult(intent1,1000);
                 break;
         }
     }
@@ -245,6 +256,29 @@ public class HistoryWithDrawalOrderActivity extends BaseActivity implements ILoa
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (resultCode==1000){
+
+                Log.i(TAG,"initAddressInfo");
+                String dataBeanJson = data.getStringExtra(Config.PERSION_INFO);
+                SaleDataModel.DataBean dataBean1 = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+
+                address.setText(dataBean1.getAddressName());
+                addressDetail.setText(dataBean1.getAddress());
+
+                dataBean.setAddress(dataBean1.getAddress());
+                dataBean.setAddressName(dataBean1.getAddressName());
+                dataBean.setId(dataBean1.getId());
+                dataBean.setLatitude(dataBean1.getLatitude());
+                dataBean.setLongitude(dataBean1.getLongitude());
+            }
+        }
     }
 
 }

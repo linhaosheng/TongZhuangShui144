@@ -324,10 +324,11 @@
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginLeft="47dp"
                 android:layout_marginRight="@dimen/dp_40"
-                android:background="@drawable/set_bg_btn17"
-                android:textColor="#fff"
+                android:background="@drawable/set_bg_btn46"
+                android:textColor="#32C5FF"
                 android:textSize="16sp"
                 android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_20"
                 android:text="转订单"/>
 
         </LinearLayout>

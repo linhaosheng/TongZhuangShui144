@@ -54,6 +54,7 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
     private String id;
     private InventoryNumFragmentPresenter inventoryNumFragmentPresenter;
     private List<InventoryNumModel.DataBean.ListBean>allDataList;
+    private boolean lastPage;
 
     public InventoryNumFragment(String mId) {
        this.id = mId;
@@ -105,8 +106,10 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
                 typeListAdapter.notifyDataSetChanged();
                 if (position!=0){
                      categoryId = String.valueOf(typeListAdapter.getData().get(position).getId());
-                    inventoryNumFragmentPresenter.findGoodsWithType("",categoryId,id);
+                }else {
+                    categoryId = "";
                 }
+                inventoryNumFragmentPresenter.findGoodsWithType("",categoryId,id);
             }
         });
     }
@@ -137,8 +140,8 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 //           }
            EventBus.getDefault().post(new UpdateTitleEvent(data));
            allDataList = data.getData().getList();
-           inventoryNumAdapter.setList(data.getData().getList());
        }
+        inventoryNumAdapter.setList(data.getData().getList());
     }
 
     @Override

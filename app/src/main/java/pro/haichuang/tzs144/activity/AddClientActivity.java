@@ -48,6 +48,7 @@ import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.LSettingItem;
+import rxhttp.wrapper.param.IFile;
 
 /**
  * 新增客户
@@ -157,6 +158,18 @@ public class AddClientActivity extends BaseActivity implements ILoadDataView<Str
                         public void onClick(String text, int index) {
                             clientType.setRightText(text);
                             customerTypeId = clientTypeModel.getData().get(index).getId();
+                            if (text.contains("终端")){
+                                developPersion.setVisibility(View.GONE);
+                                business.setVisibility(View.GONE);
+                            }else {
+                                developPersion.setVisibility(View.VISIBLE);
+                                business.setVisibility(View.VISIBLE);
+                            }
+                            if (text.contains("经销商")){
+                                monopoly.setVisibility(View.VISIBLE);
+                            }else {
+                                monopoly.setVisibility(View.GONE);
+                            }
                         }
                     });
                 }
@@ -263,6 +276,12 @@ public class AddClientActivity extends BaseActivity implements ILoadDataView<Str
                         Utils.showCenterTomast("请输入地址名称和详细地址");
                         return;
                     } else {
+                        if (clientType.getRightText().contains("终端")){
+                            if (addressBeanList.size()>=5){
+                                Utils.showCenterTomast("最多只能设置5个地址");
+                                return;
+                            }
+                        }
                         addressBeanList.add(new AddressBean());
                         addClientAddressAdapter.setList(addressBeanList);
                     }

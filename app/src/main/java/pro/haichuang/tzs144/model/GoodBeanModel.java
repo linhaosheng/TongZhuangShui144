@@ -3,10 +3,20 @@ package pro.haichuang.tzs144.model;
 public class GoodBeanModel {
     private String goodsId;
     private int num;
+    private String name;
 
-    public GoodBeanModel(String goodsId, int num) {
+    public GoodBeanModel(String name,String goodsId, int num) {
         this.goodsId = goodsId;
         this.num = num;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getGoodsId() {

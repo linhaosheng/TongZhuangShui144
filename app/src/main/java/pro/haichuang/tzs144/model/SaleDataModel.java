@@ -82,7 +82,7 @@ public class SaleDataModel {
             return latitude;
         }
 
-        public void setLatitude(int latitude) {
+        public void setLatitude(double latitude) {
             this.latitude = latitude;
         }
 

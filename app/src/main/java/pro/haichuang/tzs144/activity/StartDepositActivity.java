@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
 import com.kongzue.dialog.v3.BottomMenu;
 import com.kongzue.dialog.v3.WaitDialog;
@@ -85,6 +87,7 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
     private String goodsId;
     private StartDepositActivityPresenter startDepositActivityPresenter;
     private String priceData;
+    private SaleDataModel.DataBean dataBean;
 
     @Override
     protected int setLayoutResourceID() {
@@ -171,7 +174,7 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
         startDepositActivityPresenter.findDepositGoods();
         String dataBeanJson = getIntent().getStringExtra(Config.PERSION_INFO);
         if (dataBeanJson!=null){
-            SaleDataModel.DataBean dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+            dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
             name.setText(dataBean.getName());
             phone.setText(dataBean.getPhone());
             address.setText(dataBean.getAddressName());
@@ -187,7 +190,7 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
     }
 
 
-    @OnClick({R.id.back,R.id.save_deposit_btn})
+    @OnClick({R.id.back,R.id.save_deposit_btn,R.id.address_detail})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.back:
@@ -222,6 +225,13 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
                 }
 
                 startDepositActivityPresenter.addDepositInfo(no,customerId,goodsId,priceData,numData,type+"");
+                break;
+            case R.id.address_detail:
+                Intent intent1 = new Intent(this,SelectAddressActivity.class);
+                if (dataBean!=null){
+                    intent1.putExtra("customerId",dataBean.getId());
+                }
+                startActivityForResult(intent1,1000);
                 break;
         }
     }
@@ -269,5 +279,28 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
     public void errorLoad(String error) {
         WaitDialog.dismiss();
         Utils.showCenterTomast("提交失败");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (resultCode==1000){
+
+                Log.i(TAG,"initAddressInfo");
+                String dataBeanJson = data.getStringExtra(Config.PERSION_INFO);
+                SaleDataModel.DataBean dataBean1 = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+
+                address.setText(dataBean1.getAddressName());
+                addressDetail.setText(dataBean1.getAddress());
+
+                dataBean.setAddress(dataBean1.getAddress());
+                dataBean.setAddressName(dataBean1.getAddressName());
+                dataBean.setId(dataBean1.getId());
+                dataBean.setLatitude(dataBean1.getLatitude());
+                dataBean.setLongitude(dataBean1.getLongitude());
+            }
+        }
     }
 }

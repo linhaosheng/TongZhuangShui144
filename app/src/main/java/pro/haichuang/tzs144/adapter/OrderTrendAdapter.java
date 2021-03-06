@@ -25,23 +25,29 @@ public class OrderTrendAdapter extends BaseQuickAdapter<TrendModel, BaseViewHold
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, TrendModel trendModel) {
        baseViewHolder.setText(R.id.text_name,trendModel.name)
-               .setText(R.id.text_num,trendModel.num)
-       .setText(R.id.last_tend,trendModel.getLastOne()+"%")
-       .setText(R.id.tend_week,trendModel.getLastTwo()+"%");
+               .setText(R.id.text_num,trendModel.num);
 
         TextView lastTrend = baseViewHolder.getView(R.id.last_tend);
         TextView tendWeek = baseViewHolder.getView(R.id.tend_week);
 
-       if (trendModel.getLastOne().contains("+")){
+        String lastOne = trendModel.getLastOne().replace("+","").replace("-","");
+
+        if (trendModel.getLastOne().contains("+")){
             lastTrend.setTextColor(Color.parseColor("#E02020"));
+            baseViewHolder.setText(R.id.last_tend,"↑"+lastOne+"%");
         }else {
             lastTrend.setTextColor(Color.parseColor("#3C9C25"));
+           baseViewHolder.setText(R.id.last_tend,"↓"+lastOne+"%");
         }
+
+        String lastTwo = trendModel.getLastTwo().replace("+","").replace("-","");
 
         if (trendModel.getLastTwo().contains("+")){
             tendWeek.setTextColor(Color.parseColor("#E02020"));
+            baseViewHolder.setText(R.id.tend_week,"↑"+lastTwo+"%");
         }else {
             tendWeek.setTextColor(Color.parseColor("#3C9C25"));
+            baseViewHolder.setText(R.id.tend_week,"↓"+lastTwo+"%");
         }
     }
 }

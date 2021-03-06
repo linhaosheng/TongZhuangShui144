@@ -2,13 +2,17 @@ package pro.haichuang.tzs144.presenter;
 
 import android.util.ArrayMap;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.ClientDetailModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
 public class ClientDetailActivityPresenter {
@@ -106,12 +110,12 @@ public class ClientDetailActivityPresenter {
 
             @Override
             public void success(String result) {
-
+                EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,0));
             }
 
             @Override
             public void error(String error) {
-
+                EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,0));
             }
         });
     }

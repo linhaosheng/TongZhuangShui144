@@ -2,13 +2,18 @@ package pro.haichuang.tzs144.presenter;
 
 import android.util.ArrayMap;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
+
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.SaleListModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
 public class SalesListActivityPresenter {
@@ -79,6 +84,42 @@ public class SalesListActivityPresenter {
             @Override
             public void error(String error) {
               iLoadDataView.errorLoad(error);
+            }
+        });
+    }
+
+    /**
+     * [首页]-作废订单
+     * @param id
+     */
+    public void directSelling(String id){
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+
+        HttpRequestEngine.postRequest(ConfigUrl.DIRECT_SELLING, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+                iLoadDataView.startLoad();
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int result1 = jsonObject.getInt("result");
+                    if (result1==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,2));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,2));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iLoadDataView.errorLoad(error);
             }
         });
     }

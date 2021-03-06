@@ -69,6 +69,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     public LocationClient mLocationClient = null;
     private MyLocationListener myListener = new MyLocationListener();
+    private boolean showDialog = true;
 
     @Override
     protected int setLayoutResourceID() {
@@ -112,9 +113,26 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
             @Override
             public void afterTextChanged(Editable s) {
+                loadSubject = false;
+                showDialog = false;
+            }
+        });
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 if (!loadSubject && !TextUtils.isEmpty(account.getText())) {
                     Log.i(TAG, "afterTextChanged==");
-                    loginPresenter.loadSubjectList(account.getText().toString());
+                    loginPresenter.loadSubjectList(account.getText().toString(),showDialog);
                     loadSubject = true;
                 }
             }
@@ -124,8 +142,21 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     @Override
     protected void setUpData() {
         loginPresenter = new LoginPresenter(this);
-        account.setText("10008");
-        password.setText("123456");
+        String accountInfo = SPUtils.getString(Config.ACCOUNT_INFO, "");
+        if (!accountInfo.equals("")){
+            showDialog = false;
+            int i = accountInfo.indexOf("-");
+            String accountTxt = accountInfo.substring(0,i);
+            String passwordTxt = accountInfo.substring(i+1);
+            account.setText(accountTxt);
+            password.setText(passwordTxt);
+
+            Log.i(TAG,"accountTxt==="+accountTxt+"===passwordTxt=="+passwordTxt);
+
+        }
+
+        //account.setText("10008");//"1001"
+        //password.setText("123456");
 
         String login_time = SPUtils.getString(Config.LOGIN_TIME, "");
         if (!login_time.equals("")) {
@@ -193,6 +224,12 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         if (dataBeanList!=null){
             SPUtils.putString(account.getText().toString(), dataBeanList.get(selectPosition).getId());
         }
+        if (checked){
+            String info = account.getText().toString() +"-"+password.getText().toString();
+            SPUtils.putString(Config.ACCOUNT_INFO,info);
+        }else {
+            SPUtils.putString(Config.ACCOUNT_INFO,"");
+        }
         Log.i(TAG, "登录....");
 
         if (dataBeanList!=null){
@@ -226,6 +263,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     public void onMessageEvent(MessageEvent event) {
         WaitDialog.dismiss();
         if (event!=null){
+            arr_adapter.clear();
             dataBeanList = event.subjectModel.getData();
 
             for (SubjectModel.DataBean dataBean : event.subjectModel.getData()){
@@ -233,7 +271,8 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             }
             arr_adapter.addAll();
             arr_adapter.notifyDataSetChanged();
-
+        }else {
+            loadSubject = false;
         }
         Log.i(TAG,"onMessageEvent===");
     }

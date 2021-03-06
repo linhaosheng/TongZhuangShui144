@@ -28,5 +28,21 @@ public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataB
         baseViewHolder.setText(R.id.address,data.getAddressName())
                 .setText(R.id.address_detail,data.getAddress());
 
+        if (data.isUpadteAddress()){
+            baseViewHolder.getView(R.id.update_address_view).setVisibility(View.VISIBLE);
+            baseViewHolder.getView(R.id.default_address).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.update_address_view).setVisibility(View.GONE);
+            if (position==0){
+                baseViewHolder.getView(R.id.default_address).setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (data.isEdit()){
+            baseViewHolder.getView(R.id.edit_linview).setVisibility(View.VISIBLE);
+        }else {
+            baseViewHolder.getView(R.id.edit_linview).setVisibility(View.GONE);
+        }
+
     }
 }

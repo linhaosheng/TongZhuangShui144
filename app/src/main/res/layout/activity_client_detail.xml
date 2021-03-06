@@ -93,6 +93,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/address_name_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="地址"
@@ -101,6 +102,19 @@
                     android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_10"
                     android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/add_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="添加"
+                    android:layout_toRightOf="@+id/address_name_txt"
+                    android:textSize="13sp"
+                    android:textColor="#32C5FF"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginTop="11dp"
+                    android:visibility="gone"
+                    />
 
                 <TextView
                     android:id="@+id/update_address"

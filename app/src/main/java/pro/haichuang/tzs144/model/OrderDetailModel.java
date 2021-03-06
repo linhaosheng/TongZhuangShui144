@@ -71,7 +71,7 @@ public class OrderDetailModel {
         private String timeTitle;
         private String timeRange;
         private String timeStatus;
-        private String orderType;
+        private int orderType;
         private String payMode;
         private String completeTime;
         private int totalPrice;
@@ -164,11 +164,11 @@ public class OrderDetailModel {
             this.timeStatus = timeStatus;
         }
 
-        public String getOrderType() {
+        public int getOrderType() {
             return orderType;
         }
 
-        public void setOrderType(String orderType) {
+        public void setOrderType(int orderType) {
             this.orderType = orderType;
         }
 
@@ -284,6 +284,24 @@ public class OrderDetailModel {
             private String monthImg;
             private Object monthDeductNum;
             private List<String> materialList;
+            private List<BindMaterList> bindMaterList;
+            private int recycleNum;
+
+            public int getRecycleNum() {
+                return recycleNum;
+            }
+
+            public void setRecycleNum(int recycleNum) {
+                this.recycleNum = recycleNum;
+            }
+
+            public List<BindMaterList> getBindMaterList() {
+                return bindMaterList;
+            }
+
+            public void setBindMaterList(List<BindMaterList> bindMaterList) {
+                this.bindMaterList = bindMaterList;
+            }
 
             public int getWaterNum() {
                 return waterNum;
@@ -363,6 +381,27 @@ public class OrderDetailModel {
 
             public void setMaterialList(List<String> materialList) {
                 this.materialList = materialList;
+            }
+        }
+
+        public static class BindMaterList{
+           public String name;
+           private int id;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
             }
         }
     }

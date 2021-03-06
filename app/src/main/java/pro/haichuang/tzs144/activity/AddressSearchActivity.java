@@ -22,9 +22,12 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
@@ -90,7 +93,14 @@ public class AddressSearchActivity extends BaseActivity {
         baiduMap.setMyLocationEnabled(true);
 
         //显示卫星图层
-        baiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
+        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
+                .fromResource(R.mipmap.address_icon);
+        baiduMap.setMyLocationConfiguration(new MyLocationConfiguration(
+                mCurrentMode, true, mCurrentMarker
+        ));
+
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

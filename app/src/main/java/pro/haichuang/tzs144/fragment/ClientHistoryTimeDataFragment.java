@@ -207,8 +207,8 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
                 emptyView.setVisibility(View.VISIBLE);
             }else {
                 emptyView.setVisibility(View.GONE);
-                orderPaymentAdapter.setList(event.dataBean.getData());
             }
+            orderPaymentAdapter.setList(event.dataBean.getData());
         }
     }
 

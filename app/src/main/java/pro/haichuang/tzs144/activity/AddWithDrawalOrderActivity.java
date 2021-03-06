@@ -1,7 +1,9 @@
 package pro.haichuang.tzs144.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,6 +72,7 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
 
     private AddWithDrawalOrderAdapter addWithDrawalOrderAdapter;
     private AddWithDrawalOrderActivityPresenter addWithDrawalOrderActivityPresenter;
+    private SaleDataModel.DataBean dataBean;
 
 
     @Override
@@ -103,7 +107,7 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
         addWithDrawalOrderActivityPresenter = new AddWithDrawalOrderActivityPresenter(this);
         String dataBeanJson = getIntent().getStringExtra(Config.PERSION_INFO);
         if (dataBeanJson!=null){
-            SaleDataModel.DataBean dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+            dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
             name.setText(dataBean.getName());
             phone.setText(dataBean.getPhone());
             address.setText(dataBean.getAddressName());
@@ -113,7 +117,7 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
     }
 
 
-    @OnClick({R.id.back,R.id.with_drawal_btn})
+    @OnClick({R.id.back,R.id.with_drawal_btn,R.id.address_detail})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.back:
@@ -127,6 +131,13 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                 //去除多余的逗号
                 String ids = idBuilder.substring(0, idBuilder.toString().length() - 2);
                 addWithDrawalOrderActivityPresenter.returnDeposits(ids);
+                break;
+            case R.id.address_detail:
+                Intent intent1 = new Intent(this,SelectAddressActivity.class);
+                if (dataBean!=null){
+                    intent1.putExtra("customerId",dataBean.getId());
+                }
+                startActivityForResult(intent1,1000);
                 break;
         }
     }
@@ -179,5 +190,28 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (resultCode==1000){
+
+                Log.i(TAG,"initAddressInfo");
+                String dataBeanJson = data.getStringExtra(Config.PERSION_INFO);
+                SaleDataModel.DataBean dataBean1 = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+
+                address.setText(dataBean1.getAddressName());
+                addressDetail.setText(dataBean1.getAddress());
+
+                dataBean.setAddress(dataBean1.getAddress());
+                dataBean.setAddressName(dataBean1.getAddressName());
+                dataBean.setId(dataBean1.getId());
+                dataBean.setLatitude(dataBean1.getLatitude());
+                dataBean.setLongitude(dataBean1.getLongitude());
+            }
+        }
     }
 }

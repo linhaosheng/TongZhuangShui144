@@ -156,7 +156,7 @@ public class AddDepositDialog extends DialogFragment {
                 try {
                     int startNum =  Integer.parseInt(startDepositNum.getText().toString());
                     int endNum = Integer.parseInt(endDepositNum.getText().toString());
-                    String number = depositNumTxt.getText().toString();
+                    String number = depositNum.getText().toString();
                     int num = endNum - startNum;
                     addDepositBook(String.valueOf(num),number);
 
@@ -195,14 +195,15 @@ public class AddDepositDialog extends DialogFragment {
                         Utils.showCenterTomast("添加成功");
                         AddDepositDialog.this.dismiss();
                         if (addDepositListener!=null){
-                            addDepositListener.addDespositStatus("success");
+                            addDepositListener.addDespositStatus("success","添加成功");
                         }
 
                     }else {
                         if (addDepositListener!=null){
-                            addDepositListener.addDespositStatus("fail");
+                            String errorResult= jsonObject.getString("message");
+                            Utils.showCenterTomast(errorResult);
+                            addDepositListener.addDespositStatus("fail",errorResult);
                         }
-                        Utils.showCenterTomast("提交失败");
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -217,6 +218,6 @@ public class AddDepositDialog extends DialogFragment {
     }
 
     public static interface AddDepositListener{
-        void addDespositStatus(String status);
+        void addDespositStatus(String status,String result);
     }
 }

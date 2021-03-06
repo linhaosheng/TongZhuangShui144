@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp_20"
+    android:layout_marginRight="@dimen/dp_20">
+
+    <TextView
+        android:id="@+id/shop_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:text="桶装水"
+        android:layout_marginTop="@dimen/dp_15"/>
+
+    <ImageView
+        android:id="@+id/shop_img"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_70"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_below="@+id/shop_type"/>
+
+    <TextView
+        android:id="@+id/shop_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:text="农夫山泉桶装水 1.8L"
+        android:textSize="14sp"
+        android:layout_below="@+id/shop_type"
+        android:layout_toRightOf="@+id/shop_img"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_12"/>
+
+
+    <TextView
+        android:id="@+id/shop_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:text="10/桶"
+        android:layout_toRightOf="@+id/shop_img"
+        android:layout_below="@+id/shop_name"
+        android:textSize="14sp"
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginLeft="@dimen/dp_12"/>
+
+    <TextView
+        android:id="@+id/shop_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="¥300"
+        android:textColor="#3F3F3F"
+        android:layout_below="@+id/shop_type"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

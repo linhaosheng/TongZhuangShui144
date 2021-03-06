@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/set_bg_btn39">
+
+    <TextView
+        android:id="@+id/shop_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:textColor="#000000"
+        android:text="4件商品"/>
+
+
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/delete"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dp_12"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_below="@+id/shop_num"/>
+
+    <TextView
+        android:id="@+id/pay_way"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:text="付款方式：未付款/美团支付/饿了么支付/微信支付"
+        android:layout_below="@+id/recycle_data"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_20"/>
+
+
+</RelativeLayout>

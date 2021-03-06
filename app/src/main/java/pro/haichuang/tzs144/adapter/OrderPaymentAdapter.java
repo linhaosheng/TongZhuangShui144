@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import pro.haichuang.tzs144.model.AccountOrderModel;
 /**
  * 客户应收款适配器
  */
-public class OrderPaymentAdapter extends BaseQuickAdapter<AccountOrderModel.DataBean, BaseViewHolder> {
+public class OrderPaymentAdapter extends BaseQuickAdapter<AccountOrderModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
 
     public OrderPaymentAdapter() {

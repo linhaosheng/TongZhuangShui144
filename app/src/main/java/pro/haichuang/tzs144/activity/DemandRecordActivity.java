@@ -91,6 +91,10 @@ public class DemandRecordActivity extends BaseActivity implements ILoadDataView<
         WaitDialog.dismiss();
         if (data!=null && data.size()>0){
             emptyView.setVisibility(View.GONE);
+            List<DemandRecordModel.DataBean> dataBeans = new ArrayList<>();
+            for (DemandRecordModel.DataBean dataBean : data){
+                dataBeans.add(dataBean);
+            }
             demandRecordAdapter.setList(data);
         }else {
             emptyView.setVisibility(View.VISIBLE);

@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -87,6 +88,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     private List<TrendModel> trendList;
     private int currentPage = 1;
+    private boolean lastPage;
     private View headTimeView;
     private TextView updateTime;
     private String endTime;
@@ -112,7 +114,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         tipImg.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.mipmap.search));
 
         refresh.setOnRefreshListener(this);
-        orderPaymentAdapter = new OrderNumTrendAdapter();
+        orderPaymentAdapter = new OrderNumTrendAdapter(getActivity());
         orderTrendAdapter  = new OrderTrendAdapter();
 
         headTimeView = LayoutInflater.from(getActivity()).inflate(R.layout.item_update_time, null);
@@ -121,6 +123,20 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
         recycleTendIncome.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recycleTendIncome.setAdapter(orderTrendAdapter);
+
+        orderPaymentAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    currentPage++;
+                    clientFragmentPresenter.findKhList("","2019-10-10",endTime,"","0",currentPage);
+                }
+            }
+        });
+        orderPaymentAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        orderPaymentAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+
 
         orderTrendAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -165,7 +181,9 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
             @Override
             public void afterTextChanged(Editable s) {
                 if (searchEdit.getText()!=null){
-                    clientFragmentPresenter.findKhList(searchEdit.getText().toString(),"2019-10-10","2021-01-20","","0",1);
+                    currentPage = 1;
+                    lastPage = false;
+                    clientFragmentPresenter.findKhList(searchEdit.getText().toString(),"2019-10-10",endTime,"","0",currentPage);
                 }
             }
         });
@@ -195,14 +213,17 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
             case R.id.cancel:
                 searchView.setVisibility(View.GONE);
                 headView.setVisibility(View.VISIBLE);
+                searchEdit.setText("");
                 break;
         }
     }
 
     @Override
     public void onRefresh() {
+        currentPage = 1;
+        lastPage = false;
         clientFragmentPresenter.countKh();
-        clientFragmentPresenter.findKhList("测试  ","2019-10-10","2021-01-20","","0",1);
+        clientFragmentPresenter.findKhList(searchEdit.getText().toString(),"2019-10-10",endTime,"","0",currentPage);
     }
 
     @Override
@@ -257,11 +278,28 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                  Utils.showCenterTomast("获取客户列表失败");
                  emptyView.setVisibility(View.VISIBLE);
              }else {
-                 if (event.dataBean.getData()!=null && event.dataBean.getData().size()>0){
-                     emptyView.setVisibility(View.GONE);
+
+                 if (event.dataBean.getData()==null || event.dataBean.getData().size()==0){
+                     lastPage = true;
+                 }
+                 if (currentPage==1){
+                     if (event.dataBean.getData()!=null && event.dataBean.getData().size()>0){
+                         emptyView.setVisibility(View.GONE);
+                     }else {
+                         emptyView.setVisibility(View.VISIBLE);
+                     }
                      orderPaymentAdapter.setList(event.dataBean.getData());
+                     if (event.dataBean.getData().size()<10){
+                         lastPage = true;
+                         orderPaymentAdapter.getLoadMoreModule().loadMoreEnd();
+                     }
                  }else {
-                     emptyView.setVisibility(View.VISIBLE);
+                     orderPaymentAdapter.addData(event.dataBean.getData());
+                     orderPaymentAdapter.getLoadMoreModule().loadMoreComplete();
+                 }
+
+                 if (lastPage){
+                     orderPaymentAdapter.getLoadMoreModule().loadMoreEnd();
                  }
              }
         }

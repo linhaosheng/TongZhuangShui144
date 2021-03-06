@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.InventoryNumModel;
 import pro.haichuang.tzs144.util.Utils;
 
-public class InventoryNumAdapter extends BaseQuickAdapter<InventoryNumModel.DataBean.ListBean, BaseViewHolder> {
+public class InventoryNumAdapter extends BaseQuickAdapter<InventoryNumModel.DataBean.ListBean, BaseViewHolder> implements LoadMoreModule {
 
 
     public InventoryNumAdapter() {

@@ -58,6 +58,41 @@ public class OrderDetailPresenter {
     }
 
     /**
+     * [首页]-转订单
+     */
+    public void turnOrder(String id){
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+
+        HttpRequestEngine.postRequest(ConfigUrl.TURN_ORDER, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+                iLoadDataView.startLoad();
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int result1 = jsonObject.getInt("result");
+                    if (result1==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,4));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,4));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iLoadDataView.errorLoad(error);
+            }
+        });
+    }
+
+    /**
      * [首页]-作废订单
      * @param id
      */
@@ -140,6 +175,7 @@ public class OrderDetailPresenter {
         Map<String,Object>params = new ArrayMap<>();
         params.put("id",id);
 
+
         HttpRequestEngine.postRequest(ConfigUrl.DELIVERY_ORDER, params, new HttpRequestResultListener() {
             @Override
             public void start() {
@@ -159,6 +195,32 @@ public class OrderDetailPresenter {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void error(String error) {
+                iLoadDataView.errorLoad(error);
+            }
+        });
+    }
+
+    /**
+     * [直接销售]-加载绑定回收材料
+     */
+    public final void findGoodsMaterial(String goodsId){
+
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("goodsId",goodsId);
+
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_GOODS_MATERIAL, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+                iLoadDataView.startLoad();
+            }
+
+            @Override
+            public void success(String result) {
+
             }
 
             @Override

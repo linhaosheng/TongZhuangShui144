@@ -132,7 +132,7 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
             case R.id.add_img:
                 AddDepositDialog addDepositDialog = new AddDepositDialog(this, new AddDepositDialog.AddDepositListener() {
                     @Override
-                    public void addDespositStatus(String status) {
+                    public void addDespositStatus(String status,String result) {
                         if ("success".equals(status)){
                             depositManagementSearchActivityPresenter.findDepositBookList("",1,startTime.getText().toString(),endTime.getText().toString());
                         }

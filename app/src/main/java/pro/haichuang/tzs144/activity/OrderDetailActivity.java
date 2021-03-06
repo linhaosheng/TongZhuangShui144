@@ -21,6 +21,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,9 +32,13 @@ import pro.haichuang.tzs144.adapter.AddOrderAdapter;
 import pro.haichuang.tzs144.adapter.OrderDetailAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.MessageEvent;
+import pro.haichuang.tzs144.model.OrderDetailDataModel;
 import pro.haichuang.tzs144.model.OrderDetailModel;
+import pro.haichuang.tzs144.model.ShopDeleveModel;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.SubjectModel;
+import pro.haichuang.tzs144.model.UpdateOrderEvent;
+import pro.haichuang.tzs144.presenter.OrderDetailActivityPresenter;
 import pro.haichuang.tzs144.presenter.OrderDetailPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
@@ -39,7 +46,7 @@ import pro.haichuang.tzs144.util.Utils;
 /**
  * 订单详情
  */
-public class OrderDetailActivity extends BaseActivity implements ILoadDataView<OrderDetailModel.DataBean> {
+public class OrderDetailActivity extends BaseActivity implements ILoadDataView<OrderDetailDataModel.DataBean> {
 
 
     @BindView(R.id.back)
@@ -99,11 +106,15 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     Button switchOrder;
     @BindView(R.id.void_delivery_view)
     LinearLayout voidDeliveryView;
+    @BindView(R.id.void_sale_btn)
+    Button voidSaleBtn;
 
     private OrderDetailAdapter orderDetailAdapter;
 
-    private OrderDetailPresenter orderDetailPresenter;
+    private OrderDetailActivityPresenter orderDetailPresenter;
     private  String id;
+    private int typeId;
+    private int orderStatus;
 
     @Override
     protected int setLayoutResourceID() {
@@ -125,9 +136,14 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
 
     @Override
     protected void setUpData() {
+        orderStatus = getIntent().getIntExtra("orderStatus",0);
         id = getIntent().getStringExtra("id");
-        orderDetailPresenter = new OrderDetailPresenter(this);
-        orderDetailPresenter.getOrderInfo(id);
+        typeId = getIntent().getIntExtra("typeId",0);
+        orderDetailPresenter = new OrderDetailActivityPresenter(this);
+        orderDetailPresenter.getHomeOrderInfo(id);
+        if (typeId==0){
+            recordTime.setVisibility(View.GONE);
+        }
     }
 
 
@@ -138,18 +154,30 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
                 finish();
                 break;
             case R.id.switch_order:
+                orderDetailPresenter.turnOrder(id);
                 break;
             case R.id.take_order:
                 orderDetailPresenter.takeOrder(id);
                 break;
             case R.id.delivery_btn:
+
+                ShopDeleveModel shopDeleveModel = new ShopDeleveModel();
+
+                List<ShopDeleveModel.GoodsListBean> goodsListBeans = new ArrayList<>();
+
+                List<OrderDetailModel.DataBean.GoodsListBean> data = orderDetailAdapter.getData();
+                for (OrderDetailModel.DataBean.GoodsListBean goodsListBean : data){
+
+                    ShopDeleveModel.GoodsListBean goodsListBean1 = new ShopDeleveModel.GoodsListBean();
+                    //goodsListBean1.setOrderGoodsId(goodsListBean.get);
+                }
+
                 break;
             case R.id.void_sale_btn:
                 WaitDialog.show(this,"提交中...");
                 orderDetailPresenter.directSelling(id);
                 break;
             case R.id.tips:
-
                 break;
         }
     }
@@ -160,7 +188,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     }
 
     @Override
-    public void successLoad(OrderDetailModel.DataBean data) {
+    public void successLoad(OrderDetailDataModel.DataBean data) {
         WaitDialog.dismiss();
 
         name.setText(data.getCustomerName());
@@ -175,6 +203,16 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         needPrice.setText("¥" + data.getReceivablePrice());
         orderNumData.setText("订单编号：" + data.getOrderNo());
         recordTime.setText("完成时间：" + data.getCompleteTime());
+        String orderType = "";
+        String payModel = "";
+        if ("微商城".equals(data.getOrderType())){
+            voidSaleBtn.setVisibility(View.GONE);
+        }else if ("电话订单".equals(data.getOrderType())){
+            voidSaleBtn.setVisibility(View.VISIBLE);
+        }else {
+            voidSaleBtn.setVisibility(View.GONE);
+        }
+
         orderSource.setText("订单来源: "+data.getOrderType());
         payWay.setText("支付方式：" + data.getPayMode());
         orderDetailAdapter.setList(data.getGoodsList());
@@ -196,7 +234,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         }else if (id.equals("1")){
             takeOrder.setText("配送");
         }
-        if (data.getTimeStatus().contains("已超时") && data.getDeliveryStatus()==1){
+        if (data.getTimeStatus()!=null && data.getTimeStatus().contains("已超时") && data.getDeliveryStatus()==1){
             voidDeliveryView.setVisibility(View.VISIBLE);
             takeOrder.setVisibility(View.GONE);
         }else {
@@ -207,6 +245,16 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
             takeOrder.setVisibility(View.GONE);
             switchOrder.setVisibility(View.GONE);
         }
+
+        /**
+         * [0-待接单 1-已接单 2-已完成 3-已取消]
+         */
+        if (orderStatus==2){
+            voidDeliveryView.setVisibility(View.GONE);
+            takeOrder.setVisibility(View.GONE);
+            switchOrder.setVisibility(View.GONE);
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -226,6 +274,13 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
                 } else {
                     Utils.showCenterTomast("定单作废失败");
                 }
+            }else if (event.type==4){
+                if (event.status == Config.LOAD_SUCCESS) {
+                    Utils.showCenterTomast("转成功");
+                    finish();
+                } else {
+                    Utils.showCenterTomast("转单失败");
+                }
             }
         }
         Log.i(TAG, "onMessageEvent===");
@@ -240,6 +295,8 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     @Override
     public void onStop() {
         super.onStop();
+        Log.i(TAG,"UpdateOrderEvent===="+id);
+        EventBus.getDefault().post(new UpdateOrderEvent(id));
         EventBus.getDefault().unregister(this);
     }
 

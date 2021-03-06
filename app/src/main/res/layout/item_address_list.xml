@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/dp_10"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/address"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/dp_60"
         android:layout_height="wrap_content"
         android:text="华阳店"
         android:textColor="#3F3F3F"
         android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_marginLeft="@dimen/dp_20"/>
 
     <TextView
@@ -21,6 +23,8 @@
         android:layout_height="wrap_content"
         android:text="成都市高新区天府一街192号"
         android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_80"
+        android:layout_toRightOf="@+id/address"
         android:textColor="#3F3F3F"
         android:textSize="12sp"
         />
@@ -36,7 +40,74 @@
         android:paddingRight="@dimen/dp_10"
         android:paddingTop="@dimen/dp_3"
         android:paddingBottom="@dimen/dp_3"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_alignParentRight="true"
         android:background="@drawable/set_bg_btn17"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/update_address_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:layout_marginRight="@dimen/dp_17">
+
+        <TextView
+            android:id="@+id/edit_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#32C5FF"
+            android:text="编辑"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/delete_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#E02020"
+            android:text="删除"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/edit_linview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/address_detail"
+        android:layout_marginTop="@dimen/dp_15"
+        android:visibility="gone">
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/address_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:LtextColor="#000000"
+        app:isShowRightText="false"
+        app:isShowUnderLine="true"
+        app:leftText="*地址名称"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightIconSize="@dimen/dp_22"
+        app:rightStyle="iconHide"
+        app:rightText="请输入"
+        app:showEditInput="true" />
+
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/detail_address"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:LtextColor="#000000"
+        app:isShowRightText="true"
+        app:isShowUnderLine="true"
+        app:leftText="*详细地址"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightIconSize="@dimen/dp_22"
+        app:rightStyle="iconHide"
+        app:rightText="请选择 >" />
+
+    </LinearLayout>
+
+</RelativeLayout>

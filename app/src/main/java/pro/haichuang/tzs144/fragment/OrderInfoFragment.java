@@ -2,6 +2,9 @@ package pro.haichuang.tzs144.fragment;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -10,14 +13,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.kongzue.dialog.v3.WaitDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,10 +50,15 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.DeliveryOrderActivity;
 import pro.haichuang.tzs144.activity.OrderDetailActivity;
 import pro.haichuang.tzs144.adapter.OrderInfoAdapter;
+import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.OrderInfoModel;
+import pro.haichuang.tzs144.model.StatusEvent;
+import pro.haichuang.tzs144.model.UpdateOrderEvent;
 import pro.haichuang.tzs144.presenter.OrderInfoFragmentPresenter;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.ShopDetailDialog;
 import pro.haichuang.tzs144.view.ShowMoreOrderInfoDialog;
 
 /**
@@ -53,9 +78,14 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     private OrderInfoAdapter orderInfoAdapter;
     private View headTimeView;
+    private View mapHeadTimeView;
+    private MapView mapView;
     private OrderInfoFragmentPresenter orderInfoFragmentPresenter;
+    private BaiduMap baiduMap = null;
 
     private int id;
+
+    private boolean lastPage;
     private int currentPage = 1;
 
     public OrderInfoFragment() {
@@ -88,19 +118,41 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         orderInfoAdapter = new OrderInfoAdapter(getActivity(), id);
         recycleData.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         recycleData.setAdapter(orderInfoAdapter);
-        orderInfoAdapter.addChildClickViewIds(R.id.order_detail_info);
+
+        orderInfoAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    currentPage++;
+                    orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()),currentPage);
+                }
+
+            }
+        });
+        orderInfoAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        orderInfoAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+
+
+        orderInfoAdapter.addChildClickViewIds(R.id.call_phone,R.id.order_detail_info,R.id.order_detail_info);
         orderInfoAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 //配送订单
-                String orderNumId = orderInfoAdapter.getData().get(position).getId();
-                if (id==1){
+                OrderInfoModel.DataBean dataBean = orderInfoAdapter.getData().get(position);
+                String orderNumId = dataBean.getId();
+                //待配送
+                if (dataBean.getOrderStatus()==1){
                     Intent intent = new Intent(getActivity(), DeliveryOrderActivity.class);
                     intent.putExtra("id",orderNumId);
+                    intent.putExtra("typeId",id);
+                    intent.putExtra("orderStatus",dataBean.getOrderStatus());
                     startActivity(intent);
                 }else {
                     Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
                     intent.putExtra("id",orderNumId);
+                    intent.putExtra("typeId",id);
+                    intent.putExtra("orderStatus",dataBean.getOrderStatus());
                     startActivity(intent);
                 }
             }
@@ -110,11 +162,17 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 int id = view.getId();
                 if (id==R.id.order_detail_info){
-                    ShowMoreOrderInfoDialog showMoreOrderInfoDialog = new ShowMoreOrderInfoDialog(getActivity());
-                    showMoreOrderInfoDialog.show(getChildFragmentManager(),"");
+                    ShopDetailDialog shopDetailDialog = new ShopDetailDialog(getActivity(),orderInfoAdapter.getData().get(position));
+                    shopDetailDialog.show(getChildFragmentManager(),"");
+                   // ShowMoreOrderInfoDialog showMoreOrderInfoDialog = new ShowMoreOrderInfoDialog(getActivity());
+                   // showMoreOrderInfoDialog.show(getChildFragmentManager(),"");
                 }else if (id==R.id.call_phone){
                     String customerPhone = orderInfoAdapter.getData().get(position).getCustomerPhone();
-                    Utils.callPhone(customerPhone);
+                    //Utils.callPhone(customerPhone);
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    Uri data = Uri.parse("tel:" + customerPhone);
+                    intent.setData(data);
+                    getActivity().startActivity(intent);
                 }
             }
         });
@@ -125,8 +183,48 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             lastTime = headTimeView.findViewById(R.id.last_time);
             selectTime = headTimeView.findViewById(R.id.select_time);
             selectTimeData();
+            selectTime.setText(Utils.formatSelectTime(new Date()));
         }
+        Log.i(TAG,"----id"+id);
+        if (id==1){
+            mapHeadTimeView = LayoutInflater.from(getActivity()).inflate(R.layout.item_map_head_view, null);
+            orderInfoAdapter.addHeaderView(mapHeadTimeView);
+            mapView = mapHeadTimeView.findViewById(R.id.map);
+            baiduMap = mapView.getMap();
+            baiduMap.setMyLocationEnabled(true);
+            //显示卫星图层
+            baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
 
+            BitmapDescriptor bitmap = null;
+            bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
+
+            LatLng point = new LatLng(Config.LATITUDE, Config.LONGITUDE);
+
+            Bundle bundle = new Bundle();
+           // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
+            OverlayOptions option = new MarkerOptions()
+                    .position(point)
+                    .clickable(true)
+                    .extraInfo(bundle)
+                    .icon(bitmap);
+            baiduMap.addOverlay(option);
+            bitmap.recycle();
+
+            LatLng ll = new LatLng(Config.LATITUDE, Config.LONGITUDE);
+            MapStatus.Builder builder = new MapStatus.Builder();
+            builder.target(ll).zoom(15.0f);
+            baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+
+            //送达时间，添加点击事件
+            baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    String time = "送达时间: "+ marker.getExtraInfo().getString("time");
+                    Utils.showCenterTomast(time);
+                    return true;
+                }
+            });
+        }
     }
 
     /**
@@ -145,6 +243,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         selectTime.setText(""+year+"-"+(month+1)+"-"+dayOfMonth);
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, selectTime.getText().toString(),1);
                     }
                 },mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -160,6 +259,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
+        currentPage=1;
+        lastPage = false;
         orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()),currentPage);
     }
 
@@ -171,22 +272,53 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 refresh.setRefreshing(true);
             }
         },50);
-//       refresh.postDelayed(new Runnable() {
-//           @Override
-//           public void run() {
-//               refresh.setRefreshing(true);
-//           }
-//       },100);
     }
 
     @Override
     public void successLoad(List<OrderInfoModel.DataBean> data) {
         refresh.setRefreshing(false);
-        if (data!=null && data.size()>0){
+        if (data==null || data.size()==0){
+            lastPage = true;
+        }
+        if (currentPage==1){
+            if (data != null && data.size() > 0) {
+                emptyView.setVisibility(View.GONE);
+            } else {
+                emptyView.setVisibility(View.VISIBLE);
+            }
             orderInfoAdapter.setList(data);
-            emptyView.setVisibility(View.GONE);
+            if (data.size()<10){
+                lastPage = true;
+                orderInfoAdapter.getLoadMoreModule().loadMoreEnd();
+            }
         }else {
-            emptyView.setVisibility(View.VISIBLE);
+            orderInfoAdapter.addData(data);
+            orderInfoAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+        if (lastPage){
+            orderInfoAdapter.getLoadMoreModule().loadMoreEnd();
+        }
+
+        if (id==1){
+            Log.i(TAG,"successLoad====11111");
+            List<OrderInfoModel.DataBean> data1 = orderInfoAdapter.getData();
+            for (OrderInfoModel.DataBean dataBean : data1){
+                Log.i(TAG,"successLoad====2222222==longitude=="+dataBean.getLongitude() +"==latitude=="+dataBean.getLatitude());
+
+                BitmapDescriptor bitmap = null;
+                bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.send_time);
+                LatLng point = new LatLng(dataBean.getLatitude(), dataBean.getLongitude());
+
+                Bundle bundle = new Bundle();
+                bundle.putString("time",dataBean.getTimeRange());
+                OverlayOptions option = new MarkerOptions()
+                        .position(point)
+                        .clickable(true)
+                        .extraInfo(bundle)
+                        .icon(bitmap);
+                baiduMap.addOverlay(option);
+                bitmap.recycle();
+            }
         }
     }
 
@@ -194,6 +326,37 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     public void errorLoad(String error) {
         refresh.setRefreshing(false);
         Utils.showCenterTomast(error);
+    }
 
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UpdateOrderEvent event) {
+        if (event != null) {
+            try {
+                int currentId = Integer.parseInt(event.id);
+                if (currentId==id){
+                    orderInfoFragmentPresenter.loadOrderByStatus(currentId, Utils.formatSelectTime(new Date()),1);
+                }
+                Log.i(TAG, "onMessageEvent==id="+event.id + " === id==="+id);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

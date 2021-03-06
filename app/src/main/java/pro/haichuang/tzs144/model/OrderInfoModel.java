@@ -58,6 +58,7 @@ public class OrderInfoModel {
          * goodsTopInfo :
          */
 
+        private int orderStatus;
         private String id;
         private String orderNo;
         private String timeTitle;
@@ -73,6 +74,32 @@ public class OrderInfoModel {
         private String goodsNum;
         private String goodsTopInfo;
         private List<GoodsListBean> goodsList;
+        private double latitude;
+        private double longitude;
+
+        public int getOrderStatus() {
+            return orderStatus;
+        }
+
+        public void setOrderStatus(int orderStatus) {
+            this.orderStatus = orderStatus;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(double latitude) {
+            this.latitude = latitude;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(double longitude) {
+            this.longitude = longitude;
+        }
 
         public String getId() {
             return id;

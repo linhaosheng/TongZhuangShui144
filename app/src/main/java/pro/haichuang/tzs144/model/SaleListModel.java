@@ -68,6 +68,24 @@ public class SaleListModel {
         private String realPrice;
         private String createTime;
         private String salesDistance;
+        private String isWaterRead;
+        private int orderStatus;
+
+        public String getIsWaterRead() {
+            return isWaterRead;
+        }
+
+        public void setIsWaterRead(String isWaterRead) {
+            this.isWaterRead = isWaterRead;
+        }
+
+        public int getOrderStatus() {
+            return orderStatus;
+        }
+
+        public void setOrderStatus(int orderStatus) {
+            this.orderStatus = orderStatus;
+        }
 
         public String getNo() {
             return no;

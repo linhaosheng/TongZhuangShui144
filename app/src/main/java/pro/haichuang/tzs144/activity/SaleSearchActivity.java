@@ -77,10 +77,10 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
         type = getIntent().getStringExtra("type");
         title.setText("客户搜索");
         tipImg.setVisibility(View.GONE);
-        tipImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.more));
+        tipImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.more));
         refresh.setOnRefreshListener(this);
         saleSearcAdapter = new SaleSearcAdapter();
-        recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+        recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(saleSearcAdapter);
         saleSearcAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -88,29 +88,29 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
                 SaleDataModel.DataBean dataBean = saleSearcAdapter.getData().get(position);
                 String dataStr = Utils.gsonInstane().toJson(dataBean);
 
-                if (type!=null && type.equals("add_with_drawal")){
+                if (type != null && type.equals("add_with_drawal")) {
 
-                    Intent intent = new Intent(SaleSearchActivity.this,AddWithDrawalOrderActivity.class);
-                    intent.putExtra(Config.PERSION_INFO,dataStr);
+                    Intent intent = new Intent(SaleSearchActivity.this, AddWithDrawalOrderActivity.class);
+                    intent.putExtra(Config.PERSION_INFO, dataStr);
                     startActivity(intent);
-                }else if (type!=null && type.equals("historical_deposit")){
-                    Intent intent1 = new Intent(SaleSearchActivity.this,HistoryWithDrawalOrderActivity.class);
-                    intent1.putExtra(Config.PERSION_INFO,dataStr);
+                } else if (type != null && type.equals("historical_deposit")) {
+                    Intent intent1 = new Intent(SaleSearchActivity.this, HistoryWithDrawalOrderActivity.class);
+                    intent1.putExtra(Config.PERSION_INFO, dataStr);
                     startActivity(intent1);
-                }else if (type!=null && type.equals("open_deposit")){
-                    Intent intent1 = new Intent(SaleSearchActivity.this,StartDepositActivity.class);
-                    intent1.putExtra(Config.PERSION_INFO,dataStr);
+                } else if (type != null && type.equals("open_deposit")) {
+                    Intent intent1 = new Intent(SaleSearchActivity.this, StartDepositActivity.class);
+                    intent1.putExtra(Config.PERSION_INFO, dataStr);
                     startActivity(intent1);
-                } else if (type!=null && type.equals("add_order")){
+                } else if (type != null && type.equals("add_order")) {
                     int order_type = getIntent().getIntExtra("order_type", 0);
-                    Intent intent1 = new Intent(SaleSearchActivity.this,EnterOrderActivity.class);
-                    intent1.putExtra("order_type",order_type);
-                    intent1.putExtra(Config.PERSION_INFO,dataStr);
+                    Intent intent1 = new Intent(SaleSearchActivity.this, EnterOrderActivity.class);
+                    intent1.putExtra("order_type", order_type);
+                    intent1.putExtra(Config.PERSION_INFO, dataStr);
                     startActivity(intent1);
 
-                }else {
+                } else {
                     Intent intent = new Intent();
-                    intent.putExtra(Config.PERSION_INFO,dataStr);
+                    intent.putExtra(Config.PERSION_INFO, dataStr);
                     SaleSearchActivity.this.setResult(RESULT_OK, intent);
                     SaleSearchActivity.this.finish();
                 }
@@ -135,13 +135,12 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
 
             @Override
             public void afterTextChanged(Editable s) {
-                  if (searchEdit.getText()!=null){
-                      searchActivityPresenter.search(searchEdit.getText().toString());
-                  }
+                if (searchEdit.getText() != null) {
+                    searchActivityPresenter.search(searchEdit.getText().toString());
+                }
             }
         });
     }
-
 
 
     @OnClick({R.id.back, R.id.tip_img})

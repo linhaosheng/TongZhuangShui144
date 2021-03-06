@@ -66,7 +66,6 @@ public class ClientRealTimeDatapPresenter {
         params.put("startTime",startTime);
         params.put("endTime",endTime);
 
-
         HttpRequestEngine.postRequest(ConfigUrl.FIND_SS_ORDERS, params, new HttpRequestResultListener() {
             @Override
             public void start() {

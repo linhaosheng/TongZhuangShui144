@@ -148,8 +148,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                 emptyView.setVisibility(View.VISIBLE);
             } else {
                 emptyView.setVisibility(View.GONE);
-                orderPaymentAdapter.setList(event.dataBean.getData());
             }
+            orderPaymentAdapter.setList(event.dataBean.getData());
         }
     }
 
