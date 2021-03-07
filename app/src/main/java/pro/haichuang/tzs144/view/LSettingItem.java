@@ -127,6 +127,10 @@ public class LSettingItem extends RelativeLayout {
         this.editTextListner = mEditTextListner;
     }
 
+    public void setEditinput(String editinput){
+        this.editinput.setText(editinput);
+    }
+
     /**
      * 初始化自定义属性
      *

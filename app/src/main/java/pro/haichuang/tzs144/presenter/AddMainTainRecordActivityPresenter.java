@@ -27,10 +27,10 @@ public class AddMainTainRecordActivityPresenter {
      * @param distance
      * @param time
      */
-    public void saveMaintainLog(String id,String customerId,String maintainInfo,String distance,String time){
+    public void saveMaintainLog(String customerId,String maintainInfo,String distance,String time){
 
         Map<String,Object>params = new ArrayMap<>();
-        params.put("id",id);
+
         params.put("customerId",customerId);
         params.put("maintainInfo",maintainInfo);
         params.put("distance",distance);

@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AddShopDialogAdapter;
+import pro.haichuang.tzs144.model.MaterialModel;
 import pro.haichuang.tzs144.model.ShopModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
@@ -109,16 +111,22 @@ public class AddShopDialog extends DialogFragment {
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 ShopModel.DataBean dataBean = addShopDialogAdapter.getData().get(position);
                 List<ShopModel.DataBean> data = addShopDialogAdapter.getData();
-                if (dataBean.isCheck()){
-                    dataBean.setCheck(false);
-                }else {
-                    dataBean.setCheck(true);
+                List<ShopModel.DataBean> tempData = new ArrayList<>();
+
+                for (int i=0;i<data.size();i++){
+                    ShopModel.DataBean dataBean1 = data.get(i);
+                    if (i==position && !dataBean1.isCheck()){
+                        dataBean1.setCheck(true);
+                    }else {
+                        dataBean1.setCheck(false);
+                    }
+                    tempData.add(dataBean1);
                 }
-                if (dataBean.isCheck()){
+
+                if (!dataBean.isCheck()){
                     selectShopPosition = position;
                 }
-                data.set(position,dataBean);
-                addShopDialogAdapter.setList(data);
+                addShopDialogAdapter.setList(tempData);
             }
         });
     }
@@ -149,9 +157,9 @@ public class AddShopDialog extends DialogFragment {
                 break;
             case R.id.input_btn:
                 if (selectShopListener!=null){
-                    selectShopListener.selectShop(addShopDialogAdapter.getData().get(selectShopPosition));
+                    ShopModel.DataBean dataBean = addShopDialogAdapter.getData().get(selectShopPosition);
+                    findGoodsMaterial(dataBean.getId());
                 }
-                dismiss();
                 //    addDepositBook();
                 break;
         }
@@ -176,6 +184,7 @@ public class AddShopDialog extends DialogFragment {
             public void success(String result) {
                 ShopModel shopModel = Utils.gsonInstane().fromJson(result, ShopModel.class);
                 addShopDialogAdapter.setList(shopModel.getData());
+
             }
 
             @Override
@@ -186,7 +195,42 @@ public class AddShopDialog extends DialogFragment {
     }
 
     public interface  SelectShopListener{
-        void selectShop(ShopModel.DataBean dataBean);
+        void selectShop(ShopModel.DataBean dataBean,List<MaterialModel.DataBean>dataBeanList);
+    }
+
+    /**
+     * [直接销售]-加载绑定回收材料
+     * @param goodsId
+     */
+    public final void findGoodsMaterial(int goodsId){
+
+        Map<String,Object> params = new ArrayMap<>();
+        params.put("goodsId",goodsId);
+
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_GOODS_MATERIAL, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                MaterialModel materialModel = Utils.gsonInstane().fromJson(result, MaterialModel.class);
+                if (materialModel.getMessage().contains("获取成功")){
+                    List<MaterialModel.DataBean> data = materialModel.getData();
+                    selectShopListener.selectShop(addShopDialogAdapter.getData().get(selectShopPosition),data);
+                }else {
+                    Utils.showCenterTomast(materialModel.getMessage());
+                    selectShopListener.selectShop(addShopDialogAdapter.getData().get(selectShopPosition),null);
+                }
+                dismiss();
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
     }
 
 }

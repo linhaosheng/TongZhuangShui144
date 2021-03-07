@@ -70,6 +70,7 @@ public class AddOrderModel {
          * deductMonth : {"monthImg":"","deductNum":""}
          */
 
+        private String orderGoodsId;
         private String goodName;
         private String goodsId;
         private String num;
@@ -78,7 +79,15 @@ public class AddOrderModel {
         private DeductWaterBean deductWater;
         private DeductCouponBean deductCoupon;
         private DeductMonthBean deductMonth;
-        private List<MaterialsBean> materials;
+        private List<MaterialModel.DataBean> materials;
+
+        public List<MaterialModel.DataBean> getMaterials() {
+            return materials;
+        }
+
+        public void setMaterials(List<MaterialModel.DataBean> materials) {
+            this.materials = materials;
+        }
 
         public String getSpecs() {
             return specs;
@@ -144,13 +153,6 @@ public class AddOrderModel {
             this.deductMonth = deductMonth;
         }
 
-        public List<MaterialsBean> getMaterials() {
-            return materials;
-        }
-
-        public void setMaterials(List<MaterialsBean> materials) {
-            this.materials = materials;
-        }
 
         public static class DeductWaterBean {
             /**
@@ -240,39 +242,5 @@ public class AddOrderModel {
             }
         }
 
-        public static class MaterialsBean {
-            /**
-             * materialId :
-             * num :
-             */
-
-            private String materialName;
-            private String materialId;
-            private String num;
-
-            public String getMaterialName() {
-                return materialName;
-            }
-
-            public void setMaterialName(String materialName) {
-                this.materialName = materialName;
-            }
-
-            public String getMaterialId() {
-                return materialId;
-            }
-
-            public void setMaterialId(String materialId) {
-                this.materialId = materialId;
-            }
-
-            public String getNum() {
-                return num;
-            }
-
-            public void setNum(String num) {
-                this.num = num;
-            }
-        }
     }
 }

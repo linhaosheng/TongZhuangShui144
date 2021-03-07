@@ -66,6 +66,7 @@
         <activity android:name=".activity.DepositManagementDetailActivity" />
         <activity android:name=".activity.SaleOrderDetailActivity" />
         <activity android:name=".activity.AddressSearchActivity" />
+        <activity android:name=".activity.FindDespositActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -79,7 +80,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="W5p2xXCo9Pz3pWckgdFBZWApjOvTPsfC" />
+            android:value="Wo7GkDthj562NBbLgP3eFzTtCZ8MEBGa" />   <!--W5p2xXCo9Pz3pWckgdFBZWApjOvTPsfC -->
 
         <service
             android:name="com.baidu.location.f"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/dp_10"
@@ -51,16 +52,15 @@
         android:layout_marginRight="@dimen/dp_10"
         android:text="¥300"
         android:textColor="#3F3F3F"
-        android:textStyle="bold"
         android:textSize="18sp"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/recycle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recycle_name"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_12"
         android:layout_marginTop="12dp"
         android:background="@drawable/set_bg_btn34"
         android:text="回收"
@@ -72,9 +72,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/recycle_name"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="@dimen/dp_20"
         android:layout_toRightOf="@+id/recycle"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/dp_20">
+        android:orientation="vertical">
 
 
         <LinearLayout
@@ -87,8 +87,8 @@
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
                 android:text="直饮桶"
                 android:textColor="#3F3F3F"
                 android:textSize="12sp" />
@@ -133,7 +133,185 @@
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
+
+
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ticket_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recycle"
+        android:layout_marginTop="@dimen/dp_20"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/water_tickets"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_24"
+            android:background="@drawable/set_bg_btn33"
+            android:gravity="center"
+            android:text="水票"
+            android:textColor="#32C5FF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/reward_tickets"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_24"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@drawable/set_bg_btn33"
+            android:gravity="center"
+            android:text="奖券"
+            android:textColor="#32C5FF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/monthly"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_24"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@drawable/set_bg_btn33"
+            android:gravity="center"
+            android:text="月结"
+            android:textColor="#32C5FF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ticket_type"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:orientation="vertical">
+
+            <pro.haichuang.tzs144.view.LSettingItem
+                android:id="@+id/select_ticket"
+                android:layout_width="match_parent"
+                android:layout_height="51dp"
+                android:visibility="gone"
+                app:LtextColor="#333333"
+                app:isShowRightLogo="true"
+                app:isShowRightText="true"
+                app:isShowUnderLine="true"
+                app:leftText="水票"
+                app:rightIconSize="@dimen/dp_22"
+                app:rightText="请选择" />
+
+        <pro.haichuang.tzs144.view.LSettingItem
+            android:id="@+id/select_water_num"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:visibility="gone"
+            app:LtextColor="#333333"
+            app:isShowRightLogo="true"
+            app:isShowRightText="false"
+            app:isShowUnderLine="true"
+            app:leftText="水票数量"
+            app:rightIconSize="@dimen/dp_22"
+            app:rightText="请输入"
+            app:showEditInput="true" />
+
+
+        <pro.haichuang.tzs144.view.LSettingItem
+            android:id="@+id/select_deduction_nunm"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:visibility="gone"
+            app:LtextColor="#333333"
+            app:isShowRightLogo="true"
+            app:isShowRightText="false"
+            app:isShowUnderLine="true"
+            app:leftText="抵扣数量"
+            app:rightIconSize="@dimen/dp_22"
+            app:rightText="请输入"
+            app:showEditInput="true" />
+
+        <LinearLayout
+            android:id="@+id/upload_reward_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_80"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_marginTop="11dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="奖券"
+                android:textColor="#3F3F3F"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/upload_reward"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_marginLeft="@dimen/dp_37"
+                android:src="@mipmap/upload" />
+
+
+        </LinearLayout>
+
+        <pro.haichuang.tzs144.view.LSettingItem
+            android:id="@+id/reward_deduction_nunm"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:visibility="gone"
+            app:LtextColor="#333333"
+            app:isShowRightLogo="true"
+            app:isShowRightText="false"
+            app:isShowUnderLine="true"
+            app:leftText="抵扣数量"
+            app:rightIconSize="@dimen/dp_22"
+            app:rightText="请输入"
+            app:showEditInput="true" />
+
+        <LinearLayout
+            android:id="@+id/upload_month_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_80"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_marginTop="11dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="月结"
+                android:textColor="#3F3F3F"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/upload_month"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_marginLeft="@dimen/dp_37"
+                android:src="@mipmap/upload" />
+
+        </LinearLayout>
+
+
+        <pro.haichuang.tzs144.view.LSettingItem
+            android:id="@+id/month_deduction_nunm"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:visibility="gone"
+            app:LtextColor="#333333"
+            app:isShowRightLogo="true"
+            app:isShowRightText="false"
+            app:isShowUnderLine="true"
+            app:leftText="抵扣数量"
+            app:leftTextMarginLeft="@dimen/dp_10"
+            app:rightIconSize="@dimen/dp_22"
+            app:rightText="请输入"
+            app:showEditInput="true" />
+
+    </LinearLayout>
 
 </RelativeLayout>

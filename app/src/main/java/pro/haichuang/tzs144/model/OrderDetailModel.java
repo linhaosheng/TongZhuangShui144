@@ -274,6 +274,9 @@ public class OrderDetailModel {
              * monthDeductNum : null
              */
 
+            private int orderGoodsId;
+            private int waterGoodsId;
+            private String waterName;
             private int waterNum;
             private int waterDeductNum;
             private int goodsPrice;
@@ -286,6 +289,57 @@ public class OrderDetailModel {
             private List<String> materialList;
             private List<BindMaterList> bindMaterList;
             private int recycleNum;
+            private boolean showWater;
+            private boolean showReward;
+            private boolean showMonth;
+
+            public String getWaterName() {
+                return waterName;
+            }
+
+            public void setWaterName(String waterName) {
+                this.waterName = waterName;
+            }
+
+            public int getWaterGoodsId() {
+                return waterGoodsId;
+            }
+
+            public void setWaterGoodsId(int waterGoodsId) {
+                this.waterGoodsId = waterGoodsId;
+            }
+
+            public boolean isShowWater() {
+                return showWater;
+            }
+
+            public void setShowWater(boolean showWater) {
+                this.showWater = showWater;
+            }
+
+            public boolean isShowReward() {
+                return showReward;
+            }
+
+            public void setShowReward(boolean showReward) {
+                this.showReward = showReward;
+            }
+
+            public boolean isShowMonth() {
+                return showMonth;
+            }
+
+            public void setShowMonth(boolean showMonth) {
+                this.showMonth = showMonth;
+            }
+
+            public int getOrderGoodsId() {
+                return orderGoodsId;
+            }
+
+            public void setOrderGoodsId(int orderGoodsId) {
+                this.orderGoodsId = orderGoodsId;
+            }
 
             public int getRecycleNum() {
                 return recycleNum;

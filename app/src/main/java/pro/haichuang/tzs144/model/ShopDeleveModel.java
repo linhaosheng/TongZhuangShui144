@@ -38,17 +38,17 @@ public class ShopDeleveModel {
          * deductMonth : {"monthImg":"","deductNum":""}
          */
 
-        private String orderGoodsId;
+        private int orderGoodsId;
         private DeductWaterBean deductWater;
         private DeductCouponBean deductCoupon;
         private DeductMonthBean deductMonth;
         private List<MaterialsBean> materials;
 
-        public String getOrderGoodsId() {
+        public int getOrderGoodsId() {
             return orderGoodsId;
         }
 
-        public void setOrderGoodsId(String orderGoodsId) {
+        public void setOrderGoodsId(int orderGoodsId) {
             this.orderGoodsId = orderGoodsId;
         }
 

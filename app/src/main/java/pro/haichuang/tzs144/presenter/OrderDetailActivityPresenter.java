@@ -7,13 +7,16 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.iview.IUpLoadFileView;
+import pro.haichuang.tzs144.model.AddOrderModel;
 import pro.haichuang.tzs144.model.FileUploadEvent;
 import pro.haichuang.tzs144.model.OrderDetailDataModel;
 import pro.haichuang.tzs144.model.OrderDetailModel;
+import pro.haichuang.tzs144.model.ShopDeleveModel;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.UploadFileModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
@@ -203,13 +206,13 @@ public class OrderDetailActivityPresenter {
 
     /**
      * 配送
-     * @param id
+     * @param
      */
-    public void deliveryOrder(String id){
+    public void deliveryOrder(String id, List<ShopDeleveModel.GoodsListBean> goodsListBeanList){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("id",id);
-
+        params.put("goodsList",goodsListBeanList);
 
         HttpRequestEngine.postRequest(ConfigUrl.DELIVERY_ORDER, params, new HttpRequestResultListener() {
             @Override

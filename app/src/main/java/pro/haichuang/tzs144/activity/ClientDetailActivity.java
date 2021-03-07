@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,11 +34,13 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AddressListAdapter;
 import pro.haichuang.tzs144.adapter.MainTainRecordAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AddressBean;
 import pro.haichuang.tzs144.model.ClientDetailModel;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.presenter.ClientDetailActivityPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.LSettingItem;
 
 /**
  * 客户详情
@@ -79,6 +84,8 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
     TextView updateAddress;
     @BindView(R.id.add_address)
     TextView addAddress;
+    @BindView(R.id.order_record)
+    TextView orderRecord;
 
     private AddressListAdapter addressListAdapter;
     private MainTainRecordAdapter mainTainRecordAdapter;
@@ -87,6 +94,16 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
     private String customerId;
     private ClientDetailModel.DataBean dataBean;
     private int deletePosition = -1;
+    private int editType;
+    private List<ClientDetailModel.DataBean.MaintainListBean> data;
+    private int editRecordId;
+    private String maintainInfo = "";
+    private double longitude;
+    private double latitude;
+    private String addressName;
+    private int addressId;
+    private AddressBean addressBean;
+
 
     @Override
     protected int setLayoutResourceID() {
@@ -100,21 +117,42 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
         tips.setTextSize(12);
         tips.setText("订单记录");
 
-        addressListAdapter = new AddressListAdapter();
+        addressListAdapter = new AddressListAdapter(this, new AddressListAdapter.AddressNameListener() {
+            @Override
+            public void addressName(int position,String name) {
+                addressName = name;
+            }
+        });
         addreeRecycle.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         addreeRecycle.setAdapter(addressListAdapter);
 
-        mainTainRecordAdapter = new MainTainRecordAdapter();
+        mainTainRecordAdapter = new MainTainRecordAdapter(new MainTainRecordAdapter.EditContentListener() {
+            @Override
+            public void editContent(String content,int position) {
+                maintainInfo = content;
+                data = mainTainRecordAdapter.getData();
+                ClientDetailModel.DataBean.MaintainListBean maintainListBean = data.get(position);
+                maintainListBean.setEdit(false);
+                maintainListBean.setMaintainInfo(content);
+                editRecordId = maintainListBean.getId();
+            }
+        });
         maintainRecordRecycle.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         maintainRecordRecycle.setAdapter(mainTainRecordAdapter);
 
         addressListAdapter.addChildClickViewIds(R.id.edit_txt,R.id.delete_txt);
-
         addressListAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                switch (view.getId()){
                    case R.id.edit_txt:
+                       tips.setText("保存");
+                       editType = 1;
+                       ClientDetailModel.DataBean.AddressListBean addressListBean1 = addressListAdapter.getData().get(position);
+                       addressListBean1.setEdit(true);
+                       addressId = addressListBean1.getId();
+                       Log.i(TAG,"addressId===="+addressId);
+                       addressListAdapter.setData(position,addressListBean1);
 
                        break;
                    case R.id.delete_txt:
@@ -127,6 +165,30 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
             }
         });
 
+        mainTainRecordAdapter.addChildClickViewIds(R.id.edit,R.id.delete);
+        mainTainRecordAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                switch (view.getId()){
+                    case R.id.edit:
+                        editType = 2;
+                        tips.setText("保存");
+                        orderRecord.setVisibility(View.VISIBLE);
+                        ClientDetailModel.DataBean.MaintainListBean maintainListBean1 = mainTainRecordAdapter.getData().get(position);
+                        maintainListBean1.setEdit(true);
+                        mainTainRecordAdapter.setData(position,maintainListBean1);
+
+                        break;
+                    case R.id.delete:
+                        deletePosition = position;
+                        ClientDetailModel.DataBean.MaintainListBean maintainListBean = mainTainRecordAdapter.getData().get(position);
+                        int id = maintainListBean.getId();
+                        WaitDialog.show(ClientDetailActivity.this,"删除中....");
+                        clientDetailActivityPresenter.delMaintainLog(id+"");
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -136,21 +198,37 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
             finish();
         }
         clientDetailActivityPresenter = new ClientDetailActivityPresenter(this);
-        clientDetailActivityPresenter.getCustomerInfo(customerId);
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (tips.getText().toString().contains("订单记录") && addAddress.getVisibility()==View.GONE){
+            clientDetailActivityPresenter.getCustomerInfo(customerId);
+        }
+    }
 
-    @OnClick({R.id.back, R.id.tips,R.id.add_maintain_record,R.id.update_address})
+    @OnClick({R.id.back, R.id.tips,R.id.add_maintain_record,R.id.update_address,R.id.order_record,R.id.add_address})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.tips:
-                Intent intent2 = new Intent(this,OrderRecordActivity.class);
-                intent2.putExtra("id",customerId);
-                startActivity(intent2);
+                if (tips.getText().toString().contains("订单记录")){
+                    Intent intent2 = new Intent(this,OrderRecordActivity.class);
+                    intent2.putExtra("id",customerId);
+                    startActivity(intent2);
+                }else {
+                    //地址编辑
+                    if (editType==1){
+                        clientDetailActivityPresenter.updateAddress(addressId,customerId,addressName,addressBean.getAddress(),addressBean.getLongitude(),addressBean.getLatitude());
+
+                    }else if (editType==2){  //维修记录
+                     double distanceData = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, longitude, latitude);
+                     clientDetailActivityPresenter.saveMaintainLog(editRecordId,customerId,maintainInfo,distanceData,Utils.formatSelectTime(new Date()));
+                    }
+                }
                 break;
             case R.id.add_maintain_record:
                 if (dataBean!=null){
@@ -173,7 +251,21 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                     tempData.add(addressListBean);
                 }
                 addressListAdapter.setList(tempData);
+                break;
 
+            case R.id.order_record:
+                Intent intent3 = new Intent(this,OrderRecordActivity.class);
+                intent3.putExtra("id",customerId);
+                startActivity(intent3);
+                break;
+            case R.id.add_address:
+                tips.setText("保存");
+                editType = 1;
+                addressId = 0;
+                ClientDetailModel.DataBean.AddressListBean addressListBean = new ClientDetailModel.DataBean.AddressListBean();
+                addressListBean.setEdit(true);
+                addressListBean.setAddAddress(true);
+                addressListAdapter.addData(addressListBean);
                 break;
         }
     }
@@ -217,6 +309,18 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
             }else {
                 updateAddress.setVisibility(View.GONE);
             }
+
+            List<ClientDetailModel.DataBean.AddressListBean> addressList = dataBean.getAddressList();
+            if (addressList!=null){
+                ClientDetailModel.DataBean.AddressListBean addressListBean = addressList.get(0);
+                try {
+                     longitude = Double.parseDouble(addressListBean.getLongitude());
+                     latitude = Double.parseDouble(addressListBean.getLatitude());
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -227,7 +331,8 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
         if (event!=null){
             //删除地址
             if (event.type==0){
-                if (event.type==Config.LOAD_SUCCESS){
+                if (event.status==Config.LOAD_SUCCESS){
+                    updateAddress.setVisibility(View.VISIBLE);
                     Utils.showCenterTomast("删除成功");
                     if (deletePosition!=-1){
                         List<ClientDetailModel.DataBean.AddressListBean> data = addressListAdapter.getData();
@@ -236,6 +341,38 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                     }
                 }else {
                     Utils.showCenterTomast("删除失败");
+                }
+            }else if (event.type==1){
+                if (event.status==Config.LOAD_SUCCESS){
+                    Utils.showCenterTomast("删除成功");
+                    if (deletePosition!=-1){
+                        List<ClientDetailModel.DataBean.MaintainListBean> data = mainTainRecordAdapter.getData();
+                        data.remove(deletePosition);
+                        mainTainRecordAdapter.setList(data);
+                    }
+                }else {
+                    Utils.showCenterTomast("删除失败");
+                }
+            }else if (event.type==2){
+                if (event.status==Config.LOAD_SUCCESS){
+                    tips.setText("订单记录");
+                    orderRecord.setVisibility(View.GONE);
+                    Utils.showCenterTomast("编辑成功");
+                    mainTainRecordAdapter.setList(data);
+                    updateAddress.setVisibility(View.VISIBLE);
+                }else {
+                    Utils.showCenterTomast("编辑失败");
+                }
+            }else if (event.type==3){
+                if (event.status==Config.LOAD_SUCCESS){
+                    tips.setText("订单记录");
+                    addAddress.setVisibility(View.GONE);
+                    orderRecord.setVisibility(View.GONE);
+                    Utils.showCenterTomast("地址修改成功");
+                    updateAddress.setVisibility(View.VISIBLE);
+                    clientDetailActivityPresenter.getCustomerInfo(customerId);
+                }else {
+                    Utils.showCenterTomast("编辑失败");
                 }
             }
         }
@@ -259,5 +396,21 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
     public void errorLoad(String error) {
         WaitDialog.dismiss();
         Utils.showCenterTomast(error);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Log.i(TAG, "onActivityResult===="+requestCode);
+            String addressJson = data.getStringExtra(Config.ADDRESS_JSON);
+            addressBean = Utils.gsonInstane().fromJson(addressJson, AddressBean.class);
+
+            ClientDetailModel.DataBean.AddressListBean addressListBean = addressListAdapter.getData().get(requestCode);
+            addressListBean.setEdit(true);
+            addressListBean.setNewAddress(addressBean.getAddress());
+            addressListBean.setNewAddressName(addressName);
+            addressListAdapter.setData(requestCode,addressListBean);
+        }
     }
 }

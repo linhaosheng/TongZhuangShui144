@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:layout_marginTop="@dimen/dp_10"
+    android:background="@drawable/set_bg_btn13">
+
+    <TextView
+        android:id="@+id/yj_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="id : "
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="@dimen/dp_20"/>
+
+    <TextView
+        android:id="@+id/yaj_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="编号:"
+        android:textColor="#333333"
+        android:layout_below="@+id/yj_id"
+        android:layout_marginLeft="26dp"
+        android:textSize="14sp"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"/>
+
+
+
+</RelativeLayout>

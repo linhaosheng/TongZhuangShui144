@@ -39,6 +39,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.net.IDN;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -122,9 +123,9 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         orderInfoAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                if (!lastPage){
+                if (!lastPage) {
                     currentPage++;
-                    orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()),currentPage);
+                    orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
                 }
 
             }
@@ -134,45 +135,66 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         orderInfoAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
 
 
-        orderInfoAdapter.addChildClickViewIds(R.id.call_phone,R.id.order_detail_info,R.id.order_detail_info);
         orderInfoAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 //配送订单
                 OrderInfoModel.DataBean dataBean = orderInfoAdapter.getData().get(position);
                 String orderNumId = dataBean.getId();
+
                 //待配送
-                if (dataBean.getOrderStatus()==1){
-                    Intent intent = new Intent(getActivity(), DeliveryOrderActivity.class);
-                    intent.putExtra("id",orderNumId);
-                    intent.putExtra("typeId",id);
-                    intent.putExtra("orderStatus",dataBean.getOrderStatus());
-                    startActivity(intent);
-                }else {
-                    Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-                    intent.putExtra("id",orderNumId);
-                    intent.putExtra("typeId",id);
-                    intent.putExtra("orderStatus",dataBean.getOrderStatus());
-                    startActivity(intent);
-                }
+//                if (dataBean.getOrderStatus()==1){
+//                    Intent intent = new Intent(getActivity(), DeliveryOrderActivity.class);
+//                    intent.putExtra("id",orderNumId);
+//                    intent.putExtra("typeId",id);
+//                    intent.putExtra("orderStatus",dataBean.getOrderStatus());
+//                    startActivity(intent);
+//                }else {
+//                    Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+//                    intent.putExtra("id",orderNumId);
+//                    intent.putExtra("typeId",id);
+//                    intent.putExtra("orderStatus",dataBean.getOrderStatus());
+//                    startActivity(intent);
+//                }
+                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                intent.putExtra("id", orderNumId);
+                intent.putExtra("typeId", id);
+                intent.putExtra("orderStatus", dataBean.getOrderStatus());
+                startActivity(intent);
             }
         });
+        orderInfoAdapter.addChildClickViewIds(R.id.call_phone, R.id.order_detail_info, R.id.order_detail_info, R.id.take_orders);
         orderInfoAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                int id = view.getId();
-                if (id==R.id.order_detail_info){
-                    ShopDetailDialog shopDetailDialog = new ShopDetailDialog(getActivity(),orderInfoAdapter.getData().get(position));
-                    shopDetailDialog.show(getChildFragmentManager(),"");
-                   // ShowMoreOrderInfoDialog showMoreOrderInfoDialog = new ShowMoreOrderInfoDialog(getActivity());
-                   // showMoreOrderInfoDialog.show(getChildFragmentManager(),"");
-                }else if (id==R.id.call_phone){
+                int viewId = view.getId();
+                if (viewId == R.id.order_detail_info) {
+                    ShopDetailDialog shopDetailDialog = new ShopDetailDialog(getActivity(), orderInfoAdapter.getData().get(position));
+                    shopDetailDialog.show(getChildFragmentManager(), "");
+                    // ShowMoreOrderInfoDialog showMoreOrderInfoDialog = new ShowMoreOrderInfoDialog(getActivity());
+                    // showMoreOrderInfoDialog.show(getChildFragmentManager(),"");
+                } else if (viewId == R.id.call_phone) {
                     String customerPhone = orderInfoAdapter.getData().get(position).getCustomerPhone();
                     //Utils.callPhone(customerPhone);
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     Uri data = Uri.parse("tel:" + customerPhone);
                     intent.setData(data);
                     getActivity().startActivity(intent);
+                } else if (viewId == R.id.take_orders) {
+                    OrderInfoModel.DataBean dataBean = orderInfoAdapter.getData().get(position);
+                    String orderNumId = dataBean.getId();
+                    Log.i(TAG,"==id==="+id);
+                    if (id == 1) {
+                        Intent intent = new Intent(getActivity(), DeliveryOrderActivity.class);
+                        intent.putExtra("id", orderNumId);
+                        intent.putExtra("typeId", id);
+                        intent.putExtra("orderStatus", dataBean.getOrderStatus());
+                        startActivity(intent);
+                    }else if (id==0){
+                       // Utils.showCenterTomast();
+//                        WaitDialog.show(get,"提交中....");
+                       orderInfoFragmentPresenter.takeOrder(orderNumId,id);
+                    }
                 }
             }
         });
@@ -185,8 +207,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             selectTimeData();
             selectTime.setText(Utils.formatSelectTime(new Date()));
         }
-        Log.i(TAG,"----id"+id);
-        if (id==1){
+        Log.i(TAG, "----id" + id);
+        if (id == 1) {
             mapHeadTimeView = LayoutInflater.from(getActivity()).inflate(R.layout.item_map_head_view, null);
             orderInfoAdapter.addHeaderView(mapHeadTimeView);
             mapView = mapHeadTimeView.findViewById(R.id.map);
@@ -201,7 +223,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             LatLng point = new LatLng(Config.LATITUDE, Config.LONGITUDE);
 
             Bundle bundle = new Bundle();
-           // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
+            // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
             OverlayOptions option = new MarkerOptions()
                     .position(point)
                     .clickable(true)
@@ -212,14 +234,14 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
             LatLng ll = new LatLng(Config.LATITUDE, Config.LONGITUDE);
             MapStatus.Builder builder = new MapStatus.Builder();
-            builder.target(ll).zoom(15.0f);
+            builder.target(ll).zoom(12.0f);
             baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
 
             //送达时间，添加点击事件
             baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    String time = "送达时间: "+ marker.getExtraInfo().getString("time");
+                    String time = "送达时间: " + marker.getExtraInfo().getString("time");
                     Utils.showCenterTomast(time);
                     return true;
                 }
@@ -230,22 +252,22 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     /**
      * 选择时间控件
      */
-    private void selectTimeData(){
+    private void selectTimeData() {
         selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar ca = Calendar.getInstance();
-                int  mYear = ca.get(Calendar.YEAR);
-                int  mMonth = ca.get(Calendar.MONTH);
-                int  mDay = ca.get(Calendar.DAY_OF_MONTH);
+                int mYear = ca.get(Calendar.YEAR);
+                int mMonth = ca.get(Calendar.MONTH);
+                int mDay = ca.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        selectTime.setText(""+year+"-"+(month+1)+"-"+dayOfMonth);
-                        orderInfoFragmentPresenter.loadOrderByStatus(id, selectTime.getText().toString(),1);
+                        selectTime.setText("" + year + "-" + (month + 1) + "-" + dayOfMonth);
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, selectTime.getText().toString(), 1);
                     }
-                },mYear, mMonth, mDay);
+                }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
@@ -254,14 +276,14 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     protected void setUpData() {
         orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
-        orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()),currentPage);
+        orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
     }
 
     @Override
     public void onRefresh() {
-        currentPage=1;
+        currentPage = 1;
         lastPage = false;
-        orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()),currentPage);
+        orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
     }
 
     @Override
@@ -271,46 +293,44 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             public void run() {
                 refresh.setRefreshing(true);
             }
-        },50);
+        }, 50);
     }
 
     @Override
     public void successLoad(List<OrderInfoModel.DataBean> data) {
         refresh.setRefreshing(false);
-        if (data==null || data.size()==0){
+        if (data == null || data.size() == 0) {
             lastPage = true;
         }
-        if (currentPage==1){
+        if (currentPage == 1) {
             if (data != null && data.size() > 0) {
                 emptyView.setVisibility(View.GONE);
             } else {
                 emptyView.setVisibility(View.VISIBLE);
             }
             orderInfoAdapter.setList(data);
-            if (data.size()<10){
+            if (data.size() < 10) {
                 lastPage = true;
                 orderInfoAdapter.getLoadMoreModule().loadMoreEnd();
             }
-        }else {
+        } else {
             orderInfoAdapter.addData(data);
             orderInfoAdapter.getLoadMoreModule().loadMoreComplete();
         }
-        if (lastPage){
+        if (lastPage) {
             orderInfoAdapter.getLoadMoreModule().loadMoreEnd();
         }
 
-        if (id==1){
-            Log.i(TAG,"successLoad====11111");
+        if (id == 1) {
             List<OrderInfoModel.DataBean> data1 = orderInfoAdapter.getData();
-            for (OrderInfoModel.DataBean dataBean : data1){
-                Log.i(TAG,"successLoad====2222222==longitude=="+dataBean.getLongitude() +"==latitude=="+dataBean.getLatitude());
-
+            baiduMap.clear();
+            for (OrderInfoModel.DataBean dataBean : data1) {
                 BitmapDescriptor bitmap = null;
                 bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.send_time);
                 LatLng point = new LatLng(dataBean.getLatitude(), dataBean.getLongitude());
 
                 Bundle bundle = new Bundle();
-                bundle.putString("time",dataBean.getTimeRange());
+                bundle.putString("time", dataBean.getTimeRange());
                 OverlayOptions option = new MarkerOptions()
                         .position(point)
                         .clickable(true)
@@ -329,17 +349,35 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdateOrderEvent event) {
         if (event != null) {
             try {
                 int currentId = Integer.parseInt(event.id);
-                if (currentId==id){
-                    orderInfoFragmentPresenter.loadOrderByStatus(currentId, Utils.formatSelectTime(new Date()),1);
+                if (currentId == id) {
+                    orderInfoFragmentPresenter.loadOrderByStatus(currentId, Utils.formatSelectTime(new Date()), 1);
                 }
-                Log.i(TAG, "onMessageEvent==id="+event.id + " === id==="+id);
-            }catch (Exception e){
+                Log.i(TAG, "onMessageEvent==id=" + event.id + " === id===" + id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        if (event != null) {
+            try {
+                if (event.type==id){
+                    if (event.status==Config.LOAD_SUCCESS){
+                        Utils.showCenterTomast("接单成功...");
+                        orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1);
+                    }else {
+                        Utils.showCenterTomast("接单失败...");
+                    }
+                }
+                Log.i(TAG, "onMessageEvent==id=" + event.type + " === id===" + id);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -348,7 +386,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void onStart() {
         super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }

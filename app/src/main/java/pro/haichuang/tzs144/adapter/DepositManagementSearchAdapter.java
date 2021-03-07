@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -8,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.DepositManagerModel;
 
-public class DepositManagementSearchAdapter extends BaseQuickAdapter<DepositManagerModel.DataBean, BaseViewHolder> {
+public class DepositManagementSearchAdapter extends BaseQuickAdapter<DepositManagerModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
 
     public DepositManagementSearchAdapter() {

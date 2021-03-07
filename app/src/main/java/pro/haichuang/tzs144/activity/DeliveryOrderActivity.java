@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,8 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
+import com.kongzue.dialog.util.BaseDialog;
 import com.kongzue.dialog.v3.BottomMenu;
+import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,11 +53,14 @@ import pro.haichuang.tzs144.model.OrderDetailModel;
 import pro.haichuang.tzs144.model.SaleDataModel;
 import pro.haichuang.tzs144.model.ShopDeleveModel;
 import pro.haichuang.tzs144.model.ShopModel;
+import pro.haichuang.tzs144.model.StatusEvent;
+import pro.haichuang.tzs144.model.UpdateOrderEvent;
 import pro.haichuang.tzs144.model.UploadFileModel;
 import pro.haichuang.tzs144.presenter.OrderDetailActivityPresenter;
 import pro.haichuang.tzs144.presenter.OrderDetailPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.AddOrderDepositDialog;
 import pro.haichuang.tzs144.view.LSettingItem;
 import pro.haichuang.tzs144.view.SelectWaterTicketDialog;
 
@@ -166,6 +173,9 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     private final static int REQUEST_CODE_CHOOSE_PICTURE_REWARD = 0x1110;
     private final static int REQUEST_CODE_CHOOSE_PICTURE_MONTH = 0x1111;
 
+    private final static int REQUEST_CODE_LIST_CHOOSE_PICTURE_MONTH = 0x1112;
+    private final static int REQUEST_CODE_LIST_CHOOSE_PICTURE_REWARD = 0x1113;
+
 
     private  String id;
     private int typeId;
@@ -179,6 +189,9 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     private float totalPrice;
     private float amount_receivable;
     private float actual_amount;
+    private String orderNo;
+
+    private int currentUploadPosition;
 
 
     @Override
@@ -200,11 +213,11 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         orderDetailPresenter = new OrderDetailActivityPresenter(this);
         orderDetailPresenter.getHomeOrderInfo(id);
 
-        deliverOrderDetailAdapter = new DeliverOrderDetailAdapter();
+        deliverOrderDetailAdapter = new DeliverOrderDetailAdapter(this);
         recycleData.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recycleData.setAdapter(deliverOrderDetailAdapter);
 
-        deliverOrderDetailAdapter.addChildClickViewIds(R.id.shop_add_tong,R.id.reduce_tong);
+        deliverOrderDetailAdapter.addChildClickViewIds(R.id.shop_add_tong,R.id.reduce_tong,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_reward,R.id.upload_month);
         deliverOrderDetailAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
@@ -216,7 +229,6 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                         recycleNum = recycleNum + 1;
                         goodsListBean.setRecycleNum(recycleNum);
                         deliverOrderDetailAdapter.setData(position,goodsListBean);
-
                     break;
                     case R.id.reduce_tong:
                         if (recycleNum==0){
@@ -225,10 +237,62 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                         recycleNum = recycleNum - 1;
                         goodsListBean.setRecycleNum(recycleNum);
                         deliverOrderDetailAdapter.setData(position,goodsListBean);
-
                         break;
-
+                    case R.id.reward_tickets:
+                        OrderDetailModel.DataBean.GoodsListBean goodsListBean3 = deliverOrderDetailAdapter.getData().get(position);
+                        if (goodsListBean3.isShowReward()){
+                            goodsListBean3.setCouponDeductNum("0");
+                            goodsListBean3.setShowReward(false);
+                        }else {
+                            goodsListBean3.setShowReward(true);
+                        }
+                        deliverOrderDetailAdapter.setData(position,goodsListBean3);
+                        break;
+                    case R.id.monthly:
+                        OrderDetailModel.DataBean.GoodsListBean goodsListBean2 = deliverOrderDetailAdapter.getData().get(position);
+                        if (goodsListBean2.isShowMonth()){
+                            goodsListBean2.setMonthDeductNum("0");
+                            goodsListBean2.setShowMonth(false);
+                        }else {
+                            goodsListBean2.setShowMonth(true);
+                        }
+                        deliverOrderDetailAdapter.setData(position,goodsListBean2);
+                        break;
+                    case R.id.water_tickets:
+                        OrderDetailModel.DataBean.GoodsListBean goodsListBean1 = deliverOrderDetailAdapter.getData().get(position);
+                        if (goodsListBean1.isShowWater()){
+                            goodsListBean1.setWaterNum(0);
+                            goodsListBean1.setShowWater(false);
+                        }else {
+                            goodsListBean1.setShowWater(true);
+                        }
+                        deliverOrderDetailAdapter.setData(position,goodsListBean1);
+                        break;
+                    case R.id.upload_reward:
+                        currentUploadPosition = position;
+                        selectPicture(REQUEST_CODE_LIST_CHOOSE_PICTURE_REWARD);
+                        break;
+                    case R.id.upload_month:
+                        currentUploadPosition = position;
+                        selectPicture(REQUEST_CODE_LIST_CHOOSE_PICTURE_MONTH);
+                        break;
                 }
+            }
+        });
+
+        deliverOrderDetailAdapter.setSelectWaterListener(new DeliverOrderDetailAdapter.SelectWaterListener() {
+            @Override
+            public void selectClick(int position) {
+                SelectWaterTicketDialog selectWaterTicketDialog = new SelectWaterTicketDialog(DeliveryOrderActivity.this, new SelectWaterTicketDialog.SelectShopListener() {
+                    @Override
+                    public void selectShop(ShopModel.DataBean dataBean) {
+                        OrderDetailModel.DataBean.GoodsListBean goodsListBean = deliverOrderDetailAdapter.getData().get(position);
+                        goodsListBean.setWaterGoodsId(dataBean.getId());
+                        goodsListBean.setWaterName(dataBean.getName()+"   "+dataBean.getSpecs());
+                        deliverOrderDetailAdapter.setData(position,goodsListBean);
+                    }
+                });
+                selectWaterTicketDialog.show(getSupportFragmentManager(),"");
             }
         });
 
@@ -268,7 +332,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     }
 
 
-    @OnClick({R.id.back,R.id.receive_payment,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_reward,R.id.upload_month})
+    @OnClick({R.id.back,R.id.receive_payment,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_reward,R.id.upload_month,R.id.select_ticket})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -276,44 +340,111 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 break;
             case R.id.receive_payment:
 
-                ShopDeleveModel shopDeleveModel = new ShopDeleveModel();
-                ShopDeleveModel.GoodsListBean goodsListBean = new ShopDeleveModel.GoodsListBean();
-                if (selectWater){
-                    ShopDeleveModel.GoodsListBean.DeductWaterBean deductWaterBean = new ShopDeleveModel.GoodsListBean.DeductWaterBean();
-                    deductWaterBean.setWaterGoodsId(mDataBea.getId()+"");
-                    deductWaterBean.setDeductNum(selectDeductionNunm.getEditText());
-                    deductWaterBean.setNum(selectWaterNum.getEditText());
-                    goodsListBean.setDeductWater(deductWaterBean);
-                }
-                if (selectReward){
-                    ShopDeleveModel.GoodsListBean.DeductCouponBean deductCouponBean = new ShopDeleveModel.GoodsListBean.DeductCouponBean();
-                    deductCouponBean.setCouponImg(rewardUrl);
-                    deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
-                    goodsListBean.setDeductCoupon(deductCouponBean);
-                }
-                if (selectMonth){
-                    ShopDeleveModel.GoodsListBean.DeductMonthBean deductMonthBean = new ShopDeleveModel.GoodsListBean.DeductMonthBean();
-                    deductMonthBean.setMonthImg(monthUrl);
-                    deductMonthBean.setDeductNum(monthDeductionNunm.getEditText());
-                    goodsListBean.setDeductMonth(deductMonthBean);
-                }
-                List<ShopDeleveModel.GoodsListBean.MaterialsBean> materialsBeanList = new ArrayList<>();
+//                ShopDeleveModel shopDeleveModel = new ShopDeleveModel();
+//                ShopDeleveModel.GoodsListBean goodsListBean = new ShopDeleveModel.GoodsListBean();
+//                if (selectWater){
+//                    ShopDeleveModel.GoodsListBean.DeductWaterBean deductWaterBean = new ShopDeleveModel.GoodsListBean.DeductWaterBean();
+//                    deductWaterBean.setWaterGoodsId(mDataBea.getId()+"");
+//                    deductWaterBean.setDeductNum(selectDeductionNunm.getEditText());
+//                    deductWaterBean.setNum(selectWaterNum.getEditText());
+//                    goodsListBean.setDeductWater(deductWaterBean);
+//                }
+//                if (selectReward){
+//                    ShopDeleveModel.GoodsListBean.DeductCouponBean deductCouponBean = new ShopDeleveModel.GoodsListBean.DeductCouponBean();
+//                    deductCouponBean.setCouponImg(rewardUrl);
+//                    deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
+//                    goodsListBean.setDeductCoupon(deductCouponBean);
+//                }
+//                if (selectMonth){
+//                    ShopDeleveModel.GoodsListBean.DeductMonthBean deductMonthBean = new ShopDeleveModel.GoodsListBean.DeductMonthBean();
+//                    deductMonthBean.setMonthImg(monthUrl);
+//                    deductMonthBean.setDeductNum(monthDeductionNunm.getEditText());
+//                    goodsListBean.setDeductMonth(deductMonthBean);
+//                }
+//                List<ShopDeleveModel.GoodsListBean.MaterialsBean> materialsBeanList = new ArrayList<>();
+//
+//                List<OrderDetailModel.DataBean.GoodsListBean> data = deliverOrderDetailAdapter.getData();
+//                for (OrderDetailModel.DataBean.GoodsListBean goodsListBean1 : data){
+//                    goodsListBean.setOrderGoodsId(goodsListBean1.getOrderGoodsId());
+//                    OrderDetailModel.DataBean.BindMaterList bindMaterList = goodsListBean1.getBindMaterList().get(0);
+//                    ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = new ShopDeleveModel.GoodsListBean.MaterialsBean();
+//                    materialsBean.setMaterialId(bindMaterList.getId()+"");
+//                    materialsBean.setNum(goodsListBean1.getRecycleNum()+"");
+//                    materialsBeanList.add(materialsBean);
+//                }
+//                goodsListBean.setMaterials(materialsBeanList);
+//
+//                List<ShopDeleveModel.GoodsListBean> goodsListBeanList = new ArrayList<>();
+//                goodsListBeanList.add(goodsListBean);
+//                shopDeleveModel.setGoodsList(goodsListBeanList);
 
                 List<OrderDetailModel.DataBean.GoodsListBean> data = deliverOrderDetailAdapter.getData();
-                for (OrderDetailModel.DataBean.GoodsListBean goodsListBean1 : data){
-                    OrderDetailModel.DataBean.BindMaterList bindMaterList = goodsListBean1.getBindMaterList().get(0);
-
-                    ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = new ShopDeleveModel.GoodsListBean.MaterialsBean();
-                    materialsBean.setMaterialId(bindMaterList.getId()+"");
-                    materialsBean.setNum(goodsListBean1.getRecycleNum()+"");
-                    materialsBeanList.add(materialsBean);
-                }
-                goodsListBean.setMaterials(materialsBeanList);
 
                 List<ShopDeleveModel.GoodsListBean> goodsListBeanList = new ArrayList<>();
-                goodsListBeanList.add(goodsListBean);
-                shopDeleveModel.setGoodsList(goodsListBeanList);
 
+                int shopNum = 0;
+                int materialNum = 0;
+                for (OrderDetailModel.DataBean.GoodsListBean goodsListBean : data){
+
+                    shopNum += goodsListBean.getGoodsNum();
+                    materialNum += goodsListBean.getRecycleNum();
+
+                    ShopDeleveModel.GoodsListBean goodsListBean1 = new ShopDeleveModel.GoodsListBean();
+                    goodsListBean1.setOrderGoodsId(goodsListBean.getOrderGoodsId());
+
+                    if (goodsListBean.getWaterGoodsId()!=0){
+                        ShopDeleveModel.GoodsListBean.DeductWaterBean deductWaterBean = new ShopDeleveModel.GoodsListBean.DeductWaterBean();
+                        deductWaterBean.setWaterGoodsId(goodsListBean.getWaterGoodsId()+"");
+                        deductWaterBean.setNum(goodsListBean.getWaterNum()+"");
+                        deductWaterBean.setDeductNum(goodsListBean.getWaterDeductNum()+"");
+                        goodsListBean1.setDeductWater(deductWaterBean);
+                    }
+
+                    if (goodsListBean.getMonthImg()!=null){
+                        ShopDeleveModel.GoodsListBean.DeductMonthBean monthBean = new ShopDeleveModel.GoodsListBean.DeductMonthBean();
+                        monthBean.setMonthImg(goodsListBean.getMonthImg());
+                        monthBean.setDeductNum(goodsListBean.getMonthDeductNum()+"");
+                        goodsListBean1.setDeductMonth(monthBean);
+                    }
+
+                    if (goodsListBean.getCouponImg()!=null){
+                        ShopDeleveModel.GoodsListBean.DeductCouponBean couponBean = new ShopDeleveModel.GoodsListBean.DeductCouponBean();
+                        couponBean.setCouponImg(goodsListBean.getCouponImg());
+                        couponBean.setDeductNum(goodsListBean.getCouponDeductNum()+"");
+                        goodsListBean1.setDeductCoupon(couponBean);
+                    }
+
+                    List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean.getBindMaterList();
+                    if (bindMaterList!=null && bindMaterList.size()>0){
+                        OrderDetailModel.DataBean.BindMaterList bindMaterList1 = bindMaterList.get(0);
+                        ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = new ShopDeleveModel.GoodsListBean.MaterialsBean();
+                        materialsBean.setMaterialId(bindMaterList1.getId()+"");
+                        materialsBean.setNum(goodsListBean.getRecycleNum()+"");
+                        List<ShopDeleveModel.GoodsListBean.MaterialsBean> materials  = new ArrayList<>();
+                        materials.add(materialsBean);
+                        goodsListBean1.setMaterials(materials);
+                    }
+                    goodsListBeanList.add(goodsListBean1);
+                }
+
+//                if (shopNum > materialNum){
+//                    String content = "商品数量大于空桶数量，是否填写开押单？";
+//                    MessageDialog.show(this, "提示", content, "确定","取消")
+//                            .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+//                                @Override
+//                                public boolean onClick(BaseDialog baseDialog, View v) {
+//
+//                                    AddOrderDepositDialog addOrderDepositDialog = new AddOrderDepositDialog(DeliveryOrderActivity.this);
+//                                    addOrderDepositDialog.show(getSupportFragmentManager(),"");
+//
+//                                    return true;
+//                                }
+//                            });
+//                }else {
+//                    orderDetailPresenter.deliveryOrder(id,goodsListBeanList);
+//                }
+
+                orderDetailPresenter.deliveryOrder(id,goodsListBeanList);
 
 
                 break;
@@ -409,18 +540,20 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         tatalPrice.setText("¥" + data.getTotalPrice());
         needPrice.setText("¥" + data.getReceivablePrice());
         orderNumData.setText("订单编号：" + data.getOrderNo());
+        orderNo = data.getOrderNo();
 
         if ("电话订单".equals(data.getOrderType())){
             priceView.setVisibility(View.GONE);
             orderView.setVisibility(View.GONE);
             shopAmountView.setVisibility(View.VISIBLE);
-            shopDetail.setVisibility(View.VISIBLE);
+            shopDetail.setVisibility(View.GONE);
+            deliverOrderDetailAdapter.setShowTicket_type(true);
+
         }
         if ("外卖订单".equals(data.getOrderType())){
             receivePayment.setVisibility(View.VISIBLE);
             ticketType.setVisibility(View.GONE);
         }
-
 
         orderSource.setText("订单来源: "+data.getOrderType());
         payWay.setText("支付方式：" + data.getPayMode());
@@ -467,6 +600,12 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     String path = medias.get(0).getPath();
                     orderDetailPresenter.uploadFile("month",path);
                     Utils.showImage(uploadMonth,medias.get(0).getPath());
+                }else if (requestCode==REQUEST_CODE_LIST_CHOOSE_PICTURE_MONTH){
+                    String path = medias.get(0).getPath();
+                    orderDetailPresenter.uploadFile("list_month",path);
+                }else if (requestCode==REQUEST_CODE_LIST_CHOOSE_PICTURE_REWARD){
+                    String path = medias.get(0).getPath();
+                    orderDetailPresenter.uploadFile("list_reward",path);
                 }
             }
         }
@@ -515,11 +654,34 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     Utils.showCenterTomast("上传失败");
                 }else {
                     Utils.showCenterTomast("上传成功");
-                    if (event.key.equals("reward")){
+                    String key = event.key;
+                    if (key.equals("reward")){
                         rewardUrl = event.path;
-                    }else {
+                    }else if(key.equals("month")){
                         monthUrl = event.path;
+                    }else if (key.equals("list_month")){
+                        OrderDetailModel.DataBean.GoodsListBean goodsListBean = deliverOrderDetailAdapter.getData().get(currentUploadPosition);
+                        goodsListBean.setMonthImg(event.path);
+                        deliverOrderDetailAdapter.setData(currentUploadPosition,goodsListBean);
+                    }else if (key.equals("list_reward")){
+                        OrderDetailModel.DataBean.GoodsListBean goodsListBean = deliverOrderDetailAdapter.getData().get(currentUploadPosition);
+                        goodsListBean.setCouponImg(event.path);
+                        deliverOrderDetailAdapter.setData(currentUploadPosition,goodsListBean);
                     }
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        if (event != null) {
+            if (event.type==3){
+                if (event.status==Config.LOAD_SUCCESS){
+                    Utils.showCenterTomast("开始配送");
+                    finish();
+                }else {
+                    Utils.showCenterTomast("配送失败");
                 }
             }
         }
@@ -536,6 +698,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     @Override
     public void onStop() {
         super.onStop();
+        EventBus.getDefault().post(new UpdateOrderEvent(typeId+""));
         EventBus.getDefault().unregister(this);
     }
 }

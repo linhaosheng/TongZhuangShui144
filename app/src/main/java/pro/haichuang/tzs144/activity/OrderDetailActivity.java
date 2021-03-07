@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.activity;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -112,9 +113,10 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     private OrderDetailAdapter orderDetailAdapter;
 
     private OrderDetailActivityPresenter orderDetailPresenter;
-    private  String id;
+    private String id;
     private int typeId;
     private int orderStatus;
+    private String orderNo;
 
     @Override
     protected int setLayoutResourceID() {
@@ -136,18 +138,18 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
 
     @Override
     protected void setUpData() {
-        orderStatus = getIntent().getIntExtra("orderStatus",0);
+        orderStatus = getIntent().getIntExtra("orderStatus", 0);
         id = getIntent().getStringExtra("id");
-        typeId = getIntent().getIntExtra("typeId",0);
+        typeId = getIntent().getIntExtra("typeId", 0);
         orderDetailPresenter = new OrderDetailActivityPresenter(this);
         orderDetailPresenter.getHomeOrderInfo(id);
-        if (typeId==0){
+        if (typeId == 0) {
             recordTime.setVisibility(View.GONE);
         }
     }
 
 
-    @OnClick({R.id.back, R.id.tips,R.id.switch_order,R.id.take_order,R.id.delivery_btn,R.id.void_sale_btn})
+    @OnClick({R.id.back, R.id.tips, R.id.switch_order, R.id.take_order, R.id.delivery_btn, R.id.void_sale_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -161,20 +163,16 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
                 break;
             case R.id.delivery_btn:
 
-                ShopDeleveModel shopDeleveModel = new ShopDeleveModel();
-
-                List<ShopDeleveModel.GoodsListBean> goodsListBeans = new ArrayList<>();
-
-                List<OrderDetailModel.DataBean.GoodsListBean> data = orderDetailAdapter.getData();
-                for (OrderDetailModel.DataBean.GoodsListBean goodsListBean : data){
-
-                    ShopDeleveModel.GoodsListBean goodsListBean1 = new ShopDeleveModel.GoodsListBean();
-                    //goodsListBean1.setOrderGoodsId(goodsListBean.get);
-                }
+                Intent intent = new Intent(this, DeliveryOrderActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("typeId", typeId);
+                intent.putExtra("orderStatus", orderStatus);
+                startActivity(intent);
+                finish();
 
                 break;
             case R.id.void_sale_btn:
-                WaitDialog.show(this,"提交中...");
+                WaitDialog.show(this, "提交中...");
                 orderDetailPresenter.directSelling(id);
                 break;
             case R.id.tips:
@@ -203,44 +201,52 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         needPrice.setText("¥" + data.getReceivablePrice());
         orderNumData.setText("订单编号：" + data.getOrderNo());
         recordTime.setText("完成时间：" + data.getCompleteTime());
+        orderNo = data.getOrderNo();
         String orderType = "";
         String payModel = "";
-        if ("微商城".equals(data.getOrderType())){
+        if ("微商城".equals(data.getOrderType())) {
             voidSaleBtn.setVisibility(View.GONE);
-        }else if ("电话订单".equals(data.getOrderType())){
+        } else if ("电话订单".equals(data.getOrderType())) {
             voidSaleBtn.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             voidSaleBtn.setVisibility(View.GONE);
         }
 
-        orderSource.setText("订单来源: "+data.getOrderType());
+        orderSource.setText("订单来源: " + data.getOrderType());
         payWay.setText("支付方式：" + data.getPayMode());
         orderDetailAdapter.setList(data.getGoodsList());
-        actualPrice.setText("¥"+data.getRealPrice());
+        actualPrice.setText("¥" + data.getRealPrice());
 
         timeOut.setVisibility(View.VISIBLE);
-        if (data.getDeliveryStatus()==0){
-            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.pend_order));
-        }else if (data.getDeliveryStatus()==1){
-            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.nedd_delivery));
-        }else if (data.getDeliveryStatus()==2){
-            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.have_finish));
-        }else if (data.getDeliveryStatus()==3){
-            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.have_cancel));
+        if (data.getDeliveryStatus() == 0) {
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.pend_order));
+        } else if (data.getDeliveryStatus() == 1) {
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.nedd_delivery));
+        } else if (data.getDeliveryStatus() == 2) {
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.have_finish));
+        } else if (data.getDeliveryStatus() == 3) {
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.have_cancel));
         }
 
-        if (id.equals("0")){
+        if (id.equals("0")) {
             takeOrder.setText("接单");
-        }else if (id.equals("1")){
+        } else if (id.equals("1")) {
             takeOrder.setText("配送");
         }
-        if (data.getTimeStatus()!=null && data.getTimeStatus().contains("已超时") && data.getDeliveryStatus()==1){
+
+        //已经接单，需要配送
+        if (data.getDeliveryStatus() == 1) {
             voidDeliveryView.setVisibility(View.VISIBLE);
             takeOrder.setVisibility(View.GONE);
-        }else {
+        } else {
             voidDeliveryView.setVisibility(View.GONE);
         }
-        if (data.getDeliveryStatus()==2){
+        if (data.getTimeStatus() != null && data.getTimeStatus().contains("已超时") && data.getDeliveryStatus() == 1) {
+            voidDeliveryView.setVisibility(View.VISIBLE);
+            takeOrder.setVisibility(View.GONE);
+        }
+
+        if (data.getDeliveryStatus() == 2) {
             voidDeliveryView.setVisibility(View.GONE);
             takeOrder.setVisibility(View.GONE);
             switchOrder.setVisibility(View.GONE);
@@ -249,7 +255,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         /**
          * [0-待接单 1-已接单 2-已完成 3-已取消]
          */
-        if (orderStatus==2){
+        if (orderStatus == 2) {
             voidDeliveryView.setVisibility(View.GONE);
             takeOrder.setVisibility(View.GONE);
             switchOrder.setVisibility(View.GONE);
@@ -261,20 +267,21 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     public void onMessageEvent(StatusEvent event) {
         WaitDialog.dismiss();
         if (event != null) {
-            if (event.type==2){
+            if (event.type == 2) {
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("定单作废成功");
+                    finish();
                 } else {
                     Utils.showCenterTomast("定单作废失败");
                 }
-            }else if (event.type==1){
+            } else if (event.type == 1) {
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("接单成功");
                     finish();
                 } else {
                     Utils.showCenterTomast("定单作废失败");
                 }
-            }else if (event.type==4){
+            } else if (event.type == 4) {
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("转成功");
                     finish();
@@ -295,8 +302,8 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG,"UpdateOrderEvent===="+id);
-        EventBus.getDefault().post(new UpdateOrderEvent(id));
+        Log.i(TAG, "UpdateOrderEvent====" + typeId);
+        EventBus.getDefault().post(new UpdateOrderEvent(typeId + ""));
         EventBus.getDefault().unregister(this);
     }
 

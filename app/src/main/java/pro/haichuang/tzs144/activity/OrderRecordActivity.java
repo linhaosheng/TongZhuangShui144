@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -169,18 +170,63 @@ public class OrderRecordActivity extends BaseActivity implements ILoadDataView<O
     @Override
     public void successLoad(OrderRecordModel.DataBean data) {
         WaitDialog.dismiss();
-        orderNum.setText(data.getOrderCount());
-        lastDate.setText(data.getDayOrderRatio());
-        lastWeek.setText(data.getWeekOrderRatio());
-        shopNum.setText(data.getSaleCount());
-        ShopLastDate.setText(data.getDaySaleRatio());
-        shopLastWeek.setText(data.getWeekSaleRatio());
-        orderRecordAdapter.setList(data.getOrderList());
+
         if (data.getOrderList()==null || data.getOrderList().size()==0){
             emptyView.setVisibility(View.VISIBLE);
         }else {
             emptyView.setVisibility(View.GONE);
         }
+
+        Drawable upDrawable = ContextCompat.getDrawable(this, R.mipmap.trend_up);
+        upDrawable.setBounds(0,0,upDrawable.getMinimumWidth(),upDrawable.getMinimumHeight());
+
+        Drawable dowmDrawable = ContextCompat.getDrawable(this, R.mipmap.trend_down);
+        dowmDrawable.setBounds(0,0,upDrawable.getMinimumWidth(),upDrawable.getMinimumHeight());
+
+        if (data.getDayOrderRatio().contains("+")){
+            lastDate.setTextColor(Color.parseColor("#E02020"));
+            lastDate.setCompoundDrawables(upDrawable,null,null,null);
+        }else {
+            lastDate.setTextColor(Color.parseColor("#3C9C25"));
+            lastDate.setCompoundDrawables(dowmDrawable,null,null,null);
+        }
+
+        if (data.getWeekOrderRatio().contains("+")){
+            lastWeek.setTextColor(Color.parseColor("#E02020"));
+            lastWeek.setCompoundDrawables(upDrawable,null,null,null);
+        }else {
+            lastWeek.setTextColor(Color.parseColor("#3C9C25"));
+            lastWeek.setCompoundDrawables(dowmDrawable,null,null,null);
+        }
+
+        if (data.getDaySaleRatio().contains("+")){
+            ShopLastDate.setTextColor(Color.parseColor("#E02020"));
+            ShopLastDate.setCompoundDrawables(upDrawable,null,null,null);
+        }else {
+            ShopLastDate.setTextColor(Color.parseColor("#3C9C25"));
+            ShopLastDate.setCompoundDrawables(dowmDrawable,null,null,null);
+        }
+
+        if (data.getWeekSaleRatio().contains("+")){
+            shopLastWeek.setTextColor(Color.parseColor("#E02020"));
+            shopLastWeek.setCompoundDrawables(upDrawable,null,null,null);
+        }else {
+            shopLastWeek.setTextColor(Color.parseColor("#3C9C25"));
+            shopLastWeek.setCompoundDrawables(dowmDrawable,null,null,null);
+        }
+
+        orderNum.setText(data.getOrderCount());
+
+        lastDate.setText(data.getDayOrderRatio().replace("+","").replace("-","")+"%");
+        lastWeek.setText(data.getWeekOrderRatio().replace("+","").replace("-","")+"%");
+
+        shopNum.setText(data.getSaleCount());
+
+        ShopLastDate.setText(data.getDaySaleRatio().replace("+","").replace("-","")+"%");
+        shopLastWeek.setText(data.getWeekSaleRatio().replace("+","").replace("-","")+"%");
+
+        orderRecordAdapter.setList(data.getOrderList());
+
     }
 
     @Override

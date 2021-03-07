@@ -32,9 +32,9 @@
             app:leftText="押金编号"
             app:leftTextMarginLeft="@dimen/dp_10"
             app:rightStyle="iconHide"
-            app:isShowRightText = "false"
-            app:rightText="请输入"
-            app:showEditInput="true"
+            app:isShowRightText = "true"
+            app:rightText="请选择 >"
+            app:showEditInput="false"
             app:rightIconSize="@dimen/dp_22" />
 
 
@@ -46,9 +46,9 @@
             app:leftText="押金物品"
             app:leftTextMarginLeft="@dimen/dp_10"
             app:rightStyle="iconHide"
-            app:isShowRightText = "false"
-            app:rightText="请输入"
-            app:showEditInput="true"
+            app:isShowRightText = "true"
+            app:rightText="请选择 >"
+            app:showEditInput="false"
             app:rightIconSize="@dimen/dp_22" />
 
 
@@ -87,9 +87,9 @@
             app:leftText="金额"
             app:leftTextMarginLeft="@dimen/dp_10"
             app:rightStyle="iconHide"
-            app:isShowRightText = "false"
+            app:isShowRightText = "true"
             app:rightText="自动计算"
-            app:showEditInput="true"
+            app:showEditInput="false"
             app:rightIconSize="@dimen/dp_22" />
 
         <pro.haichuang.tzs144.view.LSettingItem
@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             app:LtextColor="#000000"
-            app:leftText="开押类型"
+            app:leftText="开押类型 >"
             app:leftTextMarginLeft="@dimen/dp_10"
             app:rightStyle="iconHide"
             app:isShowRightText = "true"

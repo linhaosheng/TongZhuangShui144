@@ -332,5 +332,10 @@ public class ConfigUrl {
      */
     public static final String FIND_STOCK_MAIN_LIST = "/api/app/kc/findStockMainList";
 
+    /**
+     * [押金]查询押金编号
+     */
+    public static final String FIND_DEPOSIT_YJMOLIST = "/api/app/depositManage/findDepositYjNoList";
+
 
 }

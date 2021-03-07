@@ -27,8 +27,10 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
@@ -92,14 +94,30 @@ public class AddressSearchActivity extends BaseActivity {
         baiduMap = map.getMap();
         baiduMap.setMyLocationEnabled(true);
 
-        //显示卫星图层
-        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
-                .fromResource(R.mipmap.address_icon);
-        baiduMap.setMyLocationConfiguration(new MyLocationConfiguration(
-                mCurrentMode, true, mCurrentMarker
-        ));
+//        //显示卫星图层
+//        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+//        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
+//        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
+//                .fromResource(R.mipmap.address_icon);
+//        baiduMap.setMyLocationConfiguration(new MyLocationConfiguration(
+//                mCurrentMode, true, mCurrentMarker
+//        ));
+
+
+        BitmapDescriptor bitmap = null;
+        bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
+
+        LatLng point = new LatLng(Config.LATITUDE, Config.LONGITUDE);
+
+        Bundle bundle = new Bundle();
+        // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .clickable(true)
+                .extraInfo(bundle)
+                .icon(bitmap);
+        baiduMap.addOverlay(option);
+        bitmap.recycle();
 
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override

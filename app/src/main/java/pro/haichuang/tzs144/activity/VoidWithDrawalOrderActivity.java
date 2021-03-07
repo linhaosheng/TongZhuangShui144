@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,8 @@ public class VoidWithDrawalOrderActivity extends BaseActivity implements SwipeRe
     private VoidWithDrawalOrderAdapter voidWithDrawalOrderAdapter;
     private VoidWithDrawalOrderPresenter voidWithDrawalOrderPresenter;
     private int currentPage = 1;
+    private boolean lastPage;
+
 
     @Override
     protected int setLayoutResourceID() {
@@ -60,10 +64,25 @@ public class VoidWithDrawalOrderActivity extends BaseActivity implements SwipeRe
         refresh.setOnRefreshListener(this);
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(voidWithDrawalOrderAdapter);
+
+        voidWithDrawalOrderAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    currentPage++;
+                    voidWithDrawalOrderPresenter.findCancelList(searchEdit.getText().toString(),currentPage);
+                }
+            }
+        });
+        voidWithDrawalOrderAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        voidWithDrawalOrderAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+
     }
 
     @Override
     protected void setUpData() {
+        currentPage = 1;
         voidWithDrawalOrderPresenter = new VoidWithDrawalOrderPresenter(this);
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -79,6 +98,8 @@ public class VoidWithDrawalOrderActivity extends BaseActivity implements SwipeRe
             @Override
             public void afterTextChanged(Editable s) {
                 if (searchEdit.getText()!=null){
+                    currentPage = 1;
+                    lastPage = false;
                     voidWithDrawalOrderPresenter.findCancelList(searchEdit.getText().toString(),currentPage);
                 }
             }
@@ -110,12 +131,28 @@ public class VoidWithDrawalOrderActivity extends BaseActivity implements SwipeRe
     @Override
     public void successLoad(List<WithDrawalOrderModel.DataBean> data) {
         refresh.setRefreshing(false);
-          if (data==null || data.size()==0){
-              emptyView.setVisibility(View.VISIBLE);
+
+        if (data==null || data.size()<10){
+            lastPage = true;
+        }
+          if (currentPage==1){
+              if (data==null || data.size()==0){
+                  emptyView.setVisibility(View.VISIBLE);
+              }else {
+                  emptyView.setVisibility(View.GONE);
+              }
+              voidWithDrawalOrderAdapter.setList(data);
+              if (data.size()<10){
+                  voidWithDrawalOrderAdapter.getLoadMoreModule().loadMoreEnd();
+              }
           }else {
-              emptyView.setVisibility(View.GONE);
+              voidWithDrawalOrderAdapter.addData(data);
+              voidWithDrawalOrderAdapter.getLoadMoreModule().loadMoreComplete();
           }
-        voidWithDrawalOrderAdapter.setList(data);
+        if (lastPage){
+            voidWithDrawalOrderAdapter.getLoadMoreModule().loadMoreEnd();
+        }
+
     }
 
     @Override

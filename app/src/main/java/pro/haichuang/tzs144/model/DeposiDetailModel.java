@@ -7,8 +7,8 @@ public class DeposiDetailModel {
 
     /**
      * result : 1
-     * message : 获取成功!
-     * data : {"yjKyNum":"","yjGoodsNum":"","yjPrice":"","yjTyNum":"","ytTyPrice":"","jtKyNum":"","jtGoodsNum":"","jtPrice":"","jtTyNum":"","jtTyPrice":"","zqKyNum":"","zqGoodsNum":"","zqPrice":"","zqTyNum":"","zqTyPrice":"","list":[{"id":"","yjNo":"","bookNo":"","khName":"","goodsName":"","num":"","price":"","totalPrice":"","type":"","time":"","createName":"","returnName":"","returnTime":"","status":""}]}
+     * message : 查询成功！
+     * data : {"zqKyNum":0,"yjPrice":0,"jtGoodsNum":0,"jtTyNum":0,"zqTyNum":0,"zqTyPrice":0,"ytTyPrice":0,"yjKyNum":0,"list":[],"jtKyNum":0,"yjGoodsNum":0,"jtTyPrice":0,"zqPrice":0,"yjTyNum":0,"zqGoodsNum":0,"jtPrice":0}
      */
 
     private int result;
@@ -41,159 +41,160 @@ public class DeposiDetailModel {
 
     public static class DataBean {
         /**
-         * yjKyNum :
-         * yjGoodsNum :
-         * yjPrice :
-         * yjTyNum :
-         * ytTyPrice :
-         * jtKyNum :
-         * jtGoodsNum :
-         * jtPrice :
-         * jtTyNum :
-         * jtTyPrice :
-         * zqKyNum :
-         * zqGoodsNum :
-         * zqPrice :
-         * zqTyNum :
-         * zqTyPrice :
-         * list : [{"id":"","yjNo":"","bookNo":"","khName":"","goodsName":"","num":"","price":"","totalPrice":"","type":"","time":"","createName":"","returnName":"","returnTime":"","status":""}]
+         * zqKyNum : 0
+         * yjPrice : 0.0
+         * jtGoodsNum : 0
+         * jtTyNum : 0
+         * zqTyNum : 0
+         * zqTyPrice : 0.0
+         * ytTyPrice : 0.0
+         * yjKyNum : 0
+         * list : []
+         * jtKyNum : 0
+         * yjGoodsNum : 0
+         * jtTyPrice : 0.0
+         * zqPrice : 0.0
+         * yjTyNum : 0
+         * zqGoodsNum : 0
+         * jtPrice : 0.0
          */
 
-        private String yjKyNum;
-        private String yjGoodsNum;
-        private String yjPrice;
-        private String yjTyNum;
-        private String ytTyPrice;
-        private String jtKyNum;
-        private String jtGoodsNum;
-        private String jtPrice;
-        private String jtTyNum;
-        private String jtTyPrice;
-        private String zqKyNum;
-        private String zqGoodsNum;
-        private String zqPrice;
-        private String zqTyNum;
-        private String zqTyPrice;
+        private int zqKyNum;
+        private double yjPrice;
+        private int jtGoodsNum;
+        private int jtTyNum;
+        private int zqTyNum;
+        private double zqTyPrice;
+        private double ytTyPrice;
+        private int yjKyNum;
+        private int jtKyNum;
+        private int yjGoodsNum;
+        private double jtTyPrice;
+        private double zqPrice;
+        private int yjTyNum;
+        private int zqGoodsNum;
+        private double jtPrice;
+
         private List<ListBean> list;
 
-        public String getYjKyNum() {
-            return yjKyNum;
-        }
-
-        public void setYjKyNum(String yjKyNum) {
-            this.yjKyNum = yjKyNum;
-        }
-
-        public String getYjGoodsNum() {
-            return yjGoodsNum;
-        }
-
-        public void setYjGoodsNum(String yjGoodsNum) {
-            this.yjGoodsNum = yjGoodsNum;
-        }
-
-        public String getYjPrice() {
-            return yjPrice;
-        }
-
-        public void setYjPrice(String yjPrice) {
-            this.yjPrice = yjPrice;
-        }
-
-        public String getYjTyNum() {
-            return yjTyNum;
-        }
-
-        public void setYjTyNum(String yjTyNum) {
-            this.yjTyNum = yjTyNum;
-        }
-
-        public String getYtTyPrice() {
-            return ytTyPrice;
-        }
-
-        public void setYtTyPrice(String ytTyPrice) {
-            this.ytTyPrice = ytTyPrice;
-        }
-
-        public String getJtKyNum() {
-            return jtKyNum;
-        }
-
-        public void setJtKyNum(String jtKyNum) {
-            this.jtKyNum = jtKyNum;
-        }
-
-        public String getJtGoodsNum() {
-            return jtGoodsNum;
-        }
-
-        public void setJtGoodsNum(String jtGoodsNum) {
-            this.jtGoodsNum = jtGoodsNum;
-        }
-
-        public String getJtPrice() {
-            return jtPrice;
-        }
-
-        public void setJtPrice(String jtPrice) {
-            this.jtPrice = jtPrice;
-        }
-
-        public String getJtTyNum() {
-            return jtTyNum;
-        }
-
-        public void setJtTyNum(String jtTyNum) {
-            this.jtTyNum = jtTyNum;
-        }
-
-        public String getJtTyPrice() {
-            return jtTyPrice;
-        }
-
-        public void setJtTyPrice(String jtTyPrice) {
-            this.jtTyPrice = jtTyPrice;
-        }
-
-        public String getZqKyNum() {
+        public int getZqKyNum() {
             return zqKyNum;
         }
 
-        public void setZqKyNum(String zqKyNum) {
+        public void setZqKyNum(int zqKyNum) {
             this.zqKyNum = zqKyNum;
         }
 
-        public String getZqGoodsNum() {
-            return zqGoodsNum;
+        public double getYjPrice() {
+            return yjPrice;
         }
 
-        public void setZqGoodsNum(String zqGoodsNum) {
-            this.zqGoodsNum = zqGoodsNum;
+        public void setYjPrice(double yjPrice) {
+            this.yjPrice = yjPrice;
         }
 
-        public String getZqPrice() {
-            return zqPrice;
+        public int getJtGoodsNum() {
+            return jtGoodsNum;
         }
 
-        public void setZqPrice(String zqPrice) {
-            this.zqPrice = zqPrice;
+        public void setJtGoodsNum(int jtGoodsNum) {
+            this.jtGoodsNum = jtGoodsNum;
         }
 
-        public String getZqTyNum() {
+        public int getJtTyNum() {
+            return jtTyNum;
+        }
+
+        public void setJtTyNum(int jtTyNum) {
+            this.jtTyNum = jtTyNum;
+        }
+
+        public int getZqTyNum() {
             return zqTyNum;
         }
 
-        public void setZqTyNum(String zqTyNum) {
+        public void setZqTyNum(int zqTyNum) {
             this.zqTyNum = zqTyNum;
         }
 
-        public String getZqTyPrice() {
+        public double getZqTyPrice() {
             return zqTyPrice;
         }
 
-        public void setZqTyPrice(String zqTyPrice) {
+        public void setZqTyPrice(double zqTyPrice) {
             this.zqTyPrice = zqTyPrice;
+        }
+
+        public double getYtTyPrice() {
+            return ytTyPrice;
+        }
+
+        public void setYtTyPrice(double ytTyPrice) {
+            this.ytTyPrice = ytTyPrice;
+        }
+
+        public int getYjKyNum() {
+            return yjKyNum;
+        }
+
+        public void setYjKyNum(int yjKyNum) {
+            this.yjKyNum = yjKyNum;
+        }
+
+        public int getJtKyNum() {
+            return jtKyNum;
+        }
+
+        public void setJtKyNum(int jtKyNum) {
+            this.jtKyNum = jtKyNum;
+        }
+
+        public int getYjGoodsNum() {
+            return yjGoodsNum;
+        }
+
+        public void setYjGoodsNum(int yjGoodsNum) {
+            this.yjGoodsNum = yjGoodsNum;
+        }
+
+        public double getJtTyPrice() {
+            return jtTyPrice;
+        }
+
+        public void setJtTyPrice(double jtTyPrice) {
+            this.jtTyPrice = jtTyPrice;
+        }
+
+        public double getZqPrice() {
+            return zqPrice;
+        }
+
+        public void setZqPrice(double zqPrice) {
+            this.zqPrice = zqPrice;
+        }
+
+        public int getYjTyNum() {
+            return yjTyNum;
+        }
+
+        public void setYjTyNum(int yjTyNum) {
+            this.yjTyNum = yjTyNum;
+        }
+
+        public int getZqGoodsNum() {
+            return zqGoodsNum;
+        }
+
+        public void setZqGoodsNum(int zqGoodsNum) {
+            this.zqGoodsNum = zqGoodsNum;
+        }
+
+        public double getJtPrice() {
+            return jtPrice;
+        }
+
+        public void setJtPrice(double jtPrice) {
+            this.jtPrice = jtPrice;
         }
 
         public List<ListBean> getList() {

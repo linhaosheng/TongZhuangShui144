@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.presenter;
 import android.util.ArrayMap;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -67,10 +68,12 @@ public class ClientDetailActivityPresenter {
      * @param longitude
      * @param latitude
      */
-    public void updateAddress(String id,String customerId,String addressName,String address,double longitude,double latitude){
+    public void updateAddress(int id,String customerId,String addressName,String address,double longitude,double latitude){
 
         Map<String,Object>params = new ArrayMap<>();
-        params.put("id",id);
+        if (id!=0){
+            params.put("id",id);
+        }
         params.put("customerId",customerId);
         params.put("addressName",addressName);
         params.put("address",address);
@@ -85,12 +88,21 @@ public class ClientDetailActivityPresenter {
 
             @Override
             public void success(String result) {
-
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.getInt("result")==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,3));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,3));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void error(String error) {
-
+                EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,3));
             }
         });
     }
@@ -110,7 +122,18 @@ public class ClientDetailActivityPresenter {
 
             @Override
             public void success(String result) {
-                EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,0));
+                try {
+
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.getInt("result")==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,0));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,0));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
@@ -136,12 +159,62 @@ public class ClientDetailActivityPresenter {
 
             @Override
             public void success(String result) {
+                try {
 
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.getInt("result")==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,1));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,1));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void error(String error) {
+                EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,1));
+            }
+        });
+    }
 
+    /**
+     * [客户]新增/编辑维护记录
+     * @param id
+     */
+    public void saveMaintainLog(int id,String customerId,String maintainInfo,double distance,String time){
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+        params.put("customerId",customerId);
+        params.put("maintainInfo",maintainInfo);
+        params.put("distance",distance);
+        params.put("time",time);
+
+        HttpRequestEngine.postRequest(ConfigUrl.SAVE_MAINTAIN_LOG, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.getInt("result")==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,2));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,2));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,2));
             }
         });
     }

@@ -123,12 +123,11 @@ public class AddMainTainRecordActivity extends BaseActivity implements ILoadData
                 finish();
                 break;
             case R.id.input_btn:
-
                 if (TextUtils.isEmpty(edit.getText())){
                     Utils.showCenterTomast("请输入维护记录");
                     return;
                 }
-                addMainTainRecordActivityPresenter.saveMaintainLog("100",customerId,edit.getText().toString(),String.valueOf(distanceData),Utils.transformTime(new Date()));
+                addMainTainRecordActivityPresenter.saveMaintainLog(customerId,edit.getText().toString(),String.valueOf(distanceData),Utils.transformTime(new Date()));
 
                 break;
         }

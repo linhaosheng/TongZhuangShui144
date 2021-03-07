@@ -41,7 +41,7 @@ public class OrderStatusModel {
         /**
          * id : 12
          */
-
+        //订单ID
         private int id;
 
         public int getId() {

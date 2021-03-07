@@ -158,7 +158,33 @@ public class ClientDetailModel {
             private String longitude;
             private boolean upadteAddress;
             private boolean isEdit;
+            private boolean addAddress;
+            private String newAddressName;
+            private String newAddress;
 
+            public String getNewAddressName() {
+                return newAddressName;
+            }
+
+            public void setNewAddressName(String newAddressName) {
+                this.newAddressName = newAddressName;
+            }
+
+            public String getNewAddress() {
+                return newAddress;
+            }
+
+            public void setNewAddress(String newAddress) {
+                this.newAddress = newAddress;
+            }
+
+            public boolean isAddAddress() {
+                return addAddress;
+            }
+
+            public void setAddAddress(boolean addAddress) {
+                this.addAddress = addAddress;
+            }
 
             public boolean isEdit() {
                 return isEdit;
@@ -224,15 +250,25 @@ public class ClientDetailModel {
              * maintainInfo :
              */
 
-            private String id;
+            private int id;
             private String time;
             private String maintainInfo;
+            private boolean isEdit;
 
-            public String getId() {
+
+            public boolean isEdit() {
+                return isEdit;
+            }
+
+            public void setEdit(boolean edit) {
+                isEdit = edit;
+            }
+
+            public int getId() {
                 return id;
             }
 
-            public void setId(String id) {
+            public void setId(int id) {
                 this.id = id;
             }
 

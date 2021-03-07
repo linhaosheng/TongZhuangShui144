@@ -24,6 +24,7 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,6 +70,7 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
     private final static  int SELECT_START_TIME = 0x110;
     private final static  int SELECT_END_TIME = 0x111;
     private int currentPage = 1;
+    private boolean lastPage;
 
     private DepositManagementSearchAdapter depositManagementSearchAdapter;
     private DepositManagementSearchActivityPresenter depositManagementSearchActivityPresenter;
@@ -96,6 +98,18 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
                 startActivity(intent);
             }
         });
+        depositManagementSearchAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    currentPage++;
+                    depositManagementSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),currentPage,startTime.getText().toString(),endTime.getText().toString());
+                }
+            }
+        });
+        depositManagementSearchAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        depositManagementSearchAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
     }
 
     @Override
@@ -115,11 +129,13 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
             @Override
             public void afterTextChanged(Editable s) {
               if (searchEdit.getText()!=null){
+                  currentPage=1;
+                  lastPage = false;
                   depositManagementSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),currentPage,startTime.getText().toString(),endTime.getText().toString());
               }
             }
         });
-        depositManagementSearchActivityPresenter.findDepositBookList("",1,startTime.getText().toString(),endTime.getText().toString());
+        depositManagementSearchActivityPresenter.findDepositBookList("",currentPage,startTime.getText().toString(),endTime.getText().toString());
     }
 
 
@@ -165,6 +181,8 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
 
     @Override
     public void onRefresh() {
+        currentPage = 1;
+        lastPage = false;
         depositManagementSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),currentPage,startTime.getText().toString(),endTime.getText().toString());
     }
 
@@ -192,11 +210,23 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
     @Override
     public void successLoad(List<DepositManagerModel.DataBean> data) {
         refresh.setRefreshing(false);
-        depositManagementSearchAdapter.setList(data);
-        if (data==null || data.size()==0){
-            emptyView.setVisibility(View.VISIBLE);
+        if (currentPage==1){
+            if (data==null || data.size()<10){
+                lastPage = true;
+                depositManagementSearchAdapter.getLoadMoreModule().loadMoreEnd();
+            }
+            depositManagementSearchAdapter.setList(data);
+            if (data==null || data.size()==0){
+                emptyView.setVisibility(View.VISIBLE);
+            }else {
+                emptyView.setVisibility(View.GONE);
+            }
         }else {
-            emptyView.setVisibility(View.GONE);
+            depositManagementSearchAdapter.addData(data);
+            depositManagementSearchAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+        if (lastPage){
+            depositManagementSearchAdapter.getLoadMoreModule().loadMoreEnd();
         }
     }
 

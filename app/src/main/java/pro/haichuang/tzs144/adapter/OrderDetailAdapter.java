@@ -12,6 +12,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.AddOrderModel;
 import pro.haichuang.tzs144.model.OrderDetailModel;
 import pro.haichuang.tzs144.util.Utils;
+import rxhttp.wrapper.param.IFile;
 
 public class OrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel.DataBean.GoodsListBean, BaseViewHolder> {
 
@@ -30,15 +31,34 @@ public class OrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel.DataBe
         String monthDiscount =  "抵扣 -"+item.getMonthDeductNum();;
         String reward_discount = "抵扣 -"+item.getCouponDeductNum();
 
-        String recycleNum = "直饮桶x5   直饮桶x5";      //item.getMaterials().get(0).getMaterialName() +"x"+item.getMaterials().get(0).getNum() ;
         helper.setText(R.id.name,item.getGoodsName())
                 .setText(R.id.shop_num,priceNum)
                 .setText(R.id.total_price,totalPrice)
-                .setText(R.id.recycle_num,recycleNum)
                 .setText(R.id.water_num,waterNum)
                 .setText(R.id.discount_num,discountNum)
         .setText(R.id.month_discount,monthDiscount)
         .setText(R.id.reward_discount,reward_discount);
+
+        if (item.getMaterialList()!=null && item.getMaterialList().size()>0){
+            StringBuilder materailBuild = new StringBuilder();
+            for (String data : item.getMaterialList()){
+                if (!data.contains("null")){
+                    materailBuild.append(data).append("   ");
+                }
+            }
+            if (materailBuild.length()>0){
+                helper.getView(R.id.recycle).setVisibility(View.VISIBLE);
+                helper.getView(R.id.recycle_num).setVisibility(View.VISIBLE);
+                helper.setText(R.id.recycle_num,materailBuild.toString());
+            }else {
+                helper.getView(R.id.recycle).setVisibility(View.GONE);
+                helper.getView(R.id.recycle_num).setVisibility(View.GONE);
+            }
+
+        }else {
+            helper.getView(R.id.recycle).setVisibility(View.GONE);
+            helper.getView(R.id.recycle_num).setVisibility(View.GONE);
+        }
 
         ImageView rewardImg = helper.getView(R.id.reward_img);
         if (item.getCouponImg()!=null){

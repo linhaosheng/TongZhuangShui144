@@ -40,9 +40,13 @@ import pro.bilibili.boxing.model.entity.BaseMedia;
 import pro.bilibili.boxing_impl.ui.BoxingActivity;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AddOrderAdapter;
+import pro.haichuang.tzs144.adapter.MaterialListAdapter;
 import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.IUpLoadFileView;
 import pro.haichuang.tzs144.model.AddOrderModel;
+import pro.haichuang.tzs144.model.AddOrderStatusEvent;
+import pro.haichuang.tzs144.model.DespositEvent;
+import pro.haichuang.tzs144.model.MaterialModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.SaleDataModel;
 import pro.haichuang.tzs144.model.ShopModel;
@@ -101,14 +105,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     TextView shopUnit;
     @BindView(R.id.shop_price)
     TextView shopPrice;
-    @BindView(R.id.view2)
-    TextView view2;
-    @BindView(R.id.reduce_tong)
-    TextView reduceTong;
-    @BindView(R.id.shop_num_tong)
-    TextView shopNumTong;
-    @BindView(R.id.shop_add_tong)
-    TextView shopAddTong;
     @BindView(R.id.shop_info)
     RelativeLayout shopInfo;
     @BindView(R.id.line1)
@@ -169,7 +165,10 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     RecyclerView recycleData;
     @BindView(R.id.select_client)
     LinearLayout selectClient;
+    @BindView(R.id.recycle_material)
+    RecyclerView recycleMaterial;
     private AddOrderAdapter addOrderAdapter;
+    private MaterialListAdapter materialListAdapter;
 
     private boolean selectWater;
     private boolean selectReward;
@@ -192,6 +191,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private float amount_receivable;
     private float actual_amount;
     private int orderType;
+    private AddOrderDepositDialog addOrderDepositDialog;
 
     @Override
     protected int setLayoutResourceID() {
@@ -266,6 +266,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                             upload_reward_view.setVisibility(View.GONE);
                             rewardDeductionNunm.setVisibility(View.GONE);
                         }
+                        materialListAdapter.setList(goodsListBean.getMaterials());
 
                         shopDetail.setVisibility(View.VISIBLE);
                         shop_amount_view.setVisibility(View.VISIBLE);
@@ -285,6 +286,34 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             }
         });
         initAddressInfo(getIntent());
+        recycleMaterial.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+        materialListAdapter = new MaterialListAdapter();
+        recycleMaterial.setAdapter(materialListAdapter);
+
+        materialListAdapter.addChildClickViewIds(R.id.reduce_tong,R.id.shop_add_tong);
+        materialListAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                MaterialModel.DataBean dataBean = materialListAdapter.getData().get(position);
+                switch (view.getId()){
+                    case R.id.reduce_tong:
+                        if (dataBean.getNum()==0){
+                            return;
+                        }else {
+                            int num = dataBean.getNum() -1;
+                            dataBean.setNum(num);
+                            materialListAdapter.setData(position,dataBean);
+                        }
+                        break;
+                    case R.id.shop_add_tong:
+                        int num = dataBean.getNum() + 1;
+                        dataBean.setNum(num);
+                        materialListAdapter.setData(position,dataBean);
+                        break;
+                }
+            }
+        });
+
     }
 
     private void initAddressInfo(Intent intent) {
@@ -307,7 +336,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     }
 
 
-    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add,R.id.reduce_tong,R.id.shop_add_tong})
+    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.reduce:
@@ -330,27 +359,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     e.printStackTrace();
                 }
                 break;
-            case R.id.reduce_tong:
-               try {
-                   int shopNumTongData = Integer.parseInt(shopNumTong.getText().toString());
-                   if (shopNumTongData==0){
-                       return;
-                   }else {
-                       shopNumTong.setText(String.valueOf(shopNumTongData-1));
-                   }
-               }catch (Exception e){
-                   e.printStackTrace();
-               }
-                break;
-            case R.id.shop_add_tong:
-                try {
-                    int shopNumTongData = Integer.parseInt(shopNumTong.getText().toString());
-                    shopNumTong.setText(String.valueOf(shopNumTongData+1));
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-
             case R.id.back:
                 finish();
                 break;
@@ -390,7 +398,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             case R.id.add_shop_btn:
                 AddShopDialog addShopDialog = new AddShopDialog(this, new AddShopDialog.SelectShopListener() {
                     @Override
-                    public void selectShop(ShopModel.DataBean dataBean) {
+                    public void selectShop(ShopModel.DataBean dataBean, List<MaterialModel.DataBean>dataBeanList) {
                         shopDataBean = dataBean;
                         monthly.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
                         rewardTickets.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
@@ -400,6 +408,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         shopCapacity.setText(dataBean.getSpecs());
                         shopPrice.setText(dataBean.getPrice()+"");
                         shopId = dataBean.getId();
+                        materialListAdapter.setList(dataBeanList);
                     }
                 });
                 addShopDialog.show(getSupportFragmentManager(),"");
@@ -456,22 +465,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 goodsListBean.setNum(shopNum.getText().toString());
                 goodsListBean.setGoodsPrice(shopPrice.getText().toString());
                 goodsListBean.setSpecs(shopDataBean.getSpecs());
-//                AddOrderModel.GoodsListBean.MaterialsBean materialsBean = new AddOrderModel.GoodsListBean.MaterialsBean();
-//                materialsBean.setMaterialId("00");
-//                materialsBean.setNum("10");
-//                materialsBean.setMaterialName("桶装水");
-//                List<AddOrderModel.GoodsListBean.MaterialsBean>materialsBeanList = new ArrayList<>();
-//                materialsBeanList.add(materialsBean);
-//                goodsListBean.setMaterials(materialsBeanList);
-//                if (selectWaterNum.getEditText().equals("")){
-//                    Utils.showCenterTomast("请输入水票数量");
-//                    return;
-//                }
 
-//                if (selectDeductionNunm.getEditText().equals("")){
-//                    Utils.showCenterTomast("请输入抵扣数量");
-//                    return;
-//                }
+                List<MaterialModel.DataBean>tempData = new ArrayList<>();
+                for (MaterialModel.DataBean dataBean : materialListAdapter.getData()){
+                    dataBean.setMaterialId(dataBean.getId());
+                    tempData.add(dataBean);
+                }
+                goodsListBean.setMaterials(tempData);
 
                 if (waterId!=-1){
                     AddOrderModel.GoodsListBean.DeductWaterBean deductWaterBean = new AddOrderModel.GoodsListBean.DeductWaterBean();
@@ -554,7 +554,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             }
 
         }
-
+        totalMerchandiseNum.setText(totalPrice +"");
         amountReceivableNum.setText(amount_receivable +"");
         actualAmount.setText(actual_amount+"");
     }
@@ -610,13 +610,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         });
     }
 
-    /**
-     * 提示是否要显示开押弹框
-     */
-    private final void showOrderDepositDialog(){
-        AddOrderDepositDialog depositDialog = new AddOrderDepositDialog(this);
-        depositDialog.show(getSupportFragmentManager(),"");
-    }
+
 
     /**
      * 打开相册选择图片
@@ -698,12 +692,67 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(StatusEvent event) {
+    public void onMessageEvent(AddOrderStatusEvent event) {
         if (event!=null){
             if (event.status==Config.LOAD_SUCCESS){
                 Utils.showCenterTomast("提交成功");
-                finish();
+                if (!addDesposit(event.id)){
+                    finish();
+                }
             }
+        }
+    }
+
+    /**
+     * 判断是否需要添加开押单
+     * @return
+     */
+    public boolean addDesposit(int orderId){
+        int materialNum = 0;
+        int shopNum = 0;
+        try {
+            for (AddOrderModel.GoodsListBean goodsListBean : goodsListBeans){
+                List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
+                for (MaterialModel.DataBean dataBean : materials){
+                    materialNum +=dataBean.getNum();
+                }
+                shopNum+=Integer.parseInt(goodsListBean.getNum());
+            }
+            if (materialNum>shopNum){
+                // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
+                String content = "商品数量大于空桶数量，是否填写开押单？";
+                MessageDialog.show(this, "提示", content, "确定","取消")
+                        .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                            @Override
+                            public boolean onClick(BaseDialog baseDialog, View v) {
+
+                                addOrderDepositDialog = new AddOrderDepositDialog(EnterOrderActivity.this, String.valueOf(orderId), dataBean.getId(), new AddOrderDepositDialog.StartDespositListener() {
+                                    @Override
+                                    public void despositResult(boolean success) {
+                                        if (success){
+                                            finish();
+                                        }
+                                    }
+                                });
+                                addOrderDepositDialog.show(getSupportFragmentManager(),"");
+                                return true;
+                            }
+                        });
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DespositEvent event) {
+        if (event!=null){
+            Log.i(TAG,"event==="+event.despositNum);
+           if (addOrderDepositDialog!=null){
+               addOrderDepositDialog.setYJnum(event.despositNum);
+           }
         }
     }
 

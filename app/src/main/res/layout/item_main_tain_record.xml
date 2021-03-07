@@ -46,6 +46,21 @@
         android:text="备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注"
         android:textSize="12sp"/>
 
+
+    <EditText
+        android:id="@+id/edit_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_below="@+id/time"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textColor="#3F3F3F"
+        android:background="@null"
+        android:visibility="gone"
+        android:textSize="12sp"/>
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
+import java.util.List;
+
 import pro.bilibili.boxing.model.entity.BaseMedia;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.AddOrderModel;
+import pro.haichuang.tzs144.model.MaterialModel;
 import pro.haichuang.tzs144.util.Utils;
 
 public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBean, BaseViewHolder> {
@@ -52,6 +55,16 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
       //          .setText(R.id.recycle_num,recycleNum)
                 .setText(R.id.water_num,waterNum)
                 .setText(R.id.discount_num,discountNum);
+
+        List<MaterialModel.DataBean> materials = item.getMaterials();
+        if (materials!=null && materials.size()>0){
+            StringBuilder materialBuilder = new StringBuilder();
+            for (MaterialModel.DataBean dataBean : materials){
+                materialBuilder.append(dataBean.getName()).append("x").append(dataBean.getNum()).append("   ");
+            }
+            helper.setText(R.id.recycle_num,materialBuilder.toString());
+
+        }
 
 
         if (item.getDeductCoupon()==null){

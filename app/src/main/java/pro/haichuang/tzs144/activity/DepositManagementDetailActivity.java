@@ -1,6 +1,9 @@
 package pro.haichuang.tzs144.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,8 +23,9 @@ import pro.haichuang.tzs144.adapter.DepositDetailAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.DeposiDetailModel;
 import pro.haichuang.tzs144.presenter.DepositManagementDetailPresenter;
+import pro.haichuang.tzs144.util.Utils;
 
-public class DepositManagementDetailActivity extends BaseActivity implements ILoadDataView<DeposiDetailModel> {
+public class DepositManagementDetailActivity extends BaseActivity implements ILoadDataView<DeposiDetailModel>,SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.back)
@@ -48,8 +52,11 @@ public class DepositManagementDetailActivity extends BaseActivity implements ILo
     TextView emptyInfo;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout refresh;
     private DepositDetailAdapter depositDetailAdapter;
     private DepositManagementDetailPresenter depositManagementDetailPresenter;
+    private String id;
 
 
     @Override
@@ -59,6 +66,7 @@ public class DepositManagementDetailActivity extends BaseActivity implements ILo
 
     @Override
     protected void setUpView() {
+        refresh.setOnRefreshListener(this);
         depositDetailAdapter = new DepositDetailAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(depositDetailAdapter);
@@ -66,18 +74,40 @@ public class DepositManagementDetailActivity extends BaseActivity implements ILo
 
     @Override
     protected void setUpData() {
+        id = getIntent().getStringExtra("id");
         depositManagementDetailPresenter = new DepositManagementDetailPresenter(this);
-        depositManagementDetailPresenter.getDepositBookInfo("");
+        depositManagementDetailPresenter.getDepositBookInfo(id);
+
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+              if (searchEdit.getText()!=null){
+                  depositManagementDetailPresenter.getDepositBookInfo(searchEdit.getText().toString());
+              }
+            }
+        });
     }
 
     @Override
     public void startLoad() {
-        WaitDialog.show(this, "加载中");
+        refresh.setRefreshing(true);
+       // WaitDialog.show(this, "加载中");
     }
 
     @Override
     public void successLoad(DeposiDetailModel data) {
-        WaitDialog.dismiss();
+        refresh.setRefreshing(false);
+      //  WaitDialog.dismiss();
         if (data!=null && data.getData()!=null){
             DeposiDetailModel.DataBean data1 = data.getData();
 
@@ -100,15 +130,25 @@ public class DepositManagementDetailActivity extends BaseActivity implements ILo
             depositInfo.setText(deposit_info);
             oweInfo.setText(owe_info);
 
-            depositDetailAdapter.setList(data1.getList());
+           depositDetailAdapter.setList(data1.getList());
         }
 
     }
 
     @Override
     public void errorLoad(String error) {
-        WaitDialog.dismiss();
+       // WaitDialog.dismiss();
+        refresh.setRefreshing(false);
+        Utils.showCenterTomast(error);
 
     }
 
+    @Override
+    public void onRefresh() {
+        if (TextUtils.isEmpty(searchEdit.getText())){
+            depositManagementDetailPresenter.getDepositBookInfo(id.toString());
+        }else {
+            depositManagementDetailPresenter.getDepositBookInfo(searchEdit.getText().toString());
+        }
+    }
 }

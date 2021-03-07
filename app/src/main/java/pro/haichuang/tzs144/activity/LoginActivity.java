@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -30,6 +32,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 import pro.haichuang.tzs144.model.LoginModel;
 import pro.haichuang.tzs144.model.MessageEvent;
 import pro.haichuang.tzs144.model.SubjectModel;
@@ -46,6 +52,7 @@ import butterknife.OnClick;
 /**
  * 登录页面
  */
+@RuntimePermissions
 public class LoginActivity extends BaseActivity implements ILoadDataView<String> {
 
     @BindView(R.id.account)
@@ -76,9 +83,8 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         return R.layout.activity_login;
     }
 
-    @Override
-    protected void setUpView() {
 
+    private void initView(){
         mLocationClient = new LocationClient(getApplicationContext());
         //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);
@@ -138,6 +144,38 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             }
         });
     }
+    @Override
+    protected void setUpView() {
+        LoginActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION})
+    public void allplyPermission() {
+        initView();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        LoginActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    /**
+     * 申请权限被拒绝时
+     */
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION})
+    void onWriteAndReadDenied() {
+        Utils.showCenterTomast("获取位置权限被拒，有可能导致无法使用");
+    }
+
+    /**
+     * 申请权限被拒绝并勾选不再提醒时
+     */
+    @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION})
+    void onInstallNeverAskAgain() {
+        Utils.showCenterTomast("获取位置权限被拒，有可能导致无法使用");
+    }
+
 
     @Override
     protected void setUpData() {

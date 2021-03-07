@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.WithDrawalOrderModel;
 
-public class VoidWithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderModel.DataBean, BaseViewHolder> {
+public class VoidWithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
     private Context context;
 

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import pro.haichuang.tzs144.iview.IUpLoadFileView;
 import pro.haichuang.tzs144.model.AddOrderModel;
+import pro.haichuang.tzs144.model.AddOrderStatusEvent;
 import pro.haichuang.tzs144.model.OrderStatusModel;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.UploadFileModel;
@@ -56,9 +57,9 @@ public class EnterOrderActivityPresenter {
                 try {
                     OrderStatusModel orderStatusModel = Utils.gsonInstane().fromJson(result, OrderStatusModel.class);
                     if (orderStatusModel.getResult()==1){
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,2));
+                        EventBus.getDefault().post(new AddOrderStatusEvent(Config.LOAD_SUCCESS,orderStatusModel.getData().getId()));
                     }else {
-                        iUpLoadFileView.errorLoad("提交失败");
+                        iUpLoadFileView.errorLoad(orderStatusModel.getMessage());
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -105,4 +106,5 @@ public class EnterOrderActivityPresenter {
             }
         });
     }
+
 }

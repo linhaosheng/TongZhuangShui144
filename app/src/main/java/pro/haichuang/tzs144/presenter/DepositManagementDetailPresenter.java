@@ -38,9 +38,9 @@ public class DepositManagementDetailPresenter {
             public void success(String result) {
                 DeposiDetailModel deposiDetailModel = Utils.gsonInstane().fromJson(result, DeposiDetailModel.class);
                 if (deposiDetailModel.getResult()==1){
-                    iLoadDataView.successLoad(result);
+                    iLoadDataView.successLoad(deposiDetailModel);
                 }else {
-                    iLoadDataView.errorLoad("加载错误");
+                    iLoadDataView.errorLoad(deposiDetailModel.getMessage());
                 }
             }
 
