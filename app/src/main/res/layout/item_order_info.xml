@@ -61,27 +61,34 @@
         android:layout_marginLeft="@dimen/dp_20"
         android:textSize="14sp"/>
 
-     <ImageView
-         android:id="@+id/time_out_icon"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:src="@mipmap/time_out"
-         android:layout_alignParentRight="true"
-         android:layout_below="@+id/line"
-         android:layout_marginTop="@dimen/dp_12"
-         android:layout_marginRight="@dimen/dp_55"/>
-
-    <TextView
-        android:id="@+id/timeout"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="即将超时"
+        android:orientation="horizontal"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/line"
-        android:layout_marginTop="@dimen/dp_10"
-        android:textColor="#E02020"
-        android:layout_marginRight="@dimen/dp_10"
-        android:textSize="10sp"/>
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_10">
+
+        <ImageView
+            android:id="@+id/time_out_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/time_out"
+            android:layout_marginTop="@dimen/dp_2"/>
+
+        <TextView
+            android:id="@+id/timeout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="即将超时"
+            android:layout_alignParentRight="true"
+            android:textColor="#E02020"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:textSize="10sp"/>
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/name_info"

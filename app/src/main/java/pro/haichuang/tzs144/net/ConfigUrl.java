@@ -36,6 +36,8 @@ public class ConfigUrl {
      */
     public static final String TAKE_ORDER = "/api/app/order/takeOrder";
 
+    public static final String SET_IS_KNOW  = "/api/app/order/setIsKnow";
+
     /**
      * [首页]-订单详情
      */

@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.fragment;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -11,7 +12,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,6 +25,10 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.SalesListActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
+import pro.haichuang.tzs144.model.PageEvent;
+import pro.haichuang.tzs144.model.StatusUpdateEvent;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.Utils;
 
 /**
  * 订单
@@ -75,7 +85,6 @@ public class OrderFragment extends BaseFragment {
 
         myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(),orderList,orderTitleList);
 
-
         vpView.setAdapter(myPagerAdapter);
         tabs.setupWithViewPager(vpView);
         tabs.setTabsFromPagerAdapter(myPagerAdapter);
@@ -85,6 +94,35 @@ public class OrderFragment extends BaseFragment {
     @Override
     protected void setUpData() {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PageEvent event) {
+        if (event != null) {
+            try {
+                int type = event.type;
+                if (vpView!=null){
+                    vpView.setCurrentItem(3);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.tips)

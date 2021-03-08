@@ -113,18 +113,18 @@ public class DepositManagementDetailActivity extends BaseActivity implements ILo
 
             String deposit_info = "开押数量："+data1.getYjKyNum()
                     +"       商品数量："+ data1.getYjGoodsNum()+"       收款金额："
-                    +data1.getYjPrice()+"元  \n 退押数量：  "
-                    +data1.getYjTyNum()+"       退押金额："+data1.getYtTyPrice()+"元";
+                    +data1.getYjPrice()+"元  \n退押数量： "
+                    +data1.getYjTyNum()+"      退押金额："+data1.getYtTyPrice()+"元";
 
             String qiantiao_info =  "开押数量："+data1.getJtKyNum()
                     +"       商品数量："+ data1.getJtGoodsNum()+"       收款金额："
-                    +data1.getJtPrice()+"元  \n 退押数量：  "
-                    +data1.getJtTyNum()+"       退押金额："+data1.getJtTyPrice()+"元";
+                    +data1.getJtPrice()+"元  \n退押数量： "
+                    +data1.getJtTyNum()+"      退押金额："+data1.getJtTyPrice()+"元";
 
             String owe_info = "开押数量："+data1.getJtKyNum()
                     +"       商品数量："+ data1.getJtGoodsNum()+"       收款金额："
-                    +data1.getJtPrice()+"元  \n 退押数量：  "
-                    +data1.getJtTyNum()+"       退押金额："+data1.getJtTyPrice()+"元";
+                    +data1.getJtPrice()+"元  \n退押数量： "
+                    +data1.getJtTyNum()+"      退押金额："+data1.getJtTyPrice()+"元";
 
             qiantiaoInfo.setText(qiantiao_info);
             depositInfo.setText(deposit_info);

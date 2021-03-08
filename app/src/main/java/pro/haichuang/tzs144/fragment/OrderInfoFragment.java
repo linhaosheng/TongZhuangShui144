@@ -59,7 +59,9 @@ import pro.haichuang.tzs144.adapter.OrderInfoAdapter;
 import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.OrderInfoModel;
+import pro.haichuang.tzs144.model.PageEvent;
 import pro.haichuang.tzs144.model.StatusEvent;
+import pro.haichuang.tzs144.model.StatusUpdateEvent;
 import pro.haichuang.tzs144.model.UpdateOrderEvent;
 import pro.haichuang.tzs144.presenter.OrderInfoFragmentPresenter;
 import pro.haichuang.tzs144.util.Config;
@@ -203,6 +205,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                        // Utils.showCenterTomast();
 //                        WaitDialog.show(get,"提交中....");
                        orderInfoFragmentPresenter.takeOrder(orderNumId,id);
+                    }else if (id==3){
+                        orderInfoFragmentPresenter.setIsKnow(orderNumId,id);
                     }
                 }
             }
@@ -330,43 +334,18 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             List<OrderInfoModel.DataBean> data1 = orderInfoAdapter.getData();
             baiduMap.clear();
             showAddressIcon();
+            List<InfoWindow>list = new ArrayList<>();
 
             for (OrderInfoModel.DataBean dataBean : data1) {
-                BitmapDescriptor bitmap = null;
+                Log.i(TAG,"data==="+dataBean.getLatitude()+"======long===="+dataBean.getLatitude());
                 LatLng point = new LatLng(dataBean.getLatitude(), dataBean.getLongitude());
-
-                Bundle bundle = new Bundle();
-                bundle.putString("time", dataBean.getTimeRange());
-
                 Button button = new Button(getActivity());
-//                button.setBackgroundResource(R.mipmap.time_bg);
                 button.setBackground(ContextCompat.getDrawable(getActivity(),R.mipmap.time_bg));
                 button.setText(dataBean.getTimeRange());
-
                 InfoWindow  infoWindow = new InfoWindow(button,point,0);
-                baiduMap.showInfoWindow(infoWindow);
-
-//                OverlayOptions textOption = new TextOptions()
-//                        .text(dataBean.getTimeRange())
-//                        .position(point)
-//                        .extraInfo(bundle)
-//                        .fontSize(24) //字号
-//                        .fontColor(Color.parseColor("#000000")) //文字颜色
-//                        .bgColor(Color.parseColor("#FFFFFF"));
-//
-//                baiduMap.addOverlay(textOption);
-
-//                bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
-//                // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
-//                OverlayOptions iconOption = new MarkerOptions()
-//                        .position(point)
-//                        .clickable(true)
-//                        .extraInfo(bundle)
-//                        .icon(bitmap);
-//                baiduMap.addOverlay(iconOption);
-//                bitmap.recycle();
-
+                list.add(infoWindow);
             }
+            baiduMap.showInfoWindows(list);
         }
     }
 
@@ -419,6 +398,24 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                         orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1);
                     }else {
                         Utils.showCenterTomast("接单失败...");
+                    }
+                }
+                Log.i(TAG, "onMessageEvent==id=" + event.type + " === id===" + id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusUpdateEvent event) {
+        if (event != null) {
+            try {
+                if (event.type==id){
+                    if (event.status==Config.LOAD_SUCCESS){
+                        orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1);
+                          EventBus.getDefault().post(new PageEvent(event.type));
+                    }else {
                     }
                 }
                 Log.i(TAG, "onMessageEvent==id=" + event.type + " === id===" + id);

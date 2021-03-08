@@ -13,6 +13,7 @@ import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.OrderInfoModel;
 import pro.haichuang.tzs144.model.StatusEvent;
+import pro.haichuang.tzs144.model.StatusUpdateEvent;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
@@ -67,6 +68,41 @@ public class OrderInfoFragmentPresenter {
             }
         });
     }
+
+    /**
+     * [首页]-知道了
+     */
+    public void setIsKnow(String id,int currentId){
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+        HttpRequestEngine.postRequest(ConfigUrl.SET_IS_KNOW, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+                iLoadDataView.startLoad();
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int result1 = jsonObject.getInt("result");
+                    if (result1==1){
+                        EventBus.getDefault().post(new StatusUpdateEvent(Config.LOAD_SUCCESS,currentId));
+                    }else {
+                        EventBus.getDefault().post(new StatusUpdateEvent(Config.LOAD_FAIL,currentId));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iLoadDataView.errorLoad(error);
+            }
+        });
+    }
+
 
     /**
      * 订单接单

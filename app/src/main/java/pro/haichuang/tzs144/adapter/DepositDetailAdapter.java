@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.view.View;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
@@ -25,14 +27,15 @@ public class DepositDetailAdapter extends BaseQuickAdapter<DeposiDetailModel.Dat
         String price = "金额："+dataBean.getTotalPrice();
         String deposit_start_time = "开押时间："+dataBean.getTime();
         String deposit_end_time = "退押时间："+dataBean.getReturnTime();
+        String deposit_persion = "开押人："+dataBean.getCreateName();
 
         String deposit_type = "";
         if (dataBean.getType().equals("0")){
-            deposit_type = "押金";
+            deposit_type = "开押类型：押金";
         }else  if (dataBean.getType().equals("1")){
-            deposit_type = "借条";
+            deposit_type = "开押类型：借条";
         }else  if (dataBean.getType().equals("2")){
-            deposit_type = "暂欠";
+            deposit_type = "开押类型：暂欠";
         }
 
         baseViewHolder.setText(R.id.deposit_no,deposit_no)
@@ -41,7 +44,14 @@ public class DepositDetailAdapter extends BaseQuickAdapter<DeposiDetailModel.Dat
                 .setText(R.id.price,price)
                 .setText(R.id.deposit_end_time,deposit_end_time)
                 .setText(R.id.deposit_start_time,deposit_start_time)
+                .setText(R.id.deposit_persion,deposit_persion)
                 .setText(R.id.deposit_type,deposit_type);
+
+        if (dataBean.getReturnTime()==null){
+            baseViewHolder.getView(R.id.deposit_end_time).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.deposit_end_time).setVisibility(View.VISIBLE);
+        }
 
     }
 }
