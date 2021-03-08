@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.fragment;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
@@ -74,6 +76,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     SwipeRefreshLayout refresh;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
+    @BindView(R.id.empty_data_view)
+    RelativeLayout emptyDataView;
     TextView lastTime;
     TextView selectTime;
 
@@ -95,6 +99,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     public OrderInfoFragment(int mId) {
         this.id = mId;
+        Log.i("TAG==","id===="+mId);
     }
 
     @Override
@@ -304,9 +309,17 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         }
         if (currentPage == 1) {
             if (data != null && data.size() > 0) {
-                emptyView.setVisibility(View.GONE);
+                if (id==1){
+                    emptyDataView.setVisibility(View.GONE);
+                }else {
+                    emptyView.setVisibility(View.GONE);
+                }
             } else {
-                emptyView.setVisibility(View.VISIBLE);
+                if (id==1){
+                    emptyDataView.setVisibility(View.VISIBLE);
+                }else {
+                    emptyView.setVisibility(View.VISIBLE);
+                }
             }
             orderInfoAdapter.setList(data);
             if (data.size() < 10) {
@@ -331,11 +344,20 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
                 Bundle bundle = new Bundle();
                 bundle.putString("time", dataBean.getTimeRange());
-                OverlayOptions option = new MarkerOptions()
+
+                OverlayOptions option = new TextOptions()
+                        .text(dataBean.getTimeRange())
                         .position(point)
-                        .clickable(true)
                         .extraInfo(bundle)
-                        .icon(bitmap);
+                        .fontSize(24) //字号
+                        .fontColor(Color.parseColor("#000000")) //文字颜色
+                        .bgColor(Color.parseColor("#FFFFFF"));
+
+//                OverlayOptions option = new MarkerOptions()
+//                        .position(point)
+//                        .clickable(true)
+//                        .extraInfo(bundle)
+//                        .icon(bitmap);
                 baiduMap.addOverlay(option);
                 bitmap.recycle();
             }

@@ -255,7 +255,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         /**
          * [0-待接单 1-已接单 2-已完成 3-已取消]
          */
-        if (orderStatus == 2) {
+        if (orderStatus == 2 || orderStatus==3) {
             voidDeliveryView.setVisibility(View.GONE);
             takeOrder.setVisibility(View.GONE);
             switchOrder.setVisibility(View.GONE);

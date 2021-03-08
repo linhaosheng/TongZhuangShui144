@@ -52,34 +52,34 @@ public class OrderNumTrendAdapter extends BaseQuickAdapter<ClientListModel.DataB
         dowmDrawable.setBounds(0,0,upDrawable.getMinimumWidth(),upDrawable.getMinimumHeight());
 
         if (dataBean.getMonthRatio().contains("+")){
-            last_month_num.setTextColor(Color.parseColor("#E02020"));
+            last_month_num.setTextColor(Color.parseColor("#3C9C25"));
             last_month_num.setCompoundDrawables(upDrawable,null,null,null);
         }else {
-            last_month_num.setTextColor(Color.parseColor("#3C9C25"));
+            last_month_num.setTextColor(Color.parseColor("#E02020"));
             last_month_num.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         if (dataBean.getYearRatio().contains("+")){
-            last_year_num.setTextColor(Color.parseColor("#E02020"));
+            last_year_num.setTextColor(Color.parseColor("#3C9C25"));
             last_year_num.setCompoundDrawables(upDrawable,null,null,null);
         }else {
-            last_year_num.setTextColor(Color.parseColor("#3C9C25"));
+            last_year_num.setTextColor(Color.parseColor("#E02020"));
             last_year_num.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         if (dataBean.getMonthSaleRatio().contains("+")){
-            sale_last_month_num.setTextColor(Color.parseColor("#E02020"));
+            sale_last_month_num.setTextColor(Color.parseColor("#3C9C25"));
             sale_last_month_num.setCompoundDrawables(upDrawable,null,null,null);
         }else {
-            sale_last_month_num.setTextColor(Color.parseColor("#3C9C25"));
+            sale_last_month_num.setTextColor(Color.parseColor("#E02020"));
             sale_last_month_num.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         if (dataBean.getSaleYearRatio().contains("+")){
-            sale_last_year_num.setTextColor(Color.parseColor("#E02020"));
+            sale_last_year_num.setTextColor(Color.parseColor("#3C9C25"));
             sale_last_year_num.setCompoundDrawables(upDrawable,null,null,null);
         }else {
-            sale_last_year_num.setTextColor(Color.parseColor("#3C9C25"));
+            sale_last_year_num.setTextColor(Color.parseColor("#E02020"));
             sale_last_year_num.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
@@ -96,7 +96,7 @@ public class OrderNumTrendAdapter extends BaseQuickAdapter<ClientListModel.DataB
                 .setText(R.id.last_month_num,monthRatio+"%")
                 .setText(R.id.last_year_num,yearRatio+"%")
                 .setText(R.id.sale_last_month_num,monthSaleRatio+"%")
-                .setText(R.id.sale_last_year_num,saleYearRatio);
+                .setText(R.id.sale_last_year_num,saleYearRatio+"%");
 
     }
 }

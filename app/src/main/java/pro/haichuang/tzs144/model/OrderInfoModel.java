@@ -76,6 +76,15 @@ public class OrderInfoModel {
         private List<GoodsListBean> goodsList;
         private double latitude;
         private double longitude;
+        private int payMode;
+
+        public int getPayMode() {
+            return payMode;
+        }
+
+        public void setPayMode(int payMode) {
+            this.payMode = payMode;
+        }
 
         public int getOrderStatus() {
             return orderStatus;

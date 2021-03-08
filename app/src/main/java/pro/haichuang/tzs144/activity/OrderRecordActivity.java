@@ -184,34 +184,34 @@ public class OrderRecordActivity extends BaseActivity implements ILoadDataView<O
         dowmDrawable.setBounds(0,0,upDrawable.getMinimumWidth(),upDrawable.getMinimumHeight());
 
         if (data.getDayOrderRatio().contains("+")){
-            lastDate.setTextColor(Color.parseColor("#E02020"));
+            lastDate.setTextColor(Color.parseColor("#3C9C25"));
             lastDate.setCompoundDrawables(upDrawable,null,null,null);
         }else {
-            lastDate.setTextColor(Color.parseColor("#3C9C25"));
+            lastDate.setTextColor(Color.parseColor("#E02020"));
             lastDate.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         if (data.getWeekOrderRatio().contains("+")){
-            lastWeek.setTextColor(Color.parseColor("#E02020"));
+            lastWeek.setTextColor(Color.parseColor("#3C9C25"));
             lastWeek.setCompoundDrawables(upDrawable,null,null,null);
         }else {
-            lastWeek.setTextColor(Color.parseColor("#3C9C25"));
+            lastWeek.setTextColor(Color.parseColor("#E02020"));
             lastWeek.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         if (data.getDaySaleRatio().contains("+")){
-            ShopLastDate.setTextColor(Color.parseColor("#E02020"));
+            ShopLastDate.setTextColor(Color.parseColor("#3C9C25"));
             ShopLastDate.setCompoundDrawables(upDrawable,null,null,null);
         }else {
-            ShopLastDate.setTextColor(Color.parseColor("#3C9C25"));
+            ShopLastDate.setTextColor(Color.parseColor("#E02020"));
             ShopLastDate.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         if (data.getWeekSaleRatio().contains("+")){
-            shopLastWeek.setTextColor(Color.parseColor("#E02020"));
+            shopLastWeek.setTextColor(Color.parseColor("#3C9C25"));
             shopLastWeek.setCompoundDrawables(upDrawable,null,null,null);
         }else {
-            shopLastWeek.setTextColor(Color.parseColor("#3C9C25"));
+            shopLastWeek.setTextColor(Color.parseColor("#E02020"));
             shopLastWeek.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 

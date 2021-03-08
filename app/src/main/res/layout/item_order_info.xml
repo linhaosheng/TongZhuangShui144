@@ -154,7 +154,7 @@
         android:layout_below="@+id/address"
         android:layout_marginTop="@dimen/dp_12"
         android:textColor="#3F3F3F"
-        android:background="@drawable/set_bg_btn13"
+        android:background="@drawable/set_bg_btn49"
         android:paddingTop="@dimen/dp_10"
         android:paddingBottom="10dp"/>
 

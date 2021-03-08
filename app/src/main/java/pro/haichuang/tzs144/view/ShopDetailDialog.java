@@ -121,6 +121,20 @@ public class ShopDetailDialog extends DialogFragment {
 
         shopDetailAdapter.setList(shopDetailModelList);
         shopNum.setText(dataBeans.getGoodsList().size()+"件商品");
+
+        String payModel="";
+        if (dataBeans.getPayMode()==0){
+            payModel = "微信支付";
+        }else if (dataBeans.getPayMode()==1){
+            payModel = "水票支付";
+        }else if (dataBeans.getPayMode()==2){
+            payModel ="现金支付";
+        }else if (dataBeans.getPayMode()==3){
+            payModel="美团支付";
+        }else if (dataBeans.getPayMode()==4){
+            payModel = "饿了么支付";
+        }
+        payWay.setText(payModel);
     }
 
     @Override

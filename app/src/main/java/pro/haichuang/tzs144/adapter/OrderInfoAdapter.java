@@ -41,14 +41,24 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
 
         if (type == 0) {
             baseViewHolder.setText(R.id.take_orders, "抢单/接单");
+            order_state_img.setVisibility(View.GONE);
         } else if (type == 1) {
             baseViewHolder.setText(R.id.take_orders, "配送");
-        } else if (type == 2) {
+            order_state_img.setVisibility(View.GONE);
+        } else if (type == 3) {
             baseViewHolder.setText(R.id.take_orders, "知道了");
-        }else if (type==3){
+            order_state_img.setVisibility(View.GONE);
+        }else if (type==4){
             baseViewHolder.setText(R.id.take_orders, "知道了");
-
             order_state_img.setVisibility(View.VISIBLE);
+
+            if (dataBean.getOrderStatus()==2){
+                order_state_img.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.have_finish));
+                //已完成
+            }else if (dataBean.getOrderStatus()==3){
+                //已取消
+                order_state_img.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.have_cancel));
+            }
         }
 
         String order_num = "订单编号："+dataBean.getOrderNo();

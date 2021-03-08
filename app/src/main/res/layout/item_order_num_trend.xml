@@ -121,14 +121,19 @@
                 android:textSize="@dimen/sp_16"
                 android:text="50%"/>
 
-
         </RelativeLayout>
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="match_parent"
+            android:background="#EBEBEB"/>
 
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dp_10">
 
             <TextView
                 android:id="@+id/sale_num"

@@ -604,23 +604,26 @@
                 android:visibility="gone">
 
                 <Button
-                    android:id="@+id/void_sale_btn"
-                    android:layout_width="134dp"
+                    android:id="@+id/delivery_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="@dimen/dp_40"
-                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/dp_40"
+                    android:background="@drawable/set_bg_btn14"
+                    android:text="配送"
+                    android:textColor="#fff"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/void_sale_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/dp_40"
                     android:background="@drawable/set_bg_btn17"
                     android:text="作废转直销"
                     android:textColor="#32C5FF"
                     android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/delivery_btn"
-                    android:layout_width="134dp"
-                    android:layout_height="@dimen/dp_40"
-                    android:background="@drawable/set_bg_btn14"
-                    android:text="配送"
-                    android:textColor="#fff"
-                    android:textSize="16sp" />
 
 
             </LinearLayout>
