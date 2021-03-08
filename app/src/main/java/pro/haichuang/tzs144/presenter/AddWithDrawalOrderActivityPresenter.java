@@ -32,7 +32,7 @@ public class AddWithDrawalOrderActivityPresenter {
         Map<String,Object>params = new ArrayMap<>();
         params.put("ids",ids);
 
-        HttpRequestEngine.postRequest(ConfigUrl.BACK_DEPOSIT, params, new HttpRequestResultListener() {
+        HttpRequestEngine.postRequest(ConfigUrl.RETURN_DEPOSIT, params, new HttpRequestResultListener() {
             @Override
             public void start() {
 

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:orientation="vertical">
 
     <include layout="@layout/header" />
@@ -10,7 +9,9 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:layout_below="@+id/head_view"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -76,24 +77,26 @@
                 android:layout_height="wrap_content"
                 android:background="#F8F8F8"
                 android:layout_below="@+id/client_info"
+                android:layout_marginBottom="@dimen/dp_80"
                 />
 
             <include layout="@layout/item_empty"/>
 
-            <Button
-                android:id="@+id/with_drawal_btn"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                android:text="退款"
-                android:background="@drawable/set_bg_btn14"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:layout_marginLeft="48dp"
-                android:layout_marginRight="48dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/dp_60"/>
 
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/with_drawal_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:text="退款"
+        android:background="@drawable/set_bg_btn14"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_20"/>
+
+</RelativeLayout>

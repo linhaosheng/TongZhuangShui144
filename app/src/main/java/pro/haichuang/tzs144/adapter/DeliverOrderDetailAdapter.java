@@ -64,6 +64,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
          * 显示水票
          */
         if (item.isShowWater()){
+            helper.getView(R.id.water_tickets).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn17));
             helper.getView(R.id.select_ticket).setVisibility(View.VISIBLE);
             helper.getView(R.id.select_water_num).setVisibility(View.VISIBLE);
             helper.getView(R.id.select_deduction_nunm).setVisibility(View.VISIBLE);
@@ -74,23 +75,28 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 lSettingItem.setLeftText("水票");
             }
         }else {
+            helper.getView(R.id.water_tickets).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn33));
             helper.getView(R.id.select_ticket).setVisibility(View.GONE);
             helper.getView(R.id.select_water_num).setVisibility(View.GONE);
             helper.getView(R.id.select_deduction_nunm).setVisibility(View.GONE);
         }
 
         if (item.isShowReward()){
+            helper.getView(R.id.reward_tickets).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn17));
             helper.getView(R.id.upload_reward_view).setVisibility(View.VISIBLE);
             helper.getView(R.id.reward_deduction_nunm).setVisibility(View.VISIBLE);
         }else {
             helper.getView(R.id.upload_reward_view).setVisibility(View.GONE);
             helper.getView(R.id.reward_deduction_nunm).setVisibility(View.GONE);
+            helper.getView(R.id.reward_tickets).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn33));
         }
 
         if (item.isShowMonth()){
+            helper.getView(R.id.monthly).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn17));
             helper.getView(R.id.upload_month_view).setVisibility(View.VISIBLE);
             helper.getView(R.id.month_deduction_nunm).setVisibility(View.VISIBLE);
         }else {
+            helper.getView(R.id.monthly).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn33));
             helper.getView(R.id.upload_month_view).setVisibility(View.GONE);
             helper.getView(R.id.month_deduction_nunm).setVisibility(View.GONE);
         }

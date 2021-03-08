@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -80,11 +83,12 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     RelativeLayout emptyDataView;
     TextView lastTime;
     TextView selectTime;
+    @BindView(R.id.map)
+    MapView mapView;
 
     private OrderInfoAdapter orderInfoAdapter;
     private View headTimeView;
     private View mapHeadTimeView;
-    private MapView mapView;
     private OrderInfoFragmentPresenter orderInfoFragmentPresenter;
     private BaiduMap baiduMap = null;
 
@@ -214,28 +218,14 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         }
         Log.i(TAG, "----id" + id);
         if (id == 1) {
-            mapHeadTimeView = LayoutInflater.from(getActivity()).inflate(R.layout.item_map_head_view, null);
-            orderInfoAdapter.addHeaderView(mapHeadTimeView);
-            mapView = mapHeadTimeView.findViewById(R.id.map);
+            mapView.setVisibility(View.VISIBLE);
+           // mapHeadTimeView = LayoutInflater.from(getActivity()).inflate(R.layout.item_map_head_view, null);
+           // orderInfoAdapter.addHeaderView(mapHeadTimeView);
+           // mapView = mapHeadTimeView.findViewById(R.id.map);
             baiduMap = mapView.getMap();
             baiduMap.setMyLocationEnabled(true);
             //显示卫星图层
             baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-
-            BitmapDescriptor bitmap = null;
-            bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
-
-            LatLng point = new LatLng(Config.LATITUDE, Config.LONGITUDE);
-
-            Bundle bundle = new Bundle();
-            // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
-            OverlayOptions option = new MarkerOptions()
-                    .position(point)
-                    .clickable(true)
-                    .extraInfo(bundle)
-                    .icon(bitmap);
-            baiduMap.addOverlay(option);
-            bitmap.recycle();
 
             LatLng ll = new LatLng(Config.LATITUDE, Config.LONGITUDE);
             MapStatus.Builder builder = new MapStatus.Builder();
@@ -337,31 +327,62 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         if (id == 1) {
             List<OrderInfoModel.DataBean> data1 = orderInfoAdapter.getData();
             baiduMap.clear();
+            showAddressIcon();
+
             for (OrderInfoModel.DataBean dataBean : data1) {
                 BitmapDescriptor bitmap = null;
-                bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.send_time);
                 LatLng point = new LatLng(dataBean.getLatitude(), dataBean.getLongitude());
 
                 Bundle bundle = new Bundle();
                 bundle.putString("time", dataBean.getTimeRange());
 
-                OverlayOptions option = new TextOptions()
-                        .text(dataBean.getTimeRange())
-                        .position(point)
-                        .extraInfo(bundle)
-                        .fontSize(24) //字号
-                        .fontColor(Color.parseColor("#000000")) //文字颜色
-                        .bgColor(Color.parseColor("#FFFFFF"));
+                Button button = new Button(getActivity());
+//                button.setBackgroundResource(R.mipmap.time_bg);
+                button.setBackground(ContextCompat.getDrawable(getActivity(),R.mipmap.time_bg));
+                button.setText(dataBean.getTimeRange());
 
-//                OverlayOptions option = new MarkerOptions()
+                InfoWindow  infoWindow = new InfoWindow(button,point,0);
+                baiduMap.showInfoWindow(infoWindow);
+
+//                OverlayOptions textOption = new TextOptions()
+//                        .text(dataBean.getTimeRange())
+//                        .position(point)
+//                        .extraInfo(bundle)
+//                        .fontSize(24) //字号
+//                        .fontColor(Color.parseColor("#000000")) //文字颜色
+//                        .bgColor(Color.parseColor("#FFFFFF"));
+//
+//                baiduMap.addOverlay(textOption);
+
+//                bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
+//                // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
+//                OverlayOptions iconOption = new MarkerOptions()
 //                        .position(point)
 //                        .clickable(true)
 //                        .extraInfo(bundle)
 //                        .icon(bitmap);
-                baiduMap.addOverlay(option);
-                bitmap.recycle();
+//                baiduMap.addOverlay(iconOption);
+//                bitmap.recycle();
+
             }
         }
+    }
+
+    private void showAddressIcon() {
+        BitmapDescriptor bitmap = null;
+        bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
+
+        LatLng point = new LatLng(Config.LATITUDE, Config.LONGITUDE);
+
+        Bundle bundle = new Bundle();
+        // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .clickable(true)
+                .extraInfo(bundle)
+                .icon(bitmap);
+        baiduMap.addOverlay(option);
+        bitmap.recycle();
     }
 
     @Override

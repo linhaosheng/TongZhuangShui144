@@ -81,9 +81,9 @@
         app:leftText="押金编号"
         app:leftTextMarginLeft="@dimen/dp_10"
         app:rightStyle="iconHide"
-        app:isShowRightText = "false"
+        app:isShowRightText = "true"
         app:rightText="请选择 >"
-        app:showEditInput="true"
+        app:showEditInput="false"
         app:isShowUnderLine="true"
         app:rightIconSize="@dimen/dp_22" />
 

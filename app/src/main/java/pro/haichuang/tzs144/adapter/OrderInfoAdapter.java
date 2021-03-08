@@ -79,7 +79,7 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             order_state = "外卖订单";
             shopOrderTv.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn43));
         }
-        String time_send = dataBean.getTimeTitle()+ " "+dataBean.getTimeRange() +" 送达";
+        String time_send = " "+dataBean.getTimeRange() +" 送达";
         String name_info = dataBean.getCustoemrName() + "  "+ dataBean.getCustomerPhone();
         String distance = "";
         try {

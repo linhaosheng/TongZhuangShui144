@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.DespositEvent;
 import pro.haichuang.tzs144.model.GoodsShopEvent;
 import pro.haichuang.tzs144.model.GoodsShopModel;
 import pro.haichuang.tzs144.model.SaleDataModel;
@@ -97,6 +98,14 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
     @Override
     protected void setUpView() {
        title.setText("开押");
+
+        depositNum.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+                Intent intent = new Intent(StartDepositActivity.this, FindDespositActivity.class);
+                startActivity(intent);
+            }
+        });
         depositType.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
@@ -197,9 +206,9 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
                 finish();
                 break;
             case R.id.save_deposit_btn:
-                String no = depositNum.getEditText();
-                if (no==null || no.equals("")){
-                    Utils.showCenterTomast("请输入押金编号");
+                String no = depositNum.getRightText();
+                if (no.contains("请选择")){
+                    Utils.showCenterTomast("请选择押金编号");
                     return;
                 }
 
@@ -208,8 +217,8 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
                     return;
                 }
 
-                String bookNo = price.getEditText();
-                if (bookNo==null || bookNo.equals("")){
+                String priceNum = price.getEditText();
+                if (priceNum == null || priceNum.equals("")) {
                     Utils.showCenterTomast("请输入单价");
                     return;
                 }
@@ -224,7 +233,7 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
                     return;
                 }
 
-                startDepositActivityPresenter.addDepositInfo(no,customerId,goodsId,priceData,numData,type+"");
+                startDepositActivityPresenter.addDepositInfo(no,customerId,goodsId,priceNum,numData,type+"");
                 break;
             case R.id.address_detail:
                 Intent intent1 = new Intent(this,SelectAddressActivity.class);
@@ -249,6 +258,14 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
             }
         }
         Log.i(TAG, "onMessageEvent===");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DespositEvent event) {
+        if (event!=null){
+            Log.i(TAG,"event==="+event.despositNum);
+            depositNum.setRightText(event.despositNum);
+        }
     }
 
     @Override

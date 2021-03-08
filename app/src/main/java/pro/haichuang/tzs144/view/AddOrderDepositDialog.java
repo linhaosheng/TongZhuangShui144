@@ -291,7 +291,7 @@ public class AddOrderDepositDialog extends DialogFragment {
 
                     JSONObject jsonObject = new JSONObject(result);
                     if (jsonObject.getInt("result")==1){
-                        Utils.showCenterTomast(jsonObject.getString("开押成功"));
+                        Utils.showCenterTomast(jsonObject.getString("message"));
                         dismiss();
                         if (startDespositListener!=null){
                             startDespositListener.despositResult(true);
@@ -346,7 +346,7 @@ public class AddOrderDepositDialog extends DialogFragment {
                     Utils.showCenterTomast("请选择开押类型");
                     return;
                 }
-                addDepositBook(orderId,guaranteePersionPhone.getRightText(),customerId,goodsId,priceData,mortgageNum.getEditText(),type);
+                addDepositBook(orderId,guaranteePersionPhone.getRightText(),customerId,goodsId,mortgagePrice.getEditText(),mortgageNum.getEditText(),type);
 
                 break;
         }

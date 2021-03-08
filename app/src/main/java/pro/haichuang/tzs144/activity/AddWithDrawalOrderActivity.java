@@ -126,10 +126,13 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
             case R.id.with_drawal_btn:
                 StringBuilder idBuilder = new StringBuilder();
                 for (WithDrawalOrderModel.DataBean dataBean : addWithDrawalOrderAdapter.getData()){
-                    idBuilder.append(dataBean.getId()).append(",");
+                    if (dataBean.isChecked()){
+                        idBuilder.append(dataBean.getId()).append(",");
+                    }
                 }
                 //去除多余的逗号
-                String ids = idBuilder.substring(0, idBuilder.toString().length() - 2);
+                String ids = idBuilder.substring(0, idBuilder.toString().length() - 1);
+                Log.i(TAG,"ids===="+ids);
                 addWithDrawalOrderActivityPresenter.returnDeposits(ids);
                 break;
             case R.id.address_detail:

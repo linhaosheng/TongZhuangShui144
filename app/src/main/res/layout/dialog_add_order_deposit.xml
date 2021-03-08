@@ -97,11 +97,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             app:LtextColor="#000000"
-            app:leftText="开押类型 >"
+            app:leftText="开押类型 "
             app:leftTextMarginLeft="@dimen/dp_10"
             app:rightStyle="iconHide"
             app:isShowRightText = "true"
-            app:rightText="请选择"
+            app:rightText="请选择 >"
             app:rightIconSize="@dimen/dp_22" />
 
     </LinearLayout>

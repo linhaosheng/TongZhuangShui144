@@ -678,7 +678,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         if (event != null) {
             if (event.type==3){
                 if (event.status==Config.LOAD_SUCCESS){
-                    Utils.showCenterTomast("开始配送");
+                    Utils.showCenterTomast("配送成功");
                     finish();
                 }else {
                     Utils.showCenterTomast("配送失败");

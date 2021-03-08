@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,8 +45,16 @@ public class DemandRecordAdapter extends BaseQuickAdapter<DemandRecordModel.Data
 
         List<DemandRecordModel.DataBean.ItemListBean> itemList = dataBean.getItemList();
         if (itemList!=null && itemList.size()>0){
-            RelativeLayout shopListView = baseViewHolder.getView(R.id.shop_list_view);
+            LinearLayout linearLayout = baseViewHolder.getView(R.id.add_lin_view);
+
             for (int i = 0 ; i<itemList.size();i++){
+
+                RelativeLayout shopListView = new RelativeLayout(context);
+                LinearLayout.LayoutParams nameLayoutParams1 = new LinearLayout.LayoutParams(linearLayout.getLayoutParams());
+                shopListView.setLayoutParams(nameLayoutParams1);
+
+                linearLayout.addView(shopListView);
+
                 DemandRecordModel.DataBean.ItemListBean itemListBean = itemList.get(i);
                 TextView nameTxt = new TextView(context);
                 nameTxt.setId(i);
@@ -74,19 +84,18 @@ public class DemandRecordAdapter extends BaseQuickAdapter<DemandRecordModel.Data
                 shopListView.addView(nameTxt);
                 shopListView.addView(numTxt);
 
-                if (i!=itemList.size() -1){
+             //   if (i!=itemList.size() -1){
                     View view = new View(context);
                     RelativeLayout.LayoutParams viewLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,2);
                     view.setBackgroundColor(Color.parseColor("#E6E6E6"));
                     view.setLayoutParams(viewLayoutParams);
                     viewLayoutParams.leftMargin = 30;
                     viewLayoutParams.rightMargin = 30;
-                    viewLayoutParams.addRule(RelativeLayout.BELOW,nameTxt.getId());
-                    nameLayoutParams.bottomMargin = 10;
-
+                   // viewLayoutParams.topMargin = 30;
+                   // viewLayoutParams.addRule(RelativeLayout.BELOW,nameTxt.getId());
+                   // nameLayoutParams.bottomMargin = 10;
                     shopListView.addView(view);
-
-                }
+              //  }
 
             }
         }

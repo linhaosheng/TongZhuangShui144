@@ -56,7 +56,7 @@ public class AddWithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderM
                 .setText(R.id.with_drawal_money,with_drawal_money)
                 .setText(R.id.deposit_type,deposit_type)
                 .setText(R.id.with_drawal_time,with_drawal_time)
-                .setText(R.id.with_drawal_name,with_drawal_name)
+
         .setText(R.id.with_drawal_persion,with_drawal_persion)
         .setText(R.id.with_drawal_end_time,with_drawal_end_time);
 
