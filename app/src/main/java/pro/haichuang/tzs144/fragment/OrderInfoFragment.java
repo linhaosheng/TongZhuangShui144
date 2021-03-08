@@ -241,6 +241,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                     return true;
                 }
             });
+        }else {
+            mapView.setVisibility(View.GONE);
         }
     }
 
