@@ -62,5 +62,11 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
                 .setText(R.id.deposit_type,deposit_type)
                 .setText(R.id.with_drawal_time,with_drawal_time)
                 .setText(R.id.with_drawal_name,with_drawal_name);
+
+        if (dataBean.getReturnName()==null){
+          baseViewHolder.getView(R.id.with_drawal_name).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.with_drawal_name).setVisibility(View.VISIBLE);
+        }
     }
 }

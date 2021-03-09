@@ -84,6 +84,7 @@ public class VoidWithDrawalOrderActivity extends BaseActivity implements SwipeRe
     protected void setUpData() {
         currentPage = 1;
         voidWithDrawalOrderPresenter = new VoidWithDrawalOrderPresenter(this);
+        voidWithDrawalOrderPresenter.findCancelList("",currentPage);
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

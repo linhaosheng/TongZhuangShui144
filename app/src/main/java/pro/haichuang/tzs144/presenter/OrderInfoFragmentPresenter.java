@@ -38,7 +38,9 @@ public class OrderInfoFragmentPresenter {
 
         Map<String,Object> params = new ArrayMap<>();
         params.put("deliveryStatus",deliveryStatus);
-        params.put("queryTime",queryTime);
+        if (deliveryStatus==4){
+            params.put("queryTime",queryTime);
+        }
         params.put("page",page);
         params.put("limit", Config.LIMIT);
 

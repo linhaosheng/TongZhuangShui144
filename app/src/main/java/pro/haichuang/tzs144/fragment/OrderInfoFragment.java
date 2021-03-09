@@ -34,6 +34,9 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -90,7 +93,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     private OrderInfoAdapter orderInfoAdapter;
     private View headTimeView;
-    private View mapHeadTimeView;
     private OrderInfoFragmentPresenter orderInfoFragmentPresenter;
     private BaiduMap baiduMap = null;
 
@@ -182,8 +184,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 if (viewId == R.id.order_detail_info) {
                     ShopDetailDialog shopDetailDialog = new ShopDetailDialog(getActivity(), orderInfoAdapter.getData().get(position));
                     shopDetailDialog.show(getChildFragmentManager(), "");
-                    // ShowMoreOrderInfoDialog showMoreOrderInfoDialog = new ShowMoreOrderInfoDialog(getActivity());
-                    // showMoreOrderInfoDialog.show(getChildFragmentManager(),"");
                 } else if (viewId == R.id.call_phone) {
                     String customerPhone = orderInfoAdapter.getData().get(position).getCustomerPhone();
                     //Utils.callPhone(customerPhone);
@@ -254,22 +254,36 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
      * 选择时间控件
      */
     private void selectTimeData() {
+
+
         selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar ca = Calendar.getInstance();
-                int mYear = ca.get(Calendar.YEAR);
-                int mMonth = ca.get(Calendar.MONTH);
-                int mDay = ca.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                TimePickerView pvTime = new TimePickerBuilder(getActivity(), new OnTimeSelectListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        selectTime.setText("" + year + "-" + (month + 1) + "-" + dayOfMonth);
-                        orderInfoFragmentPresenter.loadOrderByStatus(id, selectTime.getText().toString(), 1);
+                    public void onTimeSelect(Date date, View v) {
+                        selectTime.setText(Utils.formatSelectTime(date));
+                        currentPage = 1;
+                        lastPage = false;
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, selectTime.getText().toString(), currentPage);
                     }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
+                })
+                        .build();
+                pvTime.show();
+
+//                Calendar ca = Calendar.getInstance();
+//                int mYear = ca.get(Calendar.YEAR);
+//                int mMonth = ca.get(Calendar.MONTH);
+//                int mDay = ca.get(Calendar.DAY_OF_MONTH);
+//
+//                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+//                        selectTime.setText("" + year + "-" + (month + 1) + "-" + dayOfMonth);
+//                        orderInfoFragmentPresenter.loadOrderByStatus(id, selectTime.getText().toString(), 1);
+//                    }
+//                }, mYear, mMonth, mDay);
+//                datePickerDialog.show();
             }
         });
     }

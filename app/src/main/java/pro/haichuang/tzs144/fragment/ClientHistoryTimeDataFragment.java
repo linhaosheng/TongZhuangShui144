@@ -89,6 +89,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
         headView = LayoutInflater.from(getActivity()).inflate(R.layout.item_check_out_time,null);
         orderTrendAdapter.addHeaderView(headView);
         checkOutTime = headView.findViewById(R.id.check_out_time);
+        checkOutTime.setText(Utils.formatSelectTime(new Date()));
         checkOutTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +104,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
             }
         });
         filter = headView.findViewById(R.id.filter);
+
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,13 +147,13 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     protected void setUpData() {
         clientHistoryTimeDatapPresenter = new ClientHistoryTimeDatapPresenter(this);
         clientHistoryTimeDatapPresenter.countLsOrder(Utils.transformTime(new Date()));
-        clientHistoryTimeDatapPresenter.findLsOrders("","","");
+        clientHistoryTimeDatapPresenter.findLsOrders("","2019-06-22",filter.getText().toString());
     }
 
     @Override
     public void onRefresh() {
         clientHistoryTimeDatapPresenter.countLsOrder(Utils.transformTime(new Date()));
-        clientHistoryTimeDatapPresenter.findLsOrders("","","");
+        clientHistoryTimeDatapPresenter.findLsOrders("","2019-06-22",filter.getText().toString());
     }
 
     @Override

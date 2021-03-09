@@ -124,15 +124,15 @@ public class ShopDetailDialog extends DialogFragment {
 
         String payModel="";
         if (dataBeans.getPayMode()==0){
-            payModel = "微信支付";
+            payModel = "付款方式：微信支付";
         }else if (dataBeans.getPayMode()==1){
-            payModel = "水票支付";
+            payModel = "付款方式：水票支付";
         }else if (dataBeans.getPayMode()==2){
-            payModel ="现金支付";
+            payModel ="付款方式：现金支付";
         }else if (dataBeans.getPayMode()==3){
-            payModel="美团支付";
+            payModel="付款方式：美团支付";
         }else if (dataBeans.getPayMode()==4){
-            payModel = "饿了么支付";
+            payModel = "付款方式：饿了么支付";
         }
         payWay.setText(payModel);
     }

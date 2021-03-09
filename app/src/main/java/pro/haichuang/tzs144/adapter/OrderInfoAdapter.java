@@ -38,7 +38,8 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
         order_state_img.setVisibility(View.GONE);
 
         TextView shopOrderTv = baseViewHolder.getView(R.id.shop_order);
-
+        TextView take_orders_view = baseViewHolder.getView(R.id.take_orders);
+        take_orders_view.setVisibility(View.VISIBLE);
         if (type == 0) {
             baseViewHolder.setText(R.id.take_orders, "抢单/接单");
             order_state_img.setVisibility(View.GONE);
@@ -46,7 +47,8 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             baseViewHolder.setText(R.id.take_orders, "配送");
             order_state_img.setVisibility(View.GONE);
         } else if (type == 3) {
-            baseViewHolder.setText(R.id.take_orders, "知道了");
+            take_orders_view.setVisibility(View.GONE);
+           // baseViewHolder.setText(R.id.take_orders, "");
             order_state_img.setVisibility(View.GONE);
         }else if (type==4){
             baseViewHolder.setText(R.id.take_orders, "知道了");
