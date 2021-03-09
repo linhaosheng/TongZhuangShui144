@@ -20,6 +20,7 @@ import pro.haichuang.tzs144.view.LSettingItem;
 
 public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel.DataBean.GoodsListBean, BaseViewHolder> {
 
+    private boolean showWater_type;
     private boolean showTicket_type;
     private Context context;
     private SelectWaterListener selectWaterListener;
@@ -35,6 +36,10 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
     public void setShowTicket_type(boolean showTicket_type){
         this.showTicket_type = showTicket_type;
+    }
+
+    public void setShowWater_type(boolean showWater_type){
+        this.showWater_type = showWater_type;
     }
 
     @Override
@@ -54,11 +59,19 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
             e.printStackTrace();
         }
 
-        if (showTicket_type){
+        if (showWater_type){
             helper.getView(R.id.ticket_type).setVisibility(View.VISIBLE);
+            helper.getView(R.id.reward_tickets).setVisibility(View.GONE);
+            helper.getView(R.id.monthly).setVisibility(View.GONE);
         }else {
-            helper.getView(R.id.ticket_type).setVisibility(View.GONE);
+
+            if (showTicket_type){
+                helper.getView(R.id.ticket_type).setVisibility(View.VISIBLE);
+            }else {
+                helper.getView(R.id.ticket_type).setVisibility(View.GONE);
+            }
         }
+
         LSettingItem lSettingItem =  helper.getView(R.id.select_ticket);
         /**
          * 显示水票
@@ -115,24 +128,28 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
             uploadMonth.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.upload));
         }
 
-
         lSettingItem.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
-                Log.i("tag===","SJJSDDDD");
                 selectWaterListener.selectClick(helper.getPosition());
             }
         });
 
 
         LSettingItem select_water_num =  helper.getView(R.id.select_water_num);
+        if (item.getWaterNum()!=0){
+            select_water_num.setEditinput(item.getWaterNum()+"");
+        }
         select_water_num.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
             public void editListner(String text) {
                 int position = helper.getPosition();
+                Log.i("TAG===",text+"===position=="+position);
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
                 try {
                     goodsListBean.setWaterNum(Integer.parseInt(text));
+                    DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -140,6 +157,9 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         });
 
         LSettingItem select_deduction_nunm =  helper.getView(R.id.select_deduction_nunm);
+        if (item.getWaterDeductNum()!=0){
+            select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
+        }
         select_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
             public void editListner(String text) {
@@ -147,6 +167,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
                 try {
                     goodsListBean.setWaterDeductNum(Integer.parseInt(text));
+                    DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -154,6 +175,9 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         });
 
         LSettingItem reward_deduction_nunm =  helper.getView(R.id.reward_deduction_nunm);
+        if (item.getCouponDeductNum()!=0){
+            reward_deduction_nunm.setEditinput(item.getCouponDeductNum()+"");
+        }
         reward_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
             public void editListner(String text) {
@@ -161,6 +185,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
                 try {
                     goodsListBean.setCouponDeductNum(Integer.parseInt(text));
+                    DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -168,6 +193,9 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         });
 
         LSettingItem month_deduction_nunm =  helper.getView(R.id.month_deduction_nunm);
+        if (item.getMonthDeductNum()!=0){
+            reward_deduction_nunm.setEditinput(item.getMonthDeductNum()+"");
+        }
         month_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
             public void editListner(String text) {
@@ -175,6 +203,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
                 try {
                     goodsListBean.setMonthDeductNum(Integer.parseInt(text));
+                    DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

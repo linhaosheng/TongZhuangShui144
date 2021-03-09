@@ -143,7 +143,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         typeId = getIntent().getIntExtra("typeId", 0);
         orderDetailPresenter = new OrderDetailActivityPresenter(this);
         orderDetailPresenter.getHomeOrderInfo(id);
-        if (typeId == 0) {
+        if (typeId == 0 || typeId==1) {
             recordTime.setVisibility(View.GONE);
         }
     }
@@ -201,9 +201,12 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         needPrice.setText("¥" + data.getReceivablePrice());
         orderNumData.setText("订单编号：" + data.getOrderNo());
         recordTime.setText("完成时间：" + data.getCompleteTime());
+        if (data.getCompleteTime()==null || data.getCompleteTime().equals("")){
+            recordTime.setVisibility(View.GONE);
+        }
         orderNo = data.getOrderNo();
-        String orderType = "";
-        String payModel = "";
+
+
         if ("微商城".equals(data.getOrderType())) {
             voidSaleBtn.setVisibility(View.GONE);
         } else if ("电话订单".equals(data.getOrderType())) {

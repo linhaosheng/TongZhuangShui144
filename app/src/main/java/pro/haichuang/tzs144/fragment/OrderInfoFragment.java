@@ -147,7 +147,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
         orderInfoAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
 
-
         orderInfoAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
@@ -155,20 +154,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 OrderInfoModel.DataBean dataBean = orderInfoAdapter.getData().get(position);
                 String orderNumId = dataBean.getId();
 
-                //待配送
-//                if (dataBean.getOrderStatus()==1){
-//                    Intent intent = new Intent(getActivity(), DeliveryOrderActivity.class);
-//                    intent.putExtra("id",orderNumId);
-//                    intent.putExtra("typeId",id);
-//                    intent.putExtra("orderStatus",dataBean.getOrderStatus());
-//                    startActivity(intent);
-//                }else {
-//                    Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-//                    intent.putExtra("id",orderNumId);
-//                    intent.putExtra("typeId",id);
-//                    intent.putExtra("orderStatus",dataBean.getOrderStatus());
-//                    startActivity(intent);
-//                }
                 Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
                 intent.putExtra("id", orderNumId);
                 intent.putExtra("typeId", id);
@@ -223,9 +208,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         Log.i(TAG, "----id" + id);
         if (id == 1) {
             mapView.setVisibility(View.VISIBLE);
-           // mapHeadTimeView = LayoutInflater.from(getActivity()).inflate(R.layout.item_map_head_view, null);
-           // orderInfoAdapter.addHeaderView(mapHeadTimeView);
-           // mapView = mapHeadTimeView.findViewById(R.id.map);
             baiduMap = mapView.getMap();
             baiduMap.setMyLocationEnabled(true);
             //显示卫星图层
@@ -255,10 +237,27 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
      */
     private void selectTimeData() {
 
+        lastTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lastTime.setTextColor(Color.parseColor("#32C5FF"));
+                lastTime.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.set_bg_btn24));
+                selectTime.setTextColor(Color.parseColor("#333333"));
+                selectTime.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.set_bg_btn50));
+                currentPage = 1;
+                lastPage = false;
+                orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+            }
+        });
 
         selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectTime.setTextColor(Color.parseColor("#32C5FF"));
+                lastTime.setTextColor(Color.parseColor("#333333"));
+                selectTime.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.set_bg_btn24));
+                lastTime.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.set_bg_btn50));
+
                 TimePickerView pvTime = new TimePickerBuilder(getActivity(), new OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {
@@ -303,12 +302,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public void startLoad() {
-        refresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refresh.setRefreshing(true);
-            }
-        }, 50);
+        refresh.setRefreshing(true);
     }
 
     @Override
@@ -351,7 +345,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             List<InfoWindow>list = new ArrayList<>();
 
             for (OrderInfoModel.DataBean dataBean : data1) {
-                Log.i(TAG,"data==="+dataBean.getLatitude()+"======long===="+dataBean.getLatitude());
+                //Log.i(TAG,"data==="+dataBean.getLatitude()+"======long===="+dataBean.getLatitude());
                 LatLng point = new LatLng(dataBean.getLatitude(), dataBean.getLongitude());
                 Button button = new Button(getActivity());
                 button.setBackground(ContextCompat.getDrawable(getActivity(),R.mipmap.time_bg));

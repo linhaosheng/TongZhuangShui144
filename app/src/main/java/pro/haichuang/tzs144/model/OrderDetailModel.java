@@ -280,12 +280,12 @@ public class OrderDetailModel {
             private int waterNum;
             private int waterDeductNum;
             private int goodsPrice;
-            private Object couponDeductNum;
+            private int couponDeductNum;
             private String couponImg;
             private String goodsName;
             private int goodsNum;
             private String monthImg;
-            private Object monthDeductNum;
+            private int monthDeductNum;
             private List<String> materialList;
             private List<BindMaterList> bindMaterList;
             private int recycleNum;
@@ -381,11 +381,11 @@ public class OrderDetailModel {
                 this.goodsPrice = goodsPrice;
             }
 
-            public Object getCouponDeductNum() {
+            public int getCouponDeductNum() {
                 return couponDeductNum;
             }
 
-            public void setCouponDeductNum(Object couponDeductNum) {
+            public void setCouponDeductNum(int couponDeductNum) {
                 this.couponDeductNum = couponDeductNum;
             }
 
@@ -421,11 +421,11 @@ public class OrderDetailModel {
                 this.monthImg = monthImg;
             }
 
-            public Object getMonthDeductNum() {
+            public int getMonthDeductNum() {
                 return monthDeductNum;
             }
 
-            public void setMonthDeductNum(Object monthDeductNum) {
+            public void setMonthDeductNum(int monthDeductNum) {
                 this.monthDeductNum = monthDeductNum;
             }
 

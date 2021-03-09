@@ -33,7 +33,9 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,6 +76,9 @@ public class ClientFilterDialog extends DialogFragment {
     private final static  int SELECT_START_TIME = 0x110;
     private final static  int SELECT_END_TIME = 0x111;
 
+    private String khStatus = "";
+    private String khTypeId = "";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +88,11 @@ public class ClientFilterDialog extends DialogFragment {
     public ClientFilterDialog(Context mContext,ClientTypeListener mClientTypeListener) {
         this.context = mContext;
         this.clientTypeListener = mClientTypeListener;
+    }
+
+    public void setStatus(String khStatus,String khTypeId){
+        this.khStatus = khStatus;
+        this.khTypeId = khTypeId;
     }
 
 
@@ -129,7 +139,52 @@ public class ClientFilterDialog extends DialogFragment {
         String clientType = SPUtils.getString(Config.CLIENT_TYPE, "");
         if (!clientType.equals("")){
             ClientTypeModel clientTypeModel = Utils.gsonInstane().fromJson(clientType, ClientTypeModel.class);
-            clientFilterAdapter.setList(clientTypeModel.getData());
+
+            List<ClientTypeModel.DataBean> data = clientTypeModel.getData();
+
+            ClientTypeModel.DataBean allDataBean = new ClientTypeModel.DataBean();
+            allDataBean.setId(0);
+            allDataBean.setName("全部");
+            allDataBean.setTimeType(true);
+            allDataBean.setCheck(true);
+            data.add(allDataBean);
+
+            ClientTypeModel.DataBean datBean1 = new ClientTypeModel.DataBean();
+            datBean1.setId(1);
+            datBean1.setName("有效客户");
+            datBean1.setTimeType(true);
+            datBean1.setCheck(false);
+            data.add(datBean1);
+
+            ClientTypeModel.DataBean datBean2 = new ClientTypeModel.DataBean();
+            datBean2.setId(2);
+            datBean2.setName("无效客户");
+            datBean2.setTimeType(true);
+            datBean2.setCheck(false);
+            data.add(datBean2);
+
+            clientTypeModel.setData(data);
+
+            List<ClientTypeModel.DataBean>tempData = new ArrayList<>();
+
+            for (ClientTypeModel.DataBean dataBean : data){
+                if (dataBean.isTimeType()){
+                    if (khStatus.contains(dataBean.getId()+"")){
+                        dataBean.setCheck(true);
+                    }else {
+                        dataBean.setCheck(false);
+                    }
+                }else {
+                    if (khTypeId.contains(dataBean.getId()+"")){
+                        dataBean.setCheck(true);
+                    }else {
+                        dataBean.setCheck(false);
+                    }
+                }
+                tempData.add(dataBean);
+            }
+
+            clientFilterAdapter.setList(tempData);
         }
 
         clientFilterAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -138,19 +193,30 @@ public class ClientFilterDialog extends DialogFragment {
                 ClientTypeModel.DataBean dataBean = clientFilterAdapter.getData().get(position);
                 if (dataBean.isCheck()){
                     dataBean.setCheck(false);
+                    clientFilterAdapter.setData(position,dataBean);
                 }else {
                     dataBean.setCheck(true);
-                }
-                clientFilterAdapter.setData(position,dataBean);
-                if (dataBean.isCheck()){
-                    String khTypeId = "";
-                    if (clientTypeSearchModel.getKhTypeId()!=null){
-                        khTypeId = clientTypeSearchModel.getKhTypeId() + ","+dataBean.getId();
+                    if (dataBean.isTimeType()){
+
+                        List<ClientTypeModel.DataBean> data = clientFilterAdapter.getData();
+                        List<ClientTypeModel.DataBean> tempData = new ArrayList<>();
+                        for (int i=0;i<data.size();i++){
+                            ClientTypeModel.DataBean dataBean1 = data.get(i);
+                            if (dataBean1.isTimeType()){
+                                if (i==position){
+                                    dataBean1.setCheck(true);
+                                }else {
+                                    dataBean1.setCheck(false);
+                                }
+                            }
+                            tempData.add(dataBean1);
+                        }
+                        clientFilterAdapter.setList(tempData);
                     }else {
-                        khTypeId = String.valueOf(dataBean.getId());
+                        clientFilterAdapter.setData(position,dataBean);
                     }
-                    clientTypeSearchModel.setKhTypeId(khTypeId);
                 }
+
             }
         });
 
@@ -194,8 +260,7 @@ public class ClientFilterDialog extends DialogFragment {
 
                 clientTypeSearchModel.setEndTime(endTime.getText().toString());
                 clientTypeSearchModel.setStartTime(startTime.getText().toString());
-                clientTypeSearchModel.setKhStatus("0");
-                clientTypeListener.filterSearch(clientTypeSearchModel);
+                clientTypeListener.filterSearch(clientFilterAdapter.getData(),startTime.getText().toString(),endTime.getText().toString());
 
                 dismiss();
                 break;
@@ -221,6 +286,6 @@ public class ClientFilterDialog extends DialogFragment {
     }
 
     public interface ClientTypeListener{
-        void filterSearch(ClientTypeSearchModel clientTypeSearchModel);
+        void filterSearch( List<ClientTypeModel.DataBean> data,String startTime,String endTime);
     }
 }

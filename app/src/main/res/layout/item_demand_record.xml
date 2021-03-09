@@ -18,9 +18,6 @@
         android:layout_marginTop="@dimen/dp_18"
         android:text="库存主体：佳佳超市"/>
 
-
-
-
     <LinearLayout
         android:id="@+id/add_lin_view"
         android:layout_width="match_parent"

@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.fragment;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -43,6 +44,7 @@ import pro.haichuang.tzs144.adapter.OrderTrendAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.ClientEvent;
 import pro.haichuang.tzs144.model.ClientTrendModel;
+import pro.haichuang.tzs144.model.ClientTypeModel;
 import pro.haichuang.tzs144.model.ClientTypeSearchModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.TrendModel;
@@ -92,6 +94,9 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     private View headTimeView;
     private TextView updateTime;
     private String endTime;
+    private String startTime = "2019-10-10";
+    private String khStatus = "0";
+    private String khTypeId = "1,2,3";
 
 
     @Override
@@ -129,7 +134,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
             public void onLoadMore() {
                 if (!lastPage){
                     currentPage++;
-                    clientFragmentPresenter.findKhList("","2019-10-10",endTime,"","0",currentPage);
+                    clientFragmentPresenter.findKhList("",startTime,endTime,khTypeId,khStatus,currentPage);
                 }
             }
         });
@@ -165,7 +170,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         endTime = Utils.formatSelectTime(new Date());
         clientFragmentPresenter = new ClientFragmentPresenter(this);
         clientFragmentPresenter.countKh();
-        clientFragmentPresenter.findKhList("","2019-10-10",endTime,"","0",currentPage);
+        clientFragmentPresenter.findKhList("",startTime,endTime,khTypeId,khStatus,currentPage);
         trendList = new ArrayList<>();
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -183,7 +188,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                 if (searchEdit.getText()!=null){
                     currentPage = 1;
                     lastPage = false;
-                    clientFragmentPresenter.findKhList(searchEdit.getText().toString(),"2019-10-10",endTime,"","0",currentPage);
+                    clientFragmentPresenter.findKhList(searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
                 }
             }
         });
@@ -204,10 +209,27 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
             case R.id.filter:
                 ClientFilterDialog clientFilterDialog = new ClientFilterDialog(getActivity(), new ClientFilterDialog.ClientTypeListener() {
                     @Override
-                    public void filterSearch(ClientTypeSearchModel clientTypeSearchModel) {
+                    public void filterSearch(List<ClientTypeModel.DataBean> data,String selectStartTime,String selectEndTime) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (ClientTypeModel.DataBean dataBean : data){
+                            if (dataBean.isTimeType() && dataBean.isCheck()){
+                                khStatus = dataBean.getId()+"";
+                            }
+                            if (!dataBean.isTimeType() && dataBean.isCheck()){
+                                stringBuilder.append(dataBean.getId()).append(",");
+                            }
+                        }
+                        khTypeId = stringBuilder.toString().substring(0,stringBuilder.toString().length()-1);
 
+                        currentPage = 1;
+                        lastPage = false;
+                        startTime = selectStartTime;
+                        endTime = selectEndTime;
+                        clientFragmentPresenter.findKhList(searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
+                        Log.i(TAG,"khTypeId===="+khTypeId);
                     }
                 });
+                clientFilterDialog.setStatus(khStatus,khTypeId);
                 clientFilterDialog.show(getChildFragmentManager(),"");
                 break;
             case R.id.cancel:
@@ -223,7 +245,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         currentPage = 1;
         lastPage = false;
         clientFragmentPresenter.countKh();
-        clientFragmentPresenter.findKhList(searchEdit.getText().toString(),"2019-10-10",endTime,"","0",currentPage);
+        clientFragmentPresenter.findKhList(searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
     }
 
     @Override

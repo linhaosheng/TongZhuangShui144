@@ -17,16 +17,19 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialog.util.BaseDialog;
 import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
+import com.wanglu.photoviewerlibrary.PhotoViewer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cc.shinichi.library.ImagePreview;
 import pro.bilibili.boxing.Boxing;
 import pro.bilibili.boxing.model.config.BoxingConfig;
 import pro.bilibili.boxing.model.entity.BaseMedia;
@@ -220,7 +224,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         addOrderAdapter = new AddOrderAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(addOrderAdapter);
-        addOrderAdapter.addChildClickViewIds(R.id.delete,R.id.edit);
+        addOrderAdapter.addChildClickViewIds(R.id.delete,R.id.edit,R.id.reward_img,R.id.month_img);
         addOrderAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
@@ -280,7 +284,16 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         goodsListBeans.remove(position);
                         addOrderAdapter.setList(goodsListBeans);
                         caculateShopMount();
-
+                        break;
+                    case R.id.reward_img:
+                        AddOrderModel.GoodsListBean goodsListBean1 = addOrderAdapter.getData().get(position);
+                        String couponImg = goodsListBean1.getDeductCoupon().getCouponImg();
+                        showImage(couponImg);
+                        break;
+                    case R.id.month_img:
+                        AddOrderModel.GoodsListBean goodsListBean2 = addOrderAdapter.getData().get(position);
+                        String monthImg = goodsListBean2.getDeductMonth().getMonthImg();
+                        showImage(monthImg);
                         break;
                 }
             }
@@ -320,6 +333,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectDeductionNunm.setEditinput(text);
             }
         });
+    }
+
+
+    /**
+     * 显示大图
+     * @param path
+     */
+    private void showImage(String path){
+        ImagePreview.getInstance()
+                .setContext(EnterOrderActivity.this)
+                .setShowDownButton(false)
+                .setImage(path).start();
     }
 
     private void initAddressInfo(Intent intent) {
@@ -729,7 +754,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
                 shopNum+=Integer.parseInt(goodsListBean.getNum());
             }
-            if (materialNum>shopNum){
+            if (shopNum>materialNum){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
                 String content = "商品数量大于空桶数量，是否填写开押单？";
                 MessageDialog.show(this, "提示", content, "确定","取消")

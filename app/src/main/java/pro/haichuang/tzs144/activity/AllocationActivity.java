@@ -99,7 +99,7 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
         demandListAdapter = new DemandListAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(demandListAdapter);
-        demandListAdapter.addChildClickViewIds(R.id.delete);
+        demandListAdapter.addChildClickViewIds(R.id.delete,R.id.reduce,R.id.shop_add);
         demandListAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
@@ -109,6 +109,26 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
                         data.remove(position);
                         demandListAdapter.setList(data);
                         break;
+                    case R.id.reduce:
+                        List<GoodBeanModel> data1 = demandListAdapter.getData();
+                        GoodBeanModel goodBeanModel = data1.get(position);
+                        if (goodBeanModel.getNum()==0){
+                            return;
+                        }else {
+                            int num = goodBeanModel.getNum() -1;
+                            goodBeanModel.setNum(num);
+                            demandListAdapter.setData(position,goodBeanModel);
+                        }
+                        break;
+                    case R.id.shop_add:
+
+                        List<GoodBeanModel> data2 = demandListAdapter.getData();
+                        GoodBeanModel goodBeanModel1 = data2.get(position);
+                        int num = goodBeanModel1.getNum()+1;
+                        goodBeanModel1.setNum(num);
+                        Log.i(TAG,"shop_add====="+num);
+                        data2.set(position,goodBeanModel1);
+                        demandListAdapter.setList(data2);
                 }
             }
         });
@@ -179,7 +199,7 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
                     Utils.showCenterTomast("请添加商品");
                     return;
                 }
-                allocationActivityPresenter.allotGoods(subjectId,goodBeanModelList);
+                allocationActivityPresenter.allotGoods(subjectId,demandListAdapter.getData());
                 break;
             case R.id.cancel_btn:
                 finish();

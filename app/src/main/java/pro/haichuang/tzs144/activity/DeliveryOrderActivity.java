@@ -71,6 +71,13 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
 
 
 
+    @BindView(R.id.phone_order_view)
+    LinearLayout phone_order_view;
+    @BindView(R.id.phone_order_num_data)
+    TextView phone_order_num_data;
+    @BindView(R.id.phone_order_source)
+    TextView phone_order_source;
+
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.left_text)
@@ -126,38 +133,8 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     Button receivePayment;
     @BindView(R.id.shop_amount_view)
     LinearLayout shopAmountView;
-    @BindView(R.id.shop_detail)
-    RelativeLayout shopDetail;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
-    @BindView(R.id.water_tickets)
-    TextView waterTickets;
-    @BindView(R.id.reward_tickets)
-    TextView rewardTickets;
-    @BindView(R.id.monthly)
-    TextView monthly;
-    @BindView(R.id.ticket_type)
-    LinearLayout ticketType;
-
-    @BindView(R.id.select_ticket)
-    LSettingItem selectTicket;
-    @BindView(R.id.select_water_num)
-    LSettingItem selectWaterNum;
-    @BindView(R.id.select_deduction_nunm)
-    LSettingItem selectDeductionNunm;
-    @BindView(R.id.upload_reward_view)
-    LinearLayout upload_reward_view;
-    @BindView(R.id.reward_deduction_nunm)
-    LSettingItem rewardDeductionNunm;
-    @BindView(R.id.upload_month_view)
-    LinearLayout upload_month_view;
-    @BindView(R.id.month_deduction_nunm)
-    LSettingItem monthDeductionNunm;
-
-    @BindView(R.id.upload_reward)
-    ImageView uploadReward;
-    @BindView(R.id.upload_month)
-    ImageView uploadMonth;
 
     @BindView(R.id.total_merchandise_num)
     TextView totalMerchandiseNum;
@@ -165,10 +142,8 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     TextView amountReceivableNum;
     @BindView(R.id.actual_amount)
     TextView actualAmount;
-
-    private boolean selectWater;
-    private boolean selectReward;
-    private boolean selectMonth;
+    @BindView(R.id.delivery_btn)
+    Button deliveryBtn;
 
     private final static int REQUEST_CODE_CHOOSE_PICTURE_REWARD = 0x1110;
     private final static int REQUEST_CODE_CHOOSE_PICTURE_MONTH = 0x1111;
@@ -226,6 +201,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 int id = view.getId();
                 switch (id){
                     case R.id.shop_add_tong:
+
                         recycleNum = recycleNum + 1;
                         goodsListBean.setRecycleNum(recycleNum);
                         deliverOrderDetailAdapter.setData(position,goodsListBean);
@@ -241,7 +217,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     case R.id.reward_tickets:
                         OrderDetailModel.DataBean.GoodsListBean goodsListBean3 = deliverOrderDetailAdapter.getData().get(position);
                         if (goodsListBean3.isShowReward()){
-                            goodsListBean3.setCouponDeductNum("0");
+                            goodsListBean3.setCouponDeductNum(0);
                             goodsListBean3.setShowReward(false);
                         }else {
                             goodsListBean3.setShowReward(true);
@@ -251,7 +227,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     case R.id.monthly:
                         OrderDetailModel.DataBean.GoodsListBean goodsListBean2 = deliverOrderDetailAdapter.getData().get(position);
                         if (goodsListBean2.isShowMonth()){
-                            goodsListBean2.setMonthDeductNum("0");
+                            goodsListBean2.setMonthDeductNum(0);
                             goodsListBean2.setShowMonth(false);
                         }else {
                             goodsListBean2.setShowMonth(true);
@@ -296,87 +272,17 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
             }
         });
 
-        selectTicket.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
-            @Override
-            public void click(boolean isChecked, View view) {
-                SelectWaterTicketDialog selectWaterTicketDialog = new SelectWaterTicketDialog(DeliveryOrderActivity.this, new SelectWaterTicketDialog.SelectShopListener() {
-                    @Override
-                    public void selectShop(ShopModel.DataBean dataBean) {
-                        mDataBea = dataBean;
-                        selectTicket.setLeftText(dataBean.getName()+"   "+dataBean.getSpecs());
-                        waterId = dataBean.getId();
-                    }
-                });
-                selectWaterTicketDialog.show(getSupportFragmentManager(),"");
-            }
-        });
-
-        selectWaterNum.setEditTextListner(new LSettingItem.EditTextListner() {
-            @Override
-            public void editListner(String text) {
-                caculateShopMount();
-            }
-        });
-        rewardDeductionNunm.setEditTextListner(new LSettingItem.EditTextListner() {
-            @Override
-            public void editListner(String text) {
-                caculateShopMount();
-            }
-        });
-        monthDeductionNunm.setEditTextListner(new LSettingItem.EditTextListner() {
-            @Override
-            public void editListner(String text) {
-                caculateShopMount();
-            }
-        });
     }
 
 
-    @OnClick({R.id.back,R.id.receive_payment,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_reward,R.id.upload_month,R.id.select_ticket})
+    @OnClick({R.id.back,R.id.receive_payment,R.id.void_sale_btn,R.id.delivery_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
+            case R.id.delivery_btn:
             case R.id.receive_payment:
-
-//                ShopDeleveModel shopDeleveModel = new ShopDeleveModel();
-//                ShopDeleveModel.GoodsListBean goodsListBean = new ShopDeleveModel.GoodsListBean();
-//                if (selectWater){
-//                    ShopDeleveModel.GoodsListBean.DeductWaterBean deductWaterBean = new ShopDeleveModel.GoodsListBean.DeductWaterBean();
-//                    deductWaterBean.setWaterGoodsId(mDataBea.getId()+"");
-//                    deductWaterBean.setDeductNum(selectDeductionNunm.getEditText());
-//                    deductWaterBean.setNum(selectWaterNum.getEditText());
-//                    goodsListBean.setDeductWater(deductWaterBean);
-//                }
-//                if (selectReward){
-//                    ShopDeleveModel.GoodsListBean.DeductCouponBean deductCouponBean = new ShopDeleveModel.GoodsListBean.DeductCouponBean();
-//                    deductCouponBean.setCouponImg(rewardUrl);
-//                    deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
-//                    goodsListBean.setDeductCoupon(deductCouponBean);
-//                }
-//                if (selectMonth){
-//                    ShopDeleveModel.GoodsListBean.DeductMonthBean deductMonthBean = new ShopDeleveModel.GoodsListBean.DeductMonthBean();
-//                    deductMonthBean.setMonthImg(monthUrl);
-//                    deductMonthBean.setDeductNum(monthDeductionNunm.getEditText());
-//                    goodsListBean.setDeductMonth(deductMonthBean);
-//                }
-//                List<ShopDeleveModel.GoodsListBean.MaterialsBean> materialsBeanList = new ArrayList<>();
-//
-//                List<OrderDetailModel.DataBean.GoodsListBean> data = deliverOrderDetailAdapter.getData();
-//                for (OrderDetailModel.DataBean.GoodsListBean goodsListBean1 : data){
-//                    goodsListBean.setOrderGoodsId(goodsListBean1.getOrderGoodsId());
-//                    OrderDetailModel.DataBean.BindMaterList bindMaterList = goodsListBean1.getBindMaterList().get(0);
-//                    ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = new ShopDeleveModel.GoodsListBean.MaterialsBean();
-//                    materialsBean.setMaterialId(bindMaterList.getId()+"");
-//                    materialsBean.setNum(goodsListBean1.getRecycleNum()+"");
-//                    materialsBeanList.add(materialsBean);
-//                }
-//                goodsListBean.setMaterials(materialsBeanList);
-//
-//                List<ShopDeleveModel.GoodsListBean> goodsListBeanList = new ArrayList<>();
-//                goodsListBeanList.add(goodsListBean);
-//                shopDeleveModel.setGoodsList(goodsListBeanList);
 
                 List<OrderDetailModel.DataBean.GoodsListBean> data = deliverOrderDetailAdapter.getData();
 
@@ -427,70 +333,45 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     goodsListBeanList.add(goodsListBean1);
                 }
 
-//                if (shopNum > materialNum){
-//                    String content = "商品数量大于空桶数量，是否填写开押单？";
-//                    MessageDialog.show(this, "提示", content, "确定","取消")
-//                            .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
-//                                @Override
-//                                public boolean onClick(BaseDialog baseDialog, View v) {
-//
+                if (shopNum > materialNum){
+                    String content = "商品数量大于空桶数量，是否填写开押单？";
+                    MessageDialog.show(this, "提示", content, "确定","取消")
+                            .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                                @Override
+                                public boolean onClick(BaseDialog baseDialog, View v) {
 //                                    AddOrderDepositDialog addOrderDepositDialog = new AddOrderDepositDialog(DeliveryOrderActivity.this);
 //                                    addOrderDepositDialog.show(getSupportFragmentManager(),"");
-//
-//                                    return true;
-//                                }
-//                            });
-//                }else {
-//                    orderDetailPresenter.deliveryOrder(id,goodsListBeanList);
-//                }
 
-                orderDetailPresenter.deliveryOrder(id,goodsListBeanList);
+                                    return false;
+                                }
+                            });
+                }else if (materialNum>shopNum){
+                    String tip = "多了"+(materialNum-shopNum)+"个回收材料，请单独退押";
+                   MessageDialog.show(DeliveryOrderActivity.this,"提示",tip,"确定","取消")
+                   .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                       @Override
+                       public boolean onClick(BaseDialog baseDialog, View v) {
 
+                           List<ShopDeleveModel.GoodsListBean> tempList = new ArrayList<>();
 
-                break;
-            case R.id.water_tickets:
-                if (selectWater){
-                    waterTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
-                    selectTicket.setVisibility(View.GONE);
-                    selectWaterNum.setVisibility(View.GONE);
-                    selectDeductionNunm.setVisibility(View.GONE);
+                           for (int i = 0;i<data.size();i++){
+                               int goodsNum = data.get(i).getGoodsNum();
+
+                               ShopDeleveModel.GoodsListBean goodsListBean = goodsListBeanList.get(i);
+                               List<ShopDeleveModel.GoodsListBean.MaterialsBean> materials = goodsListBean.getMaterials();
+                               ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = materials.get(0);
+                               materialsBean.setNum(goodsNum+"");
+                               materials.set(0,materialsBean);
+                               goodsListBean.setMaterials(materials);
+                               tempList.add(goodsListBean);
+                           }
+                            orderDetailPresenter.deliveryOrder(id,tempList);
+                           return false;
+                       }
+                   });
                 }else {
-                    waterTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
-                    selectTicket.setVisibility(View.VISIBLE);
-                    selectWaterNum.setVisibility(View.VISIBLE);
-                    selectDeductionNunm.setVisibility(View.VISIBLE);
+                    orderDetailPresenter.deliveryOrder(id,goodsListBeanList);
                 }
-                selectWater = !selectWater;
-                break;
-            case R.id.reward_tickets:
-                if (selectReward){
-                    rewardTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
-                    upload_reward_view.setVisibility(View.GONE);
-                    rewardDeductionNunm.setVisibility(View.GONE);
-                }else {
-                    rewardTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
-                    upload_reward_view.setVisibility(View.VISIBLE);
-                    rewardDeductionNunm.setVisibility(View.VISIBLE);
-                }
-                selectReward =!selectReward;
-                break;
-            case R.id.monthly:
-                if (selectMonth){
-                    monthly.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
-                    upload_month_view.setVisibility(View.GONE);
-                    monthDeductionNunm.setVisibility(View.GONE);
-                }else {
-                    monthly.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
-                    upload_month_view.setVisibility(View.VISIBLE);
-                    monthDeductionNunm.setVisibility(View.VISIBLE);
-                }
-                selectMonth =!selectMonth;
-                break;
-            case R.id.upload_reward:
-                selectPicture(REQUEST_CODE_CHOOSE_PICTURE_REWARD);
-                break;
-            case R.id.upload_month:
-                selectPicture(REQUEST_CODE_CHOOSE_PICTURE_MONTH);
                 break;
         }
     }
@@ -526,15 +407,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         timeSend.setText(data.getTimeRange());
         timeOut.setText(data.getTimeStatus());
 
-//        if (data.getDeliveryStatus()==0){
-//            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.pend_order));
-//        }else if (data.getDeliveryStatus()==1){
-//            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.nedd_delivery));
-//        }else if (data.getDeliveryStatus()==2){
-//            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.have_finish));
-//        }else if (data.getDeliveryStatus()==3){
-//            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.have_cancel));
-//        }
+
         orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.nedd_delivery));
 
         tatalPrice.setText("¥" + data.getTotalPrice());
@@ -542,40 +415,54 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         orderNumData.setText("订单编号：" + data.getOrderNo());
         orderNo = data.getOrderNo();
 
+
+        //data.setOrderType("微商城");
+        //data.setPayMode("水票支付");
+        /**
+         *微商城  : 微信支付 (完成配送)  水票支付(作废转直销 完成配送)
+         *
+         *外卖订单: (完成配送)
+         *
+         * 电话订单 : (作废转直销)  (收款)
+         */
+
+        if ("微商城".equals(data.getOrderType())){
+            voidDeliveryView.setVisibility(View.GONE);
+            receivePayment.setVisibility(View.VISIBLE);
+
+            if ("微信支付".equals(data.getPayMode())){
+                receivePayment.setVisibility(View.VISIBLE);
+            }else if ("水票支付".equals(data.getPayMode())){
+                voidDeliveryView.setVisibility(View.VISIBLE);
+                shopAmountView.setVisibility(View.GONE);
+                receivePayment.setVisibility(View.GONE);
+                deliverOrderDetailAdapter.setShowWater_type(true);
+            }
+        }
+
+        if ("外卖订单".equals(data.getOrderType())){
+            receivePayment.setVisibility(View.VISIBLE);
+        }
+
         if ("电话订单".equals(data.getOrderType())){
             priceView.setVisibility(View.GONE);
             orderView.setVisibility(View.GONE);
             shopAmountView.setVisibility(View.VISIBLE);
-            shopDetail.setVisibility(View.GONE);
             deliverOrderDetailAdapter.setShowTicket_type(true);
 
-        }
-        if ("外卖订单".equals(data.getOrderType())){
-            receivePayment.setVisibility(View.VISIBLE);
-            ticketType.setVisibility(View.GONE);
+            receivePayment.setVisibility(View.GONE);
+            voidDeliveryView.setVisibility(View.VISIBLE);
+            deliveryBtn.setText("收款");
+            phone_order_view.setVisibility(View.VISIBLE);
+            phone_order_num_data.setText("订单编号：" + data.getOrderNo());
+            phone_order_source.setText("订单来源: "+data.getOrderType());
         }
 
         orderSource.setText("订单来源: "+data.getOrderType());
         payWay.setText("支付方式：" + data.getPayMode());
         actualPrice.setText("¥"+data.getRealPrice());
 
-        if ("微信支付".equals(data.getPayMode())){
-            receivePayment.setVisibility(View.VISIBLE);
-            ticketType.setVisibility(View.GONE);
-        }else if ("水票支付".equals(data.getPayMode())){
-            voidDeliveryView.setVisibility(View.VISIBLE);
-            receivePayment.setVisibility(View.GONE);
-            shopDetail.setVisibility(View.VISIBLE);
-            monthly.setVisibility(View.GONE);
-            rewardTickets.setVisibility(View.GONE);
-            shopAmountView.setVisibility(View.GONE);
-             selectTicket.setVisibility(View.VISIBLE);
-             selectWaterNum.setVisibility(View.VISIBLE);
-             selectDeductionNunm.setVisibility(View.VISIBLE);
-            receivePayment.setText("收款");
-        }
         deliverOrderDetailAdapter.setList(data.getGoodsList());
-
         totalMerchandiseNum.setText((float)data.getReceivablePrice()+"");
 
     }
@@ -594,12 +481,10 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 if (requestCode==REQUEST_CODE_CHOOSE_PICTURE_REWARD){
                     String path = medias.get(0).getPath();
                     orderDetailPresenter.uploadFile("reward",path);
-                    Utils.showImage(uploadReward,medias.get(0).getPath());
 
                 }else if (requestCode==REQUEST_CODE_CHOOSE_PICTURE_MONTH){
                     String path = medias.get(0).getPath();
                     orderDetailPresenter.uploadFile("month",path);
-                    Utils.showImage(uploadMonth,medias.get(0).getPath());
                 }else if (requestCode==REQUEST_CODE_LIST_CHOOSE_PICTURE_MONTH){
                     String path = medias.get(0).getPath();
                     orderDetailPresenter.uploadFile("list_month",path);
@@ -624,16 +509,6 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
             int waterNum = 0;
             int rewardNum = 0;
             int monthNum = 0;
-
-            if (selectWater){
-                waterNum = Integer.parseInt(selectWaterNum.getEditText());
-            }
-            if (selectReward){
-                rewardNum = Integer.parseInt(rewardDeductionNunm.getEditText());
-            }
-            if (selectMonth){
-                monthNum = Integer.parseInt(monthDeductionNunm.getEditText());
-            }
 
             amountReceivableNum.setText((totalPrice - waterNum - rewardNum) +"");
             actualAmount.setText((totalPrice - waterNum - rewardNum - monthNum)+"");

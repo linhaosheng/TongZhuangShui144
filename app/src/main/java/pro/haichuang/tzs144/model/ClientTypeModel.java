@@ -44,9 +44,18 @@ public class ClientTypeModel {
          * name : 协议客户
          * id : 1
          */
-        private boolean isCheck;
+        private boolean isCheck = true;
         private String name;
         private int id;
+        private boolean isTimeType = false;
+
+        public boolean isTimeType() {
+            return isTimeType;
+        }
+
+        public void setTimeType(boolean timeType) {
+            isTimeType = timeType;
+        }
 
         public boolean isCheck() {
             return isCheck;

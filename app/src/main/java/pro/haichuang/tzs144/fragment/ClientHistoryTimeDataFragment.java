@@ -30,16 +30,19 @@ import java.util.List;
 import butterknife.BindView;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.SaleOrderDetailActivity;
+import pro.haichuang.tzs144.activity.SalesListActivity;
 import pro.haichuang.tzs144.adapter.OrderPaymentAdapter;
 import pro.haichuang.tzs144.adapter.OrderTrendAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.AccountHistoryModel;
+import pro.haichuang.tzs144.model.ClientTypeModel;
 import pro.haichuang.tzs144.model.ClientTypeSearchModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.TrendModel;
 import pro.haichuang.tzs144.presenter.ClientHistoryTimeDatapPresenter;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.ClientFilterDialog;
+import pro.haichuang.tzs144.view.TimeDialog;
 
 /**
  * 客户历史数据
@@ -65,6 +68,8 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     private View headView;
     private TextView checkOutTime;
     private TextView filter;
+    private String startTime;
+    private String endTime;
     private ClientHistoryTimeDatapPresenter clientHistoryTimeDatapPresenter;
     private List<TrendModel>trendModelList;
 
@@ -81,6 +86,9 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Override
     protected void setUpView() {
+        startTime = "2019-10-22";
+        endTime = Utils.formatSelectTime(new Date());
+
         billOrder.setVisibility(View.GONE);
         refresh.setOnRefreshListener(this);
         orderPaymentAdapter = new OrderPaymentAdapter();
@@ -88,6 +96,23 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
         headView = LayoutInflater.from(getActivity()).inflate(R.layout.item_check_out_time,null);
         orderTrendAdapter.addHeaderView(headView);
+
+        headView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //时间选择器
+                TimeDialog timeDialog = new TimeDialog(getActivity(), new TimeDialog.SelectTimeListener() {
+                    @Override
+                    public void selectTime(String mStartTime, String mEndTime) {
+                       startTime = mStartTime;
+                       endTime = mEndTime;
+                        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
+                    }
+                });
+                timeDialog.show(getChildFragmentManager(), "");
+            }
+        });
+         filter = headView.findViewById(R.id.filter);
         checkOutTime = headView.findViewById(R.id.check_out_time);
         checkOutTime.setText(Utils.formatSelectTime(new Date()));
         checkOutTime.setOnClickListener(new View.OnClickListener() {
@@ -97,27 +122,15 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
                     @Override
                     public void onTimeSelect(Date date, View v) {
                         checkOutTime.setText(Utils.formatSelectTime(date));
+                        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
+                        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
                     }
                 })
                         .build();
                 pvTime.show();
             }
         });
-        filter = headView.findViewById(R.id.filter);
 
-        filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClientFilterDialog clientFilterDialog = new ClientFilterDialog(getActivity(), new ClientFilterDialog.ClientTypeListener() {
-                    @Override
-                    public void filterSearch(ClientTypeSearchModel clientTypeSearchModel) {
-
-                    }
-                });
-                clientFilterDialog.show(getChildFragmentManager(),"");
-
-            }
-        });
 
         recycleDataTrend.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recycleDataTrend.setAdapter(orderTrendAdapter);
@@ -146,14 +159,14 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     @Override
     protected void setUpData() {
         clientHistoryTimeDatapPresenter = new ClientHistoryTimeDatapPresenter(this);
-        clientHistoryTimeDatapPresenter.countLsOrder(Utils.transformTime(new Date()));
-        clientHistoryTimeDatapPresenter.findLsOrders("","2019-06-22",filter.getText().toString());
+        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
+        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
     }
 
     @Override
     public void onRefresh() {
-        clientHistoryTimeDatapPresenter.countLsOrder(Utils.transformTime(new Date()));
-        clientHistoryTimeDatapPresenter.findLsOrders("","2019-06-22",filter.getText().toString());
+        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
+        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
     }
 
     @Override

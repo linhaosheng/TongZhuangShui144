@@ -47,10 +47,10 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             baseViewHolder.setText(R.id.take_orders, "配送");
             order_state_img.setVisibility(View.GONE);
         } else if (type == 3) {
-            take_orders_view.setVisibility(View.GONE);
-           // baseViewHolder.setText(R.id.take_orders, "");
+            baseViewHolder.setText(R.id.take_orders, "知道了");
             order_state_img.setVisibility(View.GONE);
         }else if (type==4){
+            take_orders_view.setVisibility(View.GONE);
             baseViewHolder.setText(R.id.take_orders, "知道了");
             order_state_img.setVisibility(View.VISIBLE);
 
@@ -87,7 +87,7 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
         try {
             float distanceData = Float.parseFloat(dataBean.getDistance());
             if (distanceData>1000){
-                distance =  "距离"+distanceData/1000+"km";
+                distance =  "距离"+distanceData/1000+"m";
             }else {
                 distance =  "距离"+distanceData+"km";
             }
