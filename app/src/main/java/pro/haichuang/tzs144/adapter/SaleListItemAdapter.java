@@ -70,42 +70,44 @@ public class SaleListItemAdapter extends BaseQuickAdapter<SaleListModel.DataBean
         .setText(R.id.sale_distance,sale_distance);
 
 
+        TextView order_num_txt = baseViewHolder.getView(R.id.order_num);
+        TextView clinet_name_txt = baseViewHolder.getView(R.id.clinet_name);
+        TextView phone_txt = baseViewHolder.getView(R.id.phone);
+        TextView address_txt = baseViewHolder.getView(R.id.address);
+        TextView address_detail_txt = baseViewHolder.getView(R.id.address_detail);
+        TextView pay_way_txt = baseViewHolder.getView(R.id.pay_way);
+        TextView total_price_txt = baseViewHolder.getView(R.id.total_price);
+        TextView need_price_txt = baseViewHolder.getView(R.id.need_price);
+        TextView actual_price_txt = baseViewHolder.getView(R.id.actual_price);
+        TextView sale_distance_txt = baseViewHolder.getView(R.id.sale_distance);
+        TextView time_txt = baseViewHolder.getView(R.id.time);
+
         if ("true".equals(dataBean.getIsWaterRead())){
-            TextView order_num_txt = baseViewHolder.getView(R.id.order_num);
             order_num_txt.setTextColor(Color.RED);
-
-            TextView clinet_name_txt = baseViewHolder.getView(R.id.clinet_name);
             clinet_name_txt.setTextColor(Color.RED);
-
-            TextView phone_txt = baseViewHolder.getView(R.id.phone);
             phone_txt.setTextColor(Color.RED);
-
-            TextView address_txt = baseViewHolder.getView(R.id.address);
             address_txt.setTextColor(Color.RED);
-
-            TextView address_detail_txt = baseViewHolder.getView(R.id.address_detail);
             address_detail_txt.setTextColor(Color.RED);
-
-            TextView pay_way_txt = baseViewHolder.getView(R.id.pay_way);
             pay_way_txt.setTextColor(Color.RED);
-
-            TextView total_price_txt = baseViewHolder.getView(R.id.total_price);
             total_price_txt.setTextColor(Color.RED);
-
-            TextView need_price_txt = baseViewHolder.getView(R.id.need_price);
             need_price_txt.setTextColor(Color.RED);
 
-            TextView actual_price_txt = baseViewHolder.getView(R.id.actual_price);
             actual_price_txt.setTextColor(Color.RED);
-
-            TextView sale_distance_txt = baseViewHolder.getView(R.id.sale_distance);
             sale_distance_txt.setTextColor(Color.RED);
-
-            TextView time_txt = baseViewHolder.getView(R.id.time);
             time_txt.setTextColor(Color.RED);
+        }else {
+            order_num_txt.setTextColor(Color.parseColor("#000000"));
+            clinet_name_txt.setTextColor(Color.parseColor("#333333"));
+            phone_txt.setTextColor(Color.parseColor("#333333"));
+            address_txt.setTextColor(Color.parseColor("#333333"));
+            address_detail_txt.setTextColor(Color.parseColor("#333333"));
+            pay_way_txt.setTextColor(Color.parseColor("#333333"));
+            total_price_txt.setTextColor(Color.parseColor("#333333"));
+            need_price_txt.setTextColor(Color.parseColor("#333333"));
 
+            actual_price_txt.setTextColor(Color.parseColor("#333333"));
+            sale_distance_txt.setTextColor(Color.parseColor("#333333"));
+            time_txt.setTextColor(Color.parseColor("#333333"));
         }
-
-
     }
 }

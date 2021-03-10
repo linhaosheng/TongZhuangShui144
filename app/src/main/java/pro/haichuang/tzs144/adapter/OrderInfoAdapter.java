@@ -87,9 +87,9 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
         try {
             float distanceData = Float.parseFloat(dataBean.getDistance());
             if (distanceData>1000){
-                distance =  "距离"+distanceData/1000+"m";
+                distance =  "距离"+distanceData/1000+"km";
             }else {
-                distance =  "距离"+distanceData+"km";
+                distance =  "距离"+distanceData+"m";
             }
         }catch (Exception e){
             e.printStackTrace();

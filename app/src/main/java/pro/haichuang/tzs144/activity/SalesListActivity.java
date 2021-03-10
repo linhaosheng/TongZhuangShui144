@@ -137,7 +137,13 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                     BottomMenu.show(SalesListActivity.this, clientlist, new OnMenuItemClickListener() {
                         @Override
                         public void onClick(String text, int index) {
-                            cutomerType = text;
+                            page = 1;
+                            lastPage = false;
+                            if (text.equals("全部客户")){
+                                cutomerType = "";
+                            }else {
+                                cutomerType = text;
+                            }
                             salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, page);
                         }
                     });
@@ -190,7 +196,8 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         for (ClientTypeModel.DataBean dataBean : clientTypeModel.getData()) {
             clientlist.add(dataBean.getName());
         }
-        cutomerType = clientlist.get(0).toString();
+        clientlist.add("全部客户");
+        cutomerType = "";
         startTime = "2020-10-10";
         endTime = Utils.formatSelectTime(new Date());
         salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, page);
@@ -274,7 +281,6 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         Utils.showCenterTomast(error);
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -317,6 +323,5 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         }
         Log.i(TAG, "onMessageEvent===");
     }
-
 }
 

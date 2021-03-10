@@ -100,6 +100,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     private boolean lastPage;
     private int currentPage = 1;
+    private boolean lastOrder = true;
 
     public OrderInfoFragment() {
         super();
@@ -246,6 +247,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 selectTime.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.set_bg_btn50));
                 currentPage = 1;
                 lastPage = false;
+                lastOrder = true;
                 orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
             }
         });
@@ -253,6 +255,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                lastOrder = false;
                 selectTime.setTextColor(Color.parseColor("#32C5FF"));
                 lastTime.setTextColor(Color.parseColor("#333333"));
                 selectTime.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.set_bg_btn24));
@@ -290,14 +293,18 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     protected void setUpData() {
         orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
-        orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
+        orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
     }
 
     @Override
     public void onRefresh() {
         currentPage = 1;
         lastPage = false;
-        orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
+        if (lastOrder){
+            orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+        }else {
+            orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
+        }
     }
 
     @Override

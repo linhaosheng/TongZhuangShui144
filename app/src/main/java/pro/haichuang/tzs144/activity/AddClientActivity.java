@@ -323,7 +323,7 @@ public class AddClientActivity extends BaseActivity implements ILoadDataView<Str
                     Utils.showCenterTomast("请输入联系电话");
                     return;
                 }
-                if (monopoly.getRightText().contains("请选择")) {
+                if (monopoly.getRightText().contains("请选择") && monopoly.getVisibility()==View.VISIBLE) {
                     Utils.showCenterTomast("请选择是否专卖");
                     return;
                 }
