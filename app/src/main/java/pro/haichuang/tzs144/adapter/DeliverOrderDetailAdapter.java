@@ -24,10 +24,15 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
     private boolean showTicket_type;
     private Context context;
     private SelectWaterListener selectWaterListener;
+    private CaculateMoneyListener caculateMoneyListener;
 
     public DeliverOrderDetailAdapter(Context context) {
         super(R.layout.item_deliver_order_detail);
         this.context = context;
+    }
+
+    public void setCaculateMoneyListener(CaculateMoneyListener caculateMoneyListener){
+        this.caculateMoneyListener = caculateMoneyListener;
     }
 
     public void setSelectWaterListener(SelectWaterListener selectWaterListener){
@@ -53,8 +58,45 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
         List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = item.getBindMaterList();
         try {
-            helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
-            .setText(R.id.shop_num_tong,item.getRecycleNum()+"");
+            if (bindMaterList.size()==0){
+                helper.getView(R.id.recycle_material_view).setVisibility(View.GONE);
+            }else {
+                helper.getView(R.id.recycle_material_view).setVisibility(View.VISIBLE);
+
+                if (bindMaterList.size()==1){
+                    helper.getView(R.id.recycle_type_view1).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view2).setVisibility(View.GONE);
+                    helper.getView(R.id.recycle_type_view3).setVisibility(View.GONE);
+                    helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
+                            .setText(R.id.shop_num_tong,bindMaterList.get(0).getNum()+"");
+
+                }else if (bindMaterList.size()==2){
+                    helper.getView(R.id.recycle_type_view1).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view2).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view3).setVisibility(View.GONE);
+
+                    helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
+                            .setText(R.id.shop_num_tong,bindMaterList.get(0).getNum()+"");
+
+                    helper.setText(R.id.recycle_type2,bindMaterList.get(1).getName())
+                            .setText(R.id.shop_num_tong2,bindMaterList.get(1).getNum()+"");
+
+                }else {
+                    helper.getView(R.id.recycle_type_view1).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view2).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view3).setVisibility(View.VISIBLE);
+
+                    helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
+                            .setText(R.id.shop_num_tong,bindMaterList.get(0).getNum()+"");
+
+                    helper.setText(R.id.recycle_type2,bindMaterList.get(1).getName())
+                            .setText(R.id.shop_num_tong2,bindMaterList.get(1).getNum()+"");
+
+                    helper.setText(R.id.recycle_type3,bindMaterList.get(2).getName())
+                            .setText(R.id.shop_num_tong3,bindMaterList.get(2).getNum()+"");
+                }
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -139,6 +181,8 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         LSettingItem select_water_num =  helper.getView(R.id.select_water_num);
         if (item.getWaterNum()!=0){
             select_water_num.setEditinput(item.getWaterNum()+"");
+        }else {
+            select_water_num.setEditinput("");
         }
         select_water_num.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
@@ -152,6 +196,10 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
                 }catch (Exception e){
                     e.printStackTrace();
+                }finally {
+                    if (caculateMoneyListener!=null){
+                        caculateMoneyListener.caculate();
+                    }
                 }
             }
         });
@@ -159,6 +207,8 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         LSettingItem select_deduction_nunm =  helper.getView(R.id.select_deduction_nunm);
         if (item.getWaterDeductNum()!=0){
             select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
+        }else {
+            select_deduction_nunm.setEditinput("");
         }
         select_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
@@ -170,6 +220,10 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();
+                }finally {
+                    if (caculateMoneyListener!=null){
+                        caculateMoneyListener.caculate();
+                    }
                 }
             }
         });
@@ -177,6 +231,8 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         LSettingItem reward_deduction_nunm =  helper.getView(R.id.reward_deduction_nunm);
         if (item.getCouponDeductNum()!=0){
             reward_deduction_nunm.setEditinput(item.getCouponDeductNum()+"");
+        }else {
+            reward_deduction_nunm.setEditinput("");
         }
         reward_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
@@ -188,6 +244,10 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();
+                }finally {
+                    if (caculateMoneyListener!=null){
+                        caculateMoneyListener.caculate();
+                    }
                 }
             }
         });
@@ -195,6 +255,8 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         LSettingItem month_deduction_nunm =  helper.getView(R.id.month_deduction_nunm);
         if (item.getMonthDeductNum()!=0){
             reward_deduction_nunm.setEditinput(item.getMonthDeductNum()+"");
+        }else {
+            reward_deduction_nunm.setEditinput("");
         }
         month_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
@@ -206,6 +268,10 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();
+                }finally {
+                    if (caculateMoneyListener!=null){
+                        caculateMoneyListener.caculate();
+                    }
                 }
             }
         });
@@ -213,5 +279,9 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
     public interface SelectWaterListener{
         void selectClick(int position);
+    }
+
+    public interface CaculateMoneyListener{
+        void caculate();
     }
 }

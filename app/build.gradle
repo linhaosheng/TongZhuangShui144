@@ -121,6 +121,4 @@ dependencies {
 
     implementation 'com.tencent.bugly:crashreport:latest.release'
 
-    implementation 'com.github.wanglu1209:PhotoViewer:0.50'
-
 }

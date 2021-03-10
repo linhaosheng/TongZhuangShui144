@@ -93,10 +93,10 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
     @Override
     protected void setUpData() {
-        returnDetailActivityPresenter = new ReturnDetailActivityPresenter(this);
-        //returnDetailActivityPresenter.findQsstLogs();
-    }
 
+        returnDetailActivityPresenter = new ReturnDetailActivityPresenter(this);
+        returnDetailActivityPresenter.findQsstLogs(startTime,endTime,id,currentPage,"");
+    }
 
 
     @OnClick({R.id.back, R.id.filter})

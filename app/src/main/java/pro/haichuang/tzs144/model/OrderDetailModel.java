@@ -288,7 +288,6 @@ public class OrderDetailModel {
             private int monthDeductNum;
             private List<String> materialList;
             private List<BindMaterList> bindMaterList;
-            private int recycleNum;
             private boolean showWater;
             private boolean showReward;
             private boolean showMonth;
@@ -341,13 +340,6 @@ public class OrderDetailModel {
                 this.orderGoodsId = orderGoodsId;
             }
 
-            public int getRecycleNum() {
-                return recycleNum;
-            }
-
-            public void setRecycleNum(int recycleNum) {
-                this.recycleNum = recycleNum;
-            }
 
             public List<BindMaterList> getBindMaterList() {
                 return bindMaterList;
@@ -441,6 +433,15 @@ public class OrderDetailModel {
         public static class BindMaterList{
            public String name;
            private int id;
+           private int num;
+
+            public int getNum() {
+                return num;
+            }
+
+            public void setNum(int num) {
+                this.num = num;
+            }
 
             public String getName() {
                 return name;

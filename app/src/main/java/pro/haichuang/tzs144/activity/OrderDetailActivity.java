@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
+import com.kongzue.dialog.v3.BottomMenu;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,6 +34,8 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AddOrderAdapter;
 import pro.haichuang.tzs144.adapter.OrderDetailAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AreaEvent;
+import pro.haichuang.tzs144.model.AreaModel;
 import pro.haichuang.tzs144.model.MessageEvent;
 import pro.haichuang.tzs144.model.OrderDetailDataModel;
 import pro.haichuang.tzs144.model.OrderDetailModel;
@@ -42,6 +46,7 @@ import pro.haichuang.tzs144.model.UpdateOrderEvent;
 import pro.haichuang.tzs144.presenter.OrderDetailActivityPresenter;
 import pro.haichuang.tzs144.presenter.OrderDetailPresenter;
 import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
@@ -118,6 +123,10 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     private int orderStatus;
     private String orderNo;
 
+    private List<CharSequence> areaList;
+    private List<CharSequence> subAreaList;
+    private AreaModel areaModel;
+
     @Override
     protected int setLayoutResourceID() {
         return R.layout.activity_order_detail;
@@ -146,6 +155,19 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         if (typeId == 0 || typeId==1) {
             recordTime.setVisibility(View.GONE);
         }
+        /**
+         * 所在片区
+         */
+        subAreaList = new ArrayList<>();
+        areaList = new ArrayList<>();
+        String areaJson = SPUtils.getString(Config.FIND_AREA, "");
+        if (!areaJson.equals("")) {
+            areaModel = Utils.gsonInstane().fromJson(areaJson, AreaModel.class);
+            for (AreaModel.DataBean dataBean : areaModel.getData()) {
+                areaList.add(dataBean.getName());
+            }
+        }
+
     }
 
 
@@ -156,7 +178,13 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
                 finish();
                 break;
             case R.id.switch_order:
-                orderDetailPresenter.turnOrder(id);
+                BottomMenu.show(OrderDetailActivity.this, areaList, new OnMenuItemClickListener() {
+                    @Override
+                    public void onClick(String text, int index) {
+                        orderDetailPresenter.findAreas(String.valueOf(areaModel.getData().get(index).getId()));
+                    }
+                });
+
                 break;
             case R.id.take_order:
                 orderDetailPresenter.takeOrder(id);
@@ -263,7 +291,24 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
             takeOrder.setVisibility(View.GONE);
             switchOrder.setVisibility(View.GONE);
         }
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AreaEvent event) {
+        if (event != null) {
+            List<AreaModel.DataBean> data = event.dataBean.getData();
+            subAreaList.clear();
+            for (AreaModel.DataBean dataBean : data) {
+                subAreaList.add(dataBean.getName());
+            }
+            BottomMenu.show(OrderDetailActivity.this, subAreaList, new OnMenuItemClickListener() {
+                @Override
+                public void onClick(String text, int index) {
+                    int honeycombGridId = data.get(index).getId();
+                    orderDetailPresenter.turnOrder(id,honeycombGridId);
+                }
+            });
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

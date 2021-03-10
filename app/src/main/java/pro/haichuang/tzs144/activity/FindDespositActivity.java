@@ -94,8 +94,8 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
 
     @Override
     protected void setUpData() {
-
         searchEdit.setText("");
+        searchDesposit(searchEdit.getText().toString());
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -13,6 +13,8 @@ import java.util.Map;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.iview.IUpLoadFileView;
 import pro.haichuang.tzs144.model.AddOrderModel;
+import pro.haichuang.tzs144.model.AreaEvent;
+import pro.haichuang.tzs144.model.AreaModel;
 import pro.haichuang.tzs144.model.FileUploadEvent;
 import pro.haichuang.tzs144.model.OrderDetailDataModel;
 import pro.haichuang.tzs144.model.OrderDetailModel;
@@ -98,9 +100,10 @@ public class OrderDetailActivityPresenter {
     /**
      * [首页]-转订单
      */
-    public void turnOrder(String id){
+    public void turnOrder(String id,int mainId){
         Map<String,Object>params = new ArrayMap<>();
         params.put("id",id);
+        params.put("mainId",mainId);
 
         HttpRequestEngine.postRequest(ConfigUrl.TURN_ORDER, params, new HttpRequestResultListener() {
             @Override
@@ -301,4 +304,31 @@ public class OrderDetailActivityPresenter {
             }
         });
     }
+    /**
+     * [客户]获取所在片区列表
+     * @param parentId
+     */
+    public void findAreas(String parentId){
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("parentId",parentId);
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_AREAS, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                AreaModel areaModel = Utils.gsonInstane().fromJson(result, AreaModel.class);
+                EventBus.getDefault().post(new AreaEvent(areaModel));
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
+
+    }
+
 }
