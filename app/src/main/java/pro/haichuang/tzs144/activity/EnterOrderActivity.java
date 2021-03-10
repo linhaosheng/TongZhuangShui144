@@ -52,6 +52,7 @@ import pro.haichuang.tzs144.model.DespositEvent;
 import pro.haichuang.tzs144.model.MaterialModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.SaleDataModel;
+import pro.haichuang.tzs144.model.ShopDeleveModel;
 import pro.haichuang.tzs144.model.ShopModel;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.UploadFileModel;
@@ -334,7 +335,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         });
     }
 
-
     /**
      * 显示大图
      * @param path
@@ -405,6 +405,10 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
                 if (shopDetail.getVisibility()==View.VISIBLE){
                     Utils.showCenterTomast("请点击确认添加按钮");
+                    return;
+                }
+                boolean despositTips = tipOpenDesposit();
+                if (despositTips){
                     return;
                 }
                 int distance = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, dataBean.getLongitude(), dataBean.getLatitude());
@@ -512,8 +516,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     waterId = -1;
                     selectWaterNum.setRightText("");
                     selectDeductionNunm.setRightText("");
-                }else {
-                    Log.i("TAG===","waterId====-1");
                 }
 
                 if (!rewardUrl.equals("")){
@@ -645,8 +647,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         });
     }
 
-
-
     /**
      * 打开相册选择图片
      */
@@ -738,6 +738,55 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         }
     }
 
+    public boolean tipOpenDesposit(){
+
+        int materialNum = 0;
+        int shopNum = 0;
+        try {
+            for (AddOrderModel.GoodsListBean goodsListBean : goodsListBeans){
+                List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
+                for (MaterialModel.DataBean dataBean : materials){
+                    materialNum +=dataBean.getNum();
+                }
+                shopNum+=Integer.parseInt(goodsListBean.getNum());
+            }
+            if (shopNum<materialNum){
+                // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
+                String content = "多了"+(materialNum - shopNum)+"个回收材料，请单独退押";
+                MessageDialog.show(this, "提示", content, "确定")
+                        .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                            @Override
+                            public boolean onClick(BaseDialog baseDialog, View v) {
+                                try {
+                                    List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
+                                    List<AddOrderModel.GoodsListBean>tempData = new ArrayList<>();
+
+                                    for (int i = 0;i<data.size();i++){
+                                        int goodsNum =  Integer.parseInt(data.get(i).getNum());
+                                        AddOrderModel.GoodsListBean goodsListBean = data.get(i);
+                                        List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
+                                        MaterialModel.DataBean dataBean = materials.get(0);
+                                        dataBean.setNum(goodsNum);
+                                        materials.set(0,dataBean);
+                                        goodsListBean.setMaterials(materials);
+                                        tempData.add(goodsListBean);
+                                    }
+                                    addOrderAdapter.setList(tempData);
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                return false;
+                            }
+                        });
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     /**
      * 判断是否需要添加开押单
      * @return
@@ -760,7 +809,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
                             @Override
                             public boolean onClick(BaseDialog baseDialog, View v) {
-
                                 addOrderDepositDialog = new AddOrderDepositDialog(EnterOrderActivity.this, String.valueOf(orderId), dataBean.getId(), new AddOrderDepositDialog.StartDespositListener() {
                                     @Override
                                     public void despositResult(boolean success) {
@@ -772,7 +820,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                                 addOrderDepositDialog.show(getSupportFragmentManager(),"");
                                 return true;
                             }
-                        });
+                        }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
+                    @Override
+                    public boolean onClick(BaseDialog baseDialog, View v) {
+                        finish();
+                        return false;
+                    }
+                });
                 return true;
             }
         }catch (Exception e){

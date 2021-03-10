@@ -22,7 +22,7 @@
             android:layout_weight="7"
             android:layout_height="@dimen/dp_35"
             android:drawableLeft="@mipmap/search"
-            android:hint="请输入商品关键字"
+            android:hint="请输入客户名称关键字搜索"
             android:textSize="13sp"
             android:drawablePadding="@dimen/dp_10"
             android:background="@drawable/set_bg_btn11"

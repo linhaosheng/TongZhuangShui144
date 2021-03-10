@@ -33,20 +33,20 @@ public class OrderTrendAdapter extends BaseQuickAdapter<TrendModel, BaseViewHold
         String lastOne = trendModel.getLastOne().replace("+","").replace("-","");
 
         if (trendModel.getLastOne().contains("+")){
-            lastTrend.setTextColor(Color.parseColor("#E02020"));
+            lastTrend.setTextColor(Color.parseColor("#3C9C25"));
             baseViewHolder.setText(R.id.last_tend,"↑"+lastOne+"%");
         }else {
-            lastTrend.setTextColor(Color.parseColor("#3C9C25"));
+            lastTrend.setTextColor(Color.parseColor("#E02020"));
            baseViewHolder.setText(R.id.last_tend,"↓"+lastOne+"%");
         }
 
         String lastTwo = trendModel.getLastTwo().replace("+","").replace("-","");
 
         if (trendModel.getLastTwo().contains("+")){
-            tendWeek.setTextColor(Color.parseColor("#E02020"));
+            tendWeek.setTextColor(Color.parseColor("#3C9C25"));
             baseViewHolder.setText(R.id.tend_week,"↑"+lastTwo+"%");
         }else {
-            tendWeek.setTextColor(Color.parseColor("#3C9C25"));
+            tendWeek.setTextColor(Color.parseColor("#E02020"));
             baseViewHolder.setText(R.id.tend_week,"↓"+lastTwo+"%");
         }
     }
