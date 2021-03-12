@@ -438,18 +438,18 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 if (goodsListBean.getCouponImg()!=null && !goodsListBean.getCouponImg().equals("")) {
                     couponDeductNum = goodsListBean.getCouponDeductNum();
                 }
-                amount_receivable += (waterDeductNum + couponDeductNum)*goodsListBean.getGoodsPrice();
-                actual_amount += monthDeductNum * goodsListBean.getGoodsPrice();
+                amount_receivable += (waterDeductNum + couponDeductNum)*goodsListBean.getGoodsPrice();  //应收金额
+                actual_amount += monthDeductNum * goodsListBean.getGoodsPrice();   //实收金额
+                Log.i("TAG====","actual_amount===="+actual_amount +"==monthDeductNum==="+monthDeductNum);
             }
 
             amountReceivableNum.setText((totalPrice - amount_receivable) +"");
-            actualAmount.setText((totalPrice - amount_receivable - actual_amount)+"");
+            actualAmount.setText(((totalPrice - amount_receivable) - actual_amount)+"");
 
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-
 
     @OnClick({R.id.back,R.id.receive_payment,R.id.void_sale_btn,R.id.delivery_btn})
     public void onViewClicked(View view) {

@@ -65,7 +65,7 @@ public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataB
         LSettingItem detail_address = baseViewHolder.getView(R.id.detail_address);
 
         if (data.getNewAddress()!=null && !"".equals(data.getNewAddress())){
-            detail_address.setRightText(data.getNewAddress());
+            detail_address.setEditInfo(data.getNewAddress());
         }
 
         detail_address.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
@@ -73,6 +73,15 @@ public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataB
             public void click(boolean isChecked, View view) {
                 Intent intent = new Intent(context, AddressSearchActivity.class);
                 context.startActivityForResult(intent, position);
+            }
+        });
+
+        detail_address.setEditTextListner(new LSettingItem.EditTextListner() {
+            @Override
+            public void editListner(String text) {
+                if (addressNameListener!=null){
+                    addressNameListener.addressDetail(baseViewHolder.getPosition(),text);
+                }
             }
         });
 
@@ -92,5 +101,6 @@ public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataB
 
     public static interface AddressNameListener{
         void addressName(int position,String name);
+        void addressDetail(int position,String detail);
     }
 }

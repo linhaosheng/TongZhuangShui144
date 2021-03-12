@@ -133,6 +133,14 @@ public class AddClientActivity extends BaseActivity implements ILoadDataView<Str
                 Intent intent = new Intent(AddClientActivity.this, AddressSearchActivity.class);
                 startActivityForResult(intent, 100);
             }
+
+            @Override
+            public void editText(int position,String text) {
+                AddressBean addressBean = addressBeanList.get(position);
+                addressBean.setAddressDetail(text);
+                addressBeanList.set(position,addressBean);
+
+            }
         });
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(addClientAddressAdapter);
@@ -272,8 +280,8 @@ public class AddClientActivity extends BaseActivity implements ILoadDataView<Str
             public void click(boolean isChecked, View view) {
                 if (addressBeanList.size() > 0) {
                     AddressBean addressBean = addressBeanList.get(addressBeanList.size() - 1);
-                    if (addressBean.getAddress() == null) {
-                        Utils.showCenterTomast("请输入地址名称和详细地址");
+                    if (addressBean.getAddress() == null || addressBean.getAddressDetail()==null) {
+                        Utils.showCenterTomast("请输入地址信息");
                         return;
                     } else {
                         if (clientType.getRightText().contains("终端")){
@@ -354,7 +362,7 @@ public class AddClientActivity extends BaseActivity implements ILoadDataView<Str
                 for (AddressBean addressBean : addressBeanList) {
                     AddClientModel.AddressListBean addressListBean = new AddClientModel.AddressListBean();
                     addressListBean.setAddressName(addressBean.getAddressName());
-                    addressListBean.setAddress(addressBean.getAddressInfo() + " " + addressBean.getAddress());
+                    addressListBean.setAddress(addressBean.getAddressInfo() + " " + addressBean.getAddress() + " "+addressBean.getAddressDetail());
                     addressListBean.setLatitude(addressBean.getLatitude() + "");
                     addressListBean.setLongitude(addressBean.getLongitude() + "");
                     listBeans.add(addressListBean);

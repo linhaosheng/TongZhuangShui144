@@ -114,6 +114,19 @@
         android:textColorHint="#333333"
         />
 
+    <EditText
+        android:id="@+id/edit_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/left_view"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:textSize="14sp"
+        android:background="@null"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dp_100"/>
+
     <View
         android:id="@+id/underline"
         android:layout_width="match_parent"

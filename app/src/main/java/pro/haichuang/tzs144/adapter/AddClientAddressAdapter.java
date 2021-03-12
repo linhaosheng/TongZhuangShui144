@@ -29,9 +29,9 @@ public class AddClientAddressAdapter extends BaseQuickAdapter<AddressBean, BaseV
     protected void convert(@NonNull BaseViewHolder helper, AddressBean item) {
         LSettingItem address = helper.getView(R.id.address_name);
         if (item.getAddress()!=null){
-            address.setRightText(item.getAddressName());
+            address.setEditinput(item.getAddressName());
         }else {
-            address.setRightText("请输入");
+            address.setEditinput("");
         }
         LSettingItem detailAddress = helper.getView(R.id.detail_address);
 
@@ -48,9 +48,26 @@ public class AddClientAddressAdapter extends BaseQuickAdapter<AddressBean, BaseV
         }else {
             detailAddress.setRightText("请选择");
         }
+
+        LSettingItem address_detail = helper.getView(R.id.address_detail);
+        address_detail.setEditTextListner(new LSettingItem.EditTextListner() {
+            @Override
+            public void editListner(String text) {
+                if (lSettingItemClickListner!=null){
+                    int position = helper.getPosition();
+                    lSettingItemClickListner.editText(position,text);
+                }
+            }
+        });
+        if (item.getAddressDetail()!=null){
+            address_detail.setEditinput(item.getAddressDetail());
+        }else {
+            address_detail.setEditinput("");
+        }
     }
 
     public static interface LSettingItemClickListner{
         void itemClick(int position);
+        void editText(int position,String text);
     }
 }

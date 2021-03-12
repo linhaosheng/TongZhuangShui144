@@ -75,6 +75,7 @@ public class LSettingItem extends RelativeLayout {
     private boolean mChecked;
     /*点击事件*/
 
+    private EditText editInfo;
     private EditText editinput;
     Button rightBtn;
 
@@ -241,7 +242,14 @@ public class LSettingItem extends RelativeLayout {
                 }else {
                     editinput.setVisibility(GONE);
                 }
-            }else if (attr==R.styleable.LSettingView_isShowRightBtn){
+            }else if (attr==R.styleable.LSettingView_showEditInfo){
+                if (a.getBoolean(attr,false)){
+                    editInfo.setVisibility(VISIBLE);
+                }else {
+                    editInfo.setVisibility(GONE);
+                }
+            }
+            else if (attr==R.styleable.LSettingView_isShowRightBtn){
                 if (a.getBoolean(attr,false)){
                     rightBtn.setVisibility(VISIBLE);
                 }else {
@@ -304,6 +312,7 @@ public class LSettingItem extends RelativeLayout {
         mTvLeftInfoText = mView.findViewById(R.id.tv_left_info);
         rightBtn = mView.findViewById(R.id.tv_right_btn);
         editinput = mView.findViewById(R.id.edit_input);
+        editInfo = mView.findViewById(R.id.edit_info);
 
         rightBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -333,8 +342,36 @@ public class LSettingItem extends RelativeLayout {
               }
             }
         });
+
+        editInfo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (editInfo.getText()!=null){
+                    if (editTextListner!=null){
+                        editTextListner.editListner(editInfo.getText().toString());
+                    }
+                }
+            }
+        });
     }
 
+    public void setEditInfo(String text){
+        editInfo.setText(text);
+    }
+
+    public String getEditInfoData(){
+        return editInfo.getText().toString();
+    }
 
 
     /**

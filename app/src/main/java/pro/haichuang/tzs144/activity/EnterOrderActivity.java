@@ -585,9 +585,9 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             if (goodsListBean1.getDeductMonth()!=null){
                 //实收价格  商品总额-应收—月结；
                 int deductMonthNum = Integer.parseInt(goodsListBean1.getDeductMonth().getDeductNum());
-                actual_amount += totalPrice - (amount_receivable + deductMonthNum * shopPrice);
+                actual_amount +=   amount_receivable - deductMonthNum * shopPrice;
             }else {
-                actual_amount += totalPrice - amount_receivable;
+                actual_amount += amount_receivable;
             }
 
         }

@@ -101,6 +101,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
     private double longitude;
     private double latitude;
     private String addressName;
+    private String detailAddress;
     private int addressId;
     private AddressBean addressBean;
 
@@ -121,6 +122,13 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
             @Override
             public void addressName(int position,String name) {
                 addressName = name;
+            }
+
+            @Override
+            public void addressDetail(int position, String detail) {
+                if (addressBean!=null){
+                    addressBean.setAddress(detail);
+                }
             }
         });
         addreeRecycle.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
@@ -150,6 +158,23 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                        editType = 1;
                        ClientDetailModel.DataBean.AddressListBean addressListBean1 = addressListAdapter.getData().get(position);
                        addressListBean1.setEdit(true);
+                       addressListBean1.setNewAddress(addressListBean1.getAddress());
+                       addressListBean1.setNewAddressName(addressListBean1.getAddressName());
+
+                       addressName = addressListBean1.getAddressName();
+                       if (addressBean==null){
+                           addressBean = new AddressBean();
+                       }
+                       addressBean.setAddress(addressListBean1.getAddress());
+                       addressBean.setAddressName(addressName);
+                       try {
+
+                           addressBean.setLatitude(Double.parseDouble(addressListBean1.getLatitude()));
+                           addressBean.setLongitude(Double.parseDouble(addressListBean1.getLongitude()));
+                       }catch (Exception e){
+                           e.printStackTrace();
+                       }
+
                        addressId = addressListBean1.getId();
                        Log.i(TAG,"addressId===="+addressId);
                        addressListAdapter.setData(position,addressListBean1);
@@ -311,6 +336,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
             }else {
                 businessPersion.setText("业务人员：无");
             }
+
 
             if (dataBean.getCustomerType().contains("经销商") ||dataBean.getCustomerType().contains("协议客户")){
                 addMaintainRecord.setVisibility(View.VISIBLE);

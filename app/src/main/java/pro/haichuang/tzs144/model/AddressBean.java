@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.model;
 
 public class AddressBean {
 
+    private String addressDetail;
     private String addressName;
     private String address;
     private String distance;
@@ -10,6 +11,14 @@ public class AddressBean {
     private double latitude;
     private boolean isSelect = false;
 
+
+    public String getAddressDetail() {
+        return addressDetail;
+    }
+
+    public void setAddressDetail(String addressDetail) {
+        this.addressDetail = addressDetail;
+    }
 
     public String getAddressName() {
         return addressName;

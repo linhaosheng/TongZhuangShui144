@@ -32,4 +32,20 @@
         app:rightIconSize="@dimen/dp_22"
         app:rightStyle="iconHide"
         app:rightText="请选择 >" />
+
+
+    <pro.haichuang.tzs144.view.LSettingItem
+        android:id="@+id/address_detail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:LtextColor="#000000"
+        app:isShowRightText="false"
+        app:isShowUnderLine="true"
+        app:leftText="*门牌号"
+        app:leftTextMarginLeft="@dimen/dp_10"
+        app:rightIconSize="@dimen/dp_22"
+        app:rightStyle="iconHide"
+        app:rightText="请输入"
+        app:showEditInput="true" />
+
 </LinearLayout>
