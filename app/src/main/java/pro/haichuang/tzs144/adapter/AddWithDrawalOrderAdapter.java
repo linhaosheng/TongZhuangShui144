@@ -47,6 +47,12 @@ public class AddWithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderM
         String with_drawal_name = "退押人 ："+dataBean.getReturnName();
         String with_drawal_end_time = "退押时间 ："+dataBean.getReturnTime();
 
+        if (dataBean.getReturnTime()==null || dataBean.getReturnTime().equals("")){
+            baseViewHolder.getView(R.id.with_drawal_end_time).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.with_drawal_end_time).setVisibility(View.VISIBLE);
+        }
+
         baseViewHolder.setText(R.id.deposit_number,deposit_number)
                 .setText(R.id.start_code,start_code)
                 .setText(R.id.end_code,end_code)

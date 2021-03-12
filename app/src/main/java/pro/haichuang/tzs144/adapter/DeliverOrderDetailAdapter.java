@@ -67,6 +67,8 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     helper.getView(R.id.recycle_type_view1).setVisibility(View.VISIBLE);
                     helper.getView(R.id.recycle_type_view2).setVisibility(View.GONE);
                     helper.getView(R.id.recycle_type_view3).setVisibility(View.GONE);
+                    helper.getView(R.id.recycle_type_view4).setVisibility(View.GONE);
+                    helper.getView(R.id.recycle_type_view5).setVisibility(View.GONE);
                     helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
                             .setText(R.id.shop_num_tong,bindMaterList.get(0).getNum()+"");
 
@@ -74,6 +76,8 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     helper.getView(R.id.recycle_type_view1).setVisibility(View.VISIBLE);
                     helper.getView(R.id.recycle_type_view2).setVisibility(View.VISIBLE);
                     helper.getView(R.id.recycle_type_view3).setVisibility(View.GONE);
+                    helper.getView(R.id.recycle_type_view4).setVisibility(View.GONE);
+                    helper.getView(R.id.recycle_type_view5).setVisibility(View.GONE);
 
                     helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
                             .setText(R.id.shop_num_tong,bindMaterList.get(0).getNum()+"");
@@ -81,10 +85,12 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     helper.setText(R.id.recycle_type2,bindMaterList.get(1).getName())
                             .setText(R.id.shop_num_tong2,bindMaterList.get(1).getNum()+"");
 
-                }else {
+                }else if (bindMaterList.size()==3){
                     helper.getView(R.id.recycle_type_view1).setVisibility(View.VISIBLE);
                     helper.getView(R.id.recycle_type_view2).setVisibility(View.VISIBLE);
                     helper.getView(R.id.recycle_type_view3).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view4).setVisibility(View.GONE);
+                    helper.getView(R.id.recycle_type_view5).setVisibility(View.GONE);
 
                     helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
                             .setText(R.id.shop_num_tong,bindMaterList.get(0).getNum()+"");
@@ -94,6 +100,46 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
                     helper.setText(R.id.recycle_type3,bindMaterList.get(2).getName())
                             .setText(R.id.shop_num_tong3,bindMaterList.get(2).getNum()+"");
+                }else if (bindMaterList.size()==4){
+                    helper.getView(R.id.recycle_type_view1).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view2).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view3).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view4).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view5).setVisibility(View.GONE);
+
+                    helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
+                            .setText(R.id.shop_num_tong,bindMaterList.get(0).getNum()+"");
+
+                    helper.setText(R.id.recycle_type2,bindMaterList.get(1).getName())
+                            .setText(R.id.shop_num_tong2,bindMaterList.get(1).getNum()+"");
+
+                    helper.setText(R.id.recycle_type3,bindMaterList.get(2).getName())
+                            .setText(R.id.shop_num_tong3,bindMaterList.get(2).getNum()+"");
+
+                    helper.setText(R.id.recycle_type4,bindMaterList.get(3).getName())
+                            .setText(R.id.shop_num_tong4,bindMaterList.get(3).getNum()+"");
+
+                }else {
+                    helper.getView(R.id.recycle_type_view1).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view2).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view3).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view4).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.recycle_type_view5).setVisibility(View.VISIBLE);
+
+                    helper.setText(R.id.recycle_type,bindMaterList.get(0).getName())
+                            .setText(R.id.shop_num_tong,bindMaterList.get(0).getNum()+"");
+
+                    helper.setText(R.id.recycle_type2,bindMaterList.get(1).getName())
+                            .setText(R.id.shop_num_tong2,bindMaterList.get(1).getNum()+"");
+
+                    helper.setText(R.id.recycle_type3,bindMaterList.get(2).getName())
+                            .setText(R.id.shop_num_tong3,bindMaterList.get(2).getNum()+"");
+
+                    helper.setText(R.id.recycle_type4,bindMaterList.get(3).getName())
+                            .setText(R.id.shop_num_tong4,bindMaterList.get(3).getNum()+"");
+
+                    helper.setText(R.id.recycle_type5,bindMaterList.get(4).getName())
+                            .setText(R.id.shop_num_tong5,bindMaterList.get(4).getNum()+"");
                 }
             }
 
@@ -254,9 +300,9 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
         LSettingItem month_deduction_nunm =  helper.getView(R.id.month_deduction_nunm);
         if (item.getMonthDeductNum()!=0){
-            reward_deduction_nunm.setEditinput(item.getMonthDeductNum()+"");
+            month_deduction_nunm.setEditinput(item.getMonthDeductNum()+"");
         }else {
-            reward_deduction_nunm.setEditinput("");
+            month_deduction_nunm.setEditinput("");
         }
         month_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override

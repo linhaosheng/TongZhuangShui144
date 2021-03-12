@@ -69,6 +69,7 @@ import pro.haichuang.tzs144.model.UpdateOrderEvent;
 import pro.haichuang.tzs144.presenter.OrderInfoFragmentPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.MyMapView;
 import pro.haichuang.tzs144.view.ShopDetailDialog;
 import pro.haichuang.tzs144.view.ShowMoreOrderInfoDialog;
 
@@ -90,6 +91,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     TextView selectTime;
     @BindView(R.id.map)
     MapView mapView;
+    @BindView(R.id.myMapView)
+    MyMapView myMapView;
 
     private OrderInfoAdapter orderInfoAdapter;
     private View headTimeView;
@@ -208,6 +211,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         }
         Log.i(TAG, "----id" + id);
         if (id == 1) {
+            myMapView.setVisibility(View.VISIBLE);
             mapView.setVisibility(View.VISIBLE);
             baiduMap = mapView.getMap();
             baiduMap.setMyLocationEnabled(true);
@@ -229,6 +233,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 }
             });
         }else {
+            myMapView.setVisibility(View.GONE);
             mapView.setVisibility(View.GONE);
         }
     }
@@ -431,6 +436,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                         orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1);
                           EventBus.getDefault().post(new PageEvent(event.type));
                     }else {
+                        refresh.setRefreshing(false);
                     }
                 }
                 Log.i(TAG, "onMessageEvent==id=" + event.type + " === id===" + id);

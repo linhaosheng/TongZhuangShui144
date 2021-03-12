@@ -194,7 +194,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         recycleData.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recycleData.setAdapter(deliverOrderDetailAdapter);
 
-        deliverOrderDetailAdapter.addChildClickViewIds(R.id.shop_add_tong,R.id.reduce_tong,R.id.shop_add_tong2,R.id.reduce_tong2,R.id.shop_add_tong3,R.id.reduce_tong3,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_reward,R.id.upload_month);
+        deliverOrderDetailAdapter.addChildClickViewIds(R.id.shop_add_tong,R.id.reduce_tong,R.id.shop_add_tong2,R.id.reduce_tong2,R.id.shop_add_tong3,R.id.reduce_tong3,R.id.shop_add_tong4,R.id.reduce_tong4,R.id.shop_add_tong5,R.id.reduce_tong5,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_reward,R.id.upload_month);
         deliverOrderDetailAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
@@ -253,7 +253,6 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                         bindMaterList6.set(1,bindMaterList7);
                         goodsListBean.setBindMaterList(bindMaterList6);
                         deliverOrderDetailAdapter.setData(position,goodsListBean);
-
                         break;
 
                     case R.id.shop_add_tong3:
@@ -281,6 +280,62 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                         bindMaterList11.setNum(recycleNum);
                         bindMaterList10.set(2,bindMaterList11);
                         goodsListBean.setBindMaterList(bindMaterList10);
+                        deliverOrderDetailAdapter.setData(position,goodsListBean);
+
+                        break;
+
+                    case R.id.shop_add_tong4:
+
+                        List<OrderDetailModel.DataBean.BindMaterList> bindMaterList12 = goodsListBean.getBindMaterList();
+                        OrderDetailModel.DataBean.BindMaterList bindMaterList13 = bindMaterList12.get(3);
+                        recycleNum = bindMaterList13.getNum() +1;
+                        bindMaterList13.setNum(recycleNum);
+                        bindMaterList12.set(3,bindMaterList13);
+
+                        goodsListBean.setBindMaterList(bindMaterList12);
+                        deliverOrderDetailAdapter.setData(position,goodsListBean);
+                        break;
+
+                    case R.id.reduce_tong4:
+
+                        List<OrderDetailModel.DataBean.BindMaterList> bindMaterList14 = goodsListBean.getBindMaterList();
+                        OrderDetailModel.DataBean.BindMaterList bindMaterList15 = bindMaterList14.get(3);
+                        recycleNum = bindMaterList15.getNum();
+                        if (recycleNum==0){
+                            return;
+                        }
+                        recycleNum = recycleNum - 1;
+                        bindMaterList15.setNum(recycleNum);
+                        bindMaterList14.set(3,bindMaterList15);
+                        goodsListBean.setBindMaterList(bindMaterList14);
+                        deliverOrderDetailAdapter.setData(position,goodsListBean);
+
+                        break;
+
+                    case R.id.shop_add_tong5:
+
+                        List<OrderDetailModel.DataBean.BindMaterList> bindMaterList16 = goodsListBean.getBindMaterList();
+                        OrderDetailModel.DataBean.BindMaterList bindMaterList17 = bindMaterList16.get(4);
+                        recycleNum = bindMaterList17.getNum() +1;
+                        bindMaterList17.setNum(recycleNum);
+                        bindMaterList16.set(4,bindMaterList17);
+
+                        goodsListBean.setBindMaterList(bindMaterList16);
+                        deliverOrderDetailAdapter.setData(position,goodsListBean);
+                        break;
+
+                    case R.id.reduce_tong5:
+
+                        List<OrderDetailModel.DataBean.BindMaterList> bindMaterList18 = goodsListBean.getBindMaterList();
+                        OrderDetailModel.DataBean.BindMaterList bindMaterList19 = bindMaterList18.get(4);
+                        recycleNum = bindMaterList19.getNum();
+                        if (recycleNum==0){
+                            return;
+                        }
+                        recycleNum = recycleNum - 1;
+                        bindMaterList19.setNum(recycleNum);
+                        bindMaterList18.set(4,bindMaterList19);
+                        goodsListBean.setBindMaterList(bindMaterList18);
                         deliverOrderDetailAdapter.setData(position,goodsListBean);
 
                         break;
@@ -416,6 +471,26 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     shopNum += goodsListBean.getGoodsNum();
                     for (OrderDetailModel.DataBean.BindMaterList bindMaterList : goodsListBean.getBindMaterList()){
                         materialNum += bindMaterList.getNum();
+                    }
+
+                    if (goodsListBean.isShowWater()){
+                       if (goodsListBean.getWaterName()==null || goodsListBean.getWaterName().equals("") ||goodsListBean.getWaterDeductNum()<=0 || goodsListBean.getWaterNum()<=0){
+                           Utils.showCenterTomast("请检查水票信息是否正确");
+                           return;
+                       }
+                    }
+
+                    if (goodsListBean.isShowMonth()){
+                        if (goodsListBean.getMonthImg()==null|| goodsListBean.getMonthImg().equals("") || goodsListBean.getMonthDeductNum()==0){
+                            Utils.showCenterTomast("请检查月结信息是否正确");
+                            return;
+                        }
+                    }
+                    if (goodsListBean.isShowReward()){
+                        if (goodsListBean.getCouponImg()==null || goodsListBean.getCouponImg().equals("") || goodsListBean.getCouponDeductNum()==0){
+                            Utils.showCenterTomast("请检查奖券信息是否正确");
+                            return;
+                        }
                     }
 
                     ShopDeleveModel.GoodsListBean goodsListBean1 = new ShopDeleveModel.GoodsListBean();

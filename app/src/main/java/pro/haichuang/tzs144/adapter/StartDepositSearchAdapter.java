@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.WithDrawalOrderModel;
+import rxhttp.wrapper.param.IFile;
 
 public class StartDepositSearchAdapter extends BaseQuickAdapter<WithDrawalOrderModel.DataBean, BaseViewHolder> {
 
@@ -46,6 +48,21 @@ public class StartDepositSearchAdapter extends BaseQuickAdapter<WithDrawalOrderM
 
         String with_drawal_time = "退押时间 ："+dataBean.getReturnTime();
         String with_drawal_name = "退押人 ："+dataBean.getReturnName();
+
+        if (dataBean.getReturnTime()==null || dataBean.getReturnTime().equals("")){
+            baseViewHolder.getView(R.id.with_drawal_time).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.with_drawal_time).setVisibility(View.VISIBLE);
+        }
+
+
+        if (dataBean.getReturnName()==null || dataBean.getReturnName().equals("")){
+            baseViewHolder.getView(R.id.with_drawal_name).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.with_drawal_name).setVisibility(View.VISIBLE);
+        }
+
+
 
         ImageView orderStateImg = baseViewHolder.getView(R.id.order_state);
         if (dataBean.getStatus()==0){

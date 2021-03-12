@@ -29,6 +29,7 @@ import pro.haichuang.tzs144.model.PageEvent;
 import pro.haichuang.tzs144.model.StatusUpdateEvent;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.CustomViewPager;
 
 /**
  * 订单
@@ -51,7 +52,6 @@ public class OrderFragment extends BaseFragment {
     private MyPagerAdapter myPagerAdapter;
     private List<Fragment> orderList;
     private List<String>orderTitleList;
-
 
     @Override
     public boolean lazyLoader() {
@@ -85,6 +85,7 @@ public class OrderFragment extends BaseFragment {
 
         myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(),orderList,orderTitleList);
 
+        //vpView.setSlidingEnable(true);
         vpView.setAdapter(myPagerAdapter);
         tabs.setupWithViewPager(vpView);
         tabs.setTabsFromPagerAdapter(myPagerAdapter);

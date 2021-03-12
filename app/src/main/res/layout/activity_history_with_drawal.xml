@@ -84,13 +84,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_50"
                     app:LtextColor="#000000"
-                    app:isShowRightText="true"
+                    app:isShowRightText="false"
                     app:leftText="押金编号"
                     app:leftTextMarginLeft="@dimen/dp_10"
                     app:rightIconSize="@dimen/dp_22"
                     app:rightStyle="iconHide"
                     app:rightText="请输入"
-                    app:showEditInput="false" />
+                    app:showEditInput="true" />
 
 
                 <pro.haichuang.tzs144.view.LSettingItem

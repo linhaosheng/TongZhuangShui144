@@ -57,6 +57,9 @@ public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataB
         if (data.isAddAddress()){
             baseViewHolder.getView(R.id.address).setVisibility(View.GONE);
             baseViewHolder.getView(R.id.address_detail).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.address).setVisibility(View.VISIBLE);
+            baseViewHolder.getView(R.id.address_detail).setVisibility(View.VISIBLE);
         }
 
         LSettingItem detail_address = baseViewHolder.getView(R.id.detail_address);

@@ -222,9 +222,17 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                 }else {
                     //地址编辑
                     if (editType==1){
+                        if (addressBean==null || addressName ==null || addressName.equals("")){
+                            Utils.showCenterTomast("请输入正确的地址名称和地址信息");
+                            return;
+                        }
                         clientDetailActivityPresenter.updateAddress(addressId,customerId,addressName,addressBean.getAddress(),addressBean.getLongitude(),addressBean.getLatitude());
 
                     }else if (editType==2){  //维修记录
+                        if (maintainInfo==null || maintainInfo.equals("")){
+                            Utils.showCenterTomast("请输入正确的维护信息");
+                            return;
+                        }
                      double distanceData = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, longitude, latitude);
                      clientDetailActivityPresenter.saveMaintainLog(editRecordId,customerId,maintainInfo,distanceData,Utils.formatSelectTime(new Date()));
                     }
@@ -259,6 +267,10 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                 startActivity(intent3);
                 break;
             case R.id.add_address:
+                if (tips.getText().toString().contains("保存")){
+                    Utils.showCenterTomast("请先保存地址，再添加");
+                    return;
+                }
                 tips.setText("保存");
                 editType = 1;
                 addressId = 0;
@@ -278,6 +290,8 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
     @Override
     public void successLoad(ClientDetailModel.DataBean dataBean) {
         WaitDialog.dismiss();
+        addressBean = null;
+        addressName = "";
         if (dataBean!=null){
             this.dataBean = dataBean;
             addressListAdapter.setList(dataBean.getAddressList());
@@ -354,6 +368,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                     Utils.showCenterTomast("删除失败");
                 }
             }else if (event.type==2){
+                maintainInfo = "";
                 if (event.status==Config.LOAD_SUCCESS){
                     tips.setText("订单记录");
                     orderRecord.setVisibility(View.GONE);
