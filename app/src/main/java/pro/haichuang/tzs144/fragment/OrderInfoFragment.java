@@ -436,6 +436,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                         orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1);
                           EventBus.getDefault().post(new PageEvent(event.type));
                     }else {
+                        Utils.showCenterTomast("操作失败");
                         refresh.setRefreshing(false);
                     }
                 }
