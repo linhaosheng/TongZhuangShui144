@@ -64,7 +64,7 @@ public class OrderInfoModel {
         private String timeTitle;
         private String timeRange;
         private String timeStatus;
-        private String orderType;
+        private int orderType;
         private String custoemrName;
         private String customerPhone;
         private String customerType;
@@ -150,11 +150,11 @@ public class OrderInfoModel {
             this.timeStatus = timeStatus;
         }
 
-        public String getOrderType() {
+        public int getOrderType() {
             return orderType;
         }
 
-        public void setOrderType(String orderType) {
+        public void setOrderType(int orderType) {
             this.orderType = orderType;
         }
 

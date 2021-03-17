@@ -65,19 +65,19 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
 
         String order_num = "订单编号："+dataBean.getOrderNo();
         String order_state = "";
-        if (dataBean.getOrderType().equals("0")){
+        if (dataBean.getOrderType()==0){
             order_state = "直接销售";
             shopOrderTv.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn45));
-        }else if (dataBean.getOrderType().equals("1")){
+        }else if (dataBean.getOrderType()==1){
             order_state = "补录订单";
             shopOrderTv.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn44));
-        }else if (dataBean.getOrderType().equals("2")){
+        }else if (dataBean.getOrderType()==2){
             order_state = "商城订单";
             shopOrderTv.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn12));
-        }else if (dataBean.getOrderType().equals("3")){
+        }else if (dataBean.getOrderType()==3){
             order_state = "电话订单";
             shopOrderTv.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn42));
-        }else if (dataBean.getOrderType().equals("4")){
+        }else if (dataBean.getOrderType()==4){
             order_state = "外卖订单";
             shopOrderTv.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn43));
         }
@@ -101,6 +101,12 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             customerType = "经销商";
         }else {
             customerType = dataBean.getCustomerType();
+        }
+
+        if (dataBean.getTimeRange()==null || dataBean.getTimeRange().equals("")){
+            baseViewHolder.getView(R.id.time_send).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.time_send).setVisibility(View.VISIBLE);
         }
         baseViewHolder.setText(R.id.order_num,order_num)
                 .setText(R.id.shop_order,order_state)

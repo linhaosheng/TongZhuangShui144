@@ -55,6 +55,12 @@ public class SaleListItemAdapter extends BaseQuickAdapter<SaleListModel.DataBean
         String time = "录入时间："+dataBean.getCreateTime();
         String sale_distance = "销售距离："+dataBean.getSalesDistance();
 
+        if (dataBean.getCreateTime()==null || dataBean.getCreateTime().equals("")){
+            baseViewHolder.getView(R.id.time).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.time).setVisibility(View.VISIBLE);
+        }
+
         baseViewHolder.setText(R.id.order_num,order_num)
                 .setText(R.id.order_state,order_state)
                 .setText(R.id.order_type,order_type)

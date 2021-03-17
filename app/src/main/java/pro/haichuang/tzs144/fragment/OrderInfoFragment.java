@@ -58,6 +58,7 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.DeliveryOrderActivity;
 import pro.haichuang.tzs144.activity.OrderDetailActivity;
+import pro.haichuang.tzs144.activity.SaleOrderDetailActivity;
 import pro.haichuang.tzs144.adapter.OrderInfoAdapter;
 import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.ILoadDataView;
@@ -156,6 +157,17 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 //配送订单
                 OrderInfoModel.DataBean dataBean = orderInfoAdapter.getData().get(position);
+
+                /**
+                 * 0-直接销售 1-补录订单 2-商城订单 3-电话订单 4-外卖订单
+                 */
+                if (dataBean.getOrderType()==0 || dataBean.getOrderType()==1){
+                    Intent intent = new Intent(getActivity(), SaleOrderDetailActivity.class);
+                    intent.putExtra("id",dataBean.getId());
+                    startActivity(intent);
+                    return;
+                }
+
                 String orderNumId = dataBean.getId();
 
                 Intent intent = new Intent(getActivity(), OrderDetailActivity.class);

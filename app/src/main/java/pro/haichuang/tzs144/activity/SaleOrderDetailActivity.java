@@ -138,6 +138,9 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
 
         name.setText(data.getCustomerName());
         orderNum.setText(data.getCustomerPhone());
+        if (data.getCustomerTypeName()==null || data.getCustomerTypeName().equals("")){
+            type.setVisibility(View.GONE);
+        }
         type.setText(data.getCustomerTypeName());
         address.setText(data.getAddressName());
         addressDetail.setText(data.getAddress());
