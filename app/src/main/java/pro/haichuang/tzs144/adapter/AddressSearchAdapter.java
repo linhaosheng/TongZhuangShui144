@@ -6,6 +6,12 @@ import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
@@ -19,10 +25,12 @@ public class AddressSearchAdapter extends BaseQuickAdapter<AddressBean, BaseView
 
 
     private Context context;
+    private BaiduMap baiduMap;
 
-    public AddressSearchAdapter(Context mContext) {
+    public AddressSearchAdapter(Context mContext, BaiduMap baiduMap) {
         super(R.layout.item_address);
         this.context = mContext;
+        this.baiduMap = baiduMap;
     }
 
     @Override
@@ -37,5 +45,19 @@ public class AddressSearchAdapter extends BaseQuickAdapter<AddressBean, BaseView
 
       baseViewHolder.setText(R.id.address,dataBean.getAddress())
               .setText(R.id.address_detail,dataBean.getAddressInfo());
+
+
+        BitmapDescriptor bitmap = null;
+        bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
+
+        LatLng point = new LatLng(dataBean.getLatitude(), dataBean.getLongitude());
+
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .clickable(true)
+                .icon(bitmap);
+        baiduMap.addOverlay(option);
+        bitmap.recycle();
+
     }
 }

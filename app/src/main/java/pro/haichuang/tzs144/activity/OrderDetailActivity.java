@@ -41,6 +41,7 @@ import pro.haichuang.tzs144.model.OrderDetailDataModel;
 import pro.haichuang.tzs144.model.OrderDetailModel;
 import pro.haichuang.tzs144.model.ShopDeleveModel;
 import pro.haichuang.tzs144.model.StatusEvent;
+import pro.haichuang.tzs144.model.StockMainModel;
 import pro.haichuang.tzs144.model.SubjectModel;
 import pro.haichuang.tzs144.model.UpdateOrderEvent;
 import pro.haichuang.tzs144.presenter.OrderDetailActivityPresenter;
@@ -123,9 +124,9 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     private int orderStatus;
     private String orderNo;
 
-    private List<CharSequence> areaList;
-    private List<CharSequence> subAreaList;
-    private AreaModel areaModel;
+    private List<CharSequence> subjectList;
+    private StockMainModel stockMainModel;
+
 
     @Override
     protected int setLayoutResourceID() {
@@ -158,16 +159,14 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         /**
          * 所在片区
          */
-        subAreaList = new ArrayList<>();
-        areaList = new ArrayList<>();
-        String areaJson = SPUtils.getString(Config.FIND_AREA, "");
-        if (!areaJson.equals("")) {
-            areaModel = Utils.gsonInstane().fromJson(areaJson, AreaModel.class);
-            for (AreaModel.DataBean dataBean : areaModel.getData()) {
-                areaList.add(dataBean.getName());
+        String subjectListJson = SPUtils.getString(Config.STOCK_MAIN_LIST, "");
+        if (!subjectListJson.equals("")) {
+            subjectList = new ArrayList<>();
+            stockMainModel = Utils.gsonInstane().fromJson(subjectListJson, StockMainModel.class);
+            for (StockMainModel.DataBean dataBean : stockMainModel.getData()) {
+                subjectList.add(dataBean.getStockName());
             }
         }
-
     }
 
 
@@ -178,10 +177,10 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
                 finish();
                 break;
             case R.id.switch_order:
-                BottomMenu.show(OrderDetailActivity.this, areaList, new OnMenuItemClickListener() {
+                BottomMenu.show(OrderDetailActivity.this, subjectList, new OnMenuItemClickListener() {
                     @Override
                     public void onClick(String text, int index) {
-                        orderDetailPresenter.findAreas(String.valueOf(areaModel.getData().get(index).getId()));
+                        orderDetailPresenter.turnOrder(id,stockMainModel.getData().get(index).getId());
                     }
                 });
 
@@ -299,18 +298,14 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AreaEvent event) {
         if (event != null) {
-            List<AreaModel.DataBean> data = event.dataBean.getData();
-            subAreaList.clear();
-            for (AreaModel.DataBean dataBean : data) {
-                subAreaList.add(dataBean.getName());
-            }
-            BottomMenu.show(OrderDetailActivity.this, subAreaList, new OnMenuItemClickListener() {
-                @Override
-                public void onClick(String text, int index) {
-                    int honeycombGridId = data.get(index).getId();
-                    orderDetailPresenter.turnOrder(id,honeycombGridId);
-                }
-            });
+//            List<AreaModel.DataBean> data = event.dataBean.getData();
+//            BottomMenu.show(OrderDetailActivity.this, subAreaList, new OnMenuItemClickListener() {
+//                @Override
+//                public void onClick(String text, int index) {
+//                    int honeycombGridId = data.get(index).getId();
+//                    orderDetailPresenter.turnOrder(id,honeycombGridId);
+//                }
+//            });
         }
     }
 

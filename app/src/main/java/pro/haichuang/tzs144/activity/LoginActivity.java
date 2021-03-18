@@ -259,8 +259,11 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             return;
         }
         SPUtils.putString(Config.ACCOUNT, account.getText().toString());
-        if (dataBeanList!=null){
+        if (dataBeanList!=null && dataBeanList.size()>0){
             SPUtils.putString(account.getText().toString(), dataBeanList.get(selectPosition).getId());
+        }else {
+            Utils.showCenterTomast("请检查账户是否绑定库存主体");
+            return;
         }
         if (checked){
             String info = account.getText().toString() +"-"+password.getText().toString();
@@ -271,6 +274,10 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         Log.i(TAG, "登录....");
 
         if (dataBeanList!=null){
+            if (dataBeanList.size()<=0){
+                Utils.showCenterTomast("请检查账户是否绑定库存主体");
+                return;
+            }
             loginPresenter.loginServer(account.getText().toString(), password.getText().toString(), dataBeanList.get(selectPosition).getId());
         }else {
             Utils.showCenterTomast("获取数据超时，请退出，重新登录");

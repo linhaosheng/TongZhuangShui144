@@ -139,7 +139,7 @@ public class AddressSearchActivity extends BaseActivity {
             }
         });
 
-        addressSearchAdapter = new AddressSearchAdapter(this);
+        addressSearchAdapter = new AddressSearchAdapter(this,baiduMap);
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(addressSearchAdapter);
 
@@ -185,7 +185,7 @@ public class AddressSearchActivity extends BaseActivity {
 
         LatLng ll = new LatLng(Config.LATITUDE, Config.LONGITUDE);
         MapStatus.Builder builder = new MapStatus.Builder();
-        builder.target(ll).zoom(15.0f);
+        builder.target(ll).zoom(12.0f);
         baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
     }
 
@@ -205,7 +205,7 @@ public class AddressSearchActivity extends BaseActivity {
                     //获取在线建议检索结果，并显示到listview中
                     List<SuggestionResult.SuggestionInfo> resl = suggestionResult.getAllSuggestions();
                    // Log.i("onGetSuggestionResult", "data num===" + resl.toString());
-
+                   // baiduMap.clear();
                     addressBeans.clear();
                     for (SuggestionResult.SuggestionInfo suggestionInfo : resl) {
                         //  Log.i("address====", suggestionInfo.key);
