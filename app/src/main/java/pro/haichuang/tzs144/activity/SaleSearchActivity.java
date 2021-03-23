@@ -140,6 +140,7 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
                 }
             }
         });
+        searchActivityPresenter.search("");
     }
 
 

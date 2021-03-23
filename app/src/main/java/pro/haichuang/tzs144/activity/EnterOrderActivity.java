@@ -518,20 +518,30 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     selectDeductionNunm.setRightText("");
                 }
 
-                if (!rewardUrl.equals("")){
-
-                    AddOrderModel.GoodsListBean.DeductCouponBean deductCouponBean = new AddOrderModel.GoodsListBean.DeductCouponBean();
-                    deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
-                    deductCouponBean.setCouponImg(rewardUrl);
-                    goodsListBean.setDeductCoupon(deductCouponBean);
-                    rewardUrl = "";
+                try {
+                    int num = Integer.parseInt(rewardDeductionNunm.getEditText());
+                    if (num>0){
+                        AddOrderModel.GoodsListBean.DeductCouponBean deductCouponBean = new AddOrderModel.GoodsListBean.DeductCouponBean();
+                        deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
+                        deductCouponBean.setCouponImg(rewardUrl);
+                        goodsListBean.setDeductCoupon(deductCouponBean);
+                        rewardUrl = "";
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-                if (!monthUrl.equals("")){
-                    AddOrderModel.GoodsListBean.DeductMonthBean deductMonthBean = new AddOrderModel.GoodsListBean.DeductMonthBean();
-                    deductMonthBean.setMonthImg(monthUrl);
-                    deductMonthBean.setDeductNum(monthDeductionNunm.getEditText());
-                    goodsListBean.setDeductMonth(deductMonthBean);
-                    monthUrl = "";
+
+                try {
+                    int num = Integer.parseInt(monthDeductionNunm.getEditText());
+                    if (num>0){
+                        AddOrderModel.GoodsListBean.DeductMonthBean deductMonthBean = new AddOrderModel.GoodsListBean.DeductMonthBean();
+                        deductMonthBean.setMonthImg(monthUrl);
+                        deductMonthBean.setDeductNum(monthDeductionNunm.getEditText());
+                        goodsListBean.setDeductMonth(deductMonthBean);
+                        monthUrl = "";
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
                 goodsListBeans.add(goodsListBean);

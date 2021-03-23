@@ -432,10 +432,10 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     waterDeductNum = goodsListBean.getWaterDeductNum();
                 }
 
-                if (goodsListBean.getMonthImg()!=null && !goodsListBean.getMonthImg().equals("")){
+                if (goodsListBean.getMonthDeductNum()>0){
                     monthDeductNum = goodsListBean.getMonthDeductNum();
                 }
-                if (goodsListBean.getCouponImg()!=null && !goodsListBean.getCouponImg().equals("")) {
+                if (goodsListBean.getCouponDeductNum()>0) {
                     couponDeductNum = goodsListBean.getCouponDeductNum();
                 }
                 amount_receivable += (waterDeductNum + couponDeductNum)*goodsListBean.getGoodsPrice();  //应收金额
@@ -480,18 +480,18 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                        }
                     }
 
-                    if (goodsListBean.isShowMonth()){
-                        if (goodsListBean.getMonthImg()==null|| goodsListBean.getMonthImg().equals("") || goodsListBean.getMonthDeductNum()==0){
-                            Utils.showCenterTomast("请检查月结信息是否正确");
-                            return;
-                        }
-                    }
-                    if (goodsListBean.isShowReward()){
-                        if (goodsListBean.getCouponImg()==null || goodsListBean.getCouponImg().equals("") || goodsListBean.getCouponDeductNum()==0){
-                            Utils.showCenterTomast("请检查奖券信息是否正确");
-                            return;
-                        }
-                    }
+//                    if (goodsListBean.isShowMonth()){
+//                        if (goodsListBean.getMonthImg()==null|| goodsListBean.getMonthImg().equals("") || goodsListBean.getMonthDeductNum()==0){
+//                            Utils.showCenterTomast("请检查月结信息是否正确");
+//                            return;
+//                        }
+//                    }
+//                    if (goodsListBean.isShowReward()){
+//                        if (goodsListBean.getCouponImg()==null || goodsListBean.getCouponImg().equals("") || goodsListBean.getCouponDeductNum()==0){
+//                            Utils.showCenterTomast("请检查奖券信息是否正确");
+//                            return;
+//                        }
+//                    }
 
                     ShopDeleveModel.GoodsListBean goodsListBean1 = new ShopDeleveModel.GoodsListBean();
                     goodsListBean1.setOrderGoodsId(goodsListBean.getOrderGoodsId());
@@ -504,14 +504,14 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                         goodsListBean1.setDeductWater(deductWaterBean);
                     }
 
-                    if (goodsListBean.getMonthImg()!=null){
+                    if (goodsListBean.getMonthDeductNum()>0){
                         ShopDeleveModel.GoodsListBean.DeductMonthBean monthBean = new ShopDeleveModel.GoodsListBean.DeductMonthBean();
                         monthBean.setMonthImg(goodsListBean.getMonthImg());
                         monthBean.setDeductNum(goodsListBean.getMonthDeductNum()+"");
                         goodsListBean1.setDeductMonth(monthBean);
                     }
 
-                    if (goodsListBean.getCouponImg()!=null){
+                    if (goodsListBean.getCouponDeductNum()>0){
                         ShopDeleveModel.GoodsListBean.DeductCouponBean couponBean = new ShopDeleveModel.GoodsListBean.DeductCouponBean();
                         couponBean.setCouponImg(goodsListBean.getCouponImg());
                         couponBean.setDeductNum(goodsListBean.getCouponDeductNum()+"");
@@ -550,7 +550,36 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                                     addOrderDepositDialog.show(getSupportFragmentManager(),"");
                                     return false;
                                 }
-                            });
+                            }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
+                        @Override
+                        public boolean onClick(BaseDialog baseDialog, View v) {
+
+                            List<OrderDetailModel.DataBean.GoodsListBean> tempList = new ArrayList<>();
+
+                            for (int i = 0;i<data.size();i++){
+
+                                OrderDetailModel.DataBean.GoodsListBean goodsListBean1 = data.get(i);
+                                int goodsNum = goodsListBean1.getGoodsNum();
+
+                                List<OrderDetailModel.DataBean.BindMaterList>tempBindMaterList = new ArrayList<>();
+                                List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean1.getBindMaterList();
+                                for (int j= 0;j<bindMaterList.size();j++){
+                                    OrderDetailModel.DataBean.BindMaterList bindMaterList1 = bindMaterList.get(j);
+                                    if (j==0){
+                                        bindMaterList1.setNum(goodsNum);
+                                    }else {
+                                        bindMaterList1.setNum(0);
+                                    }
+                                    tempBindMaterList.add(bindMaterList1);
+                                }
+                                goodsListBean1.setBindMaterList(tempBindMaterList);
+                                tempList.add(goodsListBean1);
+
+                            }
+                            deliverOrderDetailAdapter.setList(tempList);
+                            return false;
+                        }
+                    });
                 }else if (materialNum>shopNum){
                     String tip = "多了"+(materialNum-shopNum)+"个回收材料，请单独退押";
                    MessageDialog.show(DeliveryOrderActivity.this,"提示",tip,"确定","取消")
