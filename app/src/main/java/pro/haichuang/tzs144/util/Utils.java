@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.util;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.view.Gravity;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -171,4 +173,17 @@ public class Utils {
         intent.setData(data);
         MyApplication.getApplication().startActivity(intent);
     }
+
+    /**
+     * 自动关闭软键盘
+     *
+     * @param activity
+     */
+    public static void closeKeybord(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
 }

@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.ArrayMap;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

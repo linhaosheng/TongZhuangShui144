@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +33,17 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.CityInfo;
+import com.baidu.mapapi.search.core.PoiDetailInfo;
+import com.baidu.mapapi.search.core.PoiInfo;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
+import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
@@ -74,6 +86,7 @@ public class AddressSearchActivity extends BaseActivity {
     MapView map;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
+    private PoiSearch poiSearch;
     private SuggestionSearch mSuggestionSearch;
     private BaiduMap baiduMap = null;
     private List<AddressBean> addressBeans;
@@ -119,6 +132,15 @@ public class AddressSearchActivity extends BaseActivity {
         baiduMap.addOverlay(option);
         bitmap.recycle();
 
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==event.KEYCODE_ENTER){
+                    Utils.closeKeybord(AddressSearchActivity.this);
+                }
+                return false;
+            }
+        });
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -131,10 +153,16 @@ public class AddressSearchActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
               if (searchEdit.getText()!=null && !searchEdit.getText().equals("")){
-                  mSuggestionSearch.requestSuggestion((new SuggestionSearchOption())
-                          .keyword("" + searchEdit.getText().toString())
-                          .city("广东")
-                          .citylimit(false));
+//                  mSuggestionSearch.requestSuggestion((new SuggestionSearchOption())
+//                          .keyword("" + searchEdit.getText().toString())
+//                          .city("广东")
+//                          .citylimit(false));
+
+                  poiSearch.searchInCity(new PoiCitySearchOption()
+                          .city(Config.CITY) //必填
+                          .keyword(searchEdit.getText().toString()) //必填
+                          .cityLimit(false)
+                          .pageCapacity(30));
               }
             }
         });
@@ -192,6 +220,62 @@ public class AddressSearchActivity extends BaseActivity {
     @Override
     protected void setUpData() {
         addressBeans = new ArrayList<>();
+        poiSearch = PoiSearch.newInstance();
+
+        OnGetPoiSearchResultListener onListener = new OnGetPoiSearchResultListener() {
+            @Override
+            public void onGetPoiResult(PoiResult poiResult) {
+                baiduMap.clear();
+                if (poiResult == null || poiResult.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
+                    addressSearchAdapter.setList(null);
+                    return;
+                }
+
+                if (poiResult.error == SearchResult.ERRORNO.NO_ERROR) {
+                    addressBeans.clear();
+                    List<PoiInfo> allPoi = poiResult.getAllPoi();
+
+                    for (PoiInfo poiInfo : allPoi) {
+                        if (poiInfo == null || poiInfo.getLocation() == null) {
+                            continue;
+                        }
+                        AddressBean addressBean = new AddressBean();
+                        addressBean.setAddress(poiInfo.getAddress());
+                        StringBuffer sb = new StringBuffer();
+                        sb.append(poiInfo.getCity()).append(poiInfo.getArea()).append(poiInfo.getName());
+                        addressBean.setAddressInfo(sb.toString());
+                        addressBean.setLatitude(poiInfo.getLocation().latitude);
+                        addressBean.setLongitude(poiInfo.getLocation().longitude);
+                        addressBeans.add(addressBean);
+                    }
+                    addressSearchAdapter.setList(addressBeans);
+
+                }else {
+                    Log.i("TAG","44444444");
+                }
+
+            }
+
+            @Override
+            public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+             Log.i("TAG","22222222");
+                String s = Utils.gsonInstane().toJson(poiDetailResult);
+                Log.i("onGetSuggestionResult", "data num22222===" + s);
+            }
+
+            @Override
+            public void onGetPoiDetailResult(PoiDetailSearchResult poiDetailSearchResult) {
+                String s = Utils.gsonInstane().toJson(poiDetailSearchResult);
+                Log.i("onGetSuggestionResult", "data num33333===" + s);
+            }
+
+            @Override
+            public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
+
+            }
+        };
+        poiSearch.setOnGetPoiSearchResultListener(onListener);
+
         mSuggestionSearch = SuggestionSearch.newInstance();
         //编写监听器
         OnGetSuggestionResultListener listener = new OnGetSuggestionResultListener() {
@@ -227,7 +311,7 @@ public class AddressSearchActivity extends BaseActivity {
             }
         };
         if (mSuggestionSearch != null) {
-            mSuggestionSearch.setOnGetSuggestionResultListener(listener);
+         //   mSuggestionSearch.setOnGetSuggestionResultListener(listener);
         }
     }
 
@@ -269,6 +353,9 @@ public class AddressSearchActivity extends BaseActivity {
         map = null;
         if (mSuggestionSearch != null) {
             mSuggestionSearch.destroy();
+        }
+        if (poiSearch!=null){
+            poiSearch.destroy();
         }
         super.onDestroy();
     }

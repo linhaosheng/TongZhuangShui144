@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -190,6 +191,15 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                     lastPage = false;
                     clientFragmentPresenter.findKhList(searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
                 }
+            }
+        });
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==event.KEYCODE_ENTER){
+                    Utils.closeKeybord(getActivity());
+                }
+                return false;
             }
         });
 

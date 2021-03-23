@@ -23,6 +23,8 @@
             android:hint="请输入押金编号"
             android:textSize="14sp"
             android:drawablePadding="@dimen/dp_10"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:background="@null"
             android:layout_marginRight="@dimen/dp_18"/>
 

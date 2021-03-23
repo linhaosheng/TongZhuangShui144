@@ -89,6 +89,8 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);
         LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
+        option.setNeedNewVersionRgc(true);
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setCoorType("bd09ll");
         option.setScanSpan(1000);
@@ -349,6 +351,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
             Config.LATITUDE = location.getLatitude();    //获取纬度信息
             Config.LONGITUDE = location.getLongitude();    //获取经度信息
+            Config.CITY = location.getCity();    //获取城市
+            Log.i("TAG","==="+Config.CITY);
+
         }
     }
 }

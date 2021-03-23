@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -140,6 +141,16 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
                 }
             }
         });
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==event.KEYCODE_ENTER){
+                    Utils.closeKeybord(SaleSearchActivity.this);
+                }
+                return false;
+            }
+        });
+
         searchActivityPresenter.search("");
     }
 

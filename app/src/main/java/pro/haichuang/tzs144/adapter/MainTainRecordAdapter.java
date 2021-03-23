@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.adapter;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.ClientDetailModel;
+import pro.haichuang.tzs144.util.Utils;
 
 public class MainTainRecordAdapter extends BaseQuickAdapter<ClientDetailModel.DataBean.MaintainListBean, BaseViewHolder> {
 

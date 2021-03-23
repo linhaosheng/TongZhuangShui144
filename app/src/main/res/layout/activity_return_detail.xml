@@ -35,6 +35,8 @@
                 android:background="@null"
                 android:drawableLeft="@mipmap/search"
                 android:drawablePadding="@dimen/dp_10"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
                 android:gravity="left|center"
                 android:hint="输入商品关键字搜索"
                 android:textSize="13sp" />

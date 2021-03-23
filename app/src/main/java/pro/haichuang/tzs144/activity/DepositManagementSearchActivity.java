@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -115,6 +116,15 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
     @Override
     protected void setUpData() {
         depositManagementSearchActivityPresenter = new DepositManagementSearchActivityPresenter(this);
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==event.KEYCODE_ENTER){
+                    Utils.closeKeybord(DepositManagementSearchActivity.this);
+                }
+                return false;
+            }
+        });
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

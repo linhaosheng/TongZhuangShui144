@@ -37,6 +37,8 @@
                 android:drawablePadding="@dimen/dp_10"
                 android:gravity="left|center"
                 android:hint="请输入押金本编号"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
                 android:textSize="14sp" />
 
         </LinearLayout>

@@ -37,6 +37,8 @@
                 android:drawableLeft="@mipmap/search"
                 android:drawablePadding="@dimen/dp_10"
                 android:hint="请输入押金编号"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
                 android:textSize="14sp" />
 
         </LinearLayout>

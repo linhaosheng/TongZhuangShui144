@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -94,6 +96,15 @@ public class DepositManagementDetailActivity extends BaseActivity implements ILo
               if (searchEdit.getText()!=null){
                   depositManagementDetailPresenter.getDepositBookInfo(searchEdit.getText().toString());
               }
+            }
+        });
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==event.KEYCODE_ENTER){
+                    Utils.closeKeybord(DepositManagementDetailActivity.this);
+                }
+                return false;
             }
         });
     }

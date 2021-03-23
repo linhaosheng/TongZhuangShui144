@@ -27,6 +27,8 @@
             android:drawablePadding="@dimen/dp_10"
             android:background="@drawable/set_bg_btn11"
             android:paddingLeft="@dimen/dp_20"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:gravity="left|center"
             android:layout_marginRight="@dimen/dp_18"/>
 

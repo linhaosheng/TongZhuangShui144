@@ -21,6 +21,8 @@
             android:drawableLeft="@mipmap/search"
             android:layout_marginLeft="@dimen/dp_22"
             android:hint="客户名称/手机号码/地址关键字"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:textSize="14sp"
             android:drawablePadding="@dimen/dp_10"
             android:background="@null"

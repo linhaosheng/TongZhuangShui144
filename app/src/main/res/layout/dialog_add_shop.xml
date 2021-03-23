@@ -28,6 +28,8 @@
         android:drawablePadding="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
         android:hint="输入关键字搜索"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
         android:textSize="14sp" />
 
     <androidx.recyclerview.widget.RecyclerView

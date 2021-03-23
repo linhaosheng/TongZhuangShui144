@@ -57,6 +57,8 @@
             android:layout_height="@dimen/dp_35"
             android:drawableLeft="@mipmap/search"
             android:hint="请输入商品关键字"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:textSize="13sp"
             android:drawablePadding="@dimen/dp_10"
             android:background="@drawable/set_bg_btn11"

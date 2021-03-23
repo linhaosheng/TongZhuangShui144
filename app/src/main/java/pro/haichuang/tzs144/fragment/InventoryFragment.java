@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -97,6 +98,15 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
             @Override
             public void afterTextChanged(Editable s) {
                   EventBus.getDefault().post(new TextEvent(new TextEvent.CurrentText(searchEdit.getText().toString(),vpView.getCurrentItem())));
+            }
+        });
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==event.KEYCODE_ENTER){
+                    Utils.closeKeybord(getActivity());
+                }
+                return false;
             }
         });
     }

@@ -22,6 +22,7 @@ public class Config {
 
     public static  double LATITUDE = 0;
     public static  double LONGITUDE = 0;
+    public static  String CITY = "city";
 
 
     public static final String STOCK_MAIN_LIST = "stock_main_list";

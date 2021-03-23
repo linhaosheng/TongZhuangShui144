@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.ArrayMap;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -95,7 +96,7 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
     @Override
     protected void setUpData() {
         searchEdit.setText("");
-        searchDesposit(searchEdit.getText().toString());
+       // searchDesposit(searchEdit.getText().toString());
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -112,6 +113,15 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
                if (searchEdit.getText()!=null){
                    searchDesposit(searchEdit.getText().toString());
                }
+            }
+        });
+        searchEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==event.KEYCODE_ENTER){
+                    Utils.closeKeybord(FindDespositActivity.this);
+                }
+                return false;
             }
         });
     }
