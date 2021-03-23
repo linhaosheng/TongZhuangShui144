@@ -574,9 +574,9 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                                 }
                                 goodsListBean1.setBindMaterList(tempBindMaterList);
                                 tempList.add(goodsListBean1);
-
                             }
                             deliverOrderDetailAdapter.setList(tempList);
+                            caculateData();
                             return false;
                         }
                     });

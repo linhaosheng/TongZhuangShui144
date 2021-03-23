@@ -782,6 +782,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                                         tempData.add(goodsListBean);
                                     }
                                     addOrderAdapter.setList(tempData);
+                                    caculateShopMount();
 
                                 }catch (Exception e){
                                     e.printStackTrace();
