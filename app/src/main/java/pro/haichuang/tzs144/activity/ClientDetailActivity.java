@@ -322,7 +322,8 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
             addressListAdapter.setList(dataBean.getAddressList());
             mainTainRecordAdapter.setList(dataBean.getMaintainList());
 
-            clientName.setText("客户类型："+dataBean.getCustomerType());
+            clientName.setText("客户名称："+dataBean.getCustomerName());
+            clientType.setText("客户类型："+dataBean.getCustomerType());
             clientPersion.setText("   联系人："+dataBean.getContacts());
             clientPhone.setText("联系电话："+dataBean.getPhone());
             clientLocation.setText("所在片区："+dataBean.getArea());
