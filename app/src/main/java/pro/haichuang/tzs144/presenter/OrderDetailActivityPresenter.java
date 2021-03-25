@@ -211,10 +211,13 @@ public class OrderDetailActivityPresenter {
      * 配送
      * @param
      */
-    public void deliveryOrder(String id, List<ShopDeleveModel.GoodsListBean> goodsListBeanList){
+    public void deliveryOrder(String id, String totalPrice,String receivablePrice,String realPrice,List<ShopDeleveModel.GoodsListBean> goodsListBeanList){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("id",id);
+        params.put("totalPrice",totalPrice);
+        params.put("receivablePrice",receivablePrice);
+        params.put("realPrice",realPrice);
         params.put("goodsList",goodsListBeanList);
 
         HttpRequestEngine.postRequest(ConfigUrl.DELIVERY_ORDER, params, new HttpRequestResultListener() {

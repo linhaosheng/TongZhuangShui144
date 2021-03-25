@@ -629,6 +629,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         addOrderModel.setGoodsList(goodsListBeans);
 
         enterOrderActivityPresenter.enterOrder(addOrderModel);
+        //totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString()
     }
 
     /**

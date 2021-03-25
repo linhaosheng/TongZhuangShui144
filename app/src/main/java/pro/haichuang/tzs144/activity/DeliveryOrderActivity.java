@@ -477,8 +477,8 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
 
                     if (goodsListBean.isShowWater()){
                        if (goodsListBean.getWaterName()==null || goodsListBean.getWaterName().equals("") ||goodsListBean.getWaterDeductNum()<=0 || goodsListBean.getWaterNum()<=0){
-                           Utils.showCenterTomast("请检查水票信息是否正确");
-                           return;
+                           //Utils.showCenterTomast("请检查水票信息是否正确");
+                           //return;
                        }
                     }
 
@@ -545,7 +545,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                                        @Override
                                        public void despositResult(boolean success) {
                                            if (success){
-                                               orderDetailPresenter.deliveryOrder(id,goodsListBeanList);
+                                               orderDetailPresenter.deliveryOrder(id,totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),goodsListBeanList);
                                            }
                                        }
                                    });
@@ -602,12 +602,12 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                                goodsListBean.setMaterials(materials);
                                tempList.add(goodsListBean);
                            }
-                            orderDetailPresenter.deliveryOrder(id,tempList);
+                            orderDetailPresenter.deliveryOrder(id,totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),tempList);
                            return false;
                        }
                    });
                 }else {
-                    orderDetailPresenter.deliveryOrder(id,goodsListBeanList);
+                    orderDetailPresenter.deliveryOrder(id,totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),goodsListBeanList);
                 }
                 break;
         }

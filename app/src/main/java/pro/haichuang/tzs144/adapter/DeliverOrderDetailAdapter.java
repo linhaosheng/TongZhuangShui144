@@ -247,11 +247,12 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         });
 
         LSettingItem select_deduction_nunm =  helper.getView(R.id.select_deduction_nunm);
-        if (item.getWaterDeductNum()!=0){
-            select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
-        }else {
-            select_deduction_nunm.setEditinput("");
-        }
+        select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
+//        if (item.getWaterDeductNum()!=0){
+//            select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
+//        }else {
+//            select_deduction_nunm.setEditinput("");
+//        }
         select_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
             public void editListner(String text) {

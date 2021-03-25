@@ -45,6 +45,9 @@ public class EnterOrderActivityPresenter {
         params.put("customerId",addOrderModel.getCustomerId());
         params.put("addressId",addOrderModel.getAddressId());
         params.put("goodsList",addOrderModel.getGoodsList());
+//        params.put("totalPrice",totalPrice);
+//        params.put("receivablePrice",receivablePrice);
+//        params.put("realPrice",realPrice);
 
         HttpRequestEngine.postRequest(ConfigUrl.ENTER_ORFER, params, new HttpRequestResultListener() {
             @Override
