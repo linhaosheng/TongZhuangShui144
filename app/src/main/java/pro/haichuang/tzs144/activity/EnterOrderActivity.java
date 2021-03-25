@@ -216,8 +216,11 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         mDataBea = dataBean;
                         selectTicket.setLeftText(dataBean.getName()+"   "+dataBean.getSpecs());
                         waterId = dataBean.getId();
+                        selectWaterNum.setRightText(String.valueOf(dataBean.getWaterNum()));
+                        selectDeductionNunm.setEditinput(String.valueOf(dataBean.getWaterNum()));
+
                     }
-                });
+                },dataBean.getId());
                 selectWaterTicketDialog.show(getSupportFragmentManager(),"");
             }
         });
@@ -510,7 +513,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 if (waterId!=-1){
                     AddOrderModel.GoodsListBean.DeductWaterBean deductWaterBean = new AddOrderModel.GoodsListBean.DeductWaterBean();
                     deductWaterBean.setWaterGoodsId(String.valueOf(waterId));
-                    deductWaterBean.setNum(selectWaterNum.getEditText());
+                    deductWaterBean.setNum(selectWaterNum.getRightText());
                     deductWaterBean.setDeductNum(selectDeductionNunm.getEditText());
                     goodsListBean.setDeductWater(deductWaterBean);
                     waterId = -1;

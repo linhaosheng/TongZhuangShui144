@@ -82,7 +82,7 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
 
     @Override
     protected void setUpView() {
-        title.setText("账务列表");
+        title.setText("账目列表");
         endTime.setText(Utils.formatSelectTime(new Date()));
 
         accountingListAdapter = new AccountingListAdapter();

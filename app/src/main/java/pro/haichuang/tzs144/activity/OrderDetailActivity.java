@@ -33,6 +33,7 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AddOrderAdapter;
 import pro.haichuang.tzs144.adapter.OrderDetailAdapter;
+import pro.haichuang.tzs144.adapter.OrderShopDetailAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.AreaEvent;
 import pro.haichuang.tzs144.model.AreaModel;
@@ -116,7 +117,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     @BindView(R.id.void_sale_btn)
     Button voidSaleBtn;
 
-    private OrderDetailAdapter orderDetailAdapter;
+    private OrderShopDetailAdapter orderDetailAdapter;
 
     private OrderDetailActivityPresenter orderDetailPresenter;
     private String id;
@@ -141,7 +142,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         tips.setTextSize(14);
         tips.setTextColor(Color.parseColor("#3F3F3F"));
 
-        orderDetailAdapter = new OrderDetailAdapter();
+        orderDetailAdapter = new OrderShopDetailAdapter();
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(orderDetailAdapter);
     }

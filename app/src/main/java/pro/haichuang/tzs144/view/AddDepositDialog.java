@@ -158,7 +158,7 @@ public class AddDepositDialog extends DialogFragment {
                     int endNum = Integer.parseInt(endDepositNum.getText().toString());
                     String number = depositNum.getText().toString();
                     int num = endNum - startNum;
-                    addDepositBook(String.valueOf(num),number);
+                    addDepositBook(String.valueOf(num),number,startDepositNum.getText().toString(),endDepositNum.getText().toString());
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -175,11 +175,13 @@ public class AddDepositDialog extends DialogFragment {
      * @param number  押金本编号
      * @param
      */
-    public void addDepositBook(String num,String number){
+    public void addDepositBook(String num,String number,String strNumber,String endNumber){
 
         Map<String,Object> params = new ArrayMap<>();
         params.put("num",num);
         params.put("number",number);
+        params.put("strNumber",strNumber);
+        params.put("endNumber",endNumber);
 
         HttpRequestEngine.postRequest(ConfigUrl.ADD_DESPOSIT_BOOK, params, new HttpRequestResultListener() {
             @Override

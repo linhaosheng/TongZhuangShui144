@@ -51,52 +51,60 @@ public class OrderNumTrendAdapter extends BaseQuickAdapter<ClientListModel.DataB
         Drawable dowmDrawable = ContextCompat.getDrawable(context, R.mipmap.trend_down);
         dowmDrawable.setBounds(0,0,upDrawable.getMinimumWidth(),upDrawable.getMinimumHeight());
 
+        String monthRatio = dataBean.getMonthRatio().replace("+","").replace("-","");
+
         if (dataBean.getMonthRatio().contains("+")){
             last_month_num.setTextColor(Color.parseColor("#3C9C25"));
-            last_month_num.setCompoundDrawables(upDrawable,null,null,null);
+            last_month_num.setText("↑"+monthRatio+"%");
+            //last_month_num.setCompoundDrawables(upDrawable,null,null,null);
         }else {
             last_month_num.setTextColor(Color.parseColor("#E02020"));
-            last_month_num.setCompoundDrawables(dowmDrawable,null,null,null);
+            last_month_num.setText("↓"+monthRatio+"%");
+           // last_month_num.setCompoundDrawables(dowmDrawable,null,null,null);
         }
+
+        String yearRatio = dataBean.getYearRatio().replace("+","").replace("-","");
 
         if (dataBean.getYearRatio().contains("+")){
             last_year_num.setTextColor(Color.parseColor("#3C9C25"));
-            last_year_num.setCompoundDrawables(upDrawable,null,null,null);
+            last_year_num.setText("↑"+yearRatio+"%");
+            //last_year_num.setCompoundDrawables(upDrawable,null,null,null);
         }else {
             last_year_num.setTextColor(Color.parseColor("#E02020"));
-            last_year_num.setCompoundDrawables(dowmDrawable,null,null,null);
+            last_year_num.setText("↓"+yearRatio+"%");
+           // last_year_num.setCompoundDrawables(dowmDrawable,null,null,null);
         }
+
+        String monthSaleRatio = dataBean.getMonthSaleRatio().replace("+","").replace("-","");
 
         if (dataBean.getMonthSaleRatio().contains("+")){
             sale_last_month_num.setTextColor(Color.parseColor("#3C9C25"));
-            sale_last_month_num.setCompoundDrawables(upDrawable,null,null,null);
+            sale_last_month_num.setText("↑"+monthSaleRatio+"%");
+            //sale_last_month_num.setCompoundDrawables(upDrawable,null,null,null);
         }else {
             sale_last_month_num.setTextColor(Color.parseColor("#E02020"));
-            sale_last_month_num.setCompoundDrawables(dowmDrawable,null,null,null);
+            sale_last_month_num.setText("↓"+monthSaleRatio+"%");
+           // sale_last_month_num.setCompoundDrawables(dowmDrawable,null,null,null);
         }
+
+        String saleYearRatio = dataBean.getSaleYearRatio().replace("+","").replace("-","");
 
         if (dataBean.getSaleYearRatio().contains("+")){
             sale_last_year_num.setTextColor(Color.parseColor("#3C9C25"));
-            sale_last_year_num.setCompoundDrawables(upDrawable,null,null,null);
+            sale_last_year_num.setText("↑"+saleYearRatio+"%");
+           // sale_last_year_num.setCompoundDrawables(upDrawable,null,null,null);
         }else {
             sale_last_year_num.setTextColor(Color.parseColor("#E02020"));
-            sale_last_year_num.setCompoundDrawables(dowmDrawable,null,null,null);
+            sale_last_year_num.setText("↓"+saleYearRatio+"%");
+           // sale_last_year_num.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
-        String monthRatio = dataBean.getMonthRatio().replace("+","").replace("-","");
-        String yearRatio = dataBean.getYearRatio().replace("+","").replace("-","");
-        String monthSaleRatio = dataBean.getMonthSaleRatio().replace("+","").replace("-","");
 
-        String saleYearRatio = dataBean.getSaleYearRatio().replace("+","").replace("-","");
 
         baseViewHolder.setText(R.id.client_info,dataBean.getCustomerName()+"  "+dataBean.getPhone())
                 .setText(R.id.dealer,dataBean.getTypeName())
                 .setText(R.id.order_num,orderNum)
-                .setText(R.id.sale_num,saleCount)
-                .setText(R.id.last_month_num,monthRatio+"%")
-                .setText(R.id.last_year_num,yearRatio+"%")
-                .setText(R.id.sale_last_month_num,monthSaleRatio+"%")
-                .setText(R.id.sale_last_year_num,saleYearRatio+"%");
+                .setText(R.id.sale_num,saleCount);
 
     }
 }

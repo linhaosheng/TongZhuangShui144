@@ -279,6 +279,7 @@ public class OrderDetailModel {
             private String waterName;
             private int waterNum;
             private int waterDeductNum;
+            private String goodsSpecsName;
             private int goodsPrice;
             private int couponDeductNum;
             private String couponImg;
@@ -291,6 +292,14 @@ public class OrderDetailModel {
             private boolean showWater;
             private boolean showReward;
             private boolean showMonth;
+
+            public String getGoodsSpecsName() {
+                return goodsSpecsName;
+            }
+
+            public void setGoodsSpecsName(String goodsSpecsName) {
+                this.goodsSpecsName = goodsSpecsName;
+            }
 
             public String getWaterName() {
                 return waterName;

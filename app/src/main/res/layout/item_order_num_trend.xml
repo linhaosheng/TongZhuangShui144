@@ -92,7 +92,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:textColor="#E02020"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:textSize="@dimen/sp_14"
+                android:textSize="@dimen/sp_16"
                 android:text="39%"/>
 
 

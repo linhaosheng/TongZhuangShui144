@@ -185,45 +185,51 @@ public class OrderRecordActivity extends BaseActivity implements ILoadDataView<O
 
         if (data.getDayOrderRatio().contains("+")){
             lastDate.setTextColor(Color.parseColor("#3C9C25"));
-            lastDate.setCompoundDrawables(upDrawable,null,null,null);
+            lastDate.setText("↑"+data.getDayOrderRatio().replace("+","").replace("-","")+"%");
+           // lastDate.setCompoundDrawables(upDrawable,null,null,null);
         }else {
             lastDate.setTextColor(Color.parseColor("#E02020"));
-            lastDate.setCompoundDrawables(dowmDrawable,null,null,null);
+            lastDate.setText("↓"+data.getDayOrderRatio().replace("+","").replace("-","")+"%");
+           // lastDate.setCompoundDrawables(dowmDrawable,null,null,null);
         }
+
 
         if (data.getWeekOrderRatio().contains("+")){
             lastWeek.setTextColor(Color.parseColor("#3C9C25"));
-            lastWeek.setCompoundDrawables(upDrawable,null,null,null);
+            lastWeek.setText("↑"+data.getWeekOrderRatio().replace("+","").replace("-","")+"%");
+         //   lastWeek.setCompoundDrawables(upDrawable,null,null,null);
         }else {
             lastWeek.setTextColor(Color.parseColor("#E02020"));
-            lastWeek.setCompoundDrawables(dowmDrawable,null,null,null);
+            lastWeek.setText("↓"+data.getWeekOrderRatio().replace("+","").replace("-","")+"%");
+         //   lastWeek.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         if (data.getDaySaleRatio().contains("+")){
             ShopLastDate.setTextColor(Color.parseColor("#3C9C25"));
-            ShopLastDate.setCompoundDrawables(upDrawable,null,null,null);
+            ShopLastDate.setText("↑"+data.getDaySaleRatio().replace("+","").replace("-","")+"%");
+           // ShopLastDate.setCompoundDrawables(upDrawable,null,null,null);
         }else {
             ShopLastDate.setTextColor(Color.parseColor("#E02020"));
-            ShopLastDate.setCompoundDrawables(dowmDrawable,null,null,null);
+            ShopLastDate.setText("↓"+data.getDaySaleRatio().replace("+","").replace("-","")+"%");
+           // ShopLastDate.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         if (data.getWeekSaleRatio().contains("+")){
             shopLastWeek.setTextColor(Color.parseColor("#3C9C25"));
-            shopLastWeek.setCompoundDrawables(upDrawable,null,null,null);
+            shopLastWeek.setText("↑"+data.getWeekSaleRatio().replace("+","").replace("-","")+"%");
+           // shopLastWeek.setCompoundDrawables(upDrawable,null,null,null);
         }else {
             shopLastWeek.setTextColor(Color.parseColor("#E02020"));
-            shopLastWeek.setCompoundDrawables(dowmDrawable,null,null,null);
+            shopLastWeek.setText("↓"+data.getWeekSaleRatio().replace("+","").replace("-","")+"%");
+           // shopLastWeek.setCompoundDrawables(dowmDrawable,null,null,null);
         }
 
         orderNum.setText(data.getOrderCount());
 
-        lastDate.setText(data.getDayOrderRatio().replace("+","").replace("-","")+"%");
-        lastWeek.setText(data.getWeekOrderRatio().replace("+","").replace("-","")+"%");
+
 
         shopNum.setText(data.getSaleCount());
 
-        ShopLastDate.setText(data.getDaySaleRatio().replace("+","").replace("-","")+"%");
-        shopLastWeek.setText(data.getWeekSaleRatio().replace("+","").replace("-","")+"%");
 
         orderRecordAdapter.setList(data.getOrderList());
 

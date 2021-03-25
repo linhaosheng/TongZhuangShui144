@@ -47,11 +47,20 @@ public class ShopModel {
          * id : 88
          */
 
+        private int waterNum;
         private boolean check;
         private String specs;
         private double price;
         private String name;
         private int id;
+
+        public int getWaterNum() {
+            return waterNum;
+        }
+
+        public void setWaterNum(int waterNum) {
+            this.waterNum = waterNum;
+        }
 
         public boolean isCheck() {
             return check;

@@ -70,6 +70,8 @@
         android:layout_height="1dp"
         android:background="#E6E6E6"
         android:layout_below="@+id/recycle_num"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="@dimen/dp_10"/>
 
 

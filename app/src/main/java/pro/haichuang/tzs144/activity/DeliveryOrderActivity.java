@@ -399,9 +399,11 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                         OrderDetailModel.DataBean.GoodsListBean goodsListBean = deliverOrderDetailAdapter.getData().get(position);
                         goodsListBean.setWaterGoodsId(dataBean.getId());
                         goodsListBean.setWaterName(dataBean.getName()+"   "+dataBean.getSpecs());
+                        goodsListBean.setWaterDeductNum(dataBean.getWaterNum());
+                        goodsListBean.setWaterNum(dataBean.getWaterNum());
                         deliverOrderDetailAdapter.setData(position,goodsListBean);
                     }
-                });
+                },customerId);
                 selectWaterTicketDialog.show(getSupportFragmentManager(),"");
             }
         });

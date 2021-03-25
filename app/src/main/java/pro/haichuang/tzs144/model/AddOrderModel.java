@@ -162,8 +162,8 @@ public class AddOrderModel {
              */
 
             private String waterGoodsId;
-            private String num;
-            private String deductNum;
+            private String num = "0";
+            private String deductNum = "0";
 
             public String getWaterGoodsId() {
                 return waterGoodsId;
@@ -197,7 +197,7 @@ public class AddOrderModel {
              */
 
             private String couponImg;
-            private String deductNum;
+            private String deductNum = "0";
 
             public String getCouponImg() {
                 return couponImg;
@@ -223,7 +223,7 @@ public class AddOrderModel {
              */
 
             private String monthImg;
-            private String deductNum;
+            private String deductNum = "0";
 
             public String getMonthImg() {
                 return monthImg;

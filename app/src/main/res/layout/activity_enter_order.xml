@@ -318,9 +318,9 @@
                     app:isShowUnderLine="true"
                     app:leftText="水票数量"
                     app:rightIconSize="@dimen/dp_22"
-                    app:isShowRightText = "false"
+                    app:isShowRightText = "true"
                     app:rightText="请输入"
-                    app:showEditInput="true"
+                    app:showEditInput="false"
                     android:visibility="gone"/>
 
 

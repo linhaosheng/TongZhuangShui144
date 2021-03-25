@@ -56,6 +56,7 @@ public class SelectWaterTicketDialog extends DialogFragment {
     private Context context;
     private SelectShopListener selectShopListener;
     private int selectShopPosition;
+    private int customerId;
 
 
     @Override
@@ -64,9 +65,10 @@ public class SelectWaterTicketDialog extends DialogFragment {
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TurnTableDilogTheme);
     }
 
-    public SelectWaterTicketDialog(Context mContext, SelectShopListener selectShopListener) {
+    public SelectWaterTicketDialog(Context mContext, SelectShopListener selectShopListener,int customerId) {
         this.context = mContext;
         this.selectShopListener = selectShopListener;
+        this.customerId = customerId;
     }
 
 
@@ -102,7 +104,7 @@ public class SelectWaterTicketDialog extends DialogFragment {
         addShopDialogAdapter = new AddShopDialogAdapter(context);
         recycleData.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(addShopDialogAdapter);
-        loadWaterTicketData();
+        loadWaterTicketData(customerId);
 
         addShopDialogAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -160,9 +162,10 @@ public class SelectWaterTicketDialog extends DialogFragment {
      * 查找商品
      *
      */
-    public void loadWaterTicketData() {
+    public void loadWaterTicketData(int customerId) {
         Map<String,Object> map = new ArrayMap<>();
         map.put("query","");
+        map.put("customerId",customerId);
         map.put("category","水票");
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_WATER_TICKET, map

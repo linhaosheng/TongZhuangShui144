@@ -448,12 +448,12 @@
             android:visibility="gone"
             app:LtextColor="#333333"
             app:isShowRightLogo="true"
-            app:isShowRightText="false"
+            app:isShowRightText="true"
             app:isShowUnderLine="true"
             app:leftText="水票数量"
             app:rightIconSize="@dimen/dp_22"
             app:rightText="请输入"
-            app:showEditInput="true" />
+            app:showEditInput="false" />
 
 
         <pro.haichuang.tzs144.view.LSettingItem

@@ -225,11 +225,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
 
         LSettingItem select_water_num =  helper.getView(R.id.select_water_num);
-        if (item.getWaterNum()!=0){
-            select_water_num.setEditinput(item.getWaterNum()+"");
-        }else {
-            select_water_num.setEditinput("");
-        }
+        select_water_num.setRightText(item.getWaterNum()+"");
         select_water_num.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
             public void editListner(String text) {
