@@ -461,6 +461,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 break;
             case R.id.delivery_btn:
             case R.id.receive_payment:
+                caculateData();
 
                 List<OrderDetailModel.DataBean.GoodsListBean> data = deliverOrderDetailAdapter.getData();
 
