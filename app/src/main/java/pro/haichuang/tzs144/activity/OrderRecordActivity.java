@@ -3,7 +3,9 @@ package pro.haichuang.tzs144.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,6 +20,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kongzue.dialog.v3.WaitDialog;
 
@@ -31,9 +34,11 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.OrderRecordAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.OrderInfoModel;
 import pro.haichuang.tzs144.model.OrderRecordModel;
 import pro.haichuang.tzs144.presenter.OrderRecordActivityPresenter;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.ShopDetailDialog;
 
 /**
  * 订单记录
@@ -94,12 +99,57 @@ public class OrderRecordActivity extends BaseActivity implements ILoadDataView<O
         orderRecordAdapter = new OrderRecordAdapter(this);
         recycleData.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recycleData.setAdapter(orderRecordAdapter);
+
+        orderRecordAdapter.addChildClickViewIds(R.id.call_phone,R.id.order_detail_info);
+        orderRecordAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                switch (view.getId()){
+                    case R.id.call_phone:
+                        String customerPhone = orderRecordAdapter.getData().get(position).getCustomerPhone();
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        Uri data = Uri.parse("tel:" + customerPhone);
+                        intent.setData(data);
+                        startActivity(intent);
+                        break;
+                    case R.id.order_detail_info:
+                        OrderRecordModel.DataBean.OrderListBean orderListBean = orderRecordAdapter.getData().get(position);
+                        OrderInfoModel.DataBean dataBeanList  = new OrderInfoModel.DataBean();
+                        dataBeanList.setGoodsList(orderListBean.getGoodsList());
+                        dataBeanList.setPayMode(orderListBean.getPayMode());
+                        ShopDetailDialog shopDetailDialog = new ShopDetailDialog(OrderRecordActivity.this, dataBeanList);
+                        shopDetailDialog.show(getSupportFragmentManager(), "");
+                        break;
+                }
+            }
+        });
         orderRecordAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                String orderNumId = orderRecordAdapter.getData().get(position).getId();
-                Intent intent = new Intent(OrderRecordActivity.this, SaleOrderDetailActivity.class);
-                intent.putExtra("id",orderNumId);
+
+                OrderRecordModel.DataBean.OrderListBean dataBean = orderRecordAdapter.getData().get(position);
+                Log.i(TAG,"orderType==="+dataBean.getOrderType());
+                /**
+                 * 0-直接销售 1-补录订单 2-商城订单 3-电话订单 4-外卖订单
+                 */
+                if (dataBean.getOrderType()==0 || dataBean.getOrderType()==1){
+                    Intent intent = new Intent(OrderRecordActivity.this, SaleOrderDetailActivity.class);
+                    intent.putExtra("id",dataBean.getId());
+                    startActivity(intent);
+                    return;
+                }
+
+                String orderNumId = dataBean.getId();
+                Intent intent = new Intent(OrderRecordActivity.this, OrderDetailActivity.class);
+                intent.putExtra("id", orderNumId);
+                intent.putExtra("typeId", 4);
+
+                if (dataBean.getStatus()==1){
+                    intent.putExtra("orderStatus", 2);
+                }else {
+                    intent.putExtra("orderStatus", 3);
+                }
+
                 startActivity(intent);
             }
         });

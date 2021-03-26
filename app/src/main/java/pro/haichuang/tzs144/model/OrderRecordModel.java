@@ -139,8 +139,9 @@ public class OrderRecordModel {
             private String timeTitle;
             private String timeRange;
             private String timeStatus;
-            private String orderType;
+            private int orderType;
             private int status;
+            private int payMode;
             private String custoemrName;
             private String customerPhone;
             private String customerType;
@@ -149,7 +150,24 @@ public class OrderRecordModel {
             private String goodsTypeNum;
             private String goodsNum;
             private String goodsTopInfo;
-            private List<GoodsListBean> goodsList;
+
+            public int getPayMode() {
+                return payMode;
+            }
+
+            public void setPayMode(int payMode) {
+                this.payMode = payMode;
+            }
+
+            private List<OrderInfoModel.DataBean.GoodsListBean> goodsList;
+
+            public List<OrderInfoModel.DataBean.GoodsListBean> getGoodsList() {
+                return goodsList;
+            }
+
+            public void setGoodsList(List<OrderInfoModel.DataBean.GoodsListBean> goodsList) {
+                this.goodsList = goodsList;
+            }
 
             public String getId() {
                 return id;
@@ -191,11 +209,11 @@ public class OrderRecordModel {
                 this.timeStatus = timeStatus;
             }
 
-            public String getOrderType() {
+            public int getOrderType() {
                 return orderType;
             }
 
-            public void setOrderType(String orderType) {
+            public void setOrderType(int orderType) {
                 this.orderType = orderType;
             }
 
@@ -271,85 +289,7 @@ public class OrderRecordModel {
                 this.goodsTopInfo = goodsTopInfo;
             }
 
-            public List<GoodsListBean> getGoodsList() {
-                return goodsList;
-            }
 
-            public void setGoodsList(List<GoodsListBean> goodsList) {
-                this.goodsList = goodsList;
-            }
-
-            public static class GoodsListBean {
-                /**
-                 * category :
-                 * list : [{"goodsImg":"","goodsName":"","unit":"","price":""}]
-                 */
-
-                private String category;
-                private List<ListBean> list;
-
-                public String getCategory() {
-                    return category;
-                }
-
-                public void setCategory(String category) {
-                    this.category = category;
-                }
-
-                public List<ListBean> getList() {
-                    return list;
-                }
-
-                public void setList(List<ListBean> list) {
-                    this.list = list;
-                }
-
-                public static class ListBean {
-                    /**
-                     * goodsImg :
-                     * goodsName :
-                     * unit :
-                     * price :
-                     */
-
-                    private String goodsImg;
-                    private String goodsName;
-                    private String unit;
-                    private String price;
-
-                    public String getGoodsImg() {
-                        return goodsImg;
-                    }
-
-                    public void setGoodsImg(String goodsImg) {
-                        this.goodsImg = goodsImg;
-                    }
-
-                    public String getGoodsName() {
-                        return goodsName;
-                    }
-
-                    public void setGoodsName(String goodsName) {
-                        this.goodsName = goodsName;
-                    }
-
-                    public String getUnit() {
-                        return unit;
-                    }
-
-                    public void setUnit(String unit) {
-                        this.unit = unit;
-                    }
-
-                    public String getPrice() {
-                        return price;
-                    }
-
-                    public void setPrice(String price) {
-                        this.price = price;
-                    }
-                }
-            }
         }
     }
 }

@@ -338,7 +338,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     protected void onDestroy() {
-        mLocationClient.stop();
+        if (mLocationClient!=null){
+            mLocationClient.stop();
+        }
         super.onDestroy();
     }
 
