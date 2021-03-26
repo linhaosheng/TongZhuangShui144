@@ -197,7 +197,6 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
                 intent.putExtra("orderStatus", orderStatus);
                 startActivity(intent);
                 finish();
-
                 break;
             case R.id.void_sale_btn:
                 WaitDialog.show(this, "提交中...");

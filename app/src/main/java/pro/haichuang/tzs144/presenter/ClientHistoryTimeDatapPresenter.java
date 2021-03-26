@@ -72,7 +72,6 @@ public class ClientHistoryTimeDatapPresenter {
         params.put("startTime",startTime);
         params.put("endTime",endTime);
 
-
         HttpRequestEngine.postRequest(ConfigUrl.FIND_LS_ORDERS, params, new HttpRequestResultListener() {
             @Override
             public void start() {
@@ -83,7 +82,7 @@ public class ClientHistoryTimeDatapPresenter {
             public void success(String result) {
                 AccountOrderModel accountOrderModel = Utils.gsonInstane().fromJson(result, AccountOrderModel.class);
                 if (accountOrderModel.getResult()==1){
-                    EventBus.getDefault().post(new RealAccountEvent(accountOrderModel));
+                    EventBus.getDefault().post(new RealAccountEvent(accountOrderModel,2));
                 }
             }
 

@@ -456,6 +456,10 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     @OnClick({R.id.back,R.id.receive_payment,R.id.void_sale_btn,R.id.delivery_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.void_sale_btn:
+                WaitDialog.show(this, "提交中...");
+                orderDetailPresenter.directSelling(id);
+                break;
             case R.id.back:
                 finish();
                 break;
@@ -469,32 +473,18 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
 
                 int shopNum = 0;
                 int materialNum = 0;
+                boolean haveBindMaterList = false;
                 for (OrderDetailModel.DataBean.GoodsListBean goodsListBean : data){
 
                     shopNum += goodsListBean.getGoodsNum();
+                    if (goodsListBean.getBindMaterList()!=null && goodsListBean.getBindMaterList().size()>0){
+                        haveBindMaterList = true;
+                    }else {
+                        haveBindMaterList = false;
+                    }
                     for (OrderDetailModel.DataBean.BindMaterList bindMaterList : goodsListBean.getBindMaterList()){
                         materialNum += bindMaterList.getNum();
                     }
-
-                    if (goodsListBean.isShowWater()){
-                       if (goodsListBean.getWaterName()==null || goodsListBean.getWaterName().equals("") ||goodsListBean.getWaterDeductNum()<=0 || goodsListBean.getWaterNum()<=0){
-                           //Utils.showCenterTomast("请检查水票信息是否正确");
-                           //return;
-                       }
-                    }
-
-//                    if (goodsListBean.isShowMonth()){
-//                        if (goodsListBean.getMonthImg()==null|| goodsListBean.getMonthImg().equals("") || goodsListBean.getMonthDeductNum()==0){
-//                            Utils.showCenterTomast("请检查月结信息是否正确");
-//                            return;
-//                        }
-//                    }
-//                    if (goodsListBean.isShowReward()){
-//                        if (goodsListBean.getCouponImg()==null || goodsListBean.getCouponImg().equals("") || goodsListBean.getCouponDeductNum()==0){
-//                            Utils.showCenterTomast("请检查奖券信息是否正确");
-//                            return;
-//                        }
-//                    }
 
                     ShopDeleveModel.GoodsListBean goodsListBean1 = new ShopDeleveModel.GoodsListBean();
                     goodsListBean1.setOrderGoodsId(goodsListBean.getOrderGoodsId());
@@ -536,7 +526,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     goodsListBeanList.add(goodsListBean1);
                 }
 
-                if (shopNum > materialNum){
+                if (shopNum > materialNum && haveBindMaterList){
                     String content = "商品数量大于空桶数量，是否填写开押单？";
                     MessageDialog.show(this, "提示", content, "确定","取消")
                             .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
@@ -566,17 +556,19 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
 
                                 List<OrderDetailModel.DataBean.BindMaterList>tempBindMaterList = new ArrayList<>();
                                 List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean1.getBindMaterList();
-                                for (int j= 0;j<bindMaterList.size();j++){
-                                    OrderDetailModel.DataBean.BindMaterList bindMaterList1 = bindMaterList.get(j);
-                                    if (j==0){
-                                        bindMaterList1.setNum(goodsNum);
-                                    }else {
-                                        bindMaterList1.setNum(0);
+                                if (bindMaterList!=null){
+                                    for (int j= 0;j<bindMaterList.size();j++){
+                                        OrderDetailModel.DataBean.BindMaterList bindMaterList1 = bindMaterList.get(j);
+                                        if (j==0){
+                                            bindMaterList1.setNum(goodsNum);
+                                        }else {
+                                            bindMaterList1.setNum(0);
+                                        }
+                                        tempBindMaterList.add(bindMaterList1);
                                     }
-                                    tempBindMaterList.add(bindMaterList1);
+                                    goodsListBean1.setBindMaterList(tempBindMaterList);
+                                    tempList.add(goodsListBean1);
                                 }
-                                goodsListBean1.setBindMaterList(tempBindMaterList);
-                                tempList.add(goodsListBean1);
                             }
                             deliverOrderDetailAdapter.setList(tempList);
                             caculateData();
@@ -708,6 +700,8 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         totalMerchandiseNum.setText((float)data.getReceivablePrice()+"");
         customerId = data.getCustomerId();
 
+        caculateData();
+
     }
 
     @Override
@@ -782,6 +776,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StatusEvent event) {
+        WaitDialog.dismiss();
         if (event != null) {
             if (event.type==3){
                 if (event.status==Config.LOAD_SUCCESS){
@@ -789,6 +784,13 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     finish();
                 }else {
                     Utils.showCenterTomast("配送失败");
+                }
+            }else if (event.type==2){
+                if (event.status == Config.LOAD_SUCCESS) {
+                    Utils.showCenterTomast("定单作废成功");
+                    finish();
+                } else {
+                    Utils.showCenterTomast("定单作废失败");
                 }
             }
         }

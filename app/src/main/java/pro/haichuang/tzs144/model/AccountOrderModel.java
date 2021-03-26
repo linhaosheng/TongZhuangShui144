@@ -54,7 +54,8 @@ public class AccountOrderModel {
          * monthNum :
          */
 
-        private String id;
+        private int settleStatus = -1;
+        private int id;
         private String no;
         private String type;
         private String customerName;
@@ -63,15 +64,51 @@ public class AccountOrderModel {
         private String receivablePrice;
         private String realPrice;
         private String xjPrice;
+        private float totalPrice;
         private String waterNum;
         private String couponNum;
         private String monthNum;
+        private String deliveryTime;
+        private String settleTime;
 
-        public String getId() {
+
+        public String getDeliveryTime() {
+            return deliveryTime;
+        }
+
+        public void setDeliveryTime(String deliveryTime) {
+            this.deliveryTime = deliveryTime;
+        }
+
+        public String getSettleTime() {
+            return settleTime;
+        }
+
+        public void setSettleTime(String settleTime) {
+            this.settleTime = settleTime;
+        }
+
+        public float getTotalPrice() {
+            return totalPrice;
+        }
+
+        public void setTotalPrice(float totalPrice) {
+            this.totalPrice = totalPrice;
+        }
+
+        public int getSettleStatus() {
+            return settleStatus;
+        }
+
+        public void setSettleStatus(int settleStatus) {
+            this.settleStatus = settleStatus;
+        }
+
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 

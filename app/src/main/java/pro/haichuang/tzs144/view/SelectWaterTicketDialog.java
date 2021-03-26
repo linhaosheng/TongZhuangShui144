@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +57,7 @@ public class SelectWaterTicketDialog extends DialogFragment {
     private View view;
     private Context context;
     private SelectShopListener selectShopListener;
-    private int selectShopPosition;
+    private int selectShopPosition = -1;
     private int customerId;
 
 
@@ -111,16 +113,22 @@ public class SelectWaterTicketDialog extends DialogFragment {
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 ShopModel.DataBean dataBean = addShopDialogAdapter.getData().get(position);
                 List<ShopModel.DataBean> data = addShopDialogAdapter.getData();
+
                 if (dataBean.isCheck()){
                     dataBean.setCheck(false);
+                    addShopDialogAdapter.setData(position,dataBean);
+                    selectShopPosition = -1;
                 }else {
+                    List<ShopModel.DataBean> tempData = new ArrayList<>();
+                    for (ShopModel.DataBean dataBean1 : data){
+                        dataBean1.setCheck(false);
+                        tempData.add(dataBean1);
+                    }
                     dataBean.setCheck(true);
-                }
-                if (dataBean.isCheck()){
+                    tempData.set(position,dataBean);
                     selectShopPosition = position;
+                    addShopDialogAdapter.setList(tempData);
                 }
-                data.set(position,dataBean);
-                addShopDialogAdapter.setList(data);
             }
         });
     }
@@ -143,14 +151,17 @@ public class SelectWaterTicketDialog extends DialogFragment {
 
     @OnClick({R.id.cancel_btn, R.id.input_btn})
     public void onViewClicked(View view) {
-
         switch (view.getId()) {
-
             case R.id.cancel_btn:
                 dismiss();
                 break;
             case R.id.input_btn:
+                if (selectShopPosition==-1){
+                    Utils.showCenterTomast("请选择水票");
+                    return;
+                }
                 if (selectShopListener!=null){
+                    ShopModel.DataBean dataBean = addShopDialogAdapter.getData().get(selectShopPosition);
                     selectShopListener.selectShop(addShopDialogAdapter.getData().get(selectShopPosition));
                 }
                 dismiss();

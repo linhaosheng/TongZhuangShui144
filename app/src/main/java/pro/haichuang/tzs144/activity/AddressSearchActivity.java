@@ -116,7 +116,6 @@ public class AddressSearchActivity extends BaseActivity {
 //                mCurrentMode, true, mCurrentMarker
 //        ));
 
-
         BitmapDescriptor bitmap = null;
         bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
 

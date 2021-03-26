@@ -76,7 +76,7 @@ public class ClientRealTimeDatapPresenter {
             public void success(String result) {
                 AccountOrderModel accountOrderModel = Utils.gsonInstane().fromJson(result, AccountOrderModel.class);
                 if (accountOrderModel.getResult()==1){
-                    EventBus.getDefault().post(new RealAccountEvent(accountOrderModel));
+                    EventBus.getDefault().post(new RealAccountEvent(accountOrderModel,1));
                 }
             }
 
@@ -123,9 +123,11 @@ public class ClientRealTimeDatapPresenter {
     /**
      * [账务]账务管理 - 作废
      */
-    public final void cancel(){
+    public final void cancel(int id){
 
-        HttpRequestEngine.postRequest(ConfigUrl.ACCOUNT_CANCEL, null, new HttpRequestResultListener() {
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("id",id);
+        HttpRequestEngine.postRequest(ConfigUrl.ACCOUNT_CANCEL, params, new HttpRequestResultListener() {
             @Override
             public void start() {
 
@@ -135,7 +137,7 @@ public class ClientRealTimeDatapPresenter {
             public void success(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    //结账成功
+                    //作废成功
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,5));
                     }else {

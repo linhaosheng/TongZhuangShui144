@@ -46,8 +46,6 @@ import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.ClientEvent;
 import pro.haichuang.tzs144.model.ClientTrendModel;
 import pro.haichuang.tzs144.model.ClientTypeModel;
-import pro.haichuang.tzs144.model.ClientTypeSearchModel;
-import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.TrendModel;
 import pro.haichuang.tzs144.presenter.ClientFragmentPresenter;
 import pro.haichuang.tzs144.util.Utils;

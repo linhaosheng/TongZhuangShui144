@@ -57,7 +57,7 @@ public class AddShopDialog extends DialogFragment {
     private View view;
     private Context context;
     private SelectShopListener selectShopListener;
-    private int selectShopPosition;
+    private int selectShopPosition = -1;
 
 
     @Override
@@ -111,22 +111,22 @@ public class AddShopDialog extends DialogFragment {
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 ShopModel.DataBean dataBean = addShopDialogAdapter.getData().get(position);
                 List<ShopModel.DataBean> data = addShopDialogAdapter.getData();
-                List<ShopModel.DataBean> tempData = new ArrayList<>();
 
-                for (int i=0;i<data.size();i++){
-                    ShopModel.DataBean dataBean1 = data.get(i);
-                    if (i==position && !dataBean1.isCheck()){
-                        dataBean1.setCheck(true);
-                    }else {
+                if (dataBean.isCheck()){
+                    dataBean.setCheck(false);
+                    addShopDialogAdapter.setData(position,dataBean);
+                    selectShopPosition = -1;
+                }else {
+                    List<ShopModel.DataBean> tempData = new ArrayList<>();
+                    for (ShopModel.DataBean dataBean1 : data){
                         dataBean1.setCheck(false);
+                        tempData.add(dataBean1);
                     }
-                    tempData.add(dataBean1);
-                }
-
-                if (!dataBean.isCheck()){
+                    dataBean.setCheck(true);
+                    tempData.set(position,dataBean);
                     selectShopPosition = position;
+                    addShopDialogAdapter.setList(tempData);
                 }
-                addShopDialogAdapter.setList(tempData);
             }
         });
     }
@@ -156,6 +156,10 @@ public class AddShopDialog extends DialogFragment {
                 dismiss();
                 break;
             case R.id.input_btn:
+                if (selectShopPosition==-1){
+                    Utils.showCenterTomast("请选择商品");
+                    return;
+                }
                 if (selectShopListener!=null){
                     ShopModel.DataBean dataBean = addShopDialogAdapter.getData().get(selectShopPosition);
                     findGoodsMaterial(dataBean.getId());

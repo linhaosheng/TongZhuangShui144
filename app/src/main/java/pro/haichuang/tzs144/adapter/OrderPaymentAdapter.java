@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.view.View;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
@@ -33,14 +35,21 @@ public class OrderPaymentAdapter extends BaseQuickAdapter<AccountOrderModel.Data
         }else if (dataBean.getType().equals("4")) {
             order_type = "外卖订单";
         }
-        String info = dataBean.getCouponNum()+"  "+dataBean.getPhone();
-        String order_inconme = "应收收入  "+dataBean.getReceivablePrice()+"元   实际收入   "+dataBean.getRealPrice()+"元";
-        String cash = "现金 (元) : "+dataBean.getXjPrice();
-        String water_tickets = "水票 (张) : "+dataBean.getWaterNum();
-        String reward_tickets = "奖券 (元) : "+dataBean.getCouponNum();
-        String monthly = "月结 (元) : "+dataBean.getMonthNum();
+        String info = dataBean.getCustomerName()+"  "+dataBean.getPhone();
+        String order_inconme = "";
+        if (dataBean.getTotalPrice()>0){
+            order_inconme = "商品总额:   "+dataBean.getTotalPrice()+"应收收入:   "+dataBean.getReceivablePrice()+"元   实际收入:    "+dataBean.getRealPrice()+"元";
+        }else {
+            order_inconme = "应收收入:   "+dataBean.getReceivablePrice()+"元   实际收入:    "+dataBean.getRealPrice()+"元";
+        }
 
-           baseViewHolder.setText(R.id.order_num,dataBean.getNo())
+        String cash = "现金 (元) :  "+dataBean.getXjPrice();
+        String water_tickets = "水票 (张) :  "+dataBean.getWaterNum();
+        String reward_tickets = "奖券 (元) :  "+dataBean.getCouponNum();
+        String monthly = "月结 (元) :  "+dataBean.getMonthNum();
+
+        String  orderNo = "订单编号 : "+dataBean.getNo();
+           baseViewHolder.setText(R.id.order_num,orderNo)
                    .setText(R.id.order_type,order_type)
                    .setText(R.id.order_contact,info)
                    .setText(R.id.client_type,dataBean.getCustomerType())
@@ -49,6 +58,28 @@ public class OrderPaymentAdapter extends BaseQuickAdapter<AccountOrderModel.Data
            .setText(R.id.water_tickets,water_tickets)
            .setText(R.id.reward_tickets,reward_tickets)
            .setText(R.id.monthly,monthly);
+
+           if (dataBean.getSettleStatus()==0){
+               baseViewHolder.getView(R.id.void_order).setVisibility(View.VISIBLE);
+           }else {
+               baseViewHolder.getView(R.id.void_order).setVisibility(View.GONE);
+           }
+
+           if (dataBean.getDeliveryTime()!=null && dataBean.getDeliveryTime().length()>0){
+               String deleve_date = "配送日期："+dataBean.getDeliveryTime();
+               baseViewHolder.setText(R.id.deleve_date,deleve_date);
+               baseViewHolder.getView(R.id.deleve_date).setVisibility(View.VISIBLE);
+           }else {
+               baseViewHolder.getView(R.id.deleve_date).setVisibility(View.GONE);
+           }
+
+        if (dataBean.getSettleTime()!=null && dataBean.getSettleTime().length()>0){
+            String settle_date = "结账日期："+dataBean.getDeliveryTime();
+            baseViewHolder.setText(R.id.settle_date,settle_date);
+            baseViewHolder.getView(R.id.settle_date).setVisibility(View.VISIBLE);
+        }else {
+            baseViewHolder.getView(R.id.settle_date).setVisibility(View.GONE);
+        }
 
     }
 }

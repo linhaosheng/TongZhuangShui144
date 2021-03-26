@@ -64,7 +64,6 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     private OrderPaymentAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
 
-
     private View headView;
     private TextView checkOutTime;
     private TextView filter;
@@ -76,7 +75,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Override
     public boolean lazyLoader() {
-        return true;
+        return false;
     }
 
     @Override
@@ -148,7 +147,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
         orderPaymentAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                String orderNumId = orderPaymentAdapter.getData().get(position).getId();
+                String orderNumId = orderPaymentAdapter.getData().get(position).getId() +"";
                 Intent intent = new Intent(getActivity(), SaleOrderDetailActivity.class);
                 intent.putExtra("id",orderNumId);
                 startActivity(intent);
@@ -217,7 +216,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RealAccountEvent event) {
-        if (event!=null){
+        if (event!=null && event.type==2){
             if (event.dataBean==null || event.dataBean.getData()==null || event.dataBean.getData().size()==0){
                 emptyView.setVisibility(View.VISIBLE);
             }else {

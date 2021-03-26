@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kongzue.dialog.v3.WaitDialog;
 
@@ -35,6 +36,7 @@ import pro.haichuang.tzs144.activity.SalesListActivity;
 import pro.haichuang.tzs144.adapter.OrderPaymentAdapter;
 import pro.haichuang.tzs144.adapter.OrderTrendAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.AccountOrderModel;
 import pro.haichuang.tzs144.model.AccountRealTimeModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.StatusEvent;
@@ -104,11 +106,24 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
         recycleDataDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         recycleDataDetail.setAdapter(orderPaymentAdapter);
 
+        orderPaymentAdapter.addChildClickViewIds(R.id.void_order);
+        orderPaymentAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                switch (view.getId()){
+                    case R.id.void_order:
+                        AccountOrderModel.DataBean dataBean = orderPaymentAdapter.getData().get(position);
+
+                        clientRealTimeDatapPresenter.cancel(dataBean.getId());
+                        break;
+                }
+            }
+        });
         orderPaymentAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
 
-                String orderNumId = orderPaymentAdapter.getData().get(position).getId();
+                String orderNumId = orderPaymentAdapter.getData().get(position).getId() +"";
                 Intent intent = new Intent(getActivity(), SaleOrderDetailActivity.class);
                 intent.putExtra("id",orderNumId);
                 startActivity(intent);
@@ -143,7 +158,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RealAccountEvent event) {
-        if (event != null) {
+        if (event != null && event.type==1) {
             if (event.dataBean == null || event.dataBean.getData() == null || event.dataBean.getData().size() == 0) {
                 emptyView.setVisibility(View.VISIBLE);
             } else {
@@ -159,20 +174,21 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             if (event.type==4){
                 if (event.status== Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("结账成功");
-                    billOrder.setVisibility(View.GONE);
+                   // billOrder.setVisibility(View.GONE);
+                    clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
                 }else {
                     Utils.showCenterTomast("结账失败");
                 }
             }else if (event.type==5){
                 if (event.status== Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("订单作废成功");
+                    clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
                 }else {
                     Utils.showCenterTomast("订单作废失败");
                 }
             }
         }
     }
-
 
 
     @Override

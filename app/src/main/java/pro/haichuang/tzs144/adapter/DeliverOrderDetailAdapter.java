@@ -56,9 +56,11 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 .setText(R.id.total_price_num,priceNum)
                 .setText(R.id.total_price,totalPrice);
 
+        helper.getView(R.id.recycle).setVisibility(View.VISIBLE);
         List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = item.getBindMaterList();
         try {
             if (bindMaterList.size()==0){
+                helper.getView(R.id.recycle).setVisibility(View.GONE);
                 helper.getView(R.id.recycle_material_view).setVisibility(View.GONE);
             }else {
                 helper.getView(R.id.recycle_material_view).setVisibility(View.VISIBLE);
