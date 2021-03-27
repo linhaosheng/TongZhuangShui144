@@ -452,6 +452,10 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.water_tickets:
                 if (selectWater){
+                    selectTicket.setLeftText("水票");
+                    selectWaterNum.setRightText("0");
+                    selectDeductionNunm.setEditinput("0");
+                    waterId = -1;
                     waterTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
                     selectTicket.setVisibility(View.GONE);
                     selectWaterNum.setVisibility(View.GONE);
@@ -466,6 +470,9 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.reward_tickets:
                 if (selectReward){
+                    uploadReward.setImageDrawable(ContextCompat.getDrawable(EnterOrderActivity.this,R.mipmap.upload));
+                    rewardDeductionNunm.setEditinput("");
+
                     rewardTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
                     upload_reward_view.setVisibility(View.GONE);
                     rewardDeductionNunm.setVisibility(View.GONE);
@@ -478,6 +485,9 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.monthly:
                 if (selectMonth){
+                    uploadMonth.setImageDrawable(ContextCompat.getDrawable(EnterOrderActivity.this,R.mipmap.upload));
+                    monthDeductionNunm.setEditinput("");
+
                     monthly.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
                     upload_month_view.setVisibility(View.GONE);
                     monthDeductionNunm.setVisibility(View.GONE);

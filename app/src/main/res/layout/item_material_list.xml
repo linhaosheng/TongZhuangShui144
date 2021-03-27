@@ -14,7 +14,6 @@
         android:textColor="#FF9419"
         android:gravity="center"
         android:layout_marginTop="11dp"
-        android:layout_below="@+id/shop_capacity"
         />
     <TextView
         android:id="@+id/material_name"
@@ -25,7 +24,6 @@
         android:textColor="#3F3F3F"
         android:layout_toRightOf="@+id/view2"
         android:layout_marginTop="@dimen/dp_10"
-        android:layout_below="@+id/shop_capacity"
         android:layout_marginLeft="10dp"/>
 
 
@@ -35,7 +33,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/dp_15"
-        android:layout_below="@+id/shop_capacity"
         android:orientation="horizontal">
 
         <TextView

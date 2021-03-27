@@ -167,7 +167,7 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
-
+        refresh.setRefreshing(false);
     }
 
     @Override

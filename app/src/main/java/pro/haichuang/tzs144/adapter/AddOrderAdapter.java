@@ -66,13 +66,14 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
 
         }
 
-
         if (item.getDeductCoupon()==null){
             helper.getView(R.id.reward_view).setVisibility(View.GONE);
         }else {
             helper.getView(R.id.reward_view).setVisibility(View.VISIBLE);
             ImageView rewardImg = helper.getView(R.id.reward_img);
             Utils.showImage(rewardImg,item.getDeductCoupon().getCouponImg());
+            String reward_discount = "抵扣 -"+item.getDeductCoupon().getDeductNum();
+            helper.setText(R.id.reward_discount,reward_discount);
         }
 
         if (item.getDeductMonth()==null){
@@ -81,6 +82,8 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
             helper.getView(R.id.month_view).setVisibility(View.VISIBLE);
             ImageView monthImg = helper.getView(R.id.month_img);
             Utils.showImage(monthImg,item.getDeductMonth().getMonthImg());
+            String month_discount = "抵扣 -"+item.getDeductMonth().getDeductNum();
+            helper.setText(R.id.month_discount,month_discount);
         }
     }
 }
