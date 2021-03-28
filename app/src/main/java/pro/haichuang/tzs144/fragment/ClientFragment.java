@@ -48,6 +48,8 @@ import pro.haichuang.tzs144.model.ClientTrendModel;
 import pro.haichuang.tzs144.model.ClientTypeModel;
 import pro.haichuang.tzs144.model.TrendModel;
 import pro.haichuang.tzs144.presenter.ClientFragmentPresenter;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.ClientFilterDialog;
 
@@ -95,7 +97,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     private String endTime;
     private String startTime = "2019-10-10";
     private String khStatus = "0";
-    private String khTypeId = "1,2,3";
+    private String khTypeId = "";
 
 
     @Override
@@ -166,6 +168,17 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     protected void setUpData() {
+        String clientType = SPUtils.getString(Config.CLIENT_TYPE, "");
+        ClientTypeModel clientTypeModel = Utils.gsonInstane().fromJson(clientType, ClientTypeModel.class);
+        List<ClientTypeModel.DataBean> data = clientTypeModel.getData();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (ClientTypeModel.DataBean dataBean : data){
+            stringBuilder.append(dataBean.getId()).append(",");
+        }
+        String substring = stringBuilder.substring(0, stringBuilder.length() - 1);
+        khTypeId = substring;
+        Log.i("TAG===",khTypeId);
+
         endTime = Utils.formatSelectTime(new Date());
         clientFragmentPresenter = new ClientFragmentPresenter(this);
         clientFragmentPresenter.countKh();
@@ -200,7 +213,6 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                 return false;
             }
         });
-
     }
 
     @OnClick({R.id.left_text, R.id.tip_img,R.id.filter,R.id.cancel})
@@ -227,7 +239,11 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                                 stringBuilder.append(dataBean.getId()).append(",");
                             }
                         }
-                        khTypeId = stringBuilder.toString().substring(0,stringBuilder.toString().length()-1);
+                        if (stringBuilder==null || stringBuilder.length()==0){
+                            khTypeId = "";
+                        }else {
+                            khTypeId = stringBuilder.toString().substring(0,stringBuilder.toString().length()-1);
+                        }
 
                         currentPage = 1;
                         lastPage = false;
