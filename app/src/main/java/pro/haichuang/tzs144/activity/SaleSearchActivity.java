@@ -150,7 +150,7 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
                 return false;
             }
         });
-      //  searchActivityPresenter.search("测试");
+      // searchActivityPresenter.search("鸿运");
     }
 
 

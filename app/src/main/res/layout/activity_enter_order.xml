@@ -194,7 +194,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shop_name">
 
-
                 <TextView
                     android:id="@+id/shop_capacity"
                     android:layout_width="wrap_content"
@@ -214,7 +213,6 @@
                     android:text="￥"
                     android:textColor="#3F3F3F"
                     android:textSize="12sp" />
-
 
                 <TextView
                     android:id="@+id/shop_price"

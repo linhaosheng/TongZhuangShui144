@@ -22,7 +22,7 @@ public class AccountingListDetailAdapter extends BaseQuickAdapter<AccountListDet
         if (dataBean.getType().equals("0")){
             order_type = "直接销售";
         }else if (dataBean.getType().equals("1")) {
-            order_type = "补录订";
+            order_type = "补录订单";
         }else if (dataBean.getType().equals("2")) {
             order_type = "商城订单";
         }else if (dataBean.getType().equals("3")) {
