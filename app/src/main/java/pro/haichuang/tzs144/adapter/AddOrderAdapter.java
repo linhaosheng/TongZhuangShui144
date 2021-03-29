@@ -62,8 +62,10 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
             for (MaterialModel.DataBean dataBean : materials){
                 materialBuilder.append(dataBean.getName()).append("x").append(dataBean.getNum()).append("   ");
             }
+            helper.getView(R.id.recycle_num).setVisibility(View.VISIBLE);
             helper.setText(R.id.recycle_num,materialBuilder.toString());
-
+        }else {
+            helper.getView(R.id.recycle_num).setVisibility(View.GONE);
         }
 
         if (item.getDeductCoupon()==null){

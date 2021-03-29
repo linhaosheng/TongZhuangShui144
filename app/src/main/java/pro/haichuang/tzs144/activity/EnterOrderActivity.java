@@ -507,6 +507,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                  //   Utils.showCenterTomast("请选择水票类型");
                     //return;
                 }
+
+                Log.i("TAG==","PRICE==="+shopPrice.getText().toString());
                 AddOrderModel.GoodsListBean goodsListBean = new AddOrderModel.GoodsListBean();
                 goodsListBean.setGoodName(shopDataBean.getName()+shopDataBean.getSpecs());
                 goodsListBean.setGoodsId(String.valueOf(shopId));
@@ -607,13 +609,12 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             }
 
             if (goodsListBean1.getDeductMonth()!=null){
-                //实收价格  商品总额-应收—月结；
+                //实收价格  【单个商品总价-（单个商品抵扣数量*单价）】之和；
                 int deductMonthNum = Integer.parseInt(goodsListBean1.getDeductMonth().getDeductNum());
-                actual_amount +=   amount_receivable - deductMonthNum * shopPrice;
+                actual_amount += amount_receivable - deductMonthNum * shopPrice;
             }else {
-                actual_amount += amount_receivable;
+                actual_amount = amount_receivable;
             }
-
         }
         totalMerchandiseNum.setText(totalPrice +"");
         amountReceivableNum.setText(amount_receivable +"");
