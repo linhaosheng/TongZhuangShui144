@@ -43,7 +43,7 @@ public class AccountingListDetailPresenter {
             public void success(String result) {
                 AccountListDetailModel accountListDetailModel = Utils.gsonInstane().fromJson(result, AccountListDetailModel.class);
                 if (accountListDetailModel!=null && accountListDetailModel.getResult()==1){
-                    iLoadDataView.successLoad(accountListDetailModel);
+                    iLoadDataView.successLoad(accountListDetailModel.getData());
                 }else {
                     iLoadDataView.errorLoad("获取错误");
                 }
@@ -87,6 +87,39 @@ public class AccountingListDetailPresenter {
             @Override
             public void error(String error) {
                 EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,7));
+            }
+        });
+    }
+
+    /**
+     * [账务]账务管理 - 结账
+     */
+    public final void settle(){
+
+        HttpRequestEngine.postRequest(ConfigUrl.SETTLE, null, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    //结账成功
+                    if (jsonObject.getInt("result")==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,8));
+                    }else {
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,8));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,8));
             }
         });
     }

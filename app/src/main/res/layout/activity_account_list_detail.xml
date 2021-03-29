@@ -96,6 +96,7 @@
                         android:layout_marginRight="@dimen/dp_10"
                         android:text="销账"
                         android:textAlignment="center"
+                        android:visibility="gone"
                         android:textColor="#32C5FF" />
 
                     <View
@@ -158,7 +159,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_10"
                             android:gravity="center"
-                            android:text="10000元"
+                            android:text="0元"
                             android:textColor="#333333"
                             android:textSize="14sp"
                             android:textStyle="bold" />

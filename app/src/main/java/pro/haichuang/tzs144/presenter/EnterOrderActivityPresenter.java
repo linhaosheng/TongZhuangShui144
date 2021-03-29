@@ -35,7 +35,7 @@ public class EnterOrderActivityPresenter {
     /**
      * [直接销售]-录入订单
      */
-    public void enterOrder(AddOrderModel addOrderModel){
+    public void enterOrder(AddOrderModel addOrderModel,String totalPrice,String receivablePrice,String realPrice){
 
         if (addOrderModel==null){
             return;
@@ -45,9 +45,9 @@ public class EnterOrderActivityPresenter {
         params.put("customerId",addOrderModel.getCustomerId());
         params.put("addressId",addOrderModel.getAddressId());
         params.put("goodsList",addOrderModel.getGoodsList());
-//        params.put("totalPrice",totalPrice);
-//        params.put("receivablePrice",receivablePrice);
-//        params.put("realPrice",realPrice);
+       params.put("totalPrice",totalPrice);
+        params.put("receivablePrice",receivablePrice);
+        params.put("realPrice",realPrice);
 
         HttpRequestEngine.postRequest(ConfigUrl.ENTER_ORFER, params, new HttpRequestResultListener() {
             @Override

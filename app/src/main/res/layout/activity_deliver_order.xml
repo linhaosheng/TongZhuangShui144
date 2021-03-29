@@ -280,7 +280,7 @@
                         android:layout_marginTop="@dimen/dp_10"
                         android:text="￥" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/actual_amount"
                         android:layout_width="@dimen/dp_70"
                         android:layout_height="@dimen/dp_35"

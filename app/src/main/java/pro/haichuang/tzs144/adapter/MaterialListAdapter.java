@@ -1,5 +1,10 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.EditText;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
@@ -21,6 +26,5 @@ public class MaterialListAdapter extends BaseQuickAdapter<MaterialModel.DataBean
 
         baseViewHolder.setText(R.id.material_name,dataBean.getName());
         baseViewHolder.setText(R.id.shop_num_tong,dataBean.getNum()+"");
-
     }
 }

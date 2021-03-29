@@ -44,7 +44,7 @@ import pro.haichuang.tzs144.util.Utils;
 /**
  * 账目详情
  */
-public class AccountingListDetailActivity extends BaseActivity implements ILoadDataView<AccountListDetailModel> {
+public class AccountingListDetailActivity extends BaseActivity implements ILoadDataView<AccountListDetailModel.DataBean> {
 
     @BindView(R.id.back)
     ImageView back;
@@ -119,7 +119,7 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
         accountingListDetailAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                String orderNumId = accountingListDetailAdapter.getData().get(position).getId();
+                String orderNumId = accountingListDetailAdapter.getData().get(position).getId() +"";
                 Intent intent = new Intent(AccountingListDetailActivity.this, SaleOrderDetailActivity.class);
                 intent.putExtra("id",orderNumId);
                 startActivity(intent);
@@ -159,9 +159,9 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
                 endTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn36));
                 selectTime(SELECT_END_TIME);
                 break;
-            case R.id.write_off:
-                break;
             case R.id.bill:
+                WaitDialog.show(this,"加载中...");
+                accountingListDetailPresenter.settle();
                 break;
         }
     }
@@ -189,29 +189,28 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
     }
 
     @Override
-    public void successLoad(AccountListDetailModel data) {
+    public void successLoad(AccountListDetailModel.DataBean data) {
 
         WaitDialog.dismiss();
-        AccountListDetailModel.DataBean dataBean = data.getData().get(0);
-        cash.setText(dataBean.getXjPrice()+"元");
+        cash.setText(data.getXjPrice()+"元");
         //coupon.setText(dataBean.);
-        wechatPay.setText(dataBean.getWxPrice()+"元");
-        wateTicket.setText(dataBean.getWaterNum()+"元");
-        meituanPay.setText(dataBean.getMtPrice()+"元");
-        rewardNum.setText(dataBean.getCouponNum()+"元");
-        elmePay.setText(dataBean.getElPrice()+"元");
-        monthPay.setText(dataBean.getMonthNum()+"元");
+        wechatPay.setText(data.getWxPrice()+"元");
+        wateTicket.setText(data.getWaterNum()+"元");
+        meituanPay.setText(data.getMtPrice()+"元");
+        rewardNum.setText(data.getCouponNum()+"元");
+        elmePay.setText(data.getElPrice()+"元");
+        monthPay.setText(data.getMonthNum()+"元");
 
-        if (dataBean.getList()==null || dataBean.getList().size()==0){
+        if (data.getList()==null || data.getList().size()==0){
             emptyView.setVisibility(View.VISIBLE);
         }else {
             emptyView.setVisibility(View.GONE);
-            accountingListDetailAdapter.setList(dataBean.getList());
+            accountingListDetailAdapter.setList(data.getList());
         }
-        if (dataBean.getTime()==null){
+        if (data.getTime()==null){
             orderTime.setText("结账日期："+Utils.transformTime(new Date()));
         }else {
-            orderTime.setText("结账日期："+dataBean.getTime());
+            orderTime.setText("结账日期："+data.getTime());
         }
     }
 
@@ -221,8 +220,16 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
         if (event != null && event.type==7) {
             if (event.status == Config.LOAD_SUCCESS) {
                 Utils.showCenterTomast("销账成功");
+                accountingListDetailPresenter.getAccountInfo(id);
             } else {
                 Utils.showCenterTomast("销账失败");
+            }
+        }else if (event != null && event.type==8){
+            if (event.status == Config.LOAD_SUCCESS) {
+                Utils.showCenterTomast("结账成功");
+                accountingListDetailPresenter.getAccountInfo(id);
+            } else {
+                Utils.showCenterTomast("结账失败");
             }
         }
         Log.i(TAG, "onMessageEvent===");

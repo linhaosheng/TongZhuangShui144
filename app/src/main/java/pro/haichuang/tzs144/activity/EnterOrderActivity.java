@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -100,7 +101,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     @BindView(R.id.reduce)
     TextView reduce;
     @BindView(R.id.shop_num)
-    TextView shopNum;
+    EditText shopNum;
     @BindView(R.id.shop_add)
     TextView shopAdd;
     @BindView(R.id.shop_capacity)
@@ -108,7 +109,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     @BindView(R.id.shop_unit)
     TextView shopUnit;
     @BindView(R.id.shop_price)
-    TextView shopPrice;
+    EditText shopPrice;
     @BindView(R.id.shop_info)
     RelativeLayout shopInfo;
     @BindView(R.id.line1)
@@ -156,7 +157,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     @BindView(R.id.price_unit2)
     TextView priceUnit2;
     @BindView(R.id.actual_amount)
-    TextView actualAmount;
+    EditText actualAmount;
     @BindView(R.id.receive_payment)
     Button receivePayment;
     @BindView(R.id.shop_amount_view)
@@ -638,8 +639,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         addOrderModel.setAddressId(dataBean.getAddressId()+"");
         addOrderModel.setGoodsList(goodsListBeans);
 
-        enterOrderActivityPresenter.enterOrder(addOrderModel);
-        //totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString()
+        enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString());
     }
 
     /**

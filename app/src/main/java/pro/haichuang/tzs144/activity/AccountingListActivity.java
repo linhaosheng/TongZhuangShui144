@@ -185,6 +185,7 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
         if (event != null) {
             if (event.status == Config.LOAD_SUCCESS) {
                 Utils.showCenterTomast("销账成功");
+                accountingListPresenter.findOrderAccounts(startTime.getText().toString(),endTime.getText().toString());
             } else {
                 Utils.showCenterTomast("销账失败");
             }

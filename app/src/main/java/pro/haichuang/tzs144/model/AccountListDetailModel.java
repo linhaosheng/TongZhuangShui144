@@ -8,18 +8,18 @@ public class AccountListDetailModel {
     /**
      * result : 1
      * message : 获取成功!
-     * data : [{"time":"","xjPrice":"","wxPrice":"","mtPrice":"","elPrice":"","waterNum":"","couponNum":"","monthNum":"","list":[{"no":"","type":"","customerName":"","phone":"","customerType":"","totalPrice":"","receivablePrice":"","realPrice":"","xjPrice":"","waterNum":"","couponNum":"","monthNum":""}]}]
+     * data : {"couponNum":2,"waterNum":0,"mtPrice":0,"monthNum":77,"time":"2021-03-29 17:56:05","list":[{"couponNum":0,"no":"LR202103291704006","totalPrice":6,"type":3,"customerName":"高密二中","waterNum":0,"customerType":"协议客户","phone":"18866768118","receivablePrice":6,"monthNum":6,"id":358,"xjPrice":0,"realPrice":0}],"xjPrice":0,"wxPrice":0,"elPrice":0}
      */
 
-    private int result;
+    private Integer result;
     private String message;
-    private List<DataBean> data;
+    private DataBean data;
 
-    public int getResult() {
+    public Integer getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(Integer result) {
         this.result = result;
     }
 
@@ -31,37 +31,68 @@ public class AccountListDetailModel {
         this.message = message;
     }
 
-    public List<DataBean> getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(List<DataBean> data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
     public static class DataBean {
         /**
-         * time :
-         * xjPrice :
-         * wxPrice :
-         * mtPrice :
-         * elPrice :
-         * waterNum :
-         * couponNum :
-         * monthNum :
-         * list : [{"no":"","type":"","customerName":"","phone":"","customerType":"","totalPrice":"","receivablePrice":"","realPrice":"","xjPrice":"","waterNum":"","couponNum":"","monthNum":""}]
+         * couponNum : 2
+         * waterNum : 0
+         * mtPrice : 0
+         * monthNum : 77
+         * time : 2021-03-29 17:56:05
+         * list : [{"couponNum":0,"no":"LR202103291704006","totalPrice":6,"type":3,"customerName":"高密二中","waterNum":0,"customerType":"协议客户","phone":"18866768118","receivablePrice":6,"monthNum":6,"id":358,"xjPrice":0,"realPrice":0}]
+         * xjPrice : 0
+         * wxPrice : 0
+         * elPrice : 0
          */
 
-
+        private Integer couponNum;
+        private Integer waterNum;
+        private Integer mtPrice;
+        private Integer monthNum;
         private String time;
-        private String xjPrice;
-        private String wxPrice;
-        private String mtPrice;
-        private String elPrice;
-        private String waterNum;
-        private String couponNum;
-        private String monthNum;
         private List<ListBean> list;
+        private Integer xjPrice;
+        private Integer wxPrice;
+        private Integer elPrice;
+
+        public Integer getCouponNum() {
+            return couponNum;
+        }
+
+        public void setCouponNum(Integer couponNum) {
+            this.couponNum = couponNum;
+        }
+
+        public Integer getWaterNum() {
+            return waterNum;
+        }
+
+        public void setWaterNum(Integer waterNum) {
+            this.waterNum = waterNum;
+        }
+
+        public Integer getMtPrice() {
+            return mtPrice;
+        }
+
+        public void setMtPrice(Integer mtPrice) {
+            this.mtPrice = mtPrice;
+        }
+
+        public Integer getMonthNum() {
+            return monthNum;
+        }
+
+        public void setMonthNum(Integer monthNum) {
+            this.monthNum = monthNum;
+        }
 
         public String getTime() {
             return time;
@@ -69,62 +100,6 @@ public class AccountListDetailModel {
 
         public void setTime(String time) {
             this.time = time;
-        }
-
-        public String getXjPrice() {
-            return xjPrice;
-        }
-
-        public void setXjPrice(String xjPrice) {
-            this.xjPrice = xjPrice;
-        }
-
-        public String getWxPrice() {
-            return wxPrice;
-        }
-
-        public void setWxPrice(String wxPrice) {
-            this.wxPrice = wxPrice;
-        }
-
-        public String getMtPrice() {
-            return mtPrice;
-        }
-
-        public void setMtPrice(String mtPrice) {
-            this.mtPrice = mtPrice;
-        }
-
-        public String getElPrice() {
-            return elPrice;
-        }
-
-        public void setElPrice(String elPrice) {
-            this.elPrice = elPrice;
-        }
-
-        public String getWaterNum() {
-            return waterNum;
-        }
-
-        public void setWaterNum(String waterNum) {
-            this.waterNum = waterNum;
-        }
-
-        public String getCouponNum() {
-            return couponNum;
-        }
-
-        public void setCouponNum(String couponNum) {
-            this.couponNum = couponNum;
-        }
-
-        public String getMonthNum() {
-            return monthNum;
-        }
-
-        public void setMonthNum(String monthNum) {
-            this.monthNum = monthNum;
         }
 
         public List<ListBean> getList() {
@@ -135,42 +110,67 @@ public class AccountListDetailModel {
             this.list = list;
         }
 
+        public Integer getXjPrice() {
+            return xjPrice;
+        }
+
+        public void setXjPrice(Integer xjPrice) {
+            this.xjPrice = xjPrice;
+        }
+
+        public Integer getWxPrice() {
+            return wxPrice;
+        }
+
+        public void setWxPrice(Integer wxPrice) {
+            this.wxPrice = wxPrice;
+        }
+
+        public Integer getElPrice() {
+            return elPrice;
+        }
+
+        public void setElPrice(Integer elPrice) {
+            this.elPrice = elPrice;
+        }
+
         public static class ListBean {
             /**
-             * no :
-             * type :
-             * customerName :
-             * phone :
-             * customerType :
-             * totalPrice :
-             * receivablePrice :
-             * realPrice :
-             * xjPrice :
-             * waterNum :
-             * couponNum :
-             * monthNum :
+             * couponNum : 0
+             * no : LR202103291704006
+             * totalPrice : 6
+             * type : 3
+             * customerName : 高密二中
+             * waterNum : 0
+             * customerType : 协议客户
+             * phone : 18866768118
+             * receivablePrice : 6
+             * monthNum : 6
+             * id : 358
+             * xjPrice : 0
+             * realPrice : 0
              */
 
-            private String id;
+            private Integer couponNum;
             private String no;
-            private String type;
+            private Integer totalPrice;
+            private Integer type;
             private String customerName;
-            private String phone;
+            private Integer waterNum;
             private String customerType;
-            private String totalPrice;
-            private String receivablePrice;
-            private String realPrice;
-            private String xjPrice;
-            private String waterNum;
-            private String couponNum;
-            private String monthNum;
+            private String phone;
+            private Integer receivablePrice;
+            private Integer monthNum;
+            private Integer id;
+            private Integer xjPrice;
+            private Integer realPrice;
 
-            public String getId() {
-                return id;
+            public Integer getCouponNum() {
+                return couponNum;
             }
 
-            public void setId(String id) {
-                this.id = id;
+            public void setCouponNum(Integer couponNum) {
+                this.couponNum = couponNum;
             }
 
             public String getNo() {
@@ -181,11 +181,19 @@ public class AccountListDetailModel {
                 this.no = no;
             }
 
-            public String getType() {
+            public Integer getTotalPrice() {
+                return totalPrice;
+            }
+
+            public void setTotalPrice(Integer totalPrice) {
+                this.totalPrice = totalPrice;
+            }
+
+            public Integer getType() {
                 return type;
             }
 
-            public void setType(String type) {
+            public void setType(Integer type) {
                 this.type = type;
             }
 
@@ -197,12 +205,12 @@ public class AccountListDetailModel {
                 this.customerName = customerName;
             }
 
-            public String getPhone() {
-                return phone;
+            public Integer getWaterNum() {
+                return waterNum;
             }
 
-            public void setPhone(String phone) {
-                this.phone = phone;
+            public void setWaterNum(Integer waterNum) {
+                this.waterNum = waterNum;
             }
 
             public String getCustomerType() {
@@ -213,60 +221,52 @@ public class AccountListDetailModel {
                 this.customerType = customerType;
             }
 
-            public String getTotalPrice() {
-                return totalPrice;
+            public String getPhone() {
+                return phone;
             }
 
-            public void setTotalPrice(String totalPrice) {
-                this.totalPrice = totalPrice;
+            public void setPhone(String phone) {
+                this.phone = phone;
             }
 
-            public String getReceivablePrice() {
+            public Integer getReceivablePrice() {
                 return receivablePrice;
             }
 
-            public void setReceivablePrice(String receivablePrice) {
+            public void setReceivablePrice(Integer receivablePrice) {
                 this.receivablePrice = receivablePrice;
             }
 
-            public String getRealPrice() {
-                return realPrice;
-            }
-
-            public void setRealPrice(String realPrice) {
-                this.realPrice = realPrice;
-            }
-
-            public String getXjPrice() {
-                return xjPrice;
-            }
-
-            public void setXjPrice(String xjPrice) {
-                this.xjPrice = xjPrice;
-            }
-
-            public String getWaterNum() {
-                return waterNum;
-            }
-
-            public void setWaterNum(String waterNum) {
-                this.waterNum = waterNum;
-            }
-
-            public String getCouponNum() {
-                return couponNum;
-            }
-
-            public void setCouponNum(String couponNum) {
-                this.couponNum = couponNum;
-            }
-
-            public String getMonthNum() {
+            public Integer getMonthNum() {
                 return monthNum;
             }
 
-            public void setMonthNum(String monthNum) {
+            public void setMonthNum(Integer monthNum) {
                 this.monthNum = monthNum;
+            }
+
+            public Integer getId() {
+                return id;
+            }
+
+            public void setId(Integer id) {
+                this.id = id;
+            }
+
+            public Integer getXjPrice() {
+                return xjPrice;
+            }
+
+            public void setXjPrice(Integer xjPrice) {
+                this.xjPrice = xjPrice;
+            }
+
+            public Integer getRealPrice() {
+                return realPrice;
+            }
+
+            public void setRealPrice(Integer realPrice) {
+                this.realPrice = realPrice;
             }
         }
     }

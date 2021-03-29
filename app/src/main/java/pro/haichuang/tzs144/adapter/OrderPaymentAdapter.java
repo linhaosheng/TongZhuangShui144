@@ -38,7 +38,7 @@ public class OrderPaymentAdapter extends BaseQuickAdapter<AccountOrderModel.Data
         String info = dataBean.getCustomerName()+"  "+dataBean.getPhone();
         String order_inconme = "";
         if (dataBean.getTotalPrice()>0){
-            order_inconme = "商品总额:   "+dataBean.getTotalPrice()+"应收收入:   "+dataBean.getReceivablePrice()+"元   实际收入:    "+dataBean.getRealPrice()+"元";
+            order_inconme = "商品总额:   "+dataBean.getTotalPrice()+"元   应收收入:   "+dataBean.getReceivablePrice()+"元   实际收入:    "+dataBean.getRealPrice()+"元";
         }else {
             order_inconme = "应收收入:   "+dataBean.getReceivablePrice()+"元   实际收入:    "+dataBean.getRealPrice()+"元";
         }
