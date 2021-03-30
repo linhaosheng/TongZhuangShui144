@@ -172,7 +172,7 @@ public class DepositManagementSearchActivity extends BaseActivity implements Swi
                 startActivity(intent);
                 break;
             case R.id.refund_orders:
-                //退押定单列表
+                //退押订单列表
                 Intent intent1 = new Intent(this,WithDrawalOrderActivity.class);
                 startActivity(intent1);
                 break;

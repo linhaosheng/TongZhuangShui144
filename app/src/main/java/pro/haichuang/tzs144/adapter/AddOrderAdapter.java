@@ -64,8 +64,10 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
             }
             helper.getView(R.id.recycle_num).setVisibility(View.VISIBLE);
             helper.setText(R.id.recycle_num,materialBuilder.toString());
+            helper.getView(R.id.recycle).setVisibility(View.VISIBLE);
         }else {
             helper.getView(R.id.recycle_num).setVisibility(View.GONE);
+            helper.getView(R.id.recycle).setVisibility(View.GONE);
         }
 
         if (item.getDeductCoupon()==null){

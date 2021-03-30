@@ -443,7 +443,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 }
                 amount_receivable += (waterDeductNum + couponDeductNum)*goodsListBean.getGoodsPrice();  //应收金额
                 actual_amount += monthDeductNum * goodsListBean.getGoodsPrice();   //实收金额
-                Log.i("TAG====","actual_amount===="+actual_amount +"==monthDeductNum==="+monthDeductNum);
+            //    Log.i("TAG====","actual_amount===="+actual_amount +"==monthDeductNum==="+monthDeductNum);
             }
 
             amountReceivableNum.setText((totalPrice - amount_receivable) +"");
@@ -788,16 +788,14 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 }
             }else if (event.type==2){
                 if (event.status == Config.LOAD_SUCCESS) {
-                    Utils.showCenterTomast("定单作废成功");
+                    Utils.showCenterTomast("订单作废成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("定单作废失败");
+                    Utils.showCenterTomast("订单作废失败");
                 }
             }
         }
     }
-
-
 
     @Override
     public void onStart() {

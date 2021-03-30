@@ -516,6 +516,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 goodsListBean.setGoodsPrice(shopPrice.getText().toString());
                 goodsListBean.setSpecs(shopDataBean.getSpecs());
 
+
                 List<MaterialModel.DataBean>tempData = new ArrayList<>();
                 for (MaterialModel.DataBean dataBean : materialListAdapter.getData()){
                     dataBean.setMaterialId(dataBean.getId());
@@ -541,7 +542,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
                         deductCouponBean.setCouponImg(rewardUrl);
                         goodsListBean.setDeductCoupon(deductCouponBean);
-                        rewardUrl = "";
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -554,7 +554,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         deductMonthBean.setMonthImg(monthUrl);
                         deductMonthBean.setDeductNum(monthDeductionNunm.getEditText());
                         goodsListBean.setDeductMonth(deductMonthBean);
-                        monthUrl = "";
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -592,11 +591,11 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
              //总价格 : 所有商品金额之和
             float currentAmount = Integer.parseInt(goodsListBean1.getNum()) * shopPrice;
 
-            Log.i("TAG===","currentAmount==="+currentAmount +"==shopPrice==="+shopPrice);
+           // Log.i("TAG===","currentAmount==="+currentAmount +"==shopPrice==="+shopPrice);
 
             totalPrice += currentAmount;
             if (goodsListBean1.getDeductWater()!=null){
-                int deductWaterNum = Integer.parseInt(goodsListBean1.getDeductWater().getNum());
+                int deductWaterNum = Integer.parseInt(goodsListBean1.getDeductWater().getDeductNum());
                 if (goodsListBean1.getDeductCoupon()!=null){
                     //应收价格  商品总额-（水票+奖券抵扣金额）
                     int deductCouponNum = Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum());
@@ -619,7 +618,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 month_mount += deductMonthNum * shopPrice;
                // actual_amount += amount_receivable - deductMonthNum * shopPrice;
             }else {
-                Log.i("TAG===","amount_receivable==="+amount_receivable);
+              //  Log.i("TAG===","amount_receivable==="+amount_receivable);
              //   actual_amount += amount_receivable;
             }
         }
