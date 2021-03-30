@@ -217,7 +217,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         mDataBea = dataBean;
                         selectTicket.setLeftText(dataBean.getName()+"   "+dataBean.getSpecs());
                         waterId = dataBean.getId();
-                        selectWaterNum.setRightText(String.valueOf(dataBean.getWaterNum()));
+                        selectWaterNum.setEditinput(String.valueOf(dataBean.getWaterNum()));
                         selectDeductionNunm.setEditinput(String.valueOf(dataBean.getWaterNum()));
 
                     }
@@ -454,7 +454,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             case R.id.water_tickets:
                 if (selectWater){
                     selectTicket.setLeftText("水票");
-                    selectWaterNum.setRightText("0");
+                    selectWaterNum.setEditinput("0");
                     selectDeductionNunm.setEditinput("0");
                     waterId = -1;
                     waterTickets.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
@@ -527,7 +527,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 if (waterId!=-1){
                     AddOrderModel.GoodsListBean.DeductWaterBean deductWaterBean = new AddOrderModel.GoodsListBean.DeductWaterBean();
                     deductWaterBean.setWaterGoodsId(String.valueOf(waterId));
-                    deductWaterBean.setNum(selectWaterNum.getRightText());
+                    deductWaterBean.setNum(selectWaterNum.getEditText());
                     deductWaterBean.setDeductNum(selectDeductionNunm.getEditText());
                     goodsListBean.setDeductWater(deductWaterBean);
                     waterId = -1;
