@@ -32,20 +32,23 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
+
                 <TextView
                     android:id="@+id/start_time"
-                    android:layout_width="113dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_40"
-                    android:layout_marginLeft="@dimen/dp_10"
                     android:background="@drawable/set_bg_btn36"
                     android:gravity="center"
-                    android:text="2019-06-22"
+                    android:text="2019-10-22"
+                    android:paddingLeft="@dimen/dp_8"
+                    android:paddingRight="@dimen/dp_8"
+                    android:layout_marginLeft="@dimen/dp_20"
                     android:textColor="#32C5FF"
                     android:textSize="14sp" />
 
 
                 <View
-                    android:layout_width="@dimen/dp_35"
+                    android:layout_width="@dimen/dp_30"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dp_10"
@@ -55,10 +58,12 @@
 
                 <TextView
                     android:id="@+id/end_time"
-                    android:layout_width="113dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_40"
                     android:background="@drawable/set_bg_btn37"
                     android:gravity="center"
+                    android:paddingLeft="@dimen/dp_8"
+                    android:paddingRight="@dimen/dp_8"
                     android:text="2019-06-22"
                     android:textColor="#6D7278"
                     android:textSize="14sp" />

@@ -14,7 +14,7 @@ public class ConfigUrl {
      * base url
      */
     @DefaultDomain
-    public static final String BASE_URL = "http://114.215.137.110:9090";  // https://api.ssssedc.com/  http://114.215.137.110:9090   https://api-tzs144.haichuang.pro
+    public static final String BASE_URL = "https://api-tzs144.haichuang.pro";  // https://api.ssssedc.com/  http://114.215.137.110:9090   https://api-tzs144.haichuang.pro
 
     /**
      * 登录
