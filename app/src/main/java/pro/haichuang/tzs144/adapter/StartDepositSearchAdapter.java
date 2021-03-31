@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.adapter;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -63,12 +64,15 @@ public class StartDepositSearchAdapter extends BaseQuickAdapter<WithDrawalOrderM
         }
 
 
+        TextView voil_txt = baseViewHolder.getView(R.id.voil_txt);
 
         ImageView orderStateImg = baseViewHolder.getView(R.id.order_state);
         if (dataBean.getStatus()==0){
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.no_back));
+            voil_txt.setVisibility(View.VISIBLE);
         }else {
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.send_back));
+            voil_txt.setVisibility(View.GONE);
         }
 
         baseViewHolder.setText(R.id.deposit_number,deposit_number)

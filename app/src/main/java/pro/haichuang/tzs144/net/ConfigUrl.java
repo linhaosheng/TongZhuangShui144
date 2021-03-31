@@ -339,5 +339,9 @@ public class ConfigUrl {
      */
     public static final String FIND_DEPOSIT_YJMOLIST = "/api/app/depositManage/findDepositYjNoList";
 
+    /**
+     * [押金]作废退押单
+     */
+    public  static final String CANCEL_RETURN_DEPOSIT = "/api/app/depositManage/cancelReturnDeposit";
 
 }
