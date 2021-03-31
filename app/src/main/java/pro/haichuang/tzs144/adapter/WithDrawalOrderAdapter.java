@@ -51,10 +51,10 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
         TextView voilTxt = baseViewHolder.getView(R.id.voil_txt);
 
         if (dataBean.getStatus()==0){
-            voilTxt.setVisibility(View.VISIBLE);
+            voilTxt.setVisibility(View.GONE);
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.no_back));
         }else {
-            voilTxt.setVisibility(View.GONE);
+            voilTxt.setVisibility(View.VISIBLE);
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.send_back));
         }
 
