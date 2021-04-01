@@ -7,10 +7,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -23,6 +26,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.activity.AllocationActivity;
+import pro.haichuang.tzs144.activity.DemandListActivity;
+import pro.haichuang.tzs144.activity.LoginActivity;
+import pro.haichuang.tzs144.activity.ReturnDetailActivity;
 import pro.haichuang.tzs144.activity.SalesListActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
 import pro.haichuang.tzs144.model.PageEvent;
@@ -49,6 +56,8 @@ public class OrderFragment extends BaseFragment {
     TabLayout tabs;
     @BindView(R.id.vp_view)
     ViewPager vpView;
+    @BindView(R.id.tip_img)
+    ImageView tip_img;
     private MyPagerAdapter myPagerAdapter;
     private List<Fragment> orderList;
     private List<String>orderTitleList;
@@ -69,7 +78,9 @@ public class OrderFragment extends BaseFragment {
         title.setText("订单");
         tips.setText("直接销售列表");
         tips.setTextSize(12);
-        tips.setVisibility(View.VISIBLE);
+        tips.setVisibility(View.GONE);
+        tip_img.setVisibility(View.VISIBLE);
+        tip_img.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.mipmap.more));
 
         orderTitleList = new ArrayList<>();
         orderTitleList.add("新订单");
@@ -90,6 +101,29 @@ public class OrderFragment extends BaseFragment {
         tabs.setupWithViewPager(vpView);
         tabs.setTabsFromPagerAdapter(myPagerAdapter);
         vpView.setCurrentItem(0);
+
+    }
+
+
+    private final void showMoreDialog() {
+        new XPopup.Builder(getActivity())
+                .atView(tip_img)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
+                .asAttachList(new String[]{"直接销售列表", "退出登录"},
+                        new int[]{},
+                        new OnSelectListener() {
+                            @Override
+                            public void onSelect(int position, String text) {
+                                Intent intent = new Intent();
+                                if (position == 0) {
+                                    intent.setClass(getActivity(), SalesListActivity.class);
+                                } else if (position == 1) {
+                                    intent.setClass(getActivity(), LoginActivity.class);
+                                    getActivity().finish();
+                                }
+                                startActivity(intent);
+                            }
+                        })
+                .show();
     }
 
     @Override
@@ -126,9 +160,8 @@ public class OrderFragment extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick(R.id.tips)
+    @OnClick(R.id.tip_img)
     public void onViewClicked() {
-        Intent intent = new Intent(getActivity(), SalesListActivity.class);
-        startActivity(intent);
+        showMoreDialog();
     }
 }
