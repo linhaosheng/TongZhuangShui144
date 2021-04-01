@@ -138,6 +138,7 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
     @Override
     public void successLoad(List<ReturnDetailModel.DataBean> data) {
         refresh.setRefreshing(false);
+
         returnDetailAdapter.setList(data);
         if (data!=null && data.size()>0){
             emptyView.setVisibility(View.GONE);

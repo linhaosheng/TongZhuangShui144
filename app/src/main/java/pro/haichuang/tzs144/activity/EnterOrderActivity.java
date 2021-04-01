@@ -416,6 +416,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     return;
                 }
                 int distance = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, dataBean.getLongitude(), dataBean.getLatitude());
+
                 if (distance>400){
                     caculateDistance(distance);
                 }else {

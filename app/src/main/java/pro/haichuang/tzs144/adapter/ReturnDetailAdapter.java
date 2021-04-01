@@ -1,5 +1,8 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.util.Log;
+import android.view.View;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
@@ -28,10 +31,32 @@ public class ReturnDetailAdapter extends BaseQuickAdapter<ReturnDetailModel.Data
         String shopName = "           商品："+dataBean.getGoodsName();
         String shopNum = "     发水数量："+dataBean.getOutNum();
         if (dataBean.getMaterialList()!=null && dataBean.getMaterialList().size()>0){
-            String recycle = "      回收材料："+dataBean.getMaterialList().get(0).getName();
-            String recycleNum = "     回收数量："+dataBean.getMaterialList().get(0).getNum();
-            baseViewHolder.setText(R.id.recycle,recycle)
-                    .setText(R.id.recycle_num,recycleNum);
+
+            StringBuilder materBuild = new StringBuilder();
+            StringBuilder materNumBuild = new StringBuilder();
+
+            for (int i = 0; i<dataBean.getMaterialList().size() ;i++){
+                ReturnDetailModel.DataBean.MaterialListBean materialListBean = dataBean.getMaterialList().get(i);
+                if (i!=dataBean.getMaterialList().size()-1) {
+                    materNumBuild.append(materialListBean.getNum()).append("\n");
+                    materBuild.append(materialListBean.getName()).append("\n");
+                }else {
+                    materNumBuild.append(materialListBean.getNum());
+                    materBuild.append(materialListBean.getName());
+                }
+            }
+
+            String recycle = materBuild.toString();
+            String recycleNum = materNumBuild.toString();
+
+            baseViewHolder.setText(R.id.recycle_data,recycle)
+                    .setText(R.id.recycle_num_data,recycleNum);
+
+            baseViewHolder.getView(R.id.recycle_view).setVisibility(View.VISIBLE);
+            baseViewHolder.getView(R.id.recycle_num_view).setVisibility(View.VISIBLE);
+        }else {
+            baseViewHolder.getView(R.id.recycle_view).setVisibility(View.GONE);
+            baseViewHolder.getView(R.id.recycle_num_view).setVisibility(View.GONE);
         }
         baseViewHolder.setText(R.id.order_num,oddNumber)
                 .setText(R.id.time,time)
