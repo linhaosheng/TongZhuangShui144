@@ -36,6 +36,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.StartDepositSearchAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.PageEvent;
+import pro.haichuang.tzs144.model.SaleDataModel;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.WithDrawalOrderModel;
 import pro.haichuang.tzs144.presenter.StartDepositSearchActivityPresenter;
@@ -112,9 +113,20 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 switch (view.getId()){
                     case R.id.voil_txt:
-                        WithDrawalOrderModel.DataBean dataBean = startDepositSearchAdapter.getData().get(position);
-                        WaitDialog.show(StartDepositSearchActivity.this,"加载中...");
-                        startDepositSearchActivityPresenter.returnDeposits(dataBean.getId());
+                          WithDrawalOrderModel.DataBean dataBean = startDepositSearchAdapter.getData().get(position);
+
+                        SaleDataModel.DataBean dataBean1 = new SaleDataModel.DataBean();
+                        dataBean1.setAddress(dataBean.getAddress());
+                        dataBean1.setAddressName(dataBean.getAddressName());
+                        dataBean1.setPhone(dataBean.getKhPhone());
+                        dataBean1.setName(dataBean.getKhName());
+                        dataBean1.setId(dataBean.getKhId());
+
+                        String dataStr = Utils.gsonInstane().toJson(dataBean1);
+                        Intent intent = new Intent(StartDepositSearchActivity.this, AddWithDrawalOrderActivity.class);
+                        intent.putExtra(Config.PERSION_INFO, dataStr);
+                        startActivity(intent);
+
                         break;
                 }
             }
@@ -154,6 +166,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
 
     @Override
     public void startLoad() {
+        emptyView.setVisibility(View.GONE);
         refresh.setRefreshing(true);
     }
 
@@ -161,7 +174,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
     public void successLoad(List<WithDrawalOrderModel.DataBean> dataBeans) {
         refresh.setRefreshing(false);
         if (dataBeans==null || dataBeans.size()==0){
-            emptyView.setVisibility(View.VISIBLE);
+         //   emptyView.setVisibility(View.VISIBLE);
         }else {
             emptyView.setVisibility(View.GONE);
         }

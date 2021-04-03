@@ -71,10 +71,46 @@ public class WithDrawalOrderModel {
         private String createName;
         private String returnName;
         private String returnTime;
+        private int khId;
+        private String addressName;
+        private String address;
+        private String khPhone;
         private int status;
         private boolean isAdd;
         private boolean checked;
         private String cancelTime;
+
+        public int getKhId() {
+            return khId;
+        }
+
+        public void setKhId(int khId) {
+            this.khId = khId;
+        }
+
+        public String getAddressName() {
+            return addressName;
+        }
+
+        public void setAddressName(String addressName) {
+            this.addressName = addressName;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getKhPhone() {
+            return khPhone;
+        }
+
+        public void setKhPhone(String khPhone) {
+            this.khPhone = khPhone;
+        }
 
         public String getCancelTime() {
             return cancelTime;

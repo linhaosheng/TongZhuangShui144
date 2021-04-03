@@ -68,15 +68,18 @@ public class OrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel.DataBe
         }
 
         ImageView rewardImg = helper.getView(R.id.reward_img);
-        if (item.getCouponImg()!=null){
+        if (item.getCouponDeductNum()>0){
             Utils.showImage(rewardImg,item.getCouponImg());
+            helper.getView(R.id.reward_view).setVisibility(View.VISIBLE);
         }else {
             helper.getView(R.id.reward_view).setVisibility(View.GONE);
         }
 
-        ImageView monthImg = helper.getView(R.id.month_img);
-        if (item.getMonthImg()!=null){
+
+        if (item.getMonthDeductNum()>0){
+            ImageView monthImg = helper.getView(R.id.month_img);
             Utils.showImage(monthImg,item.getMonthImg());
+            helper.getView(R.id.month_view).setVisibility(View.VISIBLE);
         }else {
             helper.getView(R.id.month_view).setVisibility(View.GONE);
         }
