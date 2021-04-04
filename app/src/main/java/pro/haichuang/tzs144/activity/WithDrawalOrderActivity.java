@@ -84,9 +84,14 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString());
+    }
+
+    @Override
     protected void setUpData() {
         withDrawalOrderPresenter = new WithDrawalOrderPresenter(this);
-        withDrawalOrderPresenter.findReturnDeposits("");
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -31,10 +31,8 @@ public class ReturnDetailAdapter extends BaseQuickAdapter<ReturnDetailModel.Data
         String shopName = "           商品："+dataBean.getGoodsName();
         String shopNum = "     发水数量："+dataBean.getOutNum();
         if (dataBean.getMaterialList()!=null && dataBean.getMaterialList().size()>0){
-
             StringBuilder materBuild = new StringBuilder();
             StringBuilder materNumBuild = new StringBuilder();
-
             for (int i = 0; i<dataBean.getMaterialList().size() ;i++){
                 ReturnDetailModel.DataBean.MaterialListBean materialListBean = dataBean.getMaterialList().get(i);
                 if (i!=dataBean.getMaterialList().size()-1) {
@@ -45,7 +43,6 @@ public class ReturnDetailAdapter extends BaseQuickAdapter<ReturnDetailModel.Data
                     materBuild.append(materialListBean.getName());
                 }
             }
-
             String recycle = materBuild.toString();
             String recycleNum = materNumBuild.toString();
 

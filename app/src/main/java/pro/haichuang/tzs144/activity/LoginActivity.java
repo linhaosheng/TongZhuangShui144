@@ -1,7 +1,11 @@
 package pro.haichuang.tzs144.activity;
 
 import android.Manifest;
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -16,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -28,6 +33,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,6 +131,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             public void afterTextChanged(Editable s) {
                 loadSubject = false;
                 showDialog = false;
+                loginPresenter.loadSubjectList(account.getText().toString(),showDialog);
             }
         });
         password.addTextChangedListener(new TextWatcher() {
@@ -145,6 +154,13 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
                 }
             }
         });
+
+        /**
+         * 检查通知权限是否打开
+         */
+        if (!Utils.isNotificationEnabled(this)){
+            Utils.goToNotificationSetting(this);
+        }
     }
     @Override
     protected void setUpView() {

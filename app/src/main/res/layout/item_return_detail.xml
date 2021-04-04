@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:textColor="#3F3F3F"
             android:textSize="12sp"
-            android:text="农夫山泉空桶"/>
+            android:text=""/>
 
     </LinearLayout>
 
@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:textColor="#3F3F3F"
             android:textSize="12sp"
-            android:text="10"/>
+            android:text=""/>
 
     </LinearLayout>
 
