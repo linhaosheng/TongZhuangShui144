@@ -193,5 +193,6 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     @Override
     public void errorLoad(String error) {
         WaitDialog.dismiss();
+        Utils.showCenterTomast(error);
     }
 }

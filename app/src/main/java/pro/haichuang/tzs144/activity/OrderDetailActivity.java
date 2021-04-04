@@ -356,5 +356,6 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     @Override
     public void errorLoad(String error) {
         WaitDialog.dismiss();
+        Utils.showCenterTomast(error);
     }
 }
