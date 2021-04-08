@@ -157,11 +157,15 @@ public class AddressSearchActivity extends BaseActivity {
 //                          .city("广东")
 //                          .citylimit(false));
 
-                  poiSearch.searchInCity(new PoiCitySearchOption()
-                          .city(Config.CITY) //必填
-                          .keyword(searchEdit.getText().toString()) //必填
-                          .cityLimit(false)
-                          .pageCapacity(30));
+                  try {
+                      poiSearch.searchInCity(new PoiCitySearchOption()
+                              .city(Config.CITY) //必填
+                              .keyword(searchEdit.getText().toString()) //必填
+                              .cityLimit(false)
+                              .pageCapacity(30));
+                  }catch (Exception e){
+                      e.printStackTrace();
+                  }
               }
             }
         });

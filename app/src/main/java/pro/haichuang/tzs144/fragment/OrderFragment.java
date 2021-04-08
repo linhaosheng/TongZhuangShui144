@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.AllocationActivity;
+import pro.haichuang.tzs144.activity.CheckoutSummaryActivity;
 import pro.haichuang.tzs144.activity.DemandListActivity;
 import pro.haichuang.tzs144.activity.LoginActivity;
 import pro.haichuang.tzs144.activity.ReturnDetailActivity;
@@ -108,15 +109,17 @@ public class OrderFragment extends BaseFragment {
     private final void showMoreDialog() {
         new XPopup.Builder(getActivity())
                 .atView(tip_img)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
-                .asAttachList(new String[]{"直接销售列表", "退出登录"},
+                .asAttachList(new String[]{"结账汇总","直接销售列表", "退出登录"},
                         new int[]{},
                         new OnSelectListener() {
                             @Override
                             public void onSelect(int position, String text) {
                                 Intent intent = new Intent();
-                                if (position == 0) {
+                                if (position==0){
+                                    intent.setClass(getActivity(), CheckoutSummaryActivity.class);
+                                }else if (position == 1) {
                                     intent.setClass(getActivity(), SalesListActivity.class);
-                                } else if (position == 1) {
+                                } else if (position == 2) {
                                     intent.setClass(getActivity(), LoginActivity.class);
                                     getActivity().finish();
                                 }

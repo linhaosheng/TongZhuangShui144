@@ -27,6 +27,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -268,6 +269,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     }
 
     private void login() {
+
         if (TextUtils.isEmpty(account.getText())) {
             Utils.showCenterTomast("请输入正确账号");
             return;
@@ -283,6 +285,11 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             Utils.showCenterTomast("请检查账户是否绑定库存主体");
             return;
         }
+
+       if (!Utils.isOPen(this)){
+           MessageDialog.show(this,"提示","请打开GPS开关，否则应用无法正常使用");
+           return;
+       }
         if (checked){
             String info = account.getText().toString() +"-"+password.getText().toString();
             SPUtils.putString(Config.ACCOUNT_INFO,info);
