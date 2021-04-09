@@ -46,11 +46,17 @@ public class AddWithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderM
         String with_drawal_persion = "开押人 ："+dataBean.getCreateName();
         String with_drawal_name = "退押人 ："+dataBean.getReturnName();
         String with_drawal_end_time = "退押时间 ："+dataBean.getReturnTime();
+        String return_name ="退押人 : " +dataBean.getReturnName();
 
         if (dataBean.getReturnTime()==null || dataBean.getReturnTime().equals("")){
             baseViewHolder.getView(R.id.with_drawal_end_time).setVisibility(View.GONE);
         }else {
             baseViewHolder.getView(R.id.with_drawal_end_time).setVisibility(View.VISIBLE);
+        }
+        if (dataBean.getReturnName()==null || dataBean.getReturnName().equals("")){
+            baseViewHolder.getView(R.id.return_name).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.return_name).setVisibility(View.VISIBLE);
         }
 
         baseViewHolder.setText(R.id.deposit_number,deposit_number)
@@ -62,6 +68,7 @@ public class AddWithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderM
                 .setText(R.id.with_drawal_money,with_drawal_money)
                 .setText(R.id.deposit_type,deposit_type)
                 .setText(R.id.with_drawal_time,with_drawal_time)
+                .setText(R.id.return_name,return_name)
 
         .setText(R.id.with_drawal_persion,with_drawal_persion)
         .setText(R.id.with_drawal_end_time,with_drawal_end_time);

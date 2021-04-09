@@ -317,13 +317,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         if (dataBean.getNum()==0){
                             return;
                         }else {
-                            int num = dataBean.getNum() -1;
+                            float num = dataBean.getNum() -1;
                             dataBean.setNum(num);
                             materialListAdapter.setData(position,dataBean);
                         }
                         break;
                     case R.id.shop_add_tong:
-                        int num = dataBean.getNum() + 1;
+                        float num = dataBean.getNum() + 1;
                         dataBean.setNum(num);
                         materialListAdapter.setData(position,dataBean);
                         break;
@@ -375,7 +375,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         switch (view.getId()) {
             case R.id.reduce:
                 try {
-                    int shopNumData = Integer.parseInt(shopNum.getText().toString());
+                    float shopNumData = Float.parseFloat(shopNum.getText().toString());
                     if (shopNumData==0){
                         return;
                     }else {
@@ -387,7 +387,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.shop_add:
                 try {
-                    int shopNumData = Integer.parseInt(shopNum.getText().toString());
+                    float shopNumData = Float.parseFloat(shopNum.getText().toString());
                     shopNum.setText(String.valueOf(shopNumData+1));
                 }catch (Exception e){
                     e.printStackTrace();
@@ -537,7 +537,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
 
                 try {
-                    int num = Integer.parseInt(rewardDeductionNunm.getEditText());
+                    float num = Float.parseFloat(rewardDeductionNunm.getEditText());
                     if (num>0){
                         AddOrderModel.GoodsListBean.DeductCouponBean deductCouponBean = new AddOrderModel.GoodsListBean.DeductCouponBean();
                         deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
@@ -549,7 +549,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
 
                 try {
-                    int num = Integer.parseInt(monthDeductionNunm.getEditText());
+                    float num = Float.parseFloat(monthDeductionNunm.getEditText());
                     if (num>0){
                         AddOrderModel.GoodsListBean.DeductMonthBean deductMonthBean = new AddOrderModel.GoodsListBean.DeductMonthBean();
                         deductMonthBean.setMonthImg(monthUrl);
@@ -592,23 +592,23 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
                 float shopPrice =  Float.parseFloat(goodsListBean1.getGoodsPrice());
                 //总价格 : 所有商品金额之和
-                float currentAmount = Integer.parseInt(goodsListBean1.getNum()) * shopPrice;
+                float currentAmount = Float.parseFloat(goodsListBean1.getNum()) * shopPrice;
 
                 // Log.i("TAG===","currentAmount==="+currentAmount +"==shopPrice==="+shopPrice);
 
                 totalPrice += currentAmount;
                 if (goodsListBean1.getDeductWater()!=null){
-                    int deductWaterNum = Integer.parseInt(goodsListBean1.getDeductWater().getDeductNum());
+                    float deductWaterNum = Float.parseFloat(goodsListBean1.getDeductWater().getDeductNum());
                     if (goodsListBean1.getDeductCoupon()!=null){
                         //应收价格  商品总额-（水票+奖券抵扣金额）
-                        int deductCouponNum = Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum());
+                        float deductCouponNum = Float.parseFloat(goodsListBean1.getDeductCoupon().getDeductNum());
                         amount_receivable += currentAmount - (deductWaterNum + deductCouponNum) * shopPrice;
                     }else {
                         amount_receivable += currentAmount - (deductWaterNum * shopPrice);
                     }
                 }else {
                     if (goodsListBean1.getDeductCoupon()!=null){
-                        int deductCouponNum = Integer.parseInt(goodsListBean1.getDeductCoupon().getDeductNum());
+                        float deductCouponNum = Float.parseFloat(goodsListBean1.getDeductCoupon().getDeductNum());
                         amount_receivable += currentAmount - (deductCouponNum * shopPrice);
                     }else {
                         amount_receivable +=  currentAmount;
@@ -617,7 +617,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
 
                 if (goodsListBean1.getDeductMonth()!=null){
                     //实收价格  【单个商品总价-（单个商品抵扣数量*单价）】之和；
-                    int deductMonthNum = Integer.parseInt(goodsListBean1.getDeductMonth().getDeductNum());
+                    float deductMonthNum = Float.parseFloat(goodsListBean1.getDeductMonth().getDeductNum());
                     month_mount += deductMonthNum * shopPrice;
                     // actual_amount += amount_receivable - deductMonthNum * shopPrice;
                 }else {
@@ -778,14 +778,14 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     public boolean tipOpenDesposit(){
 
         int materialNum = 0;
-        int shopNum = 0;
+        float shopNum = 0;
         try {
             for (AddOrderModel.GoodsListBean goodsListBean : goodsListBeans){
                 List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
                 for (MaterialModel.DataBean dataBean : materials){
                     materialNum +=dataBean.getNum();
                 }
-                shopNum+=Integer.parseInt(goodsListBean.getNum());
+                shopNum+=Float.parseFloat(goodsListBean.getNum());
             }
             if (shopNum<materialNum){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
@@ -799,7 +799,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                                     List<AddOrderModel.GoodsListBean>tempData = new ArrayList<>();
 
                                     for (int i = 0;i<data.size();i++){
-                                        int goodsNum =  Integer.parseInt(data.get(i).getNum());
+                                        float goodsNum =  Float.parseFloat(data.get(i).getNum());
                                         AddOrderModel.GoodsListBean goodsListBean = data.get(i);
                                         List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
                                         MaterialModel.DataBean dataBean = materials.get(0);
@@ -838,7 +838,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 for (MaterialModel.DataBean dataBean : materials){
                     materialNum +=dataBean.getNum();
                 }
-                shopNum+=Integer.parseInt(goodsListBean.getNum());
+                shopNum+=Float.parseFloat(goodsListBean.getNum());
             }
             if (shopNum>materialNum){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
@@ -856,7 +856,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                                     }
                                 });
                                 addOrderDepositDialog.show(getSupportFragmentManager(),"");
-                                return true;
+                                return false;
                             }
                         }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
                     @Override
