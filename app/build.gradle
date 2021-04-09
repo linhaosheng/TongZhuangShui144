@@ -56,7 +56,7 @@ android {
         release {
             minifyEnabled false    //Turn on obfuscation
             shrinkResources false  //Remove useless resources
-            zipAlignEnabled false  //Compression optimization
+            zipAlignEnabled true  //Compression optimization
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
