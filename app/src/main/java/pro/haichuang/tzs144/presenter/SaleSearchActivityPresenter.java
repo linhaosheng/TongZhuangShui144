@@ -29,7 +29,7 @@ public class SaleSearchActivityPresenter {
         Map<String,Object>params = new ArrayMap<>();
         params.put("search",search);
 
-        if ("add_with_drawal".equals(type)){
+        if ("add_with_drawal".equals(type) || "historical_deposit".equals(type)){
             params.put("type","0");
         }
 
