@@ -334,6 +334,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         WaitDialog.dismiss();
         if (event!=null){
             arr_adapter.clear();
+            if (event.subjectModel==null){
+                return;
+            }
             dataBeanList = event.subjectModel.getData();
 
             for (SubjectModel.DataBean dataBean : event.subjectModel.getData()){

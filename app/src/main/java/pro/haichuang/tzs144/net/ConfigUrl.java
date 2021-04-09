@@ -344,4 +344,34 @@ public class ConfigUrl {
      */
     public  static final String CANCEL_RETURN_DEPOSIT = "/api/app/depositManage/cancelReturnDeposit";
 
+    /**
+     * 库存主体 - 结账汇总 - 合计
+     */
+    public static final String FIND_SUMMARY_HJ = "/api/app/summary/findSummaryHj";
+
+    /**
+     * 库存主体 - 结账汇总 - 收入情况
+     */
+    public static final String FIND_SUMMARY_SR = "/api/app/summary/findSummarySr";
+
+
+    /**
+     * 库存主体 - 结账汇总 - 开退押情况
+     */
+    public static final String FIND_SUMMARY_KY = "/api/app/summary/findSummaryKy";
+
+
+    /**
+     * 库存主体 - 结账汇总 - 销售情况 - 商品列表
+     */
+    public static final String FIND_SUMMARY_SALE_QS = "/api/app/summary/findSummarySaleQs";
+
+
+
+    /**
+     * 库存主体 - 结账汇总 - 销售情况 - 材料列表
+     */
+    public static final String FIND_SUMMARY_SALE_HT = "/api/app/summary/findSummarySaleHt";
+
+
 }

@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:text="张三"
                     android:textColor="#3F3F3F"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -43,7 +43,7 @@
                     android:layout_marginLeft="32dp"
                     android:text="18909293021"
                     android:textColor="#999999"
-                    android:textSize="14sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/type"
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"
                     android:text="经销商"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:text="麓谷大道店"
                     android:textColor="#3F3F3F"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:lines="1"
                     android:ellipsize="end"
                     android:drawableRight="@mipmap/next2"
-                    android:textSize="14sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:text="选择商品"
                     android:textColor="#333333"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="@dimen/dp_15"
                     android:textStyle="bold" />
@@ -120,7 +120,7 @@
                     android:drawableRight="@mipmap/next"
                     android:text="添加"
                     android:textColor="#32C5FF"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/dp_25"/>
 
@@ -144,7 +144,7 @@
                 android:layout_marginRight="7dp"
                 android:text="农夫山泉桶装水"
                 android:textColor="#3F3F3F"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
 
             <LinearLayout
@@ -157,34 +157,34 @@
 
                 <TextView
                     android:id="@+id/reduce"
-                    android:layout_width="@dimen/dp_20"
+                    android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_20"
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="-"
                     android:textColor="#000000"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/shop_num"
-                    android:layout_width="@dimen/dp_40"
+                    android:layout_width="@dimen/dp_60"
                     android:layout_height="@dimen/dp_20"
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="1"
                     android:textColor="#32C5FF"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
 
                 <TextView
                     android:id="@+id/shop_add"
-                    android:layout_width="@dimen/dp_20"
+                    android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_20"
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="+"
                     android:textColor="#000000"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -201,7 +201,7 @@
                     android:layout_marginTop="14dp"
                     android:text="1.8L"
                     android:textColor="#3F3F3F"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/shop_unit"
@@ -212,11 +212,11 @@
                     android:layout_marginRight="@dimen/dp_100"
                     android:text="￥"
                     android:textColor="#3F3F3F"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/shop_price"
-                    android:layout_width="@dimen/dp_80"
+                    android:layout_width="@dimen/dp_120"
                     android:layout_height="@dimen/dp_20"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="12dp"
@@ -225,7 +225,7 @@
                     android:gravity="center"
                     android:text="30.00"
                     android:textColor="#3F3F3F"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycle_material"
@@ -261,7 +261,7 @@
                     android:gravity="center"
                     android:text="水票"
                     android:textColor="#32C5FF"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/reward_tickets"
@@ -272,7 +272,7 @@
                     android:gravity="center"
                     android:text="奖券"
                     android:textColor="#32C5FF"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/monthly"
@@ -283,7 +283,7 @@
                     android:gravity="center"
                     android:text="月结"
                     android:textColor="#32C5FF"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -349,7 +349,7 @@
                         android:layout_height="wrap_content"
                         android:text="奖券"
                         android:textColor="#3F3F3F"
-                        android:textSize="14sp"
+                        android:textSize="18sp"
                         android:layout_marginTop="@dimen/dp_10"
                         android:textStyle="bold" />
 
@@ -390,7 +390,7 @@
                         android:layout_height="wrap_content"
                         android:text="月结"
                         android:textColor="#3F3F3F"
-                        android:textSize="14sp"
+                        android:textSize="18sp"
                         android:layout_marginTop="@dimen/dp_10"
                         android:textStyle="bold" />
 
@@ -430,7 +430,7 @@
                     android:background="@drawable/set_bg_btn14"
                     android:textColor="#FFFFFF"
                     android:text="确认添加"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -468,7 +468,7 @@
                         android:layout_marginLeft="@dimen/dp_10"
                         android:text="商品总额"
                         android:textColor="#333333"
-                        android:textSize="14sp" />
+                        android:textSize="18sp" />
 
 
                     <TextView
@@ -486,7 +486,7 @@
                         android:layout_height="@dimen/dp_35"
                         android:text="0.00"
                         android:textColor="#333333"
-                        android:textSize="14sp"
+                        android:textSize="18sp"
                         android:gravity="center"
                         android:background="@drawable/set_bg_btn18"
                         android:layout_toRightOf="@+id/price_unit"
@@ -509,7 +509,7 @@
                         android:text="应收金额"
                         android:textColor="#333333"
                         android:layout_marginLeft="@dimen/dp_10"
-                        android:textSize="14sp"/>
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/price_unit1"
@@ -526,7 +526,7 @@
                         android:layout_height="@dimen/dp_35"
                         android:text="0.00"
                         android:textColor="#333333"
-                        android:textSize="14sp"
+                        android:textSize="18sp"
                         android:gravity="center"
                         android:background="@drawable/set_bg_btn18"
                         android:layout_toRightOf="@+id/price_unit1"
@@ -549,7 +549,7 @@
                         android:text="实收金额"
                         android:textColor="#333333"
                         android:layout_marginLeft="@dimen/dp_10"
-                        android:textSize="14sp"/>
+                        android:textSize="18sp"/>
 
 
                     <TextView
@@ -567,7 +567,7 @@
                         android:layout_height="@dimen/dp_35"
                         android:text="0.00"
                         android:textColor="#333333"
-                        android:textSize="14sp"
+                        android:textSize="18sp"
                         android:gravity="center"
                         android:background="@drawable/set_bg_btn18"
                         android:layout_toRightOf="@+id/price_unit2"
@@ -589,7 +589,7 @@
                 android:layout_marginLeft="47dp"
                 android:layout_marginRight="47dp"
                 android:textColor="#ffffff"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:text="收款"
                 android:layout_marginBottom="14dp"
                 android:layout_marginTop="@dimen/dp_10"

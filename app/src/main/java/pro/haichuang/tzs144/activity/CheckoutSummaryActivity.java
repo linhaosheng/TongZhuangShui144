@@ -16,6 +16,9 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.google.android.material.tabs.TabLayout;
 import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
 import com.kongzue.dialog.v3.BottomMenu;
+import com.kongzue.dialog.v3.WaitDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,14 +28,22 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
+import pro.haichuang.tzs144.fragment.CustodySituationFragment;
+import pro.haichuang.tzs144.fragment.IncomeCountFragment;
 import pro.haichuang.tzs144.fragment.SalesFragment;
+import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.RefreshCountEvent;
 import pro.haichuang.tzs144.model.StockMainModel;
+import pro.haichuang.tzs144.model.SummaryModel;
+import pro.haichuang.tzs144.model.TypeListModel;
+import pro.haichuang.tzs144.presenter.CheckoutSummaryPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.LSettingItem;
+import pro.haichuang.tzs144.view.TimeDialog;
 
-public class CheckoutSummaryActivity extends BaseActivity{
+public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataView<List<SummaryModel.DataBean>> {
 
 
     @BindView(R.id.back)
@@ -68,13 +79,20 @@ public class CheckoutSummaryActivity extends BaseActivity{
     ViewPager vp_view;
 
     private List<Fragment> fragmentList;
-    private List<String>titleList;
+    private List<String> titleList;
     private MyPagerAdapter myPagerAdapter;
 
     private List<CharSequence> financialList;
     private List<CharSequence> subjectList;
     private List<CharSequence> shopList;
     private StockMainModel stockMainModel;
+    private TypeListModel typeListModel;
+    private CheckoutSummaryPresenter checkoutSummaryPresenter;
+    public static String startTime;
+    public static String endTime;
+    public static String scMainId;
+    public static String categoryId;
+    public static String type;
 
     @Override
     protected int setLayoutResourceID() {
@@ -94,6 +112,9 @@ public class CheckoutSummaryActivity extends BaseActivity{
                     @Override
                     public void onClick(String text, int index) {
                         inventory_subject.setRightText(text);
+                        scMainId = String.valueOf(stockMainModel.getData().get(index).getId());
+                        EventBus.getDefault().post(new RefreshCountEvent(0));
+                        checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
                     }
                 });
 
@@ -111,6 +132,9 @@ public class CheckoutSummaryActivity extends BaseActivity{
                     @Override
                     public void onClick(String text, int index) {
                         financial_status.setRightText(text);
+                        type = String.valueOf(index);
+                        EventBus.getDefault().post(new RefreshCountEvent(0));
+                        checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
                     }
                 });
             }
@@ -123,15 +147,17 @@ public class CheckoutSummaryActivity extends BaseActivity{
             @Override
             public void click(boolean isChecked, View view) {
 
-                TimePickerView pvTime = new TimePickerBuilder(CheckoutSummaryActivity.this, new OnTimeSelectListener() {
+                TimeDialog timeDialog = new TimeDialog(CheckoutSummaryActivity.this, new TimeDialog.SelectTimeListener() {
                     @Override
-                    public void onTimeSelect(Date date, View v) {
-                        time_rand.setRightText(Utils.formatSelectTime(date));
+                    public void selectTime(String mStartTime, String mEndTime) {
+                        startTime = mStartTime;
+                        endTime = mEndTime;
+                        time_rand.setRightText(startTime + "  -  " + endTime);
+                        EventBus.getDefault().post(new RefreshCountEvent(0));
+                        checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
                     }
-                })
-                        .build();
-                pvTime.show();
-
+                });
+                timeDialog.show(getSupportFragmentManager(), "");
             }
         });
 
@@ -145,35 +171,19 @@ public class CheckoutSummaryActivity extends BaseActivity{
                     @Override
                     public void onClick(String text, int index) {
                         shop_type.setRightText(text);
+                        categoryId = String.valueOf(typeListModel.getData().get(index).getId());
+                        checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
+                        EventBus.getDefault().post(new RefreshCountEvent(0));
                     }
                 });
             }
         });
-
-        titleList = new ArrayList<>();
-        fragmentList = new ArrayList<>();
-        fragmentList.add(new SalesFragment());
-        fragmentList.add(new SalesFragment());
-        fragmentList.add(new SalesFragment());
-
-        titleList.add("销售情况");
-        titleList.add("收入情况");
-        titleList.add("开押情况");
-        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(),fragmentList,titleList);
-        vp_view.setAdapter(myPagerAdapter);
-        tabs.setupWithViewPager(vp_view);
-        tabs.setTabsFromPagerAdapter(myPagerAdapter);
-        vp_view.setCurrentItem(0);
-
     }
 
     @Override
     protected void setUpData() {
 
         shopList = new ArrayList<>();
-        shopList.add("商品品类1");
-        shopList.add("商品品类2");
-        shopList.add("商品品类3");
 
         financialList = new ArrayList<>();
         financialList.add("实时数据");
@@ -188,7 +198,64 @@ public class CheckoutSummaryActivity extends BaseActivity{
             }
         }
 
+        /**
+         * 商品品类
+         */
+        String categoryListJson = SPUtils.getString(Config.GOODS_CATEGORY_LIST, "");
+        if (!categoryListJson.equals("")) {
+            shopList = new ArrayList<>();
+            typeListModel = Utils.gsonInstane().fromJson(categoryListJson, TypeListModel.class);
+            for (TypeListModel.DataBean dataBean : typeListModel.getData()) {
+                shopList.add(dataBean.getName());
+            }
+        }
+
+        try {
+
+            startTime = "2021-01-01";
+            endTime = Utils.formatSelectTime(new Date());
+            time_rand.setRightText(startTime + "  -  " + endTime);
+            inventory_subject.setRightText(subjectList.get(0).toString());
+            financial_status.setRightText(financialList.get(0).toString());
+            shop_type.setRightText(shopList.get(0).toString());
+
+
+            checkoutSummaryPresenter = new CheckoutSummaryPresenter(this);
+            scMainId = stockMainModel.getData().get(0).getId() + "";
+            categoryId = typeListModel.getData().get(0).getId() + "";
+            type = "0";
+
+            initFragmentData();
+
+            checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showCenterTomast("获取数据异常");
+        }
     }
+
+    /**
+     * 初始化fragment数据
+     */
+    private void initFragmentData() {
+        titleList = new ArrayList<>();
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new SalesFragment());
+        fragmentList.add(new IncomeCountFragment());
+        fragmentList.add(new CustodySituationFragment());
+
+        titleList.add("销售情况");
+        titleList.add("收入情况");
+        titleList.add("开押情况");
+        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, titleList);
+        vp_view.setAdapter(myPagerAdapter);
+        tabs.setupWithViewPager(vp_view);
+        tabs.setTabsFromPagerAdapter(myPagerAdapter);
+        vp_view.setCurrentItem(0);
+    }
+
 
     @OnClick({R.id.back})
     public void onViewClicked(View view) {
@@ -197,5 +264,32 @@ public class CheckoutSummaryActivity extends BaseActivity{
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void startLoad() {
+        WaitDialog.show(this,"加载中...");
+    }
+
+    @Override
+    public void successLoad(List<SummaryModel.DataBean> datas) {
+        WaitDialog.dismiss();
+        cash_num.setText("0元");
+        platform_num.setText("0元");
+        if (datas != null && datas.size() >= 0) {
+            for (SummaryModel.DataBean dataBean : datas) {
+                if ("0".equals(dataBean.getType())) {
+                    cash_num.setText(dataBean.getPrice() + "元");
+                } else if ("1".equals(dataBean.getType())) {
+                    platform_num.setText(dataBean.getPrice() + "元");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void errorLoad(String error) {
+        Utils.showCenterTomast(error);
+        WaitDialog.dismiss();
     }
 }

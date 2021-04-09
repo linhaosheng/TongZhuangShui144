@@ -1,8 +1,11 @@
 package pro.haichuang.tzs144.adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -320,6 +323,188 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 }
             }
         });
+
+
+        EditText shop_num_tong = helper.getView(R.id.shop_num_tong);
+        if (shop_num_tong.getText()!=null && shop_num_tong.getText().length()>0){
+            shop_num_tong.setSelection(shop_num_tong.getText().toString().length());
+        }
+        shop_num_tong.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+              if (shop_num_tong.getText()!=null){
+                  int position = helper.getPosition();
+                  OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+                  List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
+                  OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(0);
+                  try {
+                      int num = Integer.parseInt(shop_num_tong.getText().toString());
+                      bindMaterList2.setNum(num);
+                      bindMaterList1.set(0,bindMaterList2);
+                      goodsListBean.setBindMaterList(bindMaterList1);
+                      DeliverOrderDetailAdapter.this.setData(position,goodsListBean);
+                  }catch (Exception e){
+                      e.printStackTrace();
+                  }
+              }
+            }
+        });
+
+
+        EditText shop_num_tong2 = helper.getView(R.id.shop_num_tong2);
+        if (shop_num_tong2.getText()!=null && shop_num_tong2.getText().length()>0){
+            shop_num_tong2.setSelection(shop_num_tong2.getText().toString().length());
+        }
+        shop_num_tong2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (shop_num_tong2.getText()!=null){
+                    int position = helper.getPosition();
+                    OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+                    List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
+                    OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(1);
+                    try {
+                        int num = Integer.parseInt(shop_num_tong2.getText().toString());
+                        bindMaterList2.setNum(num);
+                        bindMaterList1.set(1,bindMaterList2);
+                        goodsListBean.setBindMaterList(bindMaterList1);
+                        DeliverOrderDetailAdapter.this.setData(position,goodsListBean);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
+        EditText shop_num_tong3 = helper.getView(R.id.shop_num_tong3);
+        if (shop_num_tong3.getText()!=null && shop_num_tong3.getText().length()>0){
+            shop_num_tong3.setSelection(shop_num_tong3.getText().toString().length());
+        }
+        shop_num_tong3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (shop_num_tong3.getText()!=null){
+                    int position = helper.getPosition();
+                    OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+                    List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
+                    OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(2);
+                    try {
+                        int num = Integer.parseInt(shop_num_tong3.getText().toString());
+                        bindMaterList2.setNum(num);
+                        bindMaterList1.set(2,bindMaterList2);
+                        goodsListBean.setBindMaterList(bindMaterList1);
+                        DeliverOrderDetailAdapter.this.setData(position,goodsListBean);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
+        EditText shop_num_tong4 = helper.getView(R.id.shop_num_tong4);
+        if (shop_num_tong4.getText()!=null && shop_num_tong4.getText().length()>0){
+            shop_num_tong4.setSelection(shop_num_tong4.getText().toString().length());
+        }
+        shop_num_tong4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (shop_num_tong4.getText()!=null){
+                    int position = helper.getPosition();
+                    OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+                    List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
+                    OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(3);
+                    try {
+                        int num = Integer.parseInt(shop_num_tong4.getText().toString());
+                        bindMaterList2.setNum(num);
+                        bindMaterList1.set(3,bindMaterList2);
+                        goodsListBean.setBindMaterList(bindMaterList1);
+                        DeliverOrderDetailAdapter.this.setData(position,goodsListBean);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
+        EditText shop_num_tong5 = helper.getView(R.id.shop_num_tong5);
+        if (shop_num_tong5.getText()!=null && shop_num_tong5.getText().length()>0){
+            shop_num_tong5.setSelection(shop_num_tong5.getText().toString().length());
+        }
+        shop_num_tong5.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (shop_num_tong5.getText()!=null){
+                    int position = helper.getPosition();
+                    OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+                    List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
+                    OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(4);
+                    try {
+                        int num = Integer.parseInt(shop_num_tong5.getText().toString());
+                        bindMaterList2.setNum(num);
+                        bindMaterList1.set(4,bindMaterList2);
+                        goodsListBean.setBindMaterList(bindMaterList1);
+                        DeliverOrderDetailAdapter.this.setData(position,goodsListBean);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
     }
 
     public interface SelectWaterListener{
