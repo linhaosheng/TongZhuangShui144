@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.fragment;
 
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -38,8 +39,10 @@ import pro.haichuang.tzs144.model.AccountHistoryModel;
 import pro.haichuang.tzs144.model.ClientTypeModel;
 import pro.haichuang.tzs144.model.ClientTypeSearchModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.TrendModel;
 import pro.haichuang.tzs144.presenter.ClientHistoryTimeDatapPresenter;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.ClientFilterDialog;
 import pro.haichuang.tzs144.view.TimeDialog;
@@ -225,6 +228,19 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
             orderPaymentAdapter.setList(event.dataBean.getData());
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        if (event != null) {
+            if (event.type==4){
+                if (event.status== Config.LOAD_SUCCESS){
+                    clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
+                    clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
+                }
+            }
+        }
+    }
+
 
     @Override
     public void errorLoad(String error) {

@@ -14,9 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.kongzue.dialog.v3.WaitDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -26,8 +35,12 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.StartDepositSearchAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.PageEvent;
+import pro.haichuang.tzs144.model.SaleDataModel;
+import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.WithDrawalOrderModel;
 import pro.haichuang.tzs144.presenter.StartDepositSearchActivityPresenter;
+import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
@@ -93,6 +106,31 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
                 return false;
             }
         });
+
+        startDepositSearchAdapter.addChildClickViewIds(R.id.voil_txt);
+        startDepositSearchAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                switch (view.getId()){
+                    case R.id.voil_txt:
+                          WithDrawalOrderModel.DataBean dataBean = startDepositSearchAdapter.getData().get(position);
+
+                        SaleDataModel.DataBean dataBean1 = new SaleDataModel.DataBean();
+                        dataBean1.setAddress(dataBean.getAddress());
+                        dataBean1.setAddressName(dataBean.getAddressName());
+                        dataBean1.setPhone(dataBean.getKhPhone());
+                        dataBean1.setName(dataBean.getKhName());
+                        dataBean1.setId(dataBean.getKhId());
+
+                        String dataStr = Utils.gsonInstane().toJson(dataBean1);
+                        Intent intent = new Intent(StartDepositSearchActivity.this, AddWithDrawalOrderActivity.class);
+                        intent.putExtra(Config.PERSION_INFO, dataStr);
+                        startActivity(intent);
+
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -128,6 +166,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
 
     @Override
     public void startLoad() {
+        emptyView.setVisibility(View.GONE);
         refresh.setRefreshing(true);
     }
 
@@ -135,7 +174,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
     public void successLoad(List<WithDrawalOrderModel.DataBean> dataBeans) {
         refresh.setRefreshing(false);
         if (dataBeans==null || dataBeans.size()==0){
-            emptyView.setVisibility(View.VISIBLE);
+         //   emptyView.setVisibility(View.VISIBLE);
         }else {
             emptyView.setVisibility(View.GONE);
         }
@@ -146,6 +185,35 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
     public void errorLoad(String error) {
         Utils.showCenterTomast(error);
         refresh.setRefreshing(false);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StatusEvent event) {
+        WaitDialog.dismiss();
+        if (event != null) {
+           if (event.status== Config.LOAD_SUCCESS){
+               Utils.showCenterTomast("退押成功");
+               startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),1);
+           }else {
+               Utils.showCenterTomast("退押失败");
+           }
+        }
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
 }

@@ -133,7 +133,7 @@ public class AddDepositDialog extends DialogFragment {
 
         switch (view.getId()) {
             case R.id.delete:
-                dismiss();
+              //  dismiss();
                 break;
             case R.id.cancel_btn:
                 dismiss();

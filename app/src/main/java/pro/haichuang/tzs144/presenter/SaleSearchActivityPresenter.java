@@ -24,10 +24,14 @@ public class SaleSearchActivityPresenter {
      * 客户搜索
      * @param search
      */
-    public void search(String search){
+    public void search(String search,String type){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("search",search);
+
+        if ("add_with_drawal".equals(type)){
+            params.put("type","0");
+        }
 
         HttpRequestEngine.postRequest(ConfigUrl.SEARCH, params, new HttpRequestResultListener() {
             @Override

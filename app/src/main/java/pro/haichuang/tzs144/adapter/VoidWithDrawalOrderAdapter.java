@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,12 +44,13 @@ public class VoidWithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrder
         TextView statusTv =  baseViewHolder.getView(R.id.status);
         if (dataBean.isAdd()){
             status = "新增";
+            statusTv.setTextColor(Color.parseColor("#FFFFFF"));
             statusTv.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn31));
         }else {
             status = "历史";
+            statusTv.setTextColor(Color.parseColor("#999999"));
             statusTv.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn19));
         }
-
 
         baseViewHolder.setText(R.id.deposit_number,deposit_number)
                 .setText(R.id.start_code,start_code)

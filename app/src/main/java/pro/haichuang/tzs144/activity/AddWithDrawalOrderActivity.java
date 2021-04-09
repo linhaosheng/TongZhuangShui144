@@ -130,6 +130,10 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                         idBuilder.append(dataBean.getId()).append(",");
                     }
                 }
+                if (idBuilder.length()<=0){
+                    Utils.showCenterTomast("请选择退押选项");
+                    return;
+                }
                 //去除多余的逗号
                 String ids = idBuilder.substring(0, idBuilder.toString().length() - 1);
                 Log.i(TAG,"ids===="+ids);

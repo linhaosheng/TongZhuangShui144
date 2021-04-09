@@ -66,6 +66,7 @@ public class AccountFragment extends BaseFragment {
 
     @Override
     protected void setUpView() {
+        back.setVisibility(View.GONE);
         title.setText("财务管理");
         tipImg.setVisibility(View.VISIBLE);
         tipImg.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.mipmap.more));

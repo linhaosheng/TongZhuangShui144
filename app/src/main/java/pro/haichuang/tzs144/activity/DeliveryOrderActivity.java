@@ -201,7 +201,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = deliverOrderDetailAdapter.getData().get(position);
                 int id = view.getId();
-                int recycleNum=0;
+                float recycleNum=0;
                 switch (id){
                     case R.id.shop_add_tong:
                         List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean.getBindMaterList();
@@ -427,9 +427,9 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
 
             List<OrderDetailModel.DataBean.GoodsListBean> data = deliverOrderDetailAdapter.getData();
             for (OrderDetailModel.DataBean.GoodsListBean goodsListBean : data){
-                int waterDeductNum = 0;
-                int monthDeductNum = 0;
-                int couponDeductNum = 0;
+                float waterDeductNum = 0;
+                float monthDeductNum = 0;
+                float couponDeductNum = 0;
 
                 if (goodsListBean.getWaterName()!=null && !goodsListBean.getWaterName().equals("")){
                     waterDeductNum = goodsListBean.getWaterDeductNum();
@@ -443,7 +443,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 }
                 amount_receivable += (waterDeductNum + couponDeductNum)*goodsListBean.getGoodsPrice();  //应收金额
                 actual_amount += monthDeductNum * goodsListBean.getGoodsPrice();   //实收金额
-                Log.i("TAG====","actual_amount===="+actual_amount +"==monthDeductNum==="+monthDeductNum);
+            //    Log.i("TAG====","actual_amount===="+actual_amount +"==monthDeductNum==="+monthDeductNum);
             }
 
             amountReceivableNum.setText((totalPrice - amount_receivable) +"");
@@ -553,7 +553,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                             for (int i = 0;i<data.size();i++){
 
                                 OrderDetailModel.DataBean.GoodsListBean goodsListBean1 = data.get(i);
-                                int goodsNum = goodsListBean1.getGoodsNum();
+                                float goodsNum = goodsListBean1.getGoodsNum();
 
                                 List<OrderDetailModel.DataBean.BindMaterList>tempBindMaterList = new ArrayList<>();
                                 List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean1.getBindMaterList();
@@ -586,7 +586,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                            List<ShopDeleveModel.GoodsListBean> tempList = new ArrayList<>();
 
                            for (int i = 0;i<data.size();i++){
-                               int goodsNum = data.get(i).getGoodsNum();
+                               float goodsNum = data.get(i).getGoodsNum();
 
                                ShopDeleveModel.GoodsListBean goodsListBean = goodsListBeanList.get(i);
                                List<ShopDeleveModel.GoodsListBean.MaterialsBean> materials = goodsListBean.getMaterials();
@@ -788,16 +788,14 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 }
             }else if (event.type==2){
                 if (event.status == Config.LOAD_SUCCESS) {
-                    Utils.showCenterTomast("定单作废成功");
+                    Utils.showCenterTomast("订单作废成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("定单作废失败");
+                    Utils.showCenterTomast("订单作废失败");
                 }
             }
         }
     }
-
-
 
     @Override
     public void onStart() {

@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.ArrayMap;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +56,8 @@ public class SelectWaterTicketDialog extends DialogFragment {
     Button cancelBtn;
     @BindView(R.id.input_btn)
     Button inputBtn;
+    @BindView(R.id.search_edit)
+    EditText searchEdit;
     private AddShopDialogAdapter addShopDialogAdapter;
     private View view;
     private Context context;
@@ -106,7 +111,7 @@ public class SelectWaterTicketDialog extends DialogFragment {
         addShopDialogAdapter = new AddShopDialogAdapter(context);
         recycleData.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(addShopDialogAdapter);
-        loadWaterTicketData(customerId);
+        loadWaterTicketData("",customerId);
 
         addShopDialogAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -129,6 +134,24 @@ public class SelectWaterTicketDialog extends DialogFragment {
                     selectShopPosition = position;
                     addShopDialogAdapter.setList(tempData);
                 }
+            }
+        });
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+             if (searchEdit.getText()!=null){
+                 loadWaterTicketData(searchEdit.getText().toString(),customerId);
+             }
             }
         });
     }
@@ -173,9 +196,9 @@ public class SelectWaterTicketDialog extends DialogFragment {
      * 查找商品
      *
      */
-    public void loadWaterTicketData(int customerId) {
+    public void loadWaterTicketData(String query,int customerId) {
         Map<String,Object> map = new ArrayMap<>();
-        map.put("query","");
+        map.put("query",query);
         map.put("customerId",customerId);
         map.put("category","水票");
 

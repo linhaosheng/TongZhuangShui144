@@ -25,6 +25,8 @@ public class Config {
     public static  String CITY = "city";
 
 
+    public static final String GOODS_CATEGORY_LIST = "goods_category_list";
+
     public static final String STOCK_MAIN_LIST = "stock_main_list";
 
     public static final String FIND_AREA = "find_area";

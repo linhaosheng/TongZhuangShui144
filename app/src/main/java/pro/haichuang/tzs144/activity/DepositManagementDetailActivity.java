@@ -20,6 +20,7 @@ import com.kongzue.dialog.v3.WaitDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.DepositDetailAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
@@ -107,6 +108,11 @@ public class DepositManagementDetailActivity extends BaseActivity implements ILo
                 return false;
             }
         });
+    }
+
+    @OnClick({R.id.back})
+    public void onViewClicked(View view) {
+        finish();
     }
 
     @Override

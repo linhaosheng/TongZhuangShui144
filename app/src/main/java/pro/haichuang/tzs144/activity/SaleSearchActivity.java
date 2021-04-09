@@ -137,7 +137,7 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
             @Override
             public void afterTextChanged(Editable s) {
                 if (searchEdit.getText() != null) {
-                    searchActivityPresenter.search(searchEdit.getText().toString());
+                    searchActivityPresenter.search(searchEdit.getText().toString(),type);
                 }
             }
         });

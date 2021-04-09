@@ -9,7 +9,7 @@
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_18"
         android:text="回收"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:background="@drawable/set_bg_btn25"
         android:textColor="#FF9419"
         android:gravity="center"
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="直饮桶"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:textColor="#3F3F3F"
         android:layout_toRightOf="@+id/view2"
         android:layout_marginTop="@dimen/dp_10"
@@ -37,34 +37,34 @@
 
         <TextView
             android:id="@+id/reduce_tong"
-            android:layout_width="@dimen/dp_20"
+            android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_20"
             android:background="@drawable/set_bg_btn26"
             android:gravity="center"
             android:text="-"
             android:textColor="#000000"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
-        <TextView
+        <EditText
             android:id="@+id/shop_num_tong"
-            android:layout_width="@dimen/dp_40"
+            android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_20"
             android:background="@drawable/set_bg_btn26"
             android:gravity="center"
             android:text="0"
             android:textColor="#32C5FF"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
 
         <TextView
             android:id="@+id/shop_add_tong"
-            android:layout_width="@dimen/dp_20"
+            android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_20"
             android:background="@drawable/set_bg_btn26"
             android:gravity="center"
             android:text="+"
             android:textColor="#000000"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 </RelativeLayout>

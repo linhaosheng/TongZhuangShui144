@@ -135,6 +135,8 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
         inventoryFragmentPresenter = new InventoryFragmentPresenter(this);
         inventoryFragmentPresenter.findGoodsCategory();
 
+        Log.i(TAG,"findGoodsCategory====");
+
     }
 
     @OnClick({R.id.search, R.id.more, R.id.cancel})

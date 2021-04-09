@@ -1,8 +1,10 @@
 package pro.haichuang.tzs144.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -46,11 +48,28 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
         String with_drawal_name = "退押人 ："+dataBean.getReturnName();
 
         ImageView orderStateImg = baseViewHolder.getView(R.id.order_state);
+        TextView voilTxt = baseViewHolder.getView(R.id.voil_txt);
+
         if (dataBean.getStatus()==0){
+            voilTxt.setVisibility(View.GONE);
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.no_back));
         }else {
+            voilTxt.setVisibility(View.VISIBLE);
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.send_back));
         }
+
+        TextView stateTxt = baseViewHolder.getView(R.id.state);
+        String state;
+        if (dataBean.isIsAdd()){
+            state = "新增";
+            stateTxt.setTextColor(Color.parseColor("#FFFFFF"));
+            stateTxt.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn53));
+        }else {
+            state = "历史";
+            stateTxt.setTextColor(Color.parseColor("#999999"));
+            stateTxt.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn52));
+        }
+        stateTxt.setText(state);
 
         baseViewHolder.setText(R.id.deposit_number,deposit_number)
                 .setText(R.id.start_code,start_code)

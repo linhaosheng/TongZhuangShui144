@@ -315,17 +315,17 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         if (event != null) {
             if (event.type == 2) {
                 if (event.status == Config.LOAD_SUCCESS) {
-                    Utils.showCenterTomast("定单作废成功");
+                    Utils.showCenterTomast("订单作废成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("定单作废失败");
+                    Utils.showCenterTomast("订单作废失败");
                 }
             } else if (event.type == 1) {
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("接单成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("定单作废失败");
+                    Utils.showCenterTomast("订单作废失败");
                 }
             } else if (event.type == 4) {
                 if (event.status == Config.LOAD_SUCCESS) {
@@ -356,5 +356,6 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     @Override
     public void errorLoad(String error) {
         WaitDialog.dismiss();
+        Utils.showCenterTomast(error);
     }
 }

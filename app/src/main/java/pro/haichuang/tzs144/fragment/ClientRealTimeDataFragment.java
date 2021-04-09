@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.fragment;
 
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -174,13 +175,16 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             if (event.type==4){
                 if (event.status== Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("结账成功");
+                    Log.i("TAG===","asdssdsdsd");
                    // billOrder.setVisibility(View.GONE);
+                    clientRealTimeDatapPresenter.ssManagerCount();
                     clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
                 }else {
                     Utils.showCenterTomast("结账失败");
                 }
             }else if (event.type==5){
                 if (event.status== Config.LOAD_SUCCESS){
+                    clientRealTimeDatapPresenter.ssManagerCount();
                     Utils.showCenterTomast("订单作废成功");
                     clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
                 }else {

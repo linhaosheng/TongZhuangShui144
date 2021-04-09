@@ -167,12 +167,12 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
         WaitDialog.dismiss();
         if (event != null) {
             if (event.status == Config.LOAD_SUCCESS) {
-                Utils.showCenterTomast("定单作废成功");
+                Utils.showCenterTomast("订单作废成功");
                 tips.setVisibility(View.GONE);
                 orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.void_state));
                 EventBus.getDefault().post(new RefreshEvent("refresh",0));
             } else {
-                Utils.showCenterTomast("定单作废失败");
+                Utils.showCenterTomast("订单作废失败");
             }
         }
         Log.i(TAG, "onMessageEvent===");
@@ -193,5 +193,6 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     @Override
     public void errorLoad(String error) {
         WaitDialog.dismiss();
+        Utils.showCenterTomast(error);
     }
 }

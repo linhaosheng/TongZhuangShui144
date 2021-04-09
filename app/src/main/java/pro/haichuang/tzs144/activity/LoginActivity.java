@@ -1,7 +1,11 @@
 package pro.haichuang.tzs144.activity;
 
 import android.Manifest;
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -16,18 +20,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,6 +132,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             public void afterTextChanged(Editable s) {
                 loadSubject = false;
                 showDialog = false;
+                loginPresenter.loadSubjectList(account.getText().toString(),showDialog);
             }
         });
         password.addTextChangedListener(new TextWatcher() {
@@ -145,6 +155,13 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
                 }
             }
         });
+
+        /**
+         * 检查通知权限是否打开
+         */
+        if (!Utils.isNotificationEnabled(this)){
+            Utils.goToNotificationSetting(this);
+        }
     }
     @Override
     protected void setUpView() {
@@ -252,6 +269,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     }
 
     private void login() {
+
         if (TextUtils.isEmpty(account.getText())) {
             Utils.showCenterTomast("请输入正确账号");
             return;
@@ -267,6 +285,11 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             Utils.showCenterTomast("请检查账户是否绑定库存主体");
             return;
         }
+
+       if (!Utils.isOPen(this)){
+           MessageDialog.show(this,"提示","请打开GPS开关，否则应用无法正常使用");
+           return;
+       }
         if (checked){
             String info = account.getText().toString() +"-"+password.getText().toString();
             SPUtils.putString(Config.ACCOUNT_INFO,info);
@@ -311,6 +334,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         WaitDialog.dismiss();
         if (event!=null){
             arr_adapter.clear();
+            if (event.subjectModel==null){
+                return;
+            }
             dataBeanList = event.subjectModel.getData();
 
             for (SubjectModel.DataBean dataBean : event.subjectModel.getData()){

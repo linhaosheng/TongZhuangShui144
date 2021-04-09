@@ -4,18 +4,20 @@ import android.util.ArrayMap;
 
 import java.util.Map;
 
+import pro.haichuang.tzs144.model.TypeListModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
 import pro.haichuang.tzs144.net.HttpRequestResultListener;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.SPUtils;
+import pro.haichuang.tzs144.util.Utils;
 
 public class MainActivityPresenter {
 
 
 
     public MainActivityPresenter(){
-
+        findGoodsCategory();
     }
 
     /**
@@ -100,6 +102,33 @@ public class MainActivityPresenter {
             @Override
             public void success(String result) {
                 SPUtils.putString(Config.STOCK_MAIN_LIST,result);
+            }
+
+            @Override
+            public void error(String error) {
+
+            }
+        });
+    }
+
+    /**
+     * [实时库存]获取商品品类
+     */
+    public void findGoodsCategory(){
+
+        HttpRequestEngine.postRequest(ConfigUrl.FIND_GOODS_CATEGORY, null, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    SPUtils.putString(Config.GOODS_CATEGORY_LIST,result);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
