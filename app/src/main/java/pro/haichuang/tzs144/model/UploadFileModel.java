@@ -6,7 +6,7 @@ public class UploadFileModel {
     /**
      * result : 1
      * message : 上传成功!
-     * data : {"fileName":"TEMP_1612258349073.jpg","fileUrl":"https://api-tzs144.haichuang.pro/upload/TEMP_1612258349073.jpg"}
+     * data : {"fileName":"TEMP_1612258349073.jpg","fileUrl":"http://114.215.137.110:9090/upload/TEMP_1612258349073.jpg"}
      */
 
     private int result;
@@ -40,7 +40,7 @@ public class UploadFileModel {
     public static class DataBean {
         /**
          * fileName : TEMP_1612258349073.jpg
-         * fileUrl : https://api-tzs144.haichuang.pro/upload/TEMP_1612258349073.jpg
+         * fileUrl : http://114.215.137.110:9090/upload/TEMP_1612258349073.jpg
          */
 
         private String key;
