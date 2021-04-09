@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.view.View;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
@@ -19,6 +21,18 @@ public class CustodySituationAdapter extends BaseQuickAdapter<CustodyModel.DataB
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, CustodyModel.DataBean.DataListBean dataBean) {
 
+
+        if (dataBean.getNum()==null){
+            baseViewHolder.getView(R.id.sho_num).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.sho_num).setVisibility(View.VISIBLE);
+        }
+
+        if (dataBean.getPrice()==null){
+            baseViewHolder.getView(R.id.shop_amount).setVisibility(View.GONE);
+        }else {
+            baseViewHolder.getView(R.id.shop_amount).setVisibility(View.VISIBLE);
+        }
 
         String shop_name = "商品名称 : "+dataBean.getGoods_name();
         String sho_num = "商品数量 : "+dataBean.getNum() +"桶";
