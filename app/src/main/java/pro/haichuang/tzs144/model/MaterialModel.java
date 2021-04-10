@@ -47,7 +47,7 @@ public class MaterialModel {
          * id : 78
          */
 
-        private float num;
+        private int num;
         private String name;
         private int id;
         private int materialId;
@@ -61,11 +61,11 @@ public class MaterialModel {
             this.materialId = materialId;
         }
 
-        public float getNum() {
+        public int getNum() {
             return num;
         }
 
-        public void setNum(float num) {
+        public void setNum(int num) {
             this.num = num;
         }
 

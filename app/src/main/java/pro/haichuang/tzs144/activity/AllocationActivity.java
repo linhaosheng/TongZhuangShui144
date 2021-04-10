@@ -105,9 +105,17 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 switch (view.getId()) {
                     case R.id.delete:
-                        List<GoodBeanModel> data = demandListAdapter.getData();
-                        data.remove(position);
-                        demandListAdapter.setList(data);
+                        try {
+                            if (goodBeanModelList!=null){
+                                goodBeanModelList.remove(position);
+                            }
+                            List<GoodBeanModel> data = demandListAdapter.getData();
+                            data.remove(position);
+                            demandListAdapter.setList(data);
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         break;
                     case R.id.reduce:
                         List<GoodBeanModel> data1 = demandListAdapter.getData();

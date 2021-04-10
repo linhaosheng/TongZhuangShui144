@@ -16,6 +16,7 @@
         android:textColor="#333333"
         android:textSize="14sp"
         android:layout_marginLeft="26dp"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/dp_20"/>
 
     <TextView
