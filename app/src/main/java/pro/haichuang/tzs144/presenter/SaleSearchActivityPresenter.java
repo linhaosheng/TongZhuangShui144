@@ -43,8 +43,12 @@ public class SaleSearchActivityPresenter {
 
             @Override
             public void success(String result) {
-                SaleDataModel saleDataModel = Utils.gsonInstane().fromJson(result, SaleDataModel.class);
-                iLoadDataView.successLoad(saleDataModel.getData());
+                try {
+                    SaleDataModel saleDataModel = Utils.gsonInstane().fromJson(result, SaleDataModel.class);
+                    iLoadDataView.successLoad(saleDataModel.getData());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override

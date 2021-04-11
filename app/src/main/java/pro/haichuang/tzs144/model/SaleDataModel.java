@@ -59,7 +59,7 @@ public class SaleDataModel {
         private String addressName;
         private int id;
         private String type;
-        private String addressId;
+        private int addressId;
         private String longitude;
 
         public String getAddress() {
@@ -79,10 +79,15 @@ public class SaleDataModel {
         }
 
         public double getLatitude() {
-            return latitude;
+            try {
+               return Double.parseDouble(latitude);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return 0;
         }
 
-        public void setLatitude(double latitude) {
+        public void setLatitude(String latitude) {
             this.latitude = latitude;
         }
 
@@ -118,19 +123,24 @@ public class SaleDataModel {
             this.type = type;
         }
 
-        public String getAddressId() {
+        public int getAddressId() {
             return addressId;
         }
 
-        public void setAddressId(String addressId) {
+        public void setAddressId(int addressId) {
             this.addressId = addressId;
         }
 
         public double getLongitude() {
-            return longitude;
+            try {
+               return Double.parseDouble(longitude);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return 0;
         }
 
-        public void setLongitude(double longitude) {
+        public void setLongitude(String longitude) {
             this.longitude = longitude;
         }
     }
