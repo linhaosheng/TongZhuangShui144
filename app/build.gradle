@@ -119,6 +119,6 @@ dependencies {
     implementation 'com.lxj:xpopup:2.2.14'
     implementation 'org.greenrobot:eventbus:3.2.0'
 
-    //implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.tencent.bugly:crashreport:latest.release'
 
 }

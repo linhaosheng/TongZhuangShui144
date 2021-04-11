@@ -59,7 +59,7 @@ public class SaleDataModel {
         private String addressName;
         private int id;
         private String type;
-        private int addressId;
+        private String addressId;
         private String longitude;
 
         public String getAddress() {
@@ -124,10 +124,16 @@ public class SaleDataModel {
         }
 
         public int getAddressId() {
-            return addressId;
+            try {
+
+                return  Integer.parseInt(addressId);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return 0;
         }
 
-        public void setAddressId(int addressId) {
+        public void setAddressId(String addressId) {
             this.addressId = addressId;
         }
 
