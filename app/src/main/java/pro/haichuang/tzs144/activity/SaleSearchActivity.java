@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,8 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
 
     private SaleSearcAdapter saleSearcAdapter;
     private String type;
+    private int page = 1;
+    private boolean lastPage;
 
 
     @Override
@@ -118,6 +121,19 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
             }
         });
 
+        saleSearcAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    page++;
+                    searchActivityPresenter.search(searchEdit.getText().toString(), type, page);
+                }
+            }
+        });
+        saleSearcAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        saleSearcAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+
     }
 
     @Override
@@ -137,7 +153,9 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
             @Override
             public void afterTextChanged(Editable s) {
                 if (searchEdit.getText() != null) {
-                    searchActivityPresenter.search(searchEdit.getText().toString(),type);
+                    page = 1;
+                    lastPage = false;
+                    searchActivityPresenter.search(searchEdit.getText().toString(),type,page);
                 }
             }
         });
@@ -178,7 +196,27 @@ public class SaleSearchActivity extends BaseActivity implements SwipeRefreshLayo
     @Override
     public void successLoad(List<SaleDataModel.DataBean> data) {
         refresh.setRefreshing(false);
-        saleSearcAdapter.setList(data);
+        if (data==null || data.size()==0){
+            lastPage = true;
+        }
+        if (page==1){
+            if (data != null && data.size() > 0) {
+                emptyView.setVisibility(View.GONE);
+            } else {
+                emptyView.setVisibility(View.VISIBLE);
+            }
+            saleSearcAdapter.setList(data);
+            if (data.size()<10){
+                lastPage = true;
+                saleSearcAdapter.getLoadMoreModule().loadMoreEnd();
+            }
+        }else {
+            saleSearcAdapter.addData(data);
+            saleSearcAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+        if (lastPage){
+            saleSearcAdapter.getLoadMoreModule().loadMoreEnd();
+        }
     }
 
     @Override

@@ -29,10 +29,12 @@ public class WithDrawalOrderPresenter {
      * [押金]退押订单列表
      * @param query
      */
-    public final void findReturnDeposits(String query){
+    public final void findReturnDeposits(String query,int page){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("query",query);
+        params.put("page",page+"");
+        params.put("limit","10");
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_RETURN_DEPOSITS, params, new HttpRequestResultListener() {
             @Override

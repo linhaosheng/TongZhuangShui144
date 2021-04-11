@@ -225,7 +225,9 @@ public class AddOrderDepositDialog extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
     }
 
 

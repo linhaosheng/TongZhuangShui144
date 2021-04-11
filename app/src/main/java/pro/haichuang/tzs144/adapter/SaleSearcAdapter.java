@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import pro.haichuang.tzs144.model.SaleDataModel;
 /**
  * 客户销售搜索适配器
  */
-public class SaleSearcAdapter extends BaseQuickAdapter<SaleDataModel.DataBean, BaseViewHolder> {
+public class SaleSearcAdapter extends BaseQuickAdapter<SaleDataModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
 
     public SaleSearcAdapter() {

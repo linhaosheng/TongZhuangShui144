@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,6 +70,8 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
 
     private WithDrawalOrderAdapter withDrawalOrderAdapter;
     private WithDrawalOrderPresenter withDrawalOrderPresenter;
+    private int page = 1;
+    private boolean lastPage;
 
     @Override
     protected int setLayoutResourceID() {
@@ -86,7 +89,9 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
     @Override
     protected void onResume() {
         super.onResume();
-        withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString());
+        page = 1;
+        lastPage = false;
+        withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString(),page);
     }
 
     @Override
@@ -106,7 +111,9 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
             @Override
             public void afterTextChanged(Editable s) {
              if (searchEdit.getText()!=null){
-                 withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString());
+                 page=1;
+                 lastPage = false;
+                 withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString(),page);
              }
             }
         });
@@ -134,6 +141,19 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
                 }
             }
         });
+
+        withDrawalOrderAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    page++;
+                    withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString(),page);
+                }
+            }
+        });
+        withDrawalOrderAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        withDrawalOrderAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
     }
 
 
@@ -180,11 +200,27 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
     public void successLoad(List<WithDrawalOrderModel.DataBean> data) {
         refresh.setRefreshing(false);
         if (data==null || data.size()==0){
-            emptyView.setVisibility(View.VISIBLE);
-        }else {
-            emptyView.setVisibility(View.GONE);
+            lastPage = true;
         }
-        withDrawalOrderAdapter.setList(data);
+
+        if (page==1){
+            if (data != null && data.size() > 0) {
+                emptyView.setVisibility(View.GONE);
+            } else {
+                emptyView.setVisibility(View.VISIBLE);
+            }
+            withDrawalOrderAdapter.setList(data);
+            if (data.size()<10){
+                lastPage = true;
+                withDrawalOrderAdapter.getLoadMoreModule().loadMoreEnd();
+            }
+        }else {
+            withDrawalOrderAdapter.addData(data);
+            withDrawalOrderAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+        if (lastPage){
+            withDrawalOrderAdapter.getLoadMoreModule().loadMoreEnd();
+        }
     }
 
     @Override
@@ -215,7 +251,9 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
             if (event.status==Config.LOAD_SUCCESS && event.type==20){
 
                 Utils.showCenterTomast("作废成功");
-                withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString());
+                page = 1;
+                lastPage = false;
+                withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString(),page);
 
             }else if (event.status==Config.LOAD_FAIL && event.type==20){
                 Utils.showCenterTomast("作废失败");
