@@ -54,13 +54,13 @@ public class SaleDataModel {
 
         private String address;
         private String phone;
-        private double latitude;
+        private String latitude;
         private String name;
         private String addressName;
         private int id;
         private String type;
-        private int addressId;
-        private double longitude;
+        private String addressId;
+        private String longitude;
 
         public String getAddress() {
             return address;
@@ -118,11 +118,11 @@ public class SaleDataModel {
             this.type = type;
         }
 
-        public int getAddressId() {
+        public String getAddressId() {
             return addressId;
         }
 
-        public void setAddressId(int addressId) {
+        public void setAddressId(String addressId) {
             this.addressId = addressId;
         }
 
