@@ -43,6 +43,4 @@ public class Config {
     public static final String ADDRESS_JSON = "address_json";
 
 
-
-
 }

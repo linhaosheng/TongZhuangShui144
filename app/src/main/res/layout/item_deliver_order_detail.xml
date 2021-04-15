@@ -120,6 +120,7 @@
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="0"
+                    android:numeric="integer"
                     android:textColor="#32C5FF"
                     android:textSize="12sp" />
 
@@ -179,6 +180,7 @@
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="0"
+                    android:numeric="integer"
                     android:textColor="#32C5FF"
                     android:textSize="12sp" />
 
@@ -238,6 +240,7 @@
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="0"
+                    android:numeric="integer"
                     android:textColor="#32C5FF"
                     android:textSize="12sp" />
 
@@ -297,6 +300,7 @@
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="0"
+                    android:numeric="integer"
                     android:textColor="#32C5FF"
                     android:textSize="12sp" />
 
@@ -358,6 +362,7 @@
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="0"
+                    android:numeric="integer"
                     android:textColor="#32C5FF"
                     android:textSize="12sp" />
 

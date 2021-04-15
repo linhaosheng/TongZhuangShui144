@@ -136,7 +136,7 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
                     case R.id.voil_txt:
                         WaitDialog.show(WithDrawalOrderActivity.this,"加载中");
                         WithDrawalOrderModel.DataBean dataBean = withDrawalOrderAdapter.getData().get(position);
-                        withDrawalOrderPresenter.cancelReturnDeposit(dataBean.getId());
+                        withDrawalOrderPresenter.cancelReturnDeposit(dataBean.getId()+"");
                         break;
                 }
             }
@@ -164,8 +164,8 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
                 finish();
                 break;
             case R.id.add_with_drawal:
-                Intent intent = new Intent(this,SaleSearchActivity.class);
-                intent.putExtra("type","add_with_drawal");
+                Intent intent = new Intent(this,AddWithDrawalOrderActivity.class);
+               // intent.putExtra("type","add_with_drawal");
                 startActivity(intent);
                 break;
             case R.id.historical_deposit:

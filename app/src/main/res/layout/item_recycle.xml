@@ -21,22 +21,11 @@
             android:id="@+id/shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="订单编号 : 23453456y"
+            android:text="商品名称 : 23453456y"
             android:textColor="#000000"
             android:textSize="12sp"
             />
 
-        <TextView
-            android:id="@+id/shop_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="开押"
-            android:textColor="#1DC11D"
-            android:textSize="12sp"
-            android:background="@drawable/set_bg_btn51"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dp_10"
-            />
     </RelativeLayout>
 
 
@@ -53,13 +42,49 @@
         android:layout_marginTop="@dimen/dp_10"/>
 
     <TextView
-        android:id="@+id/shop_amount"
+        android:id="@+id/storehouse_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#3F3F3F"
         android:layout_marginLeft="13dp"
         android:layout_marginRight="13dp"
-        android:text="商品金额 : 100元"
+        android:text="仓库"
+        android:layout_marginTop="@dimen/dp_10"
+        android:visibility="visible"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/stock_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="主体"
+        android:layout_marginTop="@dimen/dp_10"
+        android:visibility="visible"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/minTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="最小时间"
+        android:layout_marginTop="@dimen/dp_10"
+        android:visibility="visible"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/maxTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="最大时间"
         android:layout_marginTop="@dimen/dp_10"
         android:visibility="visible"
         android:textSize="12sp"/>

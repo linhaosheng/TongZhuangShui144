@@ -354,6 +354,8 @@ public class ConfigUrl {
      */
     public static final String FIND_SUMMARY_SR = "/api/app/summary/findSummarySr";
 
+    public static final String  FIND_SUMMARY_FSSTHSLB = "/api/app/summary/findSummaryFSSThsLb";
+
 
     /**
      * 库存主体 - 结账汇总 - 开退押情况

@@ -62,12 +62,15 @@ public class AddWithDrawalOrderActivityPresenter {
 
     /**
      * [押金]新增退押 - 列表数据
-     * @param customerId
+     * @param yjNo
      * @param
      */
-    public void findByKhReturnDeposits(String customerId){
+    public void findByKhReturnDeposits(String yjNo,int page){
         Map<String,Object>params = new ArrayMap<>();
-        params.put("customerId",customerId);
+        params.put("yjNo",yjNo);
+        params.put("page",String.valueOf(page));
+        params.put("limit",10);
+
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_BY_RETURN_DEPOSITS, params, new HttpRequestResultListener() {
             @Override

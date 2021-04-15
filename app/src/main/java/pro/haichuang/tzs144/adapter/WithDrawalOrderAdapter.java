@@ -61,7 +61,7 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
 
         TextView stateTxt = baseViewHolder.getView(R.id.state);
         String state;
-        if (dataBean.isIsAdd()){
+        if (dataBean.isAdd()){
             state = "新增";
             stateTxt.setTextColor(Color.parseColor("#FFFFFF"));
             stateTxt.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn53));

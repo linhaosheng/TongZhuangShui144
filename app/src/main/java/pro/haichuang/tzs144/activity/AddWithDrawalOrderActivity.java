@@ -3,9 +3,12 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,9 +17,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,7 +47,7 @@ import pro.haichuang.tzs144.util.Utils;
 /**
  * 新增退押记录
  */
-public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDataView<List<WithDrawalOrderModel.DataBean>> {
+public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDataView<List<WithDrawalOrderModel.DataBean>> ,SwipeRefreshLayout.OnRefreshListener{
 
 
     @BindView(R.id.back)
@@ -69,10 +74,16 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
     Button withDrawalBtn;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
+    @BindView(R.id.search_edit)
+    EditText searchEdit;
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout refresh;
 
     private AddWithDrawalOrderAdapter addWithDrawalOrderAdapter;
     private AddWithDrawalOrderActivityPresenter addWithDrawalOrderActivityPresenter;
     private SaleDataModel.DataBean dataBean;
+    private int currentPage = 1;
+    private boolean lastPage;
 
 
     @Override
@@ -82,6 +93,7 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
 
     @Override
     protected void setUpView() {
+        refresh.setOnRefreshListener(this);
         title.setText("退押");
         addWithDrawalOrderAdapter = new AddWithDrawalOrderAdapter(this);
         recycleData.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
@@ -100,20 +112,52 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                 addWithDrawalOrderAdapter.setList(data);
             }
         });
+        addWithDrawalOrderAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    currentPage++;
+                    addWithDrawalOrderActivityPresenter.findByKhReturnDeposits(searchEdit.getText().toString(), currentPage);
+                }
+            }
+        });
+        addWithDrawalOrderAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        addWithDrawalOrderAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
     }
 
     @Override
     protected void setUpData() {
         addWithDrawalOrderActivityPresenter = new AddWithDrawalOrderActivityPresenter(this);
-        String dataBeanJson = getIntent().getStringExtra(Config.PERSION_INFO);
-        if (dataBeanJson!=null){
-            dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
-            name.setText(dataBean.getName());
-            phone.setText(dataBean.getPhone());
-            address.setText(dataBean.getAddressName());
-            addressDetail.setText(dataBean.getAddress());
-            addWithDrawalOrderActivityPresenter.findByKhReturnDeposits(dataBean.getId()+"");
-        }
+//        String dataBeanJson = getIntent().getStringExtra(Config.PERSION_INFO);
+//        if (dataBeanJson!=null){
+//            dataBean = Utils.gsonInstane().fromJson(dataBeanJson, SaleDataModel.DataBean.class);
+//            name.setText(dataBean.getName());
+//            phone.setText(dataBean.getPhone());
+//            address.setText(dataBean.getAddressName());
+//            addressDetail.setText(dataBean.getAddress());
+//            addWithDrawalOrderActivityPresenter.findByKhReturnDeposits(dataBean.getId()+"");
+//        }
+        searchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               if (searchEdit.getText()!=null){
+                   currentPage = 1;
+                   lastPage = false;
+                   addWithDrawalOrderActivityPresenter.findByKhReturnDeposits(searchEdit.getText().toString(),currentPage);
+               }
+            }
+        });
     }
 
 
@@ -134,10 +178,14 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                     Utils.showCenterTomast("请选择退押选项");
                     return;
                 }
-                //去除多余的逗号
-                String ids = idBuilder.substring(0, idBuilder.toString().length() - 1);
-                Log.i(TAG,"ids===="+ids);
-                addWithDrawalOrderActivityPresenter.returnDeposits(ids);
+                try {
+                    //去除多余的逗号
+                    String ids = idBuilder.substring(0, idBuilder.toString().length() - 1);
+                    Log.i(TAG,"ids===="+ids);
+                    addWithDrawalOrderActivityPresenter.returnDeposits(ids);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
             case R.id.address_detail:
                 Intent intent1 = new Intent(this,SelectAddressActivity.class);
@@ -151,25 +199,44 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
 
     @Override
     public void startLoad() {
-        WaitDialog.show(this,"加载中...");
+        refresh.setRefreshing(true);
+      //  WaitDialog.show(this,"加载中...");
     }
 
     @Override
     public void successLoad(List<WithDrawalOrderModel.DataBean> data) {
-        WaitDialog.dismiss();
-        addWithDrawalOrderAdapter.setList(data);
+        refresh.setRefreshing(false);
+
         if (data==null || data.size()==0){
-            emptyView.setVisibility(View.VISIBLE);
-            withDrawalBtn.setVisibility(View.GONE);
+            lastPage = true;
+        }
+        if (currentPage==1){
+            if (data==null || data.size()==0){
+                emptyView.setVisibility(View.VISIBLE);
+                withDrawalBtn.setVisibility(View.GONE);
+            }else {
+                emptyView.setVisibility(View.GONE);
+                withDrawalBtn.setVisibility(View.VISIBLE);
+            }
+            addWithDrawalOrderAdapter.setList(data);
+            if (data.size()<10){
+                lastPage = true;
+                addWithDrawalOrderAdapter.getLoadMoreModule().loadMoreEnd();
+            }
+
         }else {
-            emptyView.setVisibility(View.GONE);
-            withDrawalBtn.setVisibility(View.VISIBLE);
+            addWithDrawalOrderAdapter.addData(data);
+            addWithDrawalOrderAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+
+        if (lastPage){
+            addWithDrawalOrderAdapter.getLoadMoreModule().loadMoreEnd();
         }
     }
 
     @Override
     public void errorLoad(String error) {
-        WaitDialog.dismiss();
+        refresh.setRefreshing(false);
         Utils.showCenterTomast(error);
     }
 
@@ -220,5 +287,12 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                 dataBean.setLongitude(dataBean1.getLongitude()+"");
             }
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        currentPage = 1;
+        lastPage = false;
+        addWithDrawalOrderActivityPresenter.findByKhReturnDeposits(searchEdit.getText().toString(),currentPage);
     }
 }

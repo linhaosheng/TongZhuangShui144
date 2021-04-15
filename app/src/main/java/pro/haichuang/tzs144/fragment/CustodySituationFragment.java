@@ -28,14 +28,16 @@ public class CustodySituationFragment extends BaseFragment{
 
     @BindView(R.id.recycle_data)
     RecyclerView recycle_data;
+    private int type;
 
     private CustodySituationAdapter custodySituationAdapter;
 
     private CustodySituationPresenter custodySituationPresenter;
 
 
-    public CustodySituationFragment(){
+    public CustodySituationFragment(int type){
         super();
+        this.type = type;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class CustodySituationFragment extends BaseFragment{
     @Override
     protected void setUpView() {
         recycle_data.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        custodySituationAdapter = new CustodySituationAdapter();
+        custodySituationAdapter = new CustodySituationAdapter(type);
         recycle_data.setAdapter(custodySituationAdapter);
     }
 

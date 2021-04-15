@@ -33,11 +33,13 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.core.CityInfo;
 import com.baidu.mapapi.search.core.PoiDetailInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiBoundSearchOption;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
@@ -60,6 +62,7 @@ import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.AddressSearchAdapter;
 import pro.haichuang.tzs144.model.AddressBean;
+import pro.haichuang.tzs144.model.ClientDetailModel;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 
@@ -92,6 +95,10 @@ public class AddressSearchActivity extends BaseActivity {
     private List<AddressBean> addressBeans;
     private AddressSearchAdapter addressSearchAdapter;
     private int selectPosition = -1;
+    private String addressJson = null;
+    private  ClientDetailModel.DataBean.AddressListBean addressListBean;
+    private  double latitude;
+    private double longitude;
 
     @Override
     protected int setLayoutResourceID() {
@@ -107,22 +114,24 @@ public class AddressSearchActivity extends BaseActivity {
         baiduMap = map.getMap();
         baiduMap.setMyLocationEnabled(true);
 
-//        //显示卫星图层
-//        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-//        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-//        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
-//                .fromResource(R.mipmap.address_icon);
-//        baiduMap.setMyLocationConfiguration(new MyLocationConfiguration(
-//                mCurrentMode, true, mCurrentMarker
-//        ));
+        addressJson = getIntent().getStringExtra("addressJson");
+        if (addressJson != null && !"".equals(addressJson)) {
+            addressListBean = Utils.gsonInstane().fromJson(addressJson, ClientDetailModel.DataBean.AddressListBean.class);
+        }
 
+        poiSearch = PoiSearch.newInstance();
         BitmapDescriptor bitmap = null;
         bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
 
-        LatLng point = new LatLng(Config.LATITUDE, Config.LONGITUDE);
-
+        LatLng point;
+        if (addressListBean!=null){
+            latitude = Double.parseDouble(addressListBean.getLatitude());
+            longitude = Double.parseDouble(addressListBean.getLongitude());
+            point = new LatLng(latitude, longitude);
+        }else {
+            point = new LatLng(Config.LATITUDE, Config.LONGITUDE);
+        }
         Bundle bundle = new Bundle();
-        // bundle.putString(Config.CHARGE_SERIAL_NUMBER,chargeData.getS());
         OverlayOptions option = new MarkerOptions()
                 .position(point)
                 .clickable(true)
@@ -208,22 +217,21 @@ public class AddressSearchActivity extends BaseActivity {
             }
         });
 
-        MyLocationData locData = new MyLocationData.Builder()
-                // 此处设置开发者获取到的方向信息，顺时针0-360
-                .latitude(Config.LATITUDE)
-                .longitude(Config.LONGITUDE).build();
-        baiduMap.setMyLocationData(locData);
-
-        LatLng ll = new LatLng(Config.LATITUDE, Config.LONGITUDE);
+        LatLng ll;
+        if (addressListBean!=null){
+            ll = new LatLng(latitude, longitude);
+        }else {
+          ll = new LatLng(Config.LATITUDE, Config.LONGITUDE);
+        }
         MapStatus.Builder builder = new MapStatus.Builder();
         builder.target(ll).zoom(12.0f);
         baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
     }
 
+
     @Override
     protected void setUpData() {
         addressBeans = new ArrayList<>();
-        poiSearch = PoiSearch.newInstance();
 
         OnGetPoiSearchResultListener onListener = new OnGetPoiSearchResultListener() {
             @Override
@@ -233,7 +241,6 @@ public class AddressSearchActivity extends BaseActivity {
                     addressSearchAdapter.setList(null);
                     return;
                 }
-
                 if (poiResult.error == SearchResult.ERRORNO.NO_ERROR) {
                     addressBeans.clear();
                     List<PoiInfo> allPoi = poiResult.getAllPoi();
@@ -253,15 +260,12 @@ public class AddressSearchActivity extends BaseActivity {
                     }
                     addressSearchAdapter.setList(addressBeans);
 
-                }else {
-                    Log.i("TAG","44444444");
                 }
 
             }
 
             @Override
             public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
-             Log.i("TAG","22222222");
                 String s = Utils.gsonInstane().toJson(poiDetailResult);
                 Log.i("onGetSuggestionResult", "data num22222===" + s);
             }
@@ -313,11 +317,43 @@ public class AddressSearchActivity extends BaseActivity {
                 }
             }
         };
-        if (mSuggestionSearch != null) {
-         //   mSuggestionSearch.setOnGetSuggestionResultListener(listener);
-        }
+        initMarkerView();
     }
 
+
+    private void initMarkerView() {
+        MyLocationData locData = null;
+
+        if (addressJson!=null && !"".equals(addressJson)){
+            try {
+                double latitude = Double.parseDouble(addressListBean.getLatitude());
+                double longitude = Double.parseDouble(addressListBean.getLongitude());
+                locData = new MyLocationData.Builder()
+                        // 此处设置开发者获取到的方向信息，顺时针0-360
+                        .latitude(latitude)
+                        .longitude(longitude).build();
+
+                Log.i("TAG===","latitude=="+latitude+"=====longitude"+longitude);
+
+                LatLngBounds latLngBounds = new LatLngBounds.Builder()
+                        .include(new LatLng(latitude,longitude))
+                        .include(new LatLng((latitude+0.01),(longitude+0.01))).build();
+                PoiBoundSearchOption boundSearchOption = new PoiBoundSearchOption();
+                boundSearchOption.bound(latLngBounds);
+                boundSearchOption.keyword(addressListBean.getAddressName());
+                poiSearch.searchInBound(boundSearchOption);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else {
+            locData = new MyLocationData.Builder()
+                    // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .latitude(Config.LATITUDE)
+                    .longitude(Config.LONGITUDE).build();
+        }
+        baiduMap.setMyLocationData(locData);
+    }
 
     @OnClick({R.id.back,R.id.tips})
     public void onViewClicked(View view) {

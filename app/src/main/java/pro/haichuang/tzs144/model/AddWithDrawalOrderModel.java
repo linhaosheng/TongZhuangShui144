@@ -2,7 +2,7 @@ package pro.haichuang.tzs144.model;
 
 import java.util.List;
 
-public class WithDrawalOrderModel {
+public class AddWithDrawalOrderModel {
 
 
     private Integer result;
@@ -38,72 +38,15 @@ public class WithDrawalOrderModel {
         private Integer totalPrice;
         private Integer num;
         private String yjNo;
-        private String returnName;
-        private Integer isAdd;
+        private Boolean isAdd;
         private Integer type;
-        private String returnTime;
-        private Integer price;
+        private String price;
         private Integer id;
         private String time;
         private String khName;
         private String goodsName;
         private String createName;
         private Integer status;
-
-        private String addressName;
-        private String address;
-        private String khPhone;
-        private int khId;
-        private boolean checked;
-        private String cancelTime;
-
-        public String getAddressName() {
-            return addressName;
-        }
-
-        public void setAddressName(String addressName) {
-            this.addressName = addressName;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getKhPhone() {
-            return khPhone;
-        }
-
-        public void setKhPhone(String khPhone) {
-            this.khPhone = khPhone;
-        }
-
-        public int getKhId() {
-            return khId;
-        }
-
-        public void setKhId(int khId) {
-            this.khId = khId;
-        }
-
-        public boolean isChecked() {
-            return checked;
-        }
-
-        public void setChecked(boolean checked) {
-            this.checked = checked;
-        }
-
-        public String getCancelTime() {
-            return cancelTime;
-        }
-
-        public void setCancelTime(String cancelTime) {
-            this.cancelTime = cancelTime;
-        }
 
         public String getBookNo() {
             return bookNo;
@@ -137,23 +80,12 @@ public class WithDrawalOrderModel {
             this.yjNo = yjNo;
         }
 
-        public String getReturnName() {
-            return returnName;
+        public Boolean getIsAdd() {
+            return isAdd;
         }
 
-        public void setReturnName(String returnName) {
-            this.returnName = returnName;
-        }
-
-        public boolean isAdd() {
-            if (isAdd==1){
-                return true;
-            }
-            return false;
-        }
-
-        public void setIsAdd(Integer isAdd) {
-            this.isAdd = (Integer) isAdd;
+        public void setIsAdd(Boolean isAdd) {
+            this.isAdd = isAdd;
         }
 
         public Integer getType() {
@@ -164,19 +96,11 @@ public class WithDrawalOrderModel {
             this.type = type;
         }
 
-        public String getReturnTime() {
-            return returnTime;
-        }
-
-        public void setReturnTime(String returnTime) {
-            this.returnTime = returnTime;
-        }
-
-        public Integer getPrice() {
+        public String getPrice() {
             return price;
         }
 
-        public void setPrice(Integer price) {
+        public void setPrice(String price) {
             this.price = price;
         }
 

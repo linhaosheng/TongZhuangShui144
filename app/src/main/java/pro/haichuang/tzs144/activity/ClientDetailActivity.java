@@ -345,11 +345,14 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                 addMaintainRecord.setVisibility(View.GONE);
             }
 
-            if (dataBean.getCustomerType().contains("经销商")){
-                updateAddress.setVisibility(View.VISIBLE);
-            }else {
-                updateAddress.setVisibility(View.GONE);
-            }
+            /**
+             * 协议客户和终端客户都能够修改地址
+             */
+//            if (dataBean.getCustomerType().contains("经销商")){
+//                updateAddress.setVisibility(View.VISIBLE);
+//            }else {
+//                updateAddress.setVisibility(View.GONE);
+//            }
 
             List<ClientDetailModel.DataBean.AddressListBean> addressList = dataBean.getAddressList();
             if (addressList!=null){

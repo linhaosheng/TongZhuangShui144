@@ -30,6 +30,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
 import pro.haichuang.tzs144.fragment.CustodySituationFragment;
 import pro.haichuang.tzs144.fragment.IncomeCountFragment;
+import pro.haichuang.tzs144.fragment.RecycleCountFragment;
 import pro.haichuang.tzs144.fragment.SalesFragment;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.RefreshCountEvent;
@@ -244,11 +245,15 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
         fragmentList = new ArrayList<>();
         fragmentList.add(new SalesFragment());
         fragmentList.add(new IncomeCountFragment());
-        fragmentList.add(new CustodySituationFragment());
+        fragmentList.add(new RecycleCountFragment());
+        fragmentList.add(new CustodySituationFragment(0));
+        fragmentList.add(new CustodySituationFragment(1));
 
         titleList.add("销售情况");
         titleList.add("收入情况");
+        titleList.add("回收情况");
         titleList.add("开押情况");
+        titleList.add("退押情况");
         myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, titleList);
         vp_view.setAdapter(myPagerAdapter);
         tabs.setupWithViewPager(vp_view);

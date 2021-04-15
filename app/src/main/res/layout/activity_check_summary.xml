@@ -182,7 +182,7 @@
         app:tabIndicator="@drawable/tab_indicator"
         app:tabIndicatorColor="#32C5FF"
         app:tabIndicatorFullWidth="false"
-        app:tabMode="fixed"
+        app:tabMode="scrollable"
         app:tabRippleColor="@android:color/transparent"
         app:tabSelectedTextColor="@color/tab_select_yes"
         app:tabTextAppearance="@style/my_tab_text_style"
