@@ -46,12 +46,12 @@ public class CustodySituationAdapter extends BaseQuickAdapter<CustodyModel.DataB
 
         baseViewHolder.getView(R.id.parent_view).setVisibility(View.VISIBLE);
 
-        if (type==0 && "退押".equals(dataBean.getType())){
-           baseViewHolder.getView(R.id.parent_view).setVisibility(View.GONE);
-        }
-
-        if (type==1 && "开押".equals(dataBean.getType())){
-            baseViewHolder.getView(R.id.parent_view).setVisibility(View.GONE);
-        }
+//        if (type==0 && "退押".equals(dataBean.getType())){
+//           baseViewHolder.getView(R.id.parent_view).setVisibility(View.GONE);
+//        }
+//
+//        if (type==1 && "开押".equals(dataBean.getType())){
+//            baseViewHolder.getView(R.id.parent_view).setVisibility(View.GONE);
+//        }
     }
 }

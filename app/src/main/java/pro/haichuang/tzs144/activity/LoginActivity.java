@@ -303,6 +303,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
                 Utils.showCenterTomast("请检查账户是否绑定库存主体");
                 return;
             }
+            Config.CURRENT_MAIN_ID = dataBeanList.get(selectPosition).getId();
+            Config.CURRENT_MAIN_NAME =  dataBeanList.get(selectPosition).getName();
+
             loginPresenter.loginServer(account.getText().toString(), password.getText().toString(), dataBeanList.get(selectPosition).getId());
         }else {
             Utils.showCenterTomast("获取数据超时，请退出，重新登录");

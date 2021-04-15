@@ -42,5 +42,16 @@ public class Config {
 
     public static final String ADDRESS_JSON = "address_json";
 
+    /**
+     * 当前登录的库存主体名称
+     */
+    public static  String CURRENT_MAIN_NAME = "";
+
+    /**
+     * 当前登录的库存主体ID
+     */
+    public static  String CURRENT_MAIN_ID = "";
+
+
 
 }

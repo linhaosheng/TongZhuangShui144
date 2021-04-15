@@ -347,33 +347,31 @@ public class ConfigUrl {
     /**
      * 库存主体 - 结账汇总 - 合计
      */
-    public static final String FIND_SUMMARY_HJ = "/api/app/summary/findSummaryHj";
+    public static final String FIND_SUMMARY_HJ = "/api/pc/xs/summary/findSummaryHj";
 
     /**
      * 库存主体 - 结账汇总 - 收入情况
      */
-    public static final String FIND_SUMMARY_SR = "/api/app/summary/findSummarySr";
+    public static final String FIND_SUMMARY_SR = "/api/pc/xs/summary/findSummarySr";
 
-    public static final String  FIND_SUMMARY_FSSTHSLB = "/api/app/summary/findSummaryFSSThsLb";
-
+    public static final String  FIND_SUMMARY_FSSTHSLB = "/api/pc/xs/summary/findSummaryFSSThsLb";
 
     /**
      * 库存主体 - 结账汇总 - 开退押情况
      */
-    public static final String FIND_SUMMARY_KY = "/api/app/summary/findSummaryKy";
+    public static final String FIND_SUMMARY_KY = "/api/pc/xs/summary/findSummaryKy";
 
 
     /**
      * 库存主体 - 结账汇总 - 销售情况 - 商品列表
      */
-    public static final String FIND_SUMMARY_SALE_QS = "/api/app/summary/findSummarySaleQs";
-
+    public static final String FIND_SUMMARY_SALE_QS = "/api/pc/xs/summary/findSummarySaleQs";
 
 
     /**
      * 库存主体 - 结账汇总 - 销售情况 - 材料列表
      */
-    public static final String FIND_SUMMARY_SALE_HT = "/api/app/summary/findSummarySaleHt";
+    public static final String FIND_SUMMARY_SALE_HT = "/api/pc/xs/summary/findSummarySaleHt";
 
 
 }
