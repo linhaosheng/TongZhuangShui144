@@ -19,10 +19,10 @@ public class UnpackPresenter {
         this.iLoadDataView = iLoadDataView;
     }
 
-    public void unpack(String scMainId,String unpackGoodsId,String unpackNum,String goodsId,String num){
+    public void unpack(String mainId,String unpackGoodsId,String unpackNum,String goodsId,String num){
 
         Map<String,Object> params = new ArrayMap<>();
-        params.put("scMainId",scMainId);
+        params.put("mainId",mainId);
         params.put("unpackGoodsId",unpackGoodsId);
         params.put("unpackNum",unpackNum);
         params.put("goodsId",goodsId);
