@@ -142,7 +142,7 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
         });
         findDespositAdapter.getLoadMoreModule().setAutoLoadMore(true);
         //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
-        findDespositAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+        findDespositAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(true);
     }
 
 
