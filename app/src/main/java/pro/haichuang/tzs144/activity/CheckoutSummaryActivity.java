@@ -181,7 +181,7 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
 //                        }else {
 //                            categoryId = String.valueOf(typeListModel.getData().get(index-1).getId());
 //                        }
-                        categoryId = String.valueOf(typeListModel.getData().get(index-1).getId());
+                        categoryId = String.valueOf(typeListModel.getData().get(index).getId());
                         checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
                         EventBus.getDefault().post(new RefreshCountEvent(0));
                     }

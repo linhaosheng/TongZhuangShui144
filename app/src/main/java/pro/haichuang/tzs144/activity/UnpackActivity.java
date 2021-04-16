@@ -79,7 +79,7 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
      * 商品
      */
     private List<CharSequence> shopList;
-    private ShopListModel shopListModel;
+    private ShopListModel.DataBean.DataListBean dataListBean;
 
 
     private UnpackPresenter unpackPresenter;
@@ -117,6 +117,7 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
                 SelectShopDialog selectShopDialog  = new SelectShopDialog(UnpackActivity.this, 0,new SelectShopDialog.SelectShopListener() {
                     @Override
                     public void selectShop(ShopListModel.DataBean.DataListBean dataBean) {
+                        dataListBean = dataBean;
                         shopType.setRightText(dataBean.getGoodsName());
                         unpackGoodsId = dataBean.getId();
                     }
@@ -216,6 +217,15 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
             if (inputNum<=0){
                 Utils.showCenterTomast("请输入商品数量");
                 return;
+            }
+
+            if (dataListBean!=null){
+                int stockNum = Integer.parseInt(dataListBean.getStockNum());
+                if (stockNum < inputNum){
+                    Utils.showCenterTomast("库存不足");
+                    return;
+                }
+
             }
 
             String num = unpackShopNum.getEditText();

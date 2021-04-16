@@ -17,6 +17,7 @@ public class SaleAdapter extends BaseQuickAdapter<SaleModel.DataBean.DataListBea
 
     public SaleAdapter(int type) {
         super(R.layout.item_sale);
+        this.type = type;
     }
 
     @Override
@@ -60,7 +61,11 @@ public class SaleAdapter extends BaseQuickAdapter<SaleModel.DataBean.DataListBea
             }else {
                 baseViewHolder.getView(R.id.recycle_num).setVisibility(View.VISIBLE);
             }
-
+            if (dataBean.getHtNum()==null && dataBean.getHsNum()==null){
+                baseViewHolder.getView(R.id.shop_name).setVisibility(View.GONE);
+            }else {
+                baseViewHolder.getView(R.id.shop_name).setVisibility(View.VISIBLE);
+            }
         }
 
         baseViewHolder.setText(R.id.shop_name,shop_name)

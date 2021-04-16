@@ -21,7 +21,7 @@ public class ShopDialogAdapter extends BaseQuickAdapter<ShopListModel.DataBean.D
     private Context context;
 
     public ShopDialogAdapter(Context context) {
-        super(R.layout.item_add_shop);
+        super(R.layout.item_shop);
         this.context = context;
     }
 
@@ -34,7 +34,9 @@ public class ShopDialogAdapter extends BaseQuickAdapter<ShopListModel.DataBean.D
        }else {
             view.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.check));
         }
-        baseViewHolder.setText(R.id.name,dataBean.getGoodsName());
+        String shopNum = "库存 ： "+dataBean.getStockNum();
+        baseViewHolder.setText(R.id.name,dataBean.getGoodsName())
+        .setText(R.id.shop_num,shopNum);
         baseViewHolder.getView(R.id.capacity).setVisibility(View.GONE);
     }
 }
