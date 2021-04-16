@@ -68,6 +68,7 @@
         <activity android:name=".activity.AddressSearchActivity" />
         <activity android:name=".activity.FindDespositActivity" />
         <activity android:name=".activity.CheckoutSummaryActivity" />
+        <activity android:name=".activity.UnpackActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

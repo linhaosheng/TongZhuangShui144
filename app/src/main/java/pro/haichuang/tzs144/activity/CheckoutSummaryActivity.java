@@ -222,7 +222,7 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
 
         try {
 
-            startTime = "2021-01-01";
+            startTime = Utils.formatLastMonthTime();
             endTime = Utils.formatSelectTime(new Date());
             time_rand.setRightText(startTime + "  -  " + endTime);
             inventory_subject.setRightText(subjectList.get(0).toString());
@@ -238,7 +238,7 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
             initFragmentData();
 
             checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             Utils.showCenterTomast("获取数据异常");

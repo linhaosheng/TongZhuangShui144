@@ -59,6 +59,15 @@ public class CustodyModel {
             private String type;
             private String num;
             private String price;
+            private int  yjType;
+
+            public int getYjType() {
+                return yjType;
+            }
+
+            public void setYjType(int yjType) {
+                this.yjType = yjType;
+            }
 
             public String getGoods_id() {
                 return goods_id;

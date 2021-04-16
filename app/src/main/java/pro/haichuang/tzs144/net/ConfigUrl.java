@@ -373,5 +373,9 @@ public class ConfigUrl {
      */
     public static final String FIND_SUMMARY_SALE_HT = "/api/pc/xs/summary/findSummarySaleHt";
 
+    /**
+     * [新增]拆包
+     */
+    public static final String UNPACK = "/api/app/unpackLog/unpack";
 
 }

@@ -30,6 +30,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -278,6 +279,19 @@ public class Utils {
         }
 
         return false;
+    }
+
+    /**
+     * 获取当前时间的上两个个月
+     * @return
+     */
+    public static String formatLastMonthTime(){
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, -2);
+        Date m = c.getTime();
+        return formatSelectTime(m);
     }
 
 }

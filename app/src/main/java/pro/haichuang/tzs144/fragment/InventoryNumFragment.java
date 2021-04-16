@@ -28,6 +28,7 @@ import pro.haichuang.tzs144.adapter.InventoryNumAdapter;
 import pro.haichuang.tzs144.adapter.TypeListAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.InventoryNumModel;
+import pro.haichuang.tzs144.model.RefreshInventoryEvent;
 import pro.haichuang.tzs144.model.TextEvent;
 import pro.haichuang.tzs144.model.UpdateTitleEvent;
 import pro.haichuang.tzs144.presenter.InventoryNumFragmentPresenter;
@@ -160,6 +161,14 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
             }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RefreshInventoryEvent event) {
+        if (event!=null){
+            inventoryNumFragmentPresenter.findGoodsWithType("","",id);
+        }
+    }
+
 
     @Override
     public void onStart() {

@@ -13,6 +13,7 @@ import butterknife.BindView;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.CheckoutSummaryActivity;
 import pro.haichuang.tzs144.adapter.CustodySituationAdapter;
+import pro.haichuang.tzs144.adapter.DepositSituationAdapter;
 import pro.haichuang.tzs144.model.CustodyEvent;
 import pro.haichuang.tzs144.model.CustodyModel;
 import pro.haichuang.tzs144.model.DespositEvent;
@@ -30,7 +31,7 @@ public class CustodySituationFragment extends BaseFragment{
     RecyclerView recycle_data;
     private int type;
 
-    private CustodySituationAdapter custodySituationAdapter;
+    private DepositSituationAdapter depositSituationAdapter;
 
     private CustodySituationPresenter custodySituationPresenter;
 
@@ -53,8 +54,8 @@ public class CustodySituationFragment extends BaseFragment{
     @Override
     protected void setUpView() {
         recycle_data.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        custodySituationAdapter = new CustodySituationAdapter(type);
-        recycle_data.setAdapter(custodySituationAdapter);
+        depositSituationAdapter = new DepositSituationAdapter(type);
+        recycle_data.setAdapter(depositSituationAdapter);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class CustodySituationFragment extends BaseFragment{
             if (event.status== Config.LOAD_FAIL){
                Utils.showCenterTomast(custodyModel.getMessage());
            }else {
-                custodySituationAdapter.setList(custodyModel.getData().getDataList());
+                depositSituationAdapter.setList(custodyModel.getData().getDataList());
             }
         }
     }

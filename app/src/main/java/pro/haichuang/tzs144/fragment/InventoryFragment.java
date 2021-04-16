@@ -32,6 +32,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.AllocationActivity;
 import pro.haichuang.tzs144.activity.DemandListActivity;
 import pro.haichuang.tzs144.activity.ReturnDetailActivity;
+import pro.haichuang.tzs144.activity.UnpackActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.MessageEvent;
@@ -159,7 +160,7 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
     private final void showMoreDialog() {
         new XPopup.Builder(getActivity())
                 .atView(more)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
-                .asAttachList(new String[]{"填写需求单", "调拨", "取水还桶明细"},
+                .asAttachList(new String[]{"填写需求单", "调拨", "取水还桶明细","拆包"},
                         new int[]{},
                         new OnSelectListener() {
                             @Override
@@ -171,6 +172,8 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
                                     intent.setClass(getActivity(), AllocationActivity.class);
                                 } else if (position == 2) {
                                     intent.setClass(getActivity(), ReturnDetailActivity.class);
+                                }else if (position==3){
+                                    intent.setClass(getActivity(), UnpackActivity.class);
                                 }
                                 startActivity(intent);
                             }
