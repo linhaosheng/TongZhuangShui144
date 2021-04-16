@@ -17,7 +17,7 @@ public class Config {
 
 
     public static final String SUBJECT_LIST  = "subject_list";
-    public static final int LIMIT = 10;
+    public static final String LIMIT = "10";
     public static final String VERIFICATION = "verification";
 
     public static  double LATITUDE = 0;
@@ -26,6 +26,8 @@ public class Config {
 
 
     public static final String GOODS_CATEGORY_LIST = "goods_category_list";
+
+    public static final String FIND_GOODS_LIST = "findGoodsList";
 
     public static final String STOCK_MAIN_LIST = "stock_main_list";
 

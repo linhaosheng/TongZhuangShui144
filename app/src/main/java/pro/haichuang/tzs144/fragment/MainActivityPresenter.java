@@ -2,8 +2,11 @@ package pro.haichuang.tzs144.fragment;
 
 import android.util.ArrayMap;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import pro.haichuang.tzs144.model.ShopListModel;
 import pro.haichuang.tzs144.model.TypeListModel;
 import pro.haichuang.tzs144.net.ConfigUrl;
 import pro.haichuang.tzs144.net.HttpRequestEngine;
@@ -137,4 +140,6 @@ public class MainActivityPresenter {
             }
         });
     }
+
+
 }

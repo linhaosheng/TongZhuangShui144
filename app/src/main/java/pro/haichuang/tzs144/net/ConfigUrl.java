@@ -49,6 +49,11 @@ public class ConfigUrl {
     public static final String FIND_GOODS_CATEGORY = "/api/app/kc/findGoodsCategory";
 
     /**
+     * 商品列表-数据列表
+     */
+    public static final String FIND_GOODS_LIST = "/api/pc/jc/goods/findGoodsList";
+
+    /**
      * [实时库存]查询商品列表
      */
     public static final String FIND_GOODS = "/api/app/kc/findGoods";

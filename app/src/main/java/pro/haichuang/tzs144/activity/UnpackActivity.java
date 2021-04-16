@@ -26,6 +26,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.RefreshCountEvent;
 import pro.haichuang.tzs144.model.RefreshInventoryEvent;
+import pro.haichuang.tzs144.model.ShopListModel;
 import pro.haichuang.tzs144.model.StockMainModel;
 import pro.haichuang.tzs144.model.TypeListModel;
 import pro.haichuang.tzs144.presenter.UnpackPresenter;
@@ -33,6 +34,7 @@ import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.LSettingItem;
+import pro.haichuang.tzs144.view.SelectShopDialog;
 
 /**
  * 拆包
@@ -77,7 +79,7 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
      * 商品
      */
     private List<CharSequence> shopList;
-    private TypeListModel typeListModel;
+    private ShopListModel shopListModel;
 
 
     private UnpackPresenter unpackPresenter;
@@ -111,13 +113,22 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
         shopType.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
-                BottomMenu.show(UnpackActivity.this, shopList, new OnMenuItemClickListener() {
+
+                SelectShopDialog selectShopDialog  = new SelectShopDialog(UnpackActivity.this, 0,new SelectShopDialog.SelectShopListener() {
                     @Override
-                    public void onClick(String text, int index) {
-                        shopType.setRightText(text);
-                        unpackGoodsId = String.valueOf(typeListModel.getData().get(index).getId());
+                    public void selectShop(ShopListModel.DataBean.DataListBean dataBean) {
+                        shopType.setRightText(dataBean.getGoodsName());
+                        unpackGoodsId = dataBean.getId();
                     }
                 });
+                selectShopDialog.show(getSupportFragmentManager(),"");
+//                BottomMenu.show(UnpackActivity.this, shopList, new OnMenuItemClickListener() {
+//                    @Override
+//                    public void onClick(String text, int index) {
+//                        shopType.setRightText(text);
+//                        unpackGoodsId = String.valueOf(shopListModel.getData().getDataList().get(index).getId());
+//                    }
+//                });
             }
         });
 
@@ -127,13 +138,14 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
         unpackShopType.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
-                BottomMenu.show(UnpackActivity.this, shopList, new OnMenuItemClickListener() {
+                SelectShopDialog selectShopDialog  = new SelectShopDialog(UnpackActivity.this, 1,new SelectShopDialog.SelectShopListener() {
                     @Override
-                    public void onClick(String text, int index) {
-                        unpackShopType.setRightText(text);
-                        goodsId = String.valueOf(typeListModel.getData().get(index).getId());
+                    public void selectShop(ShopListModel.DataBean.DataListBean dataBean) {
+                        unpackShopType.setRightText(dataBean.getGoodsName());
+                        goodsId = dataBean.getId();
                     }
                 });
+                selectShopDialog.show(getSupportFragmentManager(),"");
             }
         });
     }
@@ -156,16 +168,17 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
         /**
          * 商品品类
          */
-        String categoryListJson = SPUtils.getString(Config.GOODS_CATEGORY_LIST, "");
-        if (!categoryListJson.equals("")) {
-            shopList = new ArrayList<>();
-            //   shopList.add("全部");
-            typeListModel = Utils.gsonInstane().fromJson(categoryListJson, TypeListModel.class);
-            for (TypeListModel.DataBean dataBean : typeListModel.getData()) {
-                shopList.add(dataBean.getName());
-            }
-        }
-
+//        String categoryListJson = SPUtils.getString(Config.FIND_GOODS_LIST, "");
+//        if (!categoryListJson.equals("")) {
+//            shopList = new ArrayList<>();
+//            //   shopList.add("全部");
+//            shopListModel = Utils.gsonInstane().fromJson(categoryListJson, ShopListModel.class);
+//            if (shopListModel.getData().getDataList()!=null){
+//                for (ShopListModel.DataBean.DataListBean dataBean : shopListModel.getData().getDataList()) {
+//                    shopList.add(dataBean.getGoodsName());
+//                }
+//            }
+//        }
     }
 
 

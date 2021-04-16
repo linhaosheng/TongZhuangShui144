@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +10,7 @@ import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.DepositModel;
 import pro.haichuang.tzs144.model.GoodBeanModel;
 
-public class FindDespositAdapter extends BaseQuickAdapter<DepositModel.DataBean, BaseViewHolder> {
+public class FindDespositAdapter extends BaseQuickAdapter<DepositModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
 
     public FindDespositAdapter() {

@@ -60,7 +60,7 @@
             app:LtextColor="#000000"
             app:isShowRightText="true"
             app:isShowUnderLine="true"
-            app:leftText="商品类型"
+            app:leftText="商品品类"
             app:leftTextMarginLeft="@dimen/dp_10"
             app:rightIconSize="@dimen/dp_22"
             app:rightStyle="iconHide"

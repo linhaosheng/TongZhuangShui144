@@ -34,6 +34,7 @@ import pro.haichuang.tzs144.fragment.RecycleCountFragment;
 import pro.haichuang.tzs144.fragment.SalesFragment;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.RefreshCountEvent;
+import pro.haichuang.tzs144.model.ShopListModel;
 import pro.haichuang.tzs144.model.StockMainModel;
 import pro.haichuang.tzs144.model.SummaryModel;
 import pro.haichuang.tzs144.model.TypeListModel;
@@ -166,7 +167,7 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
         });
 
         /**
-         * 商品类型
+         * 商品品类
          */
         shop_type.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
@@ -180,7 +181,7 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
 //                        }else {
 //                            categoryId = String.valueOf(typeListModel.getData().get(index-1).getId());
 //                        }
-                        categoryId = String.valueOf(typeListModel.getData().get(index).getId());
+                        categoryId = String.valueOf(typeListModel.getData().get(index-1).getId());
                         checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
                         EventBus.getDefault().post(new RefreshCountEvent(0));
                     }
