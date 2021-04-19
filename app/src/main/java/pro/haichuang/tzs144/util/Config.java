@@ -4,7 +4,7 @@ public class Config {
 
 
 
-    public static final String IS_LOGIN = "is_login";
+    public static boolean IS_LOGIN = false;
 
     public static final int REFRESH = 0x117;  //刷新
     public static final int LOAD_MORE = 0x118;  //加载更多

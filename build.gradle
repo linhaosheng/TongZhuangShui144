@@ -5,6 +5,11 @@ buildscript {
         jcenter()
         maven { url 'https://jitpack.io' }
         mavenCentral()
+        //极光推送
+        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven{ url'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        //hms
+        maven {url 'http://developer.huawei.com/repo/'}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.3'
@@ -12,8 +17,11 @@ buildscript {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        //fcm
+        classpath 'com.google.gms:google-services:4.3.4'
+        //huawei
+        classpath 'com.huawei.agconnect:agcp:1.4.1.300'
+
     }
 }
 
@@ -23,6 +31,10 @@ allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
         mavenCentral()
+        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven{ url'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        //hms
+        maven {url 'http://developer.huawei.com/repo/'}
     }
 }
 

@@ -44,6 +44,20 @@ android {
                 ]
             }
         }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "378bffc8ade4d76190f782af",//值来自开发者平台取得的AppKey
+                JPUSH_CHANNEL: "default_developer",
+                MEIZU_APPKEY:"MZ-魅族的APPKEY",
+                MEIZU_APPID:"MZ-魅族的APPID",
+                XIAOMI_APPID:"MI-小米的APPID",
+                XIAOMI_APPKEY:"MI-小米的APPKEY",
+                OPPO_APPKEY:"OP-oppo的APPKEY",
+                OPPO_APPID:"OP-oppo的APPID",
+                OPPO_APPSECRET:"OP-oppo的APPSECRET",
+                VIVO_APPKEY:"vivo的APPKEY",
+                VIVO_APPID:"vivo的APPID"
+        ]
     }
 
     buildTypes {
@@ -74,12 +88,23 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(include: ['*.jar',"*.aar"], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation project(path: ':lib_boxing_photobrowser')
     implementation files('libs/BaiduLBS_Android.jar')
+    implementation files('libs/jcore-android-2.7.6.jar')
+    implementation files('libs/jpush-android-4.0.6.jar')
+    implementation files('libs/jpush-android-plugin-fcm-v4.0.6.jar')
+    implementation files('libs/jpush-android-plugin-huawei-v4.0.6.jar')
+    implementation files('libs/jpush-android-plugin-meizu-v4.0.6.jar')
+    implementation files('libs/jpush-android-plugin-oppo-v4.0.6.jar')
+    implementation files('libs/jpush-android-plugin-xiaomi-v4.0.6.jar')
+    implementation files('libs/jpush-android-plugin-vivo-v4.0.6.jar')
+    implementation files('libs/meizu-push-4.0.2.jar')
+    implementation files('libs/MiPush_SDK_Client_3_8_5.jar')
+    implementation files('libs/push_sdk_v3.0.0.jar')
 
 
     testImplementation 'junit:junit:4.12'

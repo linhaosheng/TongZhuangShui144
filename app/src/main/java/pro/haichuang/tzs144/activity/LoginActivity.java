@@ -45,6 +45,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
+import pro.haichuang.tzs144.jpush.ExampleUtil;
 import pro.haichuang.tzs144.model.LoginModel;
 import pro.haichuang.tzs144.model.MessageEvent;
 import pro.haichuang.tzs144.model.SubjectModel;
@@ -74,6 +75,8 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     Spinner inventorySubject;
     @BindView(R.id.check_state)
     ImageView checkState;
+    @BindView(R.id.test_push)
+    Button test_push;
     private LoginPresenter loginPresenter;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
@@ -250,7 +253,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     }
 
-    @OnClick({R.id.login_btn, R.id.check_state})
+    @OnClick({R.id.login_btn, R.id.check_state,R.id.test_push})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -264,6 +267,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
                     checkState.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.check_box));
                 }
                 checked = !checked;
+                break;
+            case R.id.test_push:
+                ExampleUtil.buildLocalNotification(this,"测试推送","这是一条测试的推送");
                 break;
         }
     }
@@ -319,7 +325,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     public void successLoad(String data) {
-        SPUtils.putBoolean(Config.IS_LOGIN, true);
+        Config.IS_LOGIN = true;
         WaitDialog.dismiss();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
@@ -383,7 +389,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             Config.LATITUDE = location.getLatitude();    //获取纬度信息
             Config.LONGITUDE = location.getLongitude();    //获取经度信息
             Config.CITY = location.getCity();    //获取城市
-            Log.i("TAG","==="+Config.CITY);
+            //Log.i("TAG","==="+Config.CITY);
 
         }
     }
