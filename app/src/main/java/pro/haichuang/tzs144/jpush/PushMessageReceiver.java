@@ -38,7 +38,7 @@ public class PushMessageReceiver extends JPushMessageReceiver {
                 intent.setClass(context, LoginActivity.class);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-            context.startActivity(intent);
+            context.startActivity(intent);  
 //            Intent i = new Intent(context,TestActivity.class);
 //            Bundle bundle = new Bundle();
 //            bundle.putString(JPushInterface.EXTRA_NOTIFICATION_TITLE,message.notificationTitle);
