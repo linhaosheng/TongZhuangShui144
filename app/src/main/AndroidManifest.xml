@@ -404,17 +404,13 @@
         <!--xiaomi_config_end-->
 
         <!--huawei_config_start-->
-
-        <!--后面加上-->
-<!--        <service-->
-<!--            android:name="cn.jpush.android.service.PluginHuaweiPlatformsService"-->
-<!--            android:exported="false">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
-
-
+        <service
+            android:name="cn.jpush.android.service.PluginHuaweiPlatformsService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <!--huawei_config_end-->
 
         <!--meizu_config_start-->
@@ -442,16 +438,13 @@
             android:value="${MEIZU_APPID}" />
         <!--meizu_config_end-->
 
-        <!--后面加上-->
         <!--fcm_config_start-->
-<!--        <service android:name="cn.jpush.android.service.PluginFCMMessagingService">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
+        <service android:name="cn.jpush.android.service.PluginFCMMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <!--fcm_config_end-->
-
-
 
         <!--oppo_config_start-->
         <service

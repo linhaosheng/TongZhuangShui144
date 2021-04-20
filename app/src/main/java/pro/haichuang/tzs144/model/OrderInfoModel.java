@@ -77,6 +77,15 @@ public class OrderInfoModel {
         private double latitude;
         private double longitude;
         private int payMode;
+        private String materNum;
+
+        public String getMaterNum() {
+            return materNum;
+        }
+
+        public void setMaterNum(String materNum) {
+            this.materNum = materNum;
+        }
 
         public int getPayMode() {
             return payMode;

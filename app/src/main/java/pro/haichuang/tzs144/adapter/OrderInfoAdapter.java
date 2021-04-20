@@ -50,6 +50,7 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             baseViewHolder.setText(R.id.take_orders, "知道了");
             order_state_img.setVisibility(View.GONE);
         }else if (type==4){
+
             take_orders_view.setVisibility(View.GONE);
             baseViewHolder.setText(R.id.take_orders, "知道了");
             order_state_img.setVisibility(View.VISIBLE);
@@ -84,15 +85,24 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
         String time_send = " "+dataBean.getTimeRange() +" 送达";
         String name_info = dataBean.getCustoemrName() + "  "+ dataBean.getCustomerPhone();
         String distance = "";
-        try {
-            float distanceData = Float.parseFloat(dataBean.getDistance());
-            if (distanceData>1000){
-                distance =  "距离"+distanceData/1000+"km";
-            }else {
-                distance =  "距离"+distanceData+"m";
+
+        if (type==4){
+           if (dataBean.getMaterNum()==null){
+               distance = "回收0个";
+           }else {
+               distance = "回收"+dataBean.getMaterNum()+"个";
+           }
+        }else {
+            try {
+                float distanceData = Float.parseFloat(dataBean.getDistance());
+                if (distanceData>1000){
+                    distance =  "距离"+distanceData/1000+"km";
+                }else {
+                    distance =  "距离"+distanceData+"m";
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
         String order_detail_info = "共"+dataBean.getGoodsTypeNum()+"种商品，合计"+dataBean.getGoodsNum()+"件 ｜ "+ dataBean.getGoodsTopInfo()+ " ↓";
 

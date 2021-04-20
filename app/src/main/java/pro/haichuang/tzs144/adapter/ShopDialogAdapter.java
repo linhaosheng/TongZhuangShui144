@@ -34,7 +34,7 @@ public class ShopDialogAdapter extends BaseQuickAdapter<ShopListModel.DataBean.D
        }else {
             view.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.check));
         }
-        String shopNum = "库存 ： "+dataBean.getStockNum() +dataBean.getTypeName();
+        String shopNum = "库存 ： "+dataBean.getStockNum() +dataBean.getUnitName();
         baseViewHolder.setText(R.id.name,dataBean.getGoodsName())
         .setText(R.id.shop_num,shopNum);
         baseViewHolder.getView(R.id.capacity).setVisibility(View.GONE);

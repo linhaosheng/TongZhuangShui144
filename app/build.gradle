@@ -85,6 +85,9 @@ android {
             jniLibs.srcDir 'libs'
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
