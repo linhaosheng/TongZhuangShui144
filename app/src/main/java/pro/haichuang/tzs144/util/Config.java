@@ -16,6 +16,8 @@ public class Config {
 
 
 
+    public static final String SERVER_URL = "server_url";
+
     public static final String SUBJECT_LIST  = "subject_list";
     public static final String LIMIT = "10";
     public static final String VERIFICATION = "verification";

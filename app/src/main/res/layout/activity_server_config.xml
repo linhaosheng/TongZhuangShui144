@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/header"/>
+
+
+    <EditText
+        android:id="@+id/server_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:hint="客户名称/手机号码/地址关键字"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:textSize="14sp"
+        android:drawablePadding="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_200"
+        android:background="@drawable/set_bg_btn11"
+        android:layout_marginRight="@dimen/dp_40"/>
+
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:background="@drawable/set_bg_btn1"
+        android:layout_marginTop="73dp"
+        android:layout_marginLeft="@dimen/dp_48"
+        android:text="保存"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/white"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="@dimen/dp_48"/>
+
+</RelativeLayout>

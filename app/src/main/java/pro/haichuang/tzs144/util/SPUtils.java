@@ -25,6 +25,7 @@ public class SPUtils {
         editor.putString(key, value).apply();
     }
 
+
     /**
      *
      Get the value of String

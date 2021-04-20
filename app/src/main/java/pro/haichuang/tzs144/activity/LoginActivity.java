@@ -46,6 +46,7 @@ import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 import pro.haichuang.tzs144.jpush.ExampleUtil;
+import pro.haichuang.tzs144.model.ExitModel;
 import pro.haichuang.tzs144.model.LoginModel;
 import pro.haichuang.tzs144.model.MessageEvent;
 import pro.haichuang.tzs144.model.SubjectModel;
@@ -77,6 +78,8 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     ImageView checkState;
     @BindView(R.id.test_push)
     Button test_push;
+    @BindView(R.id.server_tvt)
+    TextView serverTvt;
     private LoginPresenter loginPresenter;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
@@ -166,6 +169,8 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             Utils.goToNotificationSetting(this);
         }
     }
+
+
     @Override
     protected void setUpView() {
         LoginActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
@@ -253,7 +258,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     }
 
-    @OnClick({R.id.login_btn, R.id.check_state,R.id.test_push})
+    @OnClick({R.id.login_btn, R.id.check_state,R.id.test_push,R.id.server_tvt})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -270,6 +275,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
                 break;
             case R.id.test_push:
                 ExampleUtil.buildLocalNotification(this,"测试推送","这是一条测试的推送");
+                break;
+            case R.id.server_tvt:
+               startActivity(new Intent(this,ServerConfigActivity.class));
                 break;
         }
     }
@@ -359,20 +367,25 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         Log.i(TAG,"onMessageEvent===");
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ExitModel event) {
+       finish();
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         if (mLocationClient!=null){
             mLocationClient.stop();
         }
@@ -390,7 +403,6 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             Config.LONGITUDE = location.getLongitude();    //获取经度信息
             Config.CITY = location.getCity();    //获取城市
             //Log.i("TAG","==="+Config.CITY);
-
         }
     }
 }

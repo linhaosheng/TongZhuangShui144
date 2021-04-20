@@ -1,6 +1,8 @@
 package pro.haichuang.tzs144.net;
 
 import pro.bilibili.boxing_impl.crop.util.ProviderUtil;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.SPUtils;
 import rxhttp.wrapper.annotation.DefaultDomain;
 
 public class ConfigUrl {
@@ -9,12 +11,14 @@ public class ConfigUrl {
     public static final int GET = 0X110;
     public static final int POST = 0X111;
 
+    public final static String DEFAULT_SERVER_URL = "https://api-tzs144.haichuang.pro";
+
 
     /**
      * base url
      */
     @DefaultDomain
-    public static final String BASE_URL ="https://api-tzs144.haichuang.pro";//http://124.70.96.225:9090"; 
+    public static  String BASE_URL = SPUtils.getString(Config.SERVER_URL,DEFAULT_SERVER_URL);//http://124.70.96.225:9090";
     // https://api.ssssedc.com; "http://114.215.137.110:9090"
 
     /**

@@ -143,6 +143,18 @@
         android:textColor="@color/white"
         android:layout_marginRight="@dimen/dp_48"/>
 
+
+    <TextView
+        android:id="@+id/server_tvt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="服务器配置"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_40"
+        android:textColor="#ff34b6fa"
+        />
+
+
     <Button
         android:id="@+id/test_push"
         android:layout_width="wrap_content"
