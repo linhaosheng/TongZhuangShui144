@@ -20,9 +20,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -67,6 +69,8 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
     TextView emptyInfo;
     @BindView(R.id.empty_view)
     RelativeLayout emptyView;
+    private  int currentPage = 1;
+    private boolean lastPage;
 
     private FindDespositAdapter findDespositAdapter;
 
@@ -111,7 +115,9 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
             @Override
             public void afterTextChanged(Editable s) {
                if (searchEdit.getText()!=null){
-                   searchDesposit(searchEdit.getText().toString());
+                   currentPage = 1;
+                   lastPage = false;
+                   searchDesposit(searchEdit.getText().toString(),currentPage+"");
                }
             }
         });
@@ -124,13 +130,27 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
                 return false;
             }
         });
+
+        findDespositAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage){
+                    currentPage++;
+                    searchDesposit(searchEdit.getText().toString(),currentPage+"");
+                }
+            }
+        });
+        findDespositAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        findDespositAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(true);
     }
 
 
-    private final void searchDesposit(String query){
+    private final void searchDesposit(String query,String page){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("query",query);
+        params.put("page",page);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_DEPOSIT_YJMOLIST, params, new HttpRequestResultListener() {
             @Override
@@ -142,13 +162,31 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
             public void success(String result) {
                 refresh.setRefreshing(false);
                 DepositModel depositModel = Utils.gsonInstane().fromJson(result, DepositModel.class);
-                findDespositAdapter.setList(depositModel.getData());
-                if (depositModel.getData()==null || depositModel.getData().size()==0){
-                    emptyView.setVisibility(View.VISIBLE);
-                }else {
-                    emptyView.setVisibility(View.GONE);
-                }
+                if (depositModel.getData()!=null){
+                    List<DepositModel.DataBean> data = depositModel.getData();
+                    if (data==null || data.size()==0){
+                        lastPage = true;
+                    }
 
+                    if (currentPage==1){
+                        if (data != null && data.size() > 0) {
+                            emptyView.setVisibility(View.GONE);
+                        } else {
+                            emptyView.setVisibility(View.VISIBLE);
+                        }
+                        findDespositAdapter.setList(data);
+                        if (data.size()<10){
+                            lastPage = true;
+                            findDespositAdapter.getLoadMoreModule().loadMoreEnd();
+                        }
+                    }else {
+                        findDespositAdapter.addData(data);
+                        findDespositAdapter.getLoadMoreModule().loadMoreComplete();
+                    }
+                    if (lastPage){
+                        findDespositAdapter.getLoadMoreModule().loadMoreEnd();
+                    }
+                }
             }
 
             @Override
@@ -167,6 +205,8 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
 
     @Override
     public void onRefresh() {
-        searchDesposit(searchEdit.getText().toString());
+        currentPage = 1;
+        lastPage = false;
+        searchDesposit(searchEdit.getText().toString(),currentPage+"");
     }
 }

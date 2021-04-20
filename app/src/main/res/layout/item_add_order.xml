@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/dp_150"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="@dimen/dp_17"
@@ -17,27 +17,35 @@
         android:textColor="#3F3F3F"
         android:textSize="18sp" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_10"
+        >
+
     <TextView
         android:id="@+id/shop_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_80"
         android:layout_marginTop="@dimen/dp_18"
-        android:layout_toRightOf="@+id/name"
         android:text="¥30x10"
+        android:layout_marginBottom="@dimen/dp_5"
         android:textColor="#3F3F3F" />
 
     <TextView
         android:id="@+id/total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
         android:text="¥300"
         android:textColor="#3F3F3F"
         android:textSize="18sp"
+        android:layout_marginLeft="@dimen/dp_30"
         android:textStyle="bold" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/recycle"
@@ -45,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
         android:layout_marginLeft="@dimen/dp_12"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="18dp"
         android:text="回收"
         android:background="@drawable/set_bg_btn48"
         android:textColor="#FF9419"
@@ -59,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_toRightOf="@+id/recycle"
         android:text="直饮桶x5   直饮桶x5" />
 
@@ -68,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/recycle_num"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_15"
         android:background="#E6E6E6" />
 
 

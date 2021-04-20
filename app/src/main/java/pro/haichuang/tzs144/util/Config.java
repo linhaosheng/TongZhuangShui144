@@ -4,7 +4,7 @@ public class Config {
 
 
 
-    public static final String IS_LOGIN = "is_login";
+    public static boolean IS_LOGIN = false;
 
     public static final int REFRESH = 0x117;  //刷新
     public static final int LOAD_MORE = 0x118;  //加载更多
@@ -17,7 +17,7 @@ public class Config {
 
 
     public static final String SUBJECT_LIST  = "subject_list";
-    public static final int LIMIT = 10;
+    public static final String LIMIT = "10";
     public static final String VERIFICATION = "verification";
 
     public static  double LATITUDE = 0;
@@ -26,6 +26,8 @@ public class Config {
 
 
     public static final String GOODS_CATEGORY_LIST = "goods_category_list";
+
+    public static final String FIND_GOODS_LIST = "findGoodsList";
 
     public static final String STOCK_MAIN_LIST = "stock_main_list";
 
@@ -42,6 +44,15 @@ public class Config {
 
     public static final String ADDRESS_JSON = "address_json";
 
+    /**
+     * 当前登录的库存主体名称
+     */
+    public static  String CURRENT_MAIN_NAME = "";
+
+    /**
+     * 当前登录的库存主体ID
+     */
+    public static  String CURRENT_MAIN_ID = "";
 
 
 

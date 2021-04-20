@@ -315,8 +315,8 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
                 dataBean.setAddress(dataBean1.getAddress());
                 dataBean.setAddressName(dataBean1.getAddressName());
                 dataBean.setId(dataBean1.getId());
-                dataBean.setLatitude(dataBean1.getLatitude());
-                dataBean.setLongitude(dataBean1.getLongitude());
+                dataBean.setLatitude(dataBean1.getLatitude()+"");
+                dataBean.setLongitude(dataBean1.getLongitude()+"");
             }
         }
     }

@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.fragment;
 
+import android.util.Log;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -79,6 +81,7 @@ public class SalesFragment extends BaseFragment{
                 if (event.type==0){
                     shopSaleAdapter.setList(saleModel.getData().getDataList());
                 }else if (event.type==1){
+                    Log.i("TAG==","11111111");
                     materialSaleAdapter.setList(saleModel.getData().getDataList());
                 }
             }

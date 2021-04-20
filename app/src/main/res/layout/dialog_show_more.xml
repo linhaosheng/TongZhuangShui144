@@ -46,6 +46,7 @@
         android:textColor="#333333"
         android:textSize="16sp"
         android:textAlignment="center"
+        android:visibility="gone"
         android:gravity="center"/>
 
     <View

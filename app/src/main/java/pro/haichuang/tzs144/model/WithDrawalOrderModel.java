@@ -5,21 +5,15 @@ import java.util.List;
 public class WithDrawalOrderModel {
 
 
-    /**
-     * result : 1
-     * message : 获取成功!
-     * data : [{"id":"","yjNo":"","bookNo":"","khName":"","goodsName":"","num":"","price":"","totalPrice":"","type":"","time":"","createName":"","returnName":"","returnTime":"","status":"","isAdd":false}]
-     */
-
-    private int result;
+    private Integer result;
     private String message;
     private List<DataBean> data;
 
-    public int getResult() {
+    public Integer getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(Integer result) {
         this.result = result;
     }
 
@@ -40,53 +34,28 @@ public class WithDrawalOrderModel {
     }
 
     public static class DataBean {
-        /**
-         * id :
-         * yjNo :
-         * bookNo :
-         * khName :
-         * goodsName :
-         * num :
-         * price :
-         * totalPrice :
-         * type :
-         * time :
-         * createName :
-         * returnName :
-         * returnTime :
-         * status :
-         * isAdd : false
-         */
-
-        private String id;
-        private String yjNo;
         private String bookNo;
+        private Integer totalPrice;
+        private Integer num;
+        private String yjNo;
+        private String returnName;
+        private Integer isAdd;
+        private Integer type;
+        private String returnTime;
+        private Integer price;
+        private Integer id;
+        private String time;
         private String khName;
         private String goodsName;
-        private String num;
-        private String price;
-        private String totalPrice;
-        private int type;
-        private String time;
         private String createName;
-        private String returnName;
-        private String returnTime;
-        private int khId;
+        private Integer status;
+
         private String addressName;
         private String address;
         private String khPhone;
-        private int status;
-        private boolean isAdd;
+        private int khId;
         private boolean checked;
         private String cancelTime;
-
-        public int getKhId() {
-            return khId;
-        }
-
-        public void setKhId(int khId) {
-            this.khId = khId;
-        }
 
         public String getAddressName() {
             return addressName;
@@ -112,20 +81,12 @@ public class WithDrawalOrderModel {
             this.khPhone = khPhone;
         }
 
-        public String getCancelTime() {
-            return cancelTime;
+        public int getKhId() {
+            return khId;
         }
 
-        public void setCancelTime(String cancelTime) {
-            this.cancelTime = cancelTime;
-        }
-
-        public boolean isAdd() {
-            return isAdd;
-        }
-
-        public void setAdd(boolean add) {
-            isAdd = add;
+        public void setKhId(int khId) {
+            this.khId = khId;
         }
 
         public boolean isChecked() {
@@ -136,12 +97,36 @@ public class WithDrawalOrderModel {
             this.checked = checked;
         }
 
-        public String getId() {
-            return id;
+        public String getCancelTime() {
+            return cancelTime;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setCancelTime(String cancelTime) {
+            this.cancelTime = cancelTime;
+        }
+
+        public String getBookNo() {
+            return bookNo;
+        }
+
+        public void setBookNo(String bookNo) {
+            this.bookNo = bookNo;
+        }
+
+        public Integer getTotalPrice() {
+            return totalPrice;
+        }
+
+        public void setTotalPrice(Integer totalPrice) {
+            this.totalPrice = totalPrice;
+        }
+
+        public Integer getNum() {
+            return num;
+        }
+
+        public void setNum(Integer num) {
+            this.num = num;
         }
 
         public String getYjNo() {
@@ -152,12 +137,63 @@ public class WithDrawalOrderModel {
             this.yjNo = yjNo;
         }
 
-        public String getBookNo() {
-            return bookNo;
+        public String getReturnName() {
+            return returnName;
         }
 
-        public void setBookNo(String bookNo) {
-            this.bookNo = bookNo;
+        public void setReturnName(String returnName) {
+            this.returnName = returnName;
+        }
+
+        public boolean isAdd() {
+            if (isAdd==1){
+                return true;
+            }
+            return false;
+        }
+
+        public void setIsAdd(Integer isAdd) {
+            this.isAdd = (Integer) isAdd;
+        }
+
+        public Integer getType() {
+            return type;
+        }
+
+        public void setType(Integer type) {
+            this.type = type;
+        }
+
+        public String getReturnTime() {
+            return returnTime;
+        }
+
+        public void setReturnTime(String returnTime) {
+            this.returnTime = returnTime;
+        }
+
+        public Integer getPrice() {
+            return price;
+        }
+
+        public void setPrice(Integer price) {
+            this.price = price;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
         }
 
         public String getKhName() {
@@ -176,46 +212,6 @@ public class WithDrawalOrderModel {
             this.goodsName = goodsName;
         }
 
-        public String getNum() {
-            return num;
-        }
-
-        public void setNum(String num) {
-            this.num = num;
-        }
-
-        public String getPrice() {
-            return price;
-        }
-
-        public void setPrice(String price) {
-            this.price = price;
-        }
-
-        public String getTotalPrice() {
-            return totalPrice;
-        }
-
-        public void setTotalPrice(String totalPrice) {
-            this.totalPrice = totalPrice;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-
         public String getCreateName() {
             return createName;
         }
@@ -224,36 +220,12 @@ public class WithDrawalOrderModel {
             this.createName = createName;
         }
 
-        public String getReturnName() {
-            return returnName;
-        }
-
-        public void setReturnName(String returnName) {
-            this.returnName = returnName;
-        }
-
-        public String getReturnTime() {
-            return returnTime;
-        }
-
-        public void setReturnTime(String returnTime) {
-            this.returnTime = returnTime;
-        }
-
-        public int getStatus() {
+        public Integer getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(Integer status) {
             this.status = status;
-        }
-
-        public boolean isIsAdd() {
-            return isAdd;
-        }
-
-        public void setIsAdd(boolean isAdd) {
-            this.isAdd = isAdd;
         }
     }
 }

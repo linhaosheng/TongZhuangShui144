@@ -48,7 +48,7 @@ public class IncomeCountFragment extends BaseFragment{
     @Override
     protected void setUpView() {
         recycle_data.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        custodySituationAdapter = new CustodySituationAdapter();
+        custodySituationAdapter = new CustodySituationAdapter(-1);
         recycle_data.setAdapter(custodySituationAdapter);
 
     }

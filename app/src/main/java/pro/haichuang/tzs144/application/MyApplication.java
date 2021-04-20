@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.module.LoadMoreModuleConfig;
 import com.kongzue.dialog.util.DialogSettings;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import cn.jpush.android.api.JPushInterface;
 import pro.bilibili.boxing.BoxingMediaLoader;
 import pro.bilibili.boxing.loader.IBoxingMediaLoader;
 import pro.haichuang.tzs144.view.CustomLoadMoreView;
@@ -37,6 +38,10 @@ public class MyApplication extends Application {
         //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
         //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
         SDKInitializer.setCoordType(CoordType.BD09LL);
+
+        // 初始化SDK
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
 
     }
     public static Context getInstance() {

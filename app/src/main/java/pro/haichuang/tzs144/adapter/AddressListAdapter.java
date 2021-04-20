@@ -14,6 +14,8 @@ import pro.haichuang.tzs144.activity.AddClientActivity;
 import pro.haichuang.tzs144.activity.AddressSearchActivity;
 import pro.haichuang.tzs144.activity.ClientDetailActivity;
 import pro.haichuang.tzs144.model.ClientDetailModel;
+import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.LSettingItem;
 
 public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataBean.AddressListBean, BaseViewHolder> {
@@ -72,6 +74,8 @@ public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataB
             @Override
             public void click(boolean isChecked, View view) {
                 Intent intent = new Intent(context, AddressSearchActivity.class);
+                String addressJson = Utils.gsonInstane().toJson(data);
+                intent.putExtra("addressJson",addressJson);
                 context.startActivityForResult(intent, position);
             }
         });

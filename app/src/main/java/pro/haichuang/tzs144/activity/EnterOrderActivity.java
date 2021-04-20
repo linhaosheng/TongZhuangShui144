@@ -317,13 +317,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         if (dataBean.getNum()==0){
                             return;
                         }else {
-                            float num = dataBean.getNum() -1;
+                            int num = dataBean.getNum() -1;
                             dataBean.setNum(num);
                             materialListAdapter.setData(position,dataBean);
                         }
                         break;
                     case R.id.shop_add_tong:
-                        float num = dataBean.getNum() + 1;
+                        int num = dataBean.getNum() + 1;
                         dataBean.setNum(num);
                         materialListAdapter.setData(position,dataBean);
                         break;
@@ -375,7 +375,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         switch (view.getId()) {
             case R.id.reduce:
                 try {
-                    float shopNumData = Float.parseFloat(shopNum.getText().toString());
+                    int shopNumData = Integer.parseInt(shopNum.getText().toString());
                     if (shopNumData==0){
                         return;
                     }else {
@@ -387,7 +387,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 break;
             case R.id.shop_add:
                 try {
-                    float shopNumData = Float.parseFloat(shopNum.getText().toString());
+                    int shopNumData = Integer.parseInt(shopNum.getText().toString());
                     shopNum.setText(String.valueOf(shopNumData+1));
                 }catch (Exception e){
                     e.printStackTrace();
@@ -729,8 +729,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 dataBean.setAddress(dataBean1.getAddress());
                 dataBean.setAddressName(dataBean1.getAddressName());
                 dataBean.setId(dataBean1.getId());
-                dataBean.setLatitude(dataBean1.getLatitude());
-                dataBean.setLongitude(dataBean1.getLongitude());
+                dataBean.setLatitude(dataBean1.getLatitude()+"");
+                dataBean.setLongitude(dataBean1.getLongitude()+"");
             }
         }
     }
@@ -785,7 +785,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 for (MaterialModel.DataBean dataBean : materials){
                     materialNum +=dataBean.getNum();
                 }
-                shopNum+=Float.parseFloat(goodsListBean.getNum());
+                shopNum+=Integer.parseInt(goodsListBean.getNum());
             }
             if (shopNum<materialNum){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
@@ -799,13 +799,19 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                                     List<AddOrderModel.GoodsListBean>tempData = new ArrayList<>();
 
                                     for (int i = 0;i<data.size();i++){
-                                        float goodsNum =  Float.parseFloat(data.get(i).getNum());
+                                        int goodsNum =  Integer.parseInt(data.get(i).getNum());
                                         AddOrderModel.GoodsListBean goodsListBean = data.get(i);
                                         List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
-                                        MaterialModel.DataBean dataBean = materials.get(0);
+                                        List<MaterialModel.DataBean> tempMaterials = new ArrayList<>();
+                                        for (MaterialModel.DataBean dataBean : materials){
+                                            dataBean.setNum(0);
+                                            tempMaterials.add(dataBean);
+                                        }
+
+                                        MaterialModel.DataBean dataBean = tempMaterials.get(0);
                                         dataBean.setNum(goodsNum);
-                                        materials.set(0,dataBean);
-                                        goodsListBean.setMaterials(materials);
+                                        tempMaterials.set(0,dataBean);
+                                        goodsListBean.setMaterials(tempMaterials);
                                         tempData.add(goodsListBean);
                                     }
                                     addOrderAdapter.setList(tempData);
@@ -838,7 +844,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 for (MaterialModel.DataBean dataBean : materials){
                     materialNum +=dataBean.getNum();
                 }
-                shopNum+=Float.parseFloat(goodsListBean.getNum());
+                shopNum+=Integer.parseInt(goodsListBean.getNum());
             }
             if (shopNum>materialNum){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";

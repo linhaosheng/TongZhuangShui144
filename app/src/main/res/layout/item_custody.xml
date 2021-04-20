@@ -8,6 +8,7 @@
     android:layout_marginRight="@dimen/dp_10"
     android:layout_marginTop="@dimen/dp_10"
     android:background="@drawable/set_bg_btn13"
+    android:id="@+id/parent_view"
     android:paddingBottom="@dimen/dp_10">
 
     <RelativeLayout

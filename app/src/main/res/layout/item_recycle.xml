@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:layout_marginTop="@dimen/dp_10"
+    android:background="@drawable/set_bg_btn13"
+    android:id="@+id/parent_view"
+    android:paddingBottom="@dimen/dp_10">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_13">
+
+        <TextView
+            android:id="@+id/shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品名称 : 23453456y"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/sho_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="商品数量 : 10"
+        android:textSize="12sp"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/dp_10"/>
+
+    <TextView
+        android:id="@+id/storehouse_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="仓库"
+        android:layout_marginTop="@dimen/dp_10"
+        android:visibility="visible"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/stock_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="主体"
+        android:layout_marginTop="@dimen/dp_10"
+        android:visibility="visible"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/minTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="最小时间"
+        android:layout_marginTop="@dimen/dp_10"
+        android:visibility="visible"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/maxTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:text="最大时间"
+        android:layout_marginTop="@dimen/dp_10"
+        android:visibility="visible"
+        android:textSize="12sp"/>
+
+</LinearLayout>

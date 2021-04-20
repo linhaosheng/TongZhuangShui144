@@ -24,12 +24,14 @@ public class SaleSearchActivityPresenter {
      * 客户搜索
      * @param search
      */
-    public void search(String search,String type){
+    public void search(String search,String type,int page){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("search",search);
+        params.put("limit","10");
+        params.put("page",page+"");
 
-        if ("add_with_drawal".equals(type)){
+        if ("add_with_drawal".equals(type) || "historical_deposit".equals(type)){
             params.put("type","0");
         }
 
@@ -41,8 +43,12 @@ public class SaleSearchActivityPresenter {
 
             @Override
             public void success(String result) {
-                SaleDataModel saleDataModel = Utils.gsonInstane().fromJson(result, SaleDataModel.class);
-                iLoadDataView.successLoad(saleDataModel.getData());
+                try {
+                    SaleDataModel saleDataModel = Utils.gsonInstane().fromJson(result, SaleDataModel.class);
+                    iLoadDataView.successLoad(saleDataModel.getData());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override

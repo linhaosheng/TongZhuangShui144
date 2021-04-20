@@ -6,11 +6,44 @@
 
     <include layout="@layout/header" />
 
+    <RelativeLayout
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/head_view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@+id/back"
+            android:background="@drawable/set_bg_btn11">
+
+            <EditText
+                android:id="@+id/search_edit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:background="@null"
+                android:drawableLeft="@mipmap/search"
+                android:drawablePadding="@dimen/dp_10"
+                android:hint="请输入押金编号"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:layout_below="@+id/head_view"
+        android:layout_below="@+id/search_view"
+        android:layout_marginTop="@dimen/dp_10"
         >
 
         <RelativeLayout
@@ -24,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginRight="12dp">
+                android:layout_marginRight="12dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/name"
@@ -71,6 +105,10 @@
 
             </RelativeLayout>
 
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle_data"
                 android:layout_width="match_parent"
@@ -79,6 +117,7 @@
                 android:layout_below="@+id/client_info"
                 android:layout_marginBottom="@dimen/dp_80"
                 />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <include layout="@layout/item_empty"/>
 
@@ -97,6 +136,7 @@
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:layout_marginBottom="@dimen/dp_20"/>
 
 </RelativeLayout>

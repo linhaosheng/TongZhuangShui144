@@ -369,11 +369,8 @@ public class AddClientActivity extends BaseActivity implements ILoadDataView<Str
                 }
                 addClientModel.setAddressList(listBeans);
 
-                String s = Utils.gsonInstane().toJson(addClientModel);
-                Log.i("TAG==","address==="+s);
-                if (true){
-                    return;
-                }
+                //String s = Utils.gsonInstane().toJson(addClientModel);
+                //Log.i("TAG==","address==="+s);
                 addClientActivityPresenter.addKh(addClientModel);
 
                 break;

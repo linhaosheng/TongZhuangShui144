@@ -14,13 +14,15 @@ import pro.haichuang.tzs144.model.CustodyModel;
 public class CustodySituationAdapter extends BaseQuickAdapter<CustodyModel.DataBean.DataListBean, BaseViewHolder> {
 
 
-    public CustodySituationAdapter() {
+    private int type;
+
+    public CustodySituationAdapter(int type) {
         super(R.layout.item_custody);
+        this.type = type;
     }
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, CustodyModel.DataBean.DataListBean dataBean) {
-
 
         if (dataBean.getNum()==null){
             baseViewHolder.getView(R.id.sho_num).setVisibility(View.GONE);
@@ -42,5 +44,14 @@ public class CustodySituationAdapter extends BaseQuickAdapter<CustodyModel.DataB
                 .setText(R.id.sho_num,sho_num)
                 .setText(R.id.shop_amount,shop_amount);
 
+        baseViewHolder.getView(R.id.parent_view).setVisibility(View.VISIBLE);
+
+//        if (type==0 && "退押".equals(dataBean.getType())){
+//           baseViewHolder.getView(R.id.parent_view).setVisibility(View.GONE);
+//        }
+//
+//        if (type==1 && "开押".equals(dataBean.getType())){
+//            baseViewHolder.getView(R.id.parent_view).setVisibility(View.GONE);
+//        }
     }
 }

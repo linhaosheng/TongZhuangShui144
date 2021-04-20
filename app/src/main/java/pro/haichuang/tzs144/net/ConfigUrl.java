@@ -14,7 +14,7 @@ public class ConfigUrl {
      * base url
      */
     @DefaultDomain
-    public static final String BASE_URL = "http://114.215.137.110:9090";  // https://api.ssssedc.com/    http://114.215.137.110:9090
+    public static final String BASE_URL ="https://api-tzs144.haichuang.pro";//http://124.70.96.225:9090";//"http://114.215.137.110:9090" https://api.ssssedc.com; https://api-tzs144.haichuang.pro  
 
     /**
      * 登录
@@ -47,6 +47,11 @@ public class ConfigUrl {
      * [实时库存]获取商品品类
      */
     public static final String FIND_GOODS_CATEGORY = "/api/app/kc/findGoodsCategory";
+
+    /**
+     * 商品列表-数据列表
+     */
+    public static final String FIND_GOODS_LIST = "/api/pc/jc/goods/findGoodsList";
 
     /**
      * [实时库存]查询商品列表
@@ -347,31 +352,35 @@ public class ConfigUrl {
     /**
      * 库存主体 - 结账汇总 - 合计
      */
-    public static final String FIND_SUMMARY_HJ = "/api/app/summary/findSummaryHj";
+    public static final String FIND_SUMMARY_HJ = "/api/pc/xs/summary/findSummaryHj";
 
     /**
      * 库存主体 - 结账汇总 - 收入情况
      */
-    public static final String FIND_SUMMARY_SR = "/api/app/summary/findSummarySr";
+    public static final String FIND_SUMMARY_SR = "/api/pc/xs/summary/findSummarySr";
 
+    public static final String  FIND_SUMMARY_FSSTHSLB = "/api/pc/xs/summary/findSummaryFSSThsLb";
 
     /**
      * 库存主体 - 结账汇总 - 开退押情况
      */
-    public static final String FIND_SUMMARY_KY = "/api/app/summary/findSummaryKy";
+    public static final String FIND_SUMMARY_KY = "/api/pc/xs/summary/findSummaryKy";
 
 
     /**
      * 库存主体 - 结账汇总 - 销售情况 - 商品列表
      */
-    public static final String FIND_SUMMARY_SALE_QS = "/api/app/summary/findSummarySaleQs";
-
+    public static final String FIND_SUMMARY_SALE_QS = "/api/pc/xs/summary/findSummarySaleQs";
 
 
     /**
      * 库存主体 - 结账汇总 - 销售情况 - 材料列表
      */
-    public static final String FIND_SUMMARY_SALE_HT = "/api/app/summary/findSummarySaleHt";
+    public static final String FIND_SUMMARY_SALE_HT = "/api/pc/xs/summary/findSummarySaleHt";
 
+    /**
+     * [新增]拆包
+     */
+    public static final String UNPACK = "/api/app/unpackLog/unpack";
 
 }

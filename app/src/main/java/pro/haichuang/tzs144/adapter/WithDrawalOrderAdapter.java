@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.WithDrawalOrderModel;
 
-public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderModel.DataBean, BaseViewHolder> {
+public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
 
     private Context context;
@@ -51,7 +52,7 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
         TextView voilTxt = baseViewHolder.getView(R.id.voil_txt);
 
         if (dataBean.getStatus()==0){
-            voilTxt.setVisibility(View.GONE);
+            voilTxt.setVisibility(View.VISIBLE);
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.no_back));
         }else {
             voilTxt.setVisibility(View.VISIBLE);
@@ -60,7 +61,7 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
 
         TextView stateTxt = baseViewHolder.getView(R.id.state);
         String state;
-        if (dataBean.isIsAdd()){
+        if (dataBean.isAdd()){
             state = "新增";
             stateTxt.setTextColor(Color.parseColor("#FFFFFF"));
             stateTxt.setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn53));

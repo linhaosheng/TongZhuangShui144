@@ -17,6 +17,7 @@ public class SaleAdapter extends BaseQuickAdapter<SaleModel.DataBean.DataListBea
 
     public SaleAdapter(int type) {
         super(R.layout.item_sale);
+        this.type = type;
     }
 
     @Override
@@ -39,6 +40,12 @@ public class SaleAdapter extends BaseQuickAdapter<SaleModel.DataBean.DataListBea
             }else {
                 baseViewHolder.getView(R.id.recycle_num).setVisibility(View.VISIBLE);
             }
+
+            if (dataBean.getSaleNum()==null && dataBean.getQsNum()==null){
+                baseViewHolder.getView(R.id.shop_name).setVisibility(View.GONE);
+            }else {
+                baseViewHolder.getView(R.id.shop_name).setVisibility(View.VISIBLE);
+            }
         }else if (type==1){
             shop_name = "回收材料 : "+dataBean.getGoods_name();
             return_num = "还桶数量 : "+dataBean.getHtNum()+"桶";
@@ -54,7 +61,11 @@ public class SaleAdapter extends BaseQuickAdapter<SaleModel.DataBean.DataListBea
             }else {
                 baseViewHolder.getView(R.id.recycle_num).setVisibility(View.VISIBLE);
             }
-
+            if (dataBean.getHtNum()==null && dataBean.getHsNum()==null){
+                baseViewHolder.getView(R.id.shop_name).setVisibility(View.GONE);
+            }else {
+                baseViewHolder.getView(R.id.shop_name).setVisibility(View.VISIBLE);
+            }
         }
 
         baseViewHolder.setText(R.id.shop_name,shop_name)

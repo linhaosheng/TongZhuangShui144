@@ -30,6 +30,10 @@ public class MaterialListAdapter extends BaseQuickAdapter<MaterialModel.DataBean
 
         EditText shop_num_edit = baseViewHolder.getView(R.id.shop_num_tong);
 
+        if (shop_num_edit.getText()!=null && shop_num_edit.getText().length()>0){
+            shop_num_edit.setSelection(shop_num_edit.getText().toString().length());
+        }
+
         shop_num_edit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

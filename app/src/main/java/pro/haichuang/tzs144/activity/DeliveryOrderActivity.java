@@ -590,10 +590,17 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
 
                                ShopDeleveModel.GoodsListBean goodsListBean = goodsListBeanList.get(i);
                                List<ShopDeleveModel.GoodsListBean.MaterialsBean> materials = goodsListBean.getMaterials();
-                               ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = materials.get(0);
+                               List<ShopDeleveModel.GoodsListBean.MaterialsBean> tempMaterials = new ArrayList<>();
+
+                               for (ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean  : materials){
+                                   materialsBean.setNum("0");
+                                   tempMaterials.add(materialsBean);
+                               }
+
+                               ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = tempMaterials.get(0);
                                materialsBean.setNum(goodsNum+"");
-                               materials.set(0,materialsBean);
-                               goodsListBean.setMaterials(materials);
+                               tempMaterials.set(0,materialsBean);
+                               goodsListBean.setMaterials(tempMaterials);
                                tempList.add(goodsListBean);
                            }
                             orderDetailPresenter.deliveryOrder(id,totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),tempList);

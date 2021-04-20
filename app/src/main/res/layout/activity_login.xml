@@ -107,7 +107,6 @@
                 android:layout_marginRight="@dimen/dp_20"/>
         </RelativeLayout>
 
-
         <LinearLayout
             android:id="@+id/remm"
             android:layout_width="wrap_content"
@@ -132,8 +131,6 @@
 
     </LinearLayout>
 
-
-
     <Button
         android:id="@+id/login_btn"
         android:layout_width="match_parent"
@@ -146,4 +143,11 @@
         android:textColor="@color/white"
         android:layout_marginRight="@dimen/dp_48"/>
 
+    <Button
+        android:id="@+id/test_push"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        android:text="测试推送"/>
 </LinearLayout>
