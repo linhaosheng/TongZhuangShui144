@@ -114,7 +114,7 @@ public class SelectShopDialog extends DialogFragment {
         shopDialogAdapter = new ShopDialogAdapter(context);
         recycleData.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
         recycleData.setAdapter(shopDialogAdapter);
-        findGoodsList(defaultCategory);
+        findGoodsList(Config.CURRENT_MAIN_ID,defaultCategory);
 
         shopDialogAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -154,9 +154,9 @@ public class SelectShopDialog extends DialogFragment {
             public void afterTextChanged(Editable s) {
              if (searchEdit.getText()!=null){
                  if ("".equals(searchEdit.getText().toString().trim())){
-                     findGoodsList(defaultCategory);
+                     findGoodsList(Config.CURRENT_MAIN_ID,defaultCategory);
                  }else {
-                     findGoodsList(searchEdit.getText().toString());
+                     findGoodsList(Config.CURRENT_MAIN_ID,searchEdit.getText().toString());
                  }
              }
             }
@@ -201,9 +201,10 @@ public class SelectShopDialog extends DialogFragment {
     /**
      * [实时库存]获取商品品类
      */
-    public void findGoodsList(String categoryNames){
+    public void findGoodsList(String mainId,String categoryNames){
 
         Map<String,Object>params = new ArrayMap<>();
+        params.put("mainId",mainId);
         params.put("isGoods","1");
         params.put("page","0");
         params.put("limit","10");

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.huawei.agconnect'
 
 def keystorePropertiesFile = rootProject.file("tongzhuangshui144.keystore");
 
@@ -50,11 +51,11 @@ android {
                 JPUSH_CHANNEL: "default_developer",
                 MEIZU_APPKEY:"MZ-魅族的APPKEY",
                 MEIZU_APPID:"MZ-魅族的APPID",
-                XIAOMI_APPID:"MI-小米的APPID",
-                XIAOMI_APPKEY:"MI-小米的APPKEY",
-                OPPO_APPKEY:"OP-oppo的APPKEY",
-                OPPO_APPID:"OP-oppo的APPID",
-                OPPO_APPSECRET:"OP-oppo的APPSECRET",
+                XIAOMI_APPID:"MI-2882303761519881448",
+                XIAOMI_APPKEY:"MI-5331988133448",
+                OPPO_APPKEY:"OP-9c8ad97af8144dc889eea19e9c1d12ca",
+                OPPO_APPID:"OP-30518755",
+                OPPO_APPSECRET:"OP-b40a32e304f7469aa3f716beb0ad5d62",
                 VIVO_APPKEY:"vivo的APPKEY",
                 VIVO_APPID:"vivo的APPID"
         ]
@@ -148,5 +149,9 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.2.0'
 
     implementation 'com.tencent.bugly:crashreport:latest.release'
+
+    implementation 'com.huawei.agconnect:agconnect-core:1.3.1.300'
+    implementation 'com.huawei.hms:push:5.0.2.300'
+
 
 }
