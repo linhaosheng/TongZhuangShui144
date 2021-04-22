@@ -313,20 +313,24 @@ public class AddressSearchActivity extends BaseActivity {
 
                 Log.i("TAG===","latitude=="+latitude+"=====longitude"+longitude);
 
-                LatLngBounds latLngBounds = new LatLngBounds.Builder()
-                        .include(new LatLng(latitude,longitude))
-                        .include(new LatLng((latitude+0.01),(longitude+0.01))).build();
-                PoiBoundSearchOption boundSearchOption = new PoiBoundSearchOption();
-                boundSearchOption.bound(latLngBounds);
-                boundSearchOption.keyword(addressListBean.getAddressName());
-
-
+//                LatLngBounds latLngBounds = new LatLngBounds.Builder()
+//                        .include(new LatLng(latitude,longitude))
+//                        .include(new LatLng((latitude+0.01),(longitude+0.01))).build();
+//                PoiBoundSearchOption boundSearchOption = new PoiBoundSearchOption();
+//                boundSearchOption.bound(latLngBounds);
+//                boundSearchOption.keyword(addressListBean.getAddressName());
+                
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        poiSearch.searchInBound(boundSearchOption);
+                        poiSearch.searchNearby(new PoiNearbySearchOption()
+                                //搜索结果排序规则，PoiSortType.comprehensive->距离排序
+                                .radius(100000)//检索半径范围，单位：米
+                                .keyword("小区&商铺&办公楼&广场")
+                                .pageCapacity(30)
+                                .location(new LatLng(latitude,longitude)));
                     }
-                },2000);
+                },1000);
 
 
             }catch (Exception e){
