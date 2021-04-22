@@ -30,6 +30,12 @@
     <uses-permission
         android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
 
+    <permission
+        android:name="${applicationId}.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"></permission>
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+
+
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -42,6 +48,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
 
     <!--xiaomi_permission_start-->
     <permission
@@ -109,7 +116,8 @@
             android:required="false" />
 
 
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name=".activity.LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -178,6 +186,11 @@
             </intent-filter>
         </service>
 
+
+        <service
+            android:name="com.meizu.cloud.pushsdk.NotificationService"
+            android:exported="true" />
+
         <!-- For test only 测试高级功能 -->
 
         <!-- For test only 测试状态通知栏，需要打开的Activity -->
@@ -203,7 +216,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="com.example.jpushdemo.OpenClickActivity" />
+                <action android:name="pro.haichuang.tzs144.activity.LoginActivity" />
             </intent-filter>
         </activity>
         <!-- since 3.3.0 Required SDK 核心功能-->
@@ -402,6 +415,11 @@
         <meta-data
             android:name="XIAOMI_APPID"
             android:value="${XIAOMI_APPID}" />
+
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="104227807" />
+
         <!--xiaomi_config_end-->
 
         <!--huawei_config_start-->

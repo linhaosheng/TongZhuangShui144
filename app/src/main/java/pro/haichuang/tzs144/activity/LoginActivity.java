@@ -33,14 +33,21 @@ import com.kongzue.dialog.v3.WaitDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import cn.jpush.android.api.JPluginPlatformInterface;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -93,6 +100,21 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private MyLocationListener myListener = new MyLocationListener();
     private boolean showDialog = true;
 
+
+
+    /**消息Id**/
+    private static final String KEY_MSGID = "msg_id";
+    /**该通知的下发通道**/
+    private static final String KEY_WHICH_PUSH_SDK = "rom_type";
+    /**通知标题**/
+    private static final String KEY_TITLE = "n_title";
+    /**通知内容**/
+    private static final String KEY_CONTENT = "n_content";
+    /**通知附加字段**/
+    private static final String KEY_EXTRAS = "n_extras";
+
+    private JPluginPlatformInterface jPluginPlatformInterface;
+
     @Override
     protected int setLayoutResourceID() {
         return R.layout.activity_login;
@@ -100,6 +122,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
 
     private void initView(){
+
         mLocationClient = new LocationClient(getApplicationContext());
         //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);
@@ -168,11 +191,94 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         if (!Utils.isNotificationEnabled(this)){
             Utils.goToNotificationSetting(this);
         }
+        handlerPushClick();
     }
 
+    /**
+     * 处理极光推送
+     */
+    private void handlerPushClick(){
+        String data = null;
+        //获取华为平台附带的jpush信息
+        if (getIntent().getData() != null) {
+            data = getIntent().getData().toString();
+        }
+
+        //获取fcm、oppo、vivo、华硕、小米平台附带的jpush信息
+        if (TextUtils.isEmpty(data) && getIntent().getExtras() != null) {
+            data = getIntent().getExtras().getString("JMessageExtra");
+        }
+
+        Log.w(TAG, "msg content is " + String.valueOf(data));
+        if (TextUtils.isEmpty(data)) return;
+
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            String msgId = jsonObject.optString(KEY_MSGID);
+            byte whichPushSDK = (byte) jsonObject.optInt(KEY_WHICH_PUSH_SDK);
+            String title = jsonObject.optString(KEY_TITLE);
+            String content = jsonObject.optString(KEY_CONTENT);
+            String extras = jsonObject.optString(KEY_EXTRAS);
+            StringBuilder sb = new StringBuilder();
+            sb.append("msgId:");
+            sb.append(String.valueOf(msgId));
+            sb.append("\n");
+            sb.append("title:");
+            sb.append(String.valueOf(title));
+            sb.append("\n");
+            sb.append("content:");
+            sb.append(String.valueOf(content));
+            sb.append("\n");
+            sb.append("extras:");
+            sb.append(String.valueOf(extras));
+            sb.append("\n");
+            sb.append("platform:");
+            sb.append(getPushSDKName(whichPushSDK));
+
+            //上报点击事件
+            JPushInterface.reportNotificationOpened(this, msgId, whichPushSDK, data);
+        } catch (JSONException e) {
+            Log.w(TAG, "parse notification error");
+        }
+
+    }
+
+    private String getPushSDKName(byte whichPushSDK) {
+        String name;
+        switch (whichPushSDK) {
+            case 0:
+                name = "jpush";
+                break;
+            case 1:
+                name = "xiaomi";
+                break;
+            case 2:
+                name = "huawei";
+                break;
+            case 3:
+                name = "meizu";
+                break;
+            case 4:
+                name = "oppo";
+                break;
+            case 5:
+                name = "vivo";
+                break;
+            case 6:
+                name = "asus";
+                break;
+            case 8:
+                name = "fcm";
+                break;
+            default:
+                name = "jpush";
+        }
+        return name;
+    }
 
     @Override
     protected void setUpView() {
+        jPluginPlatformInterface = new JPluginPlatformInterface(this);
         LoginActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
     }
 
@@ -333,6 +439,21 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     public void successLoad(String data) {
+
+        /**
+         * 极光推送，添加tag
+         */
+        Set<String> tags = new HashSet<>();
+        tags.add(Config.CURRENT_MAIN_ID);
+
+        JPushInterface.setTags(this, tags, new TagAliasCallback() {
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+                Log.i(TAG,"i===="+i);
+            }
+        });
+
+
         Config.IS_LOGIN = true;
         WaitDialog.dismiss();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -380,6 +501,14 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         if (!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
         }
+        if (jPluginPlatformInterface!=null){
+            jPluginPlatformInterface.onStart(this);
+        }
+    }
+
+    protected void onStop() {
+        super.onStop();
+        jPluginPlatformInterface.onStop(this);
     }
 
 

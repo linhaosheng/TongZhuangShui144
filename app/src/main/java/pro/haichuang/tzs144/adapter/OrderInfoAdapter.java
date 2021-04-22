@@ -86,13 +86,7 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
         String name_info = dataBean.getCustoemrName() + "  "+ dataBean.getCustomerPhone();
         String distance = "";
 
-        if (type==4){
-           if (dataBean.getMaterNum()==null){
-               distance = "回收0个";
-           }else {
-               distance = "回收"+dataBean.getMaterNum()+"个";
-           }
-        }else {
+
             try {
                 float distanceData = Float.parseFloat(dataBean.getDistance());
                 if (distanceData>1000){
@@ -103,7 +97,13 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             }catch (Exception e){
                 e.printStackTrace();
             }
+
+        if (dataBean.getMaterNum()==null){
+            distance = "回收0个";
+        }else {
+            distance = "回收"+dataBean.getMaterNum()+"个";
         }
+
         String order_detail_info = "共"+dataBean.getGoodsTypeNum()+"种商品，合计"+dataBean.getGoodsNum()+"件 ｜ "+ dataBean.getGoodsTopInfo()+ " ↓";
 
         String customerType= "";

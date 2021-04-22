@@ -55,3 +55,16 @@
 -dontwarn com.google.**
 -keep class com.google.gson.** {*;}
 -keep class com.google.protobuf.** {*;}
+
+ -keepattributes *Annotation*
+ -keepattributes Exceptions
+ -keepattributes InnerClasses
+ -keepattributes Signature
+ -keepattributes SourceFile,LineNumberTable
+-keep class com.hianalytics.android.**{*;}
+-keep class com.huawei.updatesdk.**{*;}
+ -keep class com.huawei.hms.**{*;}
+
+ -dontwarn com.meizu.cloud.**
+ -keep class com.meizu.cloud.** { *; }
+

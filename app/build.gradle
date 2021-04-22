@@ -49,8 +49,8 @@ android {
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "378bffc8ade4d76190f782af",//值来自开发者平台取得的AppKey
                 JPUSH_CHANNEL: "default_developer",
-                MEIZU_APPKEY:"MZ-魅族的APPKEY",
-                MEIZU_APPID:"MZ-魅族的APPID",
+                MEIZU_APPKEY:"MZ-adc8fb7683f941ef955fa101e3b896fe",
+                MEIZU_APPID:"MZ-140771",
                 XIAOMI_APPID:"MI-2882303761519881448",
                 XIAOMI_APPKEY:"MI-5331988133448",
                 OPPO_APPKEY:"OP-9c8ad97af8144dc889eea19e9c1d12ca",

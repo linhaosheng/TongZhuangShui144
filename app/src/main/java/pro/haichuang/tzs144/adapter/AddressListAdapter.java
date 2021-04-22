@@ -79,6 +79,7 @@ public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataB
                 }else {
                     String addressJson = Utils.gsonInstane().toJson(data);
                     intent.putExtra("addressJson",addressJson);
+                    context.startActivityForResult(intent, position);
                 }
             }
         });
