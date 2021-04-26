@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -25,6 +26,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.hjq.toast.ToastUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -105,11 +107,15 @@ public class Utils {
      */
     public static void showCenterTomast(String message) {
 
-        Toast toast = Toast.makeText(MyApplication.getApplication(),
-                message, Toast.LENGTH_LONG);
-        LinearLayout linearLayout = (LinearLayout) toast.getView();
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+//        Toast toast = Toast.makeText(MyApplication.getApplication(),
+//                message, Toast.LENGTH_LONG);
+//        LinearLayout linearLayout = (LinearLayout) toast.getView();
+//        toast.setGravity(Gravity.CENTER, 0, 0);
+//        toast.show();
+
+        // 传入 Activity 对象表示设置成局部的，不需要有悬浮窗权限
+// 传入 Application 对象表示设置成全局的，但需要有悬浮窗权限
+        ToastUtils.show(message);
     }
 
     public static void showCenterTomast(int message) {
@@ -129,7 +135,7 @@ public class Utils {
     }
 
     public static void showRectangleImage(ImageView imageView,String url){
-        Glide.with(MyApplication.getApplication()).load(url).apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).error(R.mipmap.avator).into(imageView);//四周都是圆角的圆角矩形图片
+        Glide.with(MyApplication.getApplication()).load(url).apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).error(R.mipmap.bottled_water).into(imageView);//四周都是圆角的圆角矩形图片
     }
 
     public static void showTvImage(ImageView imageView,String url){

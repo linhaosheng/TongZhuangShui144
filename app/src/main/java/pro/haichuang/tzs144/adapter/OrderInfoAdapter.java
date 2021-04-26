@@ -19,6 +19,7 @@ import java.util.List;
 import pro.bilibili.boxing.model.entity.BaseMedia;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.OrderInfoModel;
+import pro.haichuang.tzs144.util.Utils;
 
 public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
@@ -104,7 +105,14 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             distance = "回收"+dataBean.getMaterNum()+"个";
         }
 
-        String order_detail_info = "共"+dataBean.getGoodsTypeNum()+"种商品，合计"+dataBean.getGoodsNum()+"件 ｜ "+ dataBean.getGoodsTopInfo()+ " ↓";
+        String order_detail_info = "";
+        if (dataBean.getGoodsTopInfo()==null){
+            order_detail_info = "共"+dataBean.getGoodsTypeNum()+"种商品，合计"+dataBean.getGoodsNum()+"件";
+
+        }else {
+            order_detail_info = "共"+dataBean.getGoodsTypeNum()+"种商品，合计"+dataBean.getGoodsNum()+"件 ｜ "+ dataBean.getGoodsTopInfo()+ " ↓";
+
+        }
 
         String customerType= "";
         if (dataBean.getCustomerType()==null){

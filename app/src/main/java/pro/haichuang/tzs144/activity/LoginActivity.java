@@ -52,6 +52,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
+import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.jpush.ExampleUtil;
 import pro.haichuang.tzs144.model.ExitModel;
 import pro.haichuang.tzs144.model.LoginModel;
@@ -453,9 +454,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             }
         });
 
-
         Config.IS_LOGIN = true;
         WaitDialog.dismiss();
+
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
