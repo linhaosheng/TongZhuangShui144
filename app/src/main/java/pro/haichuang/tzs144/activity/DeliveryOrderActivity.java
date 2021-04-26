@@ -201,7 +201,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = deliverOrderDetailAdapter.getData().get(position);
                 int id = view.getId();
-                float recycleNum=0;
+                int recycleNum=0;
                 switch (id){
                     case R.id.shop_add_tong:
                         List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean.getBindMaterList();
@@ -561,7 +561,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                                     for (int j= 0;j<bindMaterList.size();j++){
                                         OrderDetailModel.DataBean.BindMaterList bindMaterList1 = bindMaterList.get(j);
                                         if (j==0){
-                                            bindMaterList1.setNum(goodsNum);
+                                            bindMaterList1.setNum((int) goodsNum);
                                         }else {
                                             bindMaterList1.setNum(0);
                                         }

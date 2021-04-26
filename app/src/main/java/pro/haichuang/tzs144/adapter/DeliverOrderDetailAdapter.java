@@ -349,7 +349,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                   OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(0);
                   try {
                       float num = Float.parseFloat(shop_num_tong.getText().toString());
-                      bindMaterList2.setNum(num);
+                      bindMaterList2.setNum((int) num);
                       bindMaterList1.set(0,bindMaterList2);
                       goodsListBean.setBindMaterList(bindMaterList1);
                       DeliverOrderDetailAdapter.this.setData(position,goodsListBean);
@@ -384,7 +384,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
                     OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(1);
                     try {
-                        float num = Float.parseFloat(shop_num_tong2.getText().toString());
+                        int num = Integer.parseInt(shop_num_tong2.getText().toString());
                         bindMaterList2.setNum(num);
                         bindMaterList1.set(1,bindMaterList2);
                         goodsListBean.setBindMaterList(bindMaterList1);
@@ -420,7 +420,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
                     OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(2);
                     try {
-                        float num = Float.parseFloat(shop_num_tong3.getText().toString());
+                        int num = Integer.parseInt(shop_num_tong3.getText().toString());
                         bindMaterList2.setNum(num);
                         bindMaterList1.set(2,bindMaterList2);
                         goodsListBean.setBindMaterList(bindMaterList1);
@@ -456,7 +456,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
                     OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(3);
                     try {
-                        float num = Float.parseFloat(shop_num_tong4.getText().toString());
+                        int num = Integer.parseInt(shop_num_tong4.getText().toString());
                         bindMaterList2.setNum(num);
                         bindMaterList1.set(3,bindMaterList2);
                         goodsListBean.setBindMaterList(bindMaterList1);
@@ -492,7 +492,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                     List<OrderDetailModel.DataBean.BindMaterList> bindMaterList1 = goodsListBean.getBindMaterList();
                     OrderDetailModel.DataBean.BindMaterList bindMaterList2 = bindMaterList1.get(4);
                     try {
-                        float num = Float.parseFloat(shop_num_tong5.getText().toString());
+                        int num = Integer.parseInt(shop_num_tong5.getText().toString());
                         bindMaterList2.setNum(num);
                         bindMaterList1.set(4,bindMaterList2);
                         goodsListBean.setBindMaterList(bindMaterList1);

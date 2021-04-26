@@ -27,7 +27,7 @@
 
                 <TextView
                     android:id="@+id/name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="张三"
@@ -38,7 +38,7 @@
                     android:id="@+id/order_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_80"
+                    android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_toRightOf="@+id/name"
                     android:text="18909293021"
@@ -49,7 +49,7 @@
                     android:id="@+id/type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_toRightOf="@+id/order_num"
                     android:background="@drawable/set_bg_btn32"
@@ -66,35 +66,40 @@
                     android:layout_alignParentRight="true"
                     android:src="@mipmap/pend_order" />
 
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="@dimen/dp_100"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/name"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="麓谷大道店"
-                    android:textColor="#3F3F3F"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/address_detail"
+                <LinearLayout
+                    android:id="@+id/address_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/name"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:layout_toRightOf="@+id/address"
-                    android:text="湖南省长沙市岳麓区麓谷大道1928号"
-                    android:textColor="#3F3F3F"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="@dimen/dp_10">
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="@dimen/dp_100"
+                        android:layout_height="wrap_content"
+                        android:text="麓谷大道店"
+                        android:textColor="#3F3F3F"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/address_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_toRightOf="@+id/address"
+                        android:text="湖南省长沙市岳麓区麓谷大道1928号"
+                        android:textColor="#3F3F3F"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="@dimen/dp_100"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/address_detail"
+                    android:layout_below="@+id/address_info"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginBottom="15dp"
                     android:text="预计送达时间"
@@ -106,7 +111,7 @@
                     android:id="@+id/time_send"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/address_detail"
+                    android:layout_below="@+id/address_info"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_toRightOf="@+id/time"

@@ -294,6 +294,9 @@ public class OrderDetailModel {
             private boolean showMonth;
 
             public String getGoodsSpecsName() {
+                if (goodsSpecsName==null){
+                    return  "";
+                }
                 return goodsSpecsName;
             }
 
@@ -442,13 +445,13 @@ public class OrderDetailModel {
         public static class BindMaterList{
            public String name;
            private int id;
-           private float num;
+           private int num;
 
-            public float getNum() {
+            public int getNum() {
                 return num;
             }
 
-            public void setNum(float num) {
+            public void setNum(int num) {
                 this.num = num;
             }
 
