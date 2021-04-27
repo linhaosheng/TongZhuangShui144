@@ -223,7 +223,7 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
 
         try {
 
-            startTime = Utils.formatLastMonthTime();
+            startTime = Utils.formatSelectTime(new Date());
             endTime = Utils.formatSelectTime(new Date());
             time_rand.setRightText(startTime + "  -  " + endTime);
             inventory_subject.setRightText(subjectList.get(0).toString());

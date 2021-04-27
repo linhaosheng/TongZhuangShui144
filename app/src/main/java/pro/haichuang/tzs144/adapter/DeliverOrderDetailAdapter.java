@@ -54,10 +54,12 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
     protected void convert(@NonNull BaseViewHolder helper, OrderDetailModel.DataBean.GoodsListBean item) {
         String priceNum = "¥"+item.getGoodsPrice()+"x"+item.getGoodsNum();
         String totalPrice = "¥"+item.getGoodsPrice()*item.getGoodsNum();
+        String recycle_name = item.getGoodsName()+" "+item.getGoodsSpecsName();
 
         helper.setText(R.id.name,item.getGoodsName())
                 .setText(R.id.total_price_num,priceNum)
-                .setText(R.id.total_price,totalPrice);
+                .setText(R.id.total_price,totalPrice)
+        .setText(R.id.recycle_name,recycle_name);
 
         helper.getView(R.id.recycle).setVisibility(View.VISIBLE);
         List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = item.getBindMaterList();

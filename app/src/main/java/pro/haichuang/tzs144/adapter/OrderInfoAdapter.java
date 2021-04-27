@@ -62,6 +62,8 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             }else if (dataBean.getOrderStatus()==3){
                 //已取消
                 order_state_img.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.have_cancel));
+            }else if (dataBean.getOrderStatus()==4){
+                order_state_img.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.void_state));
             }
         }
 

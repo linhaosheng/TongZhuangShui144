@@ -295,7 +295,7 @@ public class Utils {
 
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-        c.add(Calendar.MONTH, -2);
+        c.add(Calendar.MONTH, -1);
         Date m = c.getTime();
         return formatSelectTime(m);
     }
