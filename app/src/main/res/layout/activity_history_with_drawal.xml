@@ -205,6 +205,7 @@
                         android:background="@drawable/set_bg_btn39"
                         android:text="自动计算"
                         android:textColor="#333333"
+                        android:visibility="invisible"
                         android:textSize="14sp" />
 
                 </LinearLayout>

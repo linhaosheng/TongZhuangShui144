@@ -36,6 +36,7 @@ public class CheckoutSummaryPresenter {
         params.put("endTime",endTime);
         params.put("categoryId",categoryId);
         params.put("page","0");
+        params.put("isKy","0");
         params.put("limit","100");
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_SUMMARY_HJ, params, new HttpRequestResultListener() {

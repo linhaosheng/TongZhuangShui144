@@ -527,6 +527,11 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     goodsListBeanList.add(goodsListBean1);
                 }
 
+                if (priceView.getVisibility()==View.VISIBLE){
+                    totalMerchandiseNum.setText(tatalPrice.getText().toString().replace("¥",""));
+                    amountReceivableNum.setText(needPrice.getText().toString().replace("¥",""));
+                    actualAmount.setText(actualPrice.getText().toString().replace("¥",""));
+                }
                 if (shopNum > materialNum && haveBindMaterList){
                     String content = "商品数量大于空桶数量，是否填写开押单？";
                     MessageDialog.show(this, "提示", content, "确定","取消")
