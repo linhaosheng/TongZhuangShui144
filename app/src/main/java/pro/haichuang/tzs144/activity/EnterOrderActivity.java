@@ -783,6 +783,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     public void onMessageEvent(AddOrderStatusEvent event) {
         if (event!=null){
             if (event.status==Config.LOAD_SUCCESS){
+                WaitDialog.dismiss();
                 Utils.showCenterTomast("提交成功");
                 if (!addDesposit(event.id)){
                     finish();
@@ -862,7 +863,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
                 shopNum+=Integer.parseInt(goodsListBean.getNum());
             }
-            if (shopNum>materialNum){
+            if (shopNum>materialNum && materialNum>0){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
                 String content = "商品数量大于空桶数量，是否填写开押单？";
                 MessageDialog.show(this, "提示", content, "确定","取消")
