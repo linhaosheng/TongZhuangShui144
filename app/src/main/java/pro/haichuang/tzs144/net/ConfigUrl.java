@@ -11,7 +11,7 @@ public class ConfigUrl {
     public static final int GET = 0X110;
     public static final int POST = 0X111;
 
-    public final static String DEFAULT_SERVER_URL = "https://api-tzs144.haichuang.pro";
+    public final static String DEFAULT_SERVER_URL = "http://114.215.137.110:9090";  // https://api-tzs144.haichuang.pro
 
 
     /**
