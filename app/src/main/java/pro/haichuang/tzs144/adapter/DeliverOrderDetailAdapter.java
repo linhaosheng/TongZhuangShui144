@@ -240,7 +240,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 Log.i("TAG===",text+"===position=="+position);
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
                 try {
-                    goodsListBean.setWaterNum(Float.parseFloat(text));
+                    goodsListBean.setWaterNum(Integer.parseInt(text));
                     DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
 
                 }catch (Exception e){
@@ -266,7 +266,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 int position = helper.getPosition();
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
                 try {
-                    goodsListBean.setWaterDeductNum(Float.parseFloat(text));
+                    goodsListBean.setWaterDeductNum(Integer.parseInt(text));
                     DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -290,7 +290,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 int position = helper.getPosition();
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
                 try {
-                    goodsListBean.setCouponDeductNum(Float.parseFloat(text));
+                    goodsListBean.setCouponDeductNum(Integer.parseInt(text));
                     DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -314,7 +314,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 int position = helper.getPosition();
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
                 try {
-                    goodsListBean.setMonthDeductNum(Float.parseFloat(text));
+                    goodsListBean.setMonthDeductNum(Integer.parseInt(text));
                     DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
                 }catch (Exception e){
                     e.printStackTrace();

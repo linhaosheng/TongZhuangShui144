@@ -796,14 +796,14 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     Utils.showCenterTomast("配送成功");
                     finish();
                 }else {
-                    Utils.showCenterTomast("配送失败");
+                    Utils.showCenterTomast("配送失败 : "+ event.result);
                 }
             }else if (event.type==2){
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("订单作废成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("订单作废失败");
+                    Utils.showCenterTomast("订单作废失败 : "+ event.result);
                 }
             }
         }
