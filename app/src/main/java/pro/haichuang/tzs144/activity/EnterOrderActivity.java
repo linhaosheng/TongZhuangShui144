@@ -856,14 +856,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         int materialNum = 0;
         int shopNum = 0;
         try {
+            boolean haveMaterials = false;
             for (AddOrderModel.GoodsListBean goodsListBean : addOrderAdapter.getData()){
                 List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
+                if (goodsListBean.getMaterials()!=null && goodsListBean.getMaterials().size()>0){
+                    haveMaterials = true;
+                }
                 for (MaterialModel.DataBean dataBean : materials){
                     materialNum +=dataBean.getNum();
                 }
                 shopNum+=Integer.parseInt(goodsListBean.getNum());
             }
-            if (shopNum>materialNum && materialNum>0){
+            if (shopNum>materialNum && haveMaterials){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
                 String content = "商品数量大于空桶数量，是否填写开押单？";
                 MessageDialog.show(this, "提示", content, "确定","取消")
