@@ -52,7 +52,7 @@ public class LoginPresenter {
                         SPUtils.putString(Config.VERIFICATION,loginModel.getData().getVerification());
                         iLoadDataView.successLoad(result);
                     }else {
-                        iLoadDataView.errorLoad("登录失败");
+                        iLoadDataView.errorLoad(loginModel.getMessage());
                     }
                 }else {
                     iLoadDataView.errorLoad("登录失败");
