@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -154,8 +155,11 @@ public class AddDepositDialog extends DialogFragment {
                 }
 
                 try {
-                    int startNum =  Integer.parseInt(startDepositNum.getText().toString());
-                    int endNum = Integer.parseInt(endDepositNum.getText().toString());
+                    String startNumStr = startDepositNum.getText().toString().replaceAll("[a-zA-Z]", "");
+                    String endNumStr = endDepositNum.getText().toString().replaceAll("[a-zA-Z]", "");
+
+                    int startNum =  Integer.parseInt(startNumStr);
+                    int endNum = Integer.parseInt(endNumStr);
                     String number = depositNum.getText().toString();
                     int num = endNum - startNum;
                     addDepositBook(String.valueOf(num),number,startDepositNum.getText().toString(),endDepositNum.getText().toString());

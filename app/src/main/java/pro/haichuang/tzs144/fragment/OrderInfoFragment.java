@@ -411,7 +411,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             try {
                 int currentId = Integer.parseInt(event.id);
                 if (currentId == id) {
-                    orderInfoFragmentPresenter.loadOrderByStatus(currentId, Utils.formatSelectTime(new Date()), 1);
+                    onRefresh();
+                   // orderInfoFragmentPresenter.loadOrderByStatus(currentId, Utils.formatSelectTime(new Date()), 1);
                 }
                 Log.i(TAG, "onMessageEvent==id=" + event.id + " === id===" + id);
             } catch (Exception e) {

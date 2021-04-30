@@ -42,7 +42,16 @@ public class LoginModel {
          * verification :
          */
 
+        private String authority;
         private String verification;
+
+        public String getAuthority() {
+            return authority;
+        }
+
+        public void setAuthority(String authority) {
+            this.authority = authority;
+        }
 
         public String getVerification() {
             return verification;

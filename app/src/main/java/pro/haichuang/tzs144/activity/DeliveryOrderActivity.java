@@ -201,7 +201,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 OrderDetailModel.DataBean.GoodsListBean goodsListBean = deliverOrderDetailAdapter.getData().get(position);
                 int id = view.getId();
-                float recycleNum=0;
+                int recycleNum=0;
                 switch (id){
                     case R.id.shop_add_tong:
                         List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean.getBindMaterList();
@@ -527,6 +527,11 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     goodsListBeanList.add(goodsListBean1);
                 }
 
+                if (priceView.getVisibility()==View.VISIBLE){
+                    totalMerchandiseNum.setText(tatalPrice.getText().toString().replace("¥",""));
+                    amountReceivableNum.setText(needPrice.getText().toString().replace("¥",""));
+                    actualAmount.setText(actualPrice.getText().toString().replace("¥",""));
+                }
                 if (shopNum > materialNum && haveBindMaterList){
                     String content = "商品数量大于空桶数量，是否填写开押单？";
                     MessageDialog.show(this, "提示", content, "确定","取消")
@@ -561,7 +566,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                                     for (int j= 0;j<bindMaterList.size();j++){
                                         OrderDetailModel.DataBean.BindMaterList bindMaterList1 = bindMaterList.get(j);
                                         if (j==0){
-                                            bindMaterList1.setNum(goodsNum);
+                                            bindMaterList1.setNum((int) goodsNum);
                                         }else {
                                             bindMaterList1.setNum(0);
                                         }
@@ -791,14 +796,14 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                     Utils.showCenterTomast("配送成功");
                     finish();
                 }else {
-                    Utils.showCenterTomast("配送失败");
+                    Utils.showCenterTomast("配送失败 : "+ event.result);
                 }
             }else if (event.type==2){
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("订单作废成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("订单作废失败");
+                    Utils.showCenterTomast("订单作废失败 : "+ event.result);
                 }
             }
         }

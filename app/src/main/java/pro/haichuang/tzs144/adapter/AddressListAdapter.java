@@ -74,9 +74,13 @@ public class AddressListAdapter extends BaseQuickAdapter<ClientDetailModel.DataB
             @Override
             public void click(boolean isChecked, View view) {
                 Intent intent = new Intent(context, AddressSearchActivity.class);
-                String addressJson = Utils.gsonInstane().toJson(data);
-                intent.putExtra("addressJson",addressJson);
-                context.startActivityForResult(intent, position);
+                if (data.getLatitude()==null || "".equals(data.getLatitude()) || data.getLongitude()==null || "".equals(data.getLongitude()) ){
+                    context.startActivityForResult(intent, position);
+                }else {
+                    String addressJson = Utils.gsonInstane().toJson(data);
+                    intent.putExtra("addressJson",addressJson);
+                    context.startActivityForResult(intent, position);
+                }
             }
         });
 

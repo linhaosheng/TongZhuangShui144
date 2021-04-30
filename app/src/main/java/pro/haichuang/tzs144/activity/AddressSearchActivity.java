@@ -3,6 +3,8 @@ package pro.haichuang.tzs144.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,14 +46,17 @@ import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.poi.PoiSortType;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -236,11 +241,15 @@ public class AddressSearchActivity extends BaseActivity {
         OnGetPoiSearchResultListener onListener = new OnGetPoiSearchResultListener() {
             @Override
             public void onGetPoiResult(PoiResult poiResult) {
+                WaitDialog.dismiss();
+                Log.i(TAG,"onGetPoiResult======1111");
                 baiduMap.clear();
                 if (poiResult == null || poiResult.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
+                    Log.i(TAG,"onGetPoiResult======222222");
                     addressSearchAdapter.setList(null);
                     return;
                 }
+                Log.i(TAG,"onGetPoiResult======33333"+Utils.gsonInstane().toJson(poiResult));
                 if (poiResult.error == SearchResult.ERRORNO.NO_ERROR) {
                     addressBeans.clear();
                     List<PoiInfo> allPoi = poiResult.getAllPoi();
@@ -285,38 +294,6 @@ public class AddressSearchActivity extends BaseActivity {
 
         mSuggestionSearch = SuggestionSearch.newInstance();
         //编写监听器
-        OnGetSuggestionResultListener listener = new OnGetSuggestionResultListener() {
-            @Override
-            public void onGetSuggestionResult(SuggestionResult suggestionResult) {
-                //处理sug检索结果
-                if (suggestionResult == null || suggestionResult.getAllSuggestions() == null) {
-                    Log.i("result: ", "没有找到");
-                    return;
-                } else {
-                    //获取在线建议检索结果，并显示到listview中
-                    List<SuggestionResult.SuggestionInfo> resl = suggestionResult.getAllSuggestions();
-                   // Log.i("onGetSuggestionResult", "data num===" + resl.toString());
-                   // baiduMap.clear();
-                    addressBeans.clear();
-                    for (SuggestionResult.SuggestionInfo suggestionInfo : resl) {
-                        //  Log.i("address====", suggestionInfo.key);
-                        if (suggestionInfo == null || suggestionInfo.pt == null) {
-                            continue;
-                        }
-                        AddressBean addressBean = new AddressBean();
-                        addressBean.setAddress(suggestionInfo.key);
-                        StringBuffer sb = new StringBuffer();
-                        sb.append(suggestionInfo.city).append(suggestionInfo.district);
-                        addressBean.setAddressInfo(sb.toString());
-                        addressBean.setLatitude(suggestionInfo.pt.latitude);
-                        addressBean.setLongitude(suggestionInfo.pt.longitude);
-                        addressBeans.add(addressBean);
-                    }
-                    addressSearchAdapter.setList(addressBeans);
-
-                }
-            }
-        };
         initMarkerView();
     }
 
@@ -324,6 +301,7 @@ public class AddressSearchActivity extends BaseActivity {
     private void initMarkerView() {
         MyLocationData locData = null;
 
+        WaitDialog.show(this,"加载中...");
         if (addressJson!=null && !"".equals(addressJson)){
             try {
                 double latitude = Double.parseDouble(addressListBean.getLatitude());
@@ -335,13 +313,25 @@ public class AddressSearchActivity extends BaseActivity {
 
                 Log.i("TAG===","latitude=="+latitude+"=====longitude"+longitude);
 
-                LatLngBounds latLngBounds = new LatLngBounds.Builder()
-                        .include(new LatLng(latitude,longitude))
-                        .include(new LatLng((latitude+0.01),(longitude+0.01))).build();
-                PoiBoundSearchOption boundSearchOption = new PoiBoundSearchOption();
-                boundSearchOption.bound(latLngBounds);
-                boundSearchOption.keyword(addressListBean.getAddressName());
-                poiSearch.searchInBound(boundSearchOption);
+//                LatLngBounds latLngBounds = new LatLngBounds.Builder()
+//                        .include(new LatLng(latitude,longitude))
+//                        .include(new LatLng((latitude+0.01),(longitude+0.01))).build();
+//                PoiBoundSearchOption boundSearchOption = new PoiBoundSearchOption();
+//                boundSearchOption.bound(latLngBounds);
+//                boundSearchOption.keyword(addressListBean.getAddressName());
+                
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        poiSearch.searchNearby(new PoiNearbySearchOption()
+                                //搜索结果排序规则，PoiSortType.comprehensive->距离排序
+                                .radius(100000)//检索半径范围，单位：米
+                                .keyword("小区&商铺&办公楼&广场")
+                                .pageCapacity(30)
+                                .location(new LatLng(latitude,longitude)));
+                    }
+                },1000);
+
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -351,9 +341,29 @@ public class AddressSearchActivity extends BaseActivity {
                     // 此处设置开发者获取到的方向信息，顺时针0-360
                     .latitude(Config.LATITUDE)
                     .longitude(Config.LONGITUDE).build();
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    poiSearch.searchNearby(new PoiNearbySearchOption()
+                            //搜索结果排序规则，PoiSortType.comprehensive->距离排序
+                            .radius(100000)//检索半径范围，单位：米
+                            .keyword("小区&商铺&办公楼&广场")
+                            .pageCapacity(30)
+                            .location(new LatLng(Config.LATITUDE,Config.LONGITUDE)));
+                }
+            },1000);
         }
         baiduMap.setMyLocationData(locData);
     }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+        }
+    };
 
     @OnClick({R.id.back,R.id.tips})
     public void onViewClicked(View view) {

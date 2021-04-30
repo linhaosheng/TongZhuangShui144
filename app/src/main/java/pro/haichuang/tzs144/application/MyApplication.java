@@ -6,6 +6,7 @@ import android.content.Context;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.chad.library.adapter.base.module.LoadMoreModuleConfig;
+import com.hjq.toast.ToastUtils;
 import com.kongzue.dialog.util.DialogSettings;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -42,6 +43,7 @@ public class MyApplication extends Application {
         // 初始化SDK
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+        ToastUtils.init(this);
 
     }
     public static Context getInstance() {

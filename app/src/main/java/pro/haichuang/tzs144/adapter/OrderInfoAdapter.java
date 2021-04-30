@@ -19,6 +19,7 @@ import java.util.List;
 import pro.bilibili.boxing.model.entity.BaseMedia;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.model.OrderInfoModel;
+import pro.haichuang.tzs144.util.Utils;
 
 public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
@@ -50,6 +51,7 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             baseViewHolder.setText(R.id.take_orders, "知道了");
             order_state_img.setVisibility(View.GONE);
         }else if (type==4){
+
             take_orders_view.setVisibility(View.GONE);
             baseViewHolder.setText(R.id.take_orders, "知道了");
             order_state_img.setVisibility(View.VISIBLE);
@@ -60,6 +62,8 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
             }else if (dataBean.getOrderStatus()==3){
                 //已取消
                 order_state_img.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.have_cancel));
+            }else if (dataBean.getOrderStatus()==4){
+                order_state_img.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.void_state));
             }
         }
 
@@ -84,17 +88,33 @@ public class OrderInfoAdapter extends BaseQuickAdapter<OrderInfoModel.DataBean, 
         String time_send = " "+dataBean.getTimeRange() +" 送达";
         String name_info = dataBean.getCustoemrName() + "  "+ dataBean.getCustomerPhone();
         String distance = "";
-        try {
-            float distanceData = Float.parseFloat(dataBean.getDistance());
-            if (distanceData>1000){
-                distance =  "距离"+distanceData/1000+"km";
-            }else {
-                distance =  "距离"+distanceData+"m";
+
+
+            try {
+                float distanceData = Float.parseFloat(dataBean.getDistance());
+                if (distanceData>1000){
+                    distance =  "距离"+distanceData/1000+"km";
+                }else {
+                    distance =  "距离"+distanceData+"m";
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
+
+        if (dataBean.getMaterNum()==null){
+            distance = "回收0个";
+        }else {
+            distance = "回收"+dataBean.getMaterNum()+"个";
         }
-        String order_detail_info = "共"+dataBean.getGoodsTypeNum()+"种商品，合计"+dataBean.getGoodsNum()+"件 ｜ "+ dataBean.getGoodsTopInfo()+ " ↓";
+
+        String order_detail_info = "";
+        if (dataBean.getGoodsTopInfo()==null){
+            order_detail_info = "共"+dataBean.getGoodsTypeNum()+"种商品，合计"+dataBean.getGoodsNum()+"件";
+
+        }else {
+            order_detail_info = "共"+dataBean.getGoodsTypeNum()+"种商品，合计"+dataBean.getGoodsNum()+"件 ｜ "+ dataBean.getGoodsTopInfo()+ " ↓";
+
+        }
 
         String customerType= "";
         if (dataBean.getCustomerType()==null){

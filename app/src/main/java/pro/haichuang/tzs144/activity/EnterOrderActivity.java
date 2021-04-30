@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -185,7 +186,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private UploadOrderModel uploadOrderModel;
     private String rewardUrl = "";
     private String monthUrl = "";
-    private List<AddOrderModel.GoodsListBean> goodsListBeans;
     private int shopId;
     private int waterId = -1;
     private ShopModel.DataBean mDataBea;
@@ -197,6 +197,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private float actual_amount;
     private int orderType;
     private AddOrderDepositDialog addOrderDepositDialog;
+
+    private boolean saveAdd = true;
 
     @Override
     protected int setLayoutResourceID() {
@@ -234,15 +236,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 switch (view.getId()){
                     case R.id.delete:
-                        goodsListBeans.remove(position);
-                        addOrderAdapter.setList(goodsListBeans);
+                        List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
+                        data.remove(position);
+                        addOrderAdapter.setList(data);
                         caculateShopMount();
-                        if (goodsListBeans.size()==0){
+                        if (data.size()==0){
                             shop_amount_view.setVisibility(View.GONE);
                         }
                         break;
                     case R.id.edit:
-                        AddOrderModel.GoodsListBean goodsListBean = goodsListBeans.get(position);
+
+                        List<AddOrderModel.GoodsListBean> data1 = addOrderAdapter.getData();
+                        AddOrderModel.GoodsListBean goodsListBean = data1.get(position);
 
                         if (goodsListBean.getDeductWater()!=null){
                             Log.i("TAG====","getDeductMonth======");
@@ -285,8 +290,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
 
                         shopId = Integer.parseInt(goodsListBean.getGoodsId());
 
-                        goodsListBeans.remove(position);
-                        addOrderAdapter.setList(goodsListBeans);
+                        data1.remove(position);
+                        addOrderAdapter.setList(data1);
                         caculateShopMount();
                         break;
                     case R.id.reward_img:
@@ -403,7 +408,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectPicture(REQUEST_CODE_CHOOSE_PICTURE_MONTH);
                 break;
             case R.id.receive_payment:
-                if (goodsListBeans==null || goodsListBeans.size()==0){
+                if (addOrderAdapter.getData()==null || addOrderAdapter.getData().size()==0){
                     Utils.showCenterTomast("请添加商品");
                     return;
                 }
@@ -435,9 +440,14 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 startActivityForResult(intent1,1000);
                 break;
             case R.id.add_shop_btn:
+                if (!saveAdd){
+                    Utils.showCenterTomast("请先点击确认添加");
+                    return;
+                }
                 AddShopDialog addShopDialog = new AddShopDialog(this, new AddShopDialog.SelectShopListener() {
                     @Override
                     public void selectShop(ShopModel.DataBean dataBean, List<MaterialModel.DataBean>dataBeanList) {
+                        saveAdd = false;
                         shopDataBean = dataBean;
                         monthly.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
                         rewardTickets.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
@@ -501,22 +511,20 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectMonth =!selectMonth;
                 break;
             case R.id.confirm_add_shop:
-                if (goodsListBeans==null){
-                    goodsListBeans = new ArrayList<>();
-                }
+
                 if (mDataBea==null){
                  //   Utils.showCenterTomast("请选择水票类型");
                     //return;
                 }
+                saveAdd = true;
 
                 Log.i("TAG==","PRICE==="+shopPrice.getText().toString());
                 AddOrderModel.GoodsListBean goodsListBean = new AddOrderModel.GoodsListBean();
-                goodsListBean.setGoodName(shopDataBean.getName()+shopDataBean.getSpecs());
+                goodsListBean.setGoodName(shopName.getText().toString());
                 goodsListBean.setGoodsId(String.valueOf(shopId));
                 goodsListBean.setNum(shopNum.getText().toString());
                 goodsListBean.setGoodsPrice(shopPrice.getText().toString());
-                goodsListBean.setSpecs(shopDataBean.getSpecs());
-
+                goodsListBean.setSpecs(shopCapacity.getText().toString());
 
                 List<MaterialModel.DataBean>tempData = new ArrayList<>();
                 for (MaterialModel.DataBean dataBean : materialListAdapter.getData()){
@@ -560,8 +568,15 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     e.printStackTrace();
                 }
 
-                goodsListBeans.add(goodsListBean);
-                addOrderAdapter.setList(goodsListBeans);
+                String json = Utils.gsonInstane().toJson(goodsListBean);
+                Log.i(TAG,"json====="+json);
+                List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
+                if (data==null){
+                    data = new ArrayList<>();
+                }
+                data.add(0,goodsListBean);
+
+                addOrderAdapter.setList(data);
 
                 shopDetail.setVisibility(View.GONE);
                 caculateShopMount();
@@ -585,7 +600,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         int month_mount = 0;
 
         try {
-            for (AddOrderModel.GoodsListBean goodsListBean1 : goodsListBeans){
+            List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
+            for (AddOrderModel.GoodsListBean goodsListBean1 : data){
                 if (goodsListBean1.getDeductWater()==null){
                     // Utils.showCenterTomast("请选择水票");
                     // break;
@@ -650,7 +666,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         addOrderModel.setOrderType(String.valueOf(orderType));
         addOrderModel.setCustomerId(dataBean.getId()+"");
         addOrderModel.setAddressId(dataBean.getAddressId()+"");
-        addOrderModel.setGoodsList(goodsListBeans);
+        addOrderModel.setGoodsList(addOrderAdapter.getData());
 
         enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString());
     }
@@ -767,6 +783,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     public void onMessageEvent(AddOrderStatusEvent event) {
         if (event!=null){
             if (event.status==Config.LOAD_SUCCESS){
+                WaitDialog.dismiss();
                 Utils.showCenterTomast("提交成功");
                 if (!addDesposit(event.id)){
                     finish();
@@ -780,7 +797,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         int materialNum = 0;
         float shopNum = 0;
         try {
-            for (AddOrderModel.GoodsListBean goodsListBean : goodsListBeans){
+            for (AddOrderModel.GoodsListBean goodsListBean : addOrderAdapter.getData()){
                 List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
                 for (MaterialModel.DataBean dataBean : materials){
                     materialNum +=dataBean.getNum();
@@ -839,14 +856,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         int materialNum = 0;
         int shopNum = 0;
         try {
-            for (AddOrderModel.GoodsListBean goodsListBean : goodsListBeans){
+            boolean haveMaterials = false;
+            for (AddOrderModel.GoodsListBean goodsListBean : addOrderAdapter.getData()){
                 List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
+                if (goodsListBean.getMaterials()!=null && goodsListBean.getMaterials().size()>0){
+                    haveMaterials = true;
+                }
                 for (MaterialModel.DataBean dataBean : materials){
                     materialNum +=dataBean.getNum();
                 }
                 shopNum+=Integer.parseInt(goodsListBean.getNum());
             }
-            if (shopNum>materialNum){
+            if (shopNum>materialNum && haveMaterials){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
                 String content = "商品数量大于空桶数量，是否填写开押单？";
                 MessageDialog.show(this, "提示", content, "确定","取消")

@@ -33,19 +33,28 @@ import com.kongzue.dialog.v3.WaitDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import cn.jpush.android.api.JPluginPlatformInterface;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
+import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.jpush.ExampleUtil;
+import pro.haichuang.tzs144.model.ExitModel;
 import pro.haichuang.tzs144.model.LoginModel;
 import pro.haichuang.tzs144.model.MessageEvent;
 import pro.haichuang.tzs144.model.SubjectModel;
@@ -77,6 +86,8 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     ImageView checkState;
     @BindView(R.id.test_push)
     Button test_push;
+    @BindView(R.id.server_tvt)
+    TextView serverTvt;
     private LoginPresenter loginPresenter;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
@@ -90,6 +101,21 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private MyLocationListener myListener = new MyLocationListener();
     private boolean showDialog = true;
 
+
+
+    /**消息Id**/
+    private static final String KEY_MSGID = "msg_id";
+    /**该通知的下发通道**/
+    private static final String KEY_WHICH_PUSH_SDK = "rom_type";
+    /**通知标题**/
+    private static final String KEY_TITLE = "n_title";
+    /**通知内容**/
+    private static final String KEY_CONTENT = "n_content";
+    /**通知附加字段**/
+    private static final String KEY_EXTRAS = "n_extras";
+
+    private JPluginPlatformInterface jPluginPlatformInterface;
+
     @Override
     protected int setLayoutResourceID() {
         return R.layout.activity_login;
@@ -97,6 +123,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
 
     private void initView(){
+
         mLocationClient = new LocationClient(getApplicationContext());
         //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);
@@ -165,9 +192,94 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         if (!Utils.isNotificationEnabled(this)){
             Utils.goToNotificationSetting(this);
         }
+        handlerPushClick();
     }
+
+    /**
+     * 处理极光推送
+     */
+    private void handlerPushClick(){
+        String data = null;
+        //获取华为平台附带的jpush信息
+        if (getIntent().getData() != null) {
+            data = getIntent().getData().toString();
+        }
+
+        //获取fcm、oppo、vivo、华硕、小米平台附带的jpush信息
+        if (TextUtils.isEmpty(data) && getIntent().getExtras() != null) {
+            data = getIntent().getExtras().getString("JMessageExtra");
+        }
+
+        Log.w(TAG, "msg content is " + String.valueOf(data));
+        if (TextUtils.isEmpty(data)) return;
+
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            String msgId = jsonObject.optString(KEY_MSGID);
+            byte whichPushSDK = (byte) jsonObject.optInt(KEY_WHICH_PUSH_SDK);
+            String title = jsonObject.optString(KEY_TITLE);
+            String content = jsonObject.optString(KEY_CONTENT);
+            String extras = jsonObject.optString(KEY_EXTRAS);
+            StringBuilder sb = new StringBuilder();
+            sb.append("msgId:");
+            sb.append(String.valueOf(msgId));
+            sb.append("\n");
+            sb.append("title:");
+            sb.append(String.valueOf(title));
+            sb.append("\n");
+            sb.append("content:");
+            sb.append(String.valueOf(content));
+            sb.append("\n");
+            sb.append("extras:");
+            sb.append(String.valueOf(extras));
+            sb.append("\n");
+            sb.append("platform:");
+            sb.append(getPushSDKName(whichPushSDK));
+
+            //上报点击事件
+            JPushInterface.reportNotificationOpened(this, msgId, whichPushSDK, data);
+        } catch (JSONException e) {
+            Log.w(TAG, "parse notification error");
+        }
+
+    }
+
+    private String getPushSDKName(byte whichPushSDK) {
+        String name;
+        switch (whichPushSDK) {
+            case 0:
+                name = "jpush";
+                break;
+            case 1:
+                name = "xiaomi";
+                break;
+            case 2:
+                name = "huawei";
+                break;
+            case 3:
+                name = "meizu";
+                break;
+            case 4:
+                name = "oppo";
+                break;
+            case 5:
+                name = "vivo";
+                break;
+            case 6:
+                name = "asus";
+                break;
+            case 8:
+                name = "fcm";
+                break;
+            default:
+                name = "jpush";
+        }
+        return name;
+    }
+
     @Override
     protected void setUpView() {
+        jPluginPlatformInterface = new JPluginPlatformInterface(this);
         LoginActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
     }
 
@@ -253,7 +365,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     }
 
-    @OnClick({R.id.login_btn, R.id.check_state,R.id.test_push})
+    @OnClick({R.id.login_btn, R.id.check_state,R.id.test_push,R.id.server_tvt})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -270,6 +382,9 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
                 break;
             case R.id.test_push:
                 ExampleUtil.buildLocalNotification(this,"测试推送","这是一条测试的推送");
+                break;
+            case R.id.server_tvt:
+               startActivity(new Intent(this,ServerConfigActivity.class));
                 break;
         }
     }
@@ -325,8 +440,23 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     public void successLoad(String data) {
+
+        /**
+         * 极光推送，添加tag
+         */
+        Set<String> tags = new HashSet<>();
+        tags.add(Config.CURRENT_MAIN_ID);
+
+        JPushInterface.setTags(this, tags, new TagAliasCallback() {
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+                Log.i(TAG,"i===="+i);
+            }
+        });
+
         Config.IS_LOGIN = true;
         WaitDialog.dismiss();
+
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -359,20 +489,33 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
         Log.i(TAG,"onMessageEvent===");
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ExitModel event) {
+       finish();
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+        if (jPluginPlatformInterface!=null){
+            jPluginPlatformInterface.onStart(this);
+        }
     }
 
-    @Override
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+        jPluginPlatformInterface.onStop(this);
     }
+
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         if (mLocationClient!=null){
             mLocationClient.stop();
         }
@@ -390,7 +533,6 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             Config.LONGITUDE = location.getLongitude();    //获取经度信息
             Config.CITY = location.getCity();    //获取城市
             //Log.i("TAG","==="+Config.CITY);
-
         }
     }
 }

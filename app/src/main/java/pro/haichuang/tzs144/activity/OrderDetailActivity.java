@@ -259,6 +259,8 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.have_finish));
         } else if (data.getDeliveryStatus() == 3) {
             orderStateImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.have_cancel));
+        }else if (data.getDeliveryStatus() == 4){
+            orderStateImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.void_state));
         }
 
         if (id.equals("0")) {
@@ -288,7 +290,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         /**
          * [0-待接单 1-已接单 2-已完成 3-已取消]
          */
-        if (orderStatus == 2 || orderStatus==3) {
+        if (orderStatus == 2 || orderStatus==3 || orderStatus==4) {
             voidDeliveryView.setVisibility(View.GONE);
             takeOrder.setVisibility(View.GONE);
             switchOrder.setVisibility(View.GONE);

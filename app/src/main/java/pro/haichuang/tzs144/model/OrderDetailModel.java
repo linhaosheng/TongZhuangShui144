@@ -277,16 +277,16 @@ public class OrderDetailModel {
             private int orderGoodsId;
             private int waterGoodsId;
             private String waterName;
-            private float waterNum;
-            private float waterDeductNum;
+            private int waterNum;
+            private int waterDeductNum;
             private String goodsSpecsName;
             private float goodsPrice;
-            private float couponDeductNum;
+            private int couponDeductNum;
             private String couponImg;
             private String goodsName;
             private float goodsNum;
             private String monthImg;
-            private float monthDeductNum;
+            private int monthDeductNum;
             private List<String> materialList;
             private List<BindMaterList> bindMaterList;
             private boolean showWater;
@@ -294,6 +294,9 @@ public class OrderDetailModel {
             private boolean showMonth;
 
             public String getGoodsSpecsName() {
+                if (goodsSpecsName==null){
+                    return  "";
+                }
                 return goodsSpecsName;
             }
 
@@ -358,19 +361,19 @@ public class OrderDetailModel {
                 this.bindMaterList = bindMaterList;
             }
 
-            public float getWaterNum() {
+            public int getWaterNum() {
                 return waterNum;
             }
 
-            public void setWaterNum(float waterNum) {
+            public void setWaterNum(int waterNum) {
                 this.waterNum = waterNum;
             }
 
-            public float getWaterDeductNum() {
+            public int getWaterDeductNum() {
                 return waterDeductNum;
             }
 
-            public void setWaterDeductNum(float waterDeductNum) {
+            public void setWaterDeductNum(int waterDeductNum) {
                 this.waterDeductNum = waterDeductNum;
             }
 
@@ -382,11 +385,11 @@ public class OrderDetailModel {
                 this.goodsPrice = goodsPrice;
             }
 
-            public float getCouponDeductNum() {
+            public int getCouponDeductNum() {
                 return couponDeductNum;
             }
 
-            public void setCouponDeductNum(float couponDeductNum) {
+            public void setCouponDeductNum(int couponDeductNum) {
                 this.couponDeductNum = couponDeductNum;
             }
 
@@ -422,11 +425,11 @@ public class OrderDetailModel {
                 this.monthImg = monthImg;
             }
 
-            public float getMonthDeductNum() {
+            public int getMonthDeductNum() {
                 return monthDeductNum;
             }
 
-            public void setMonthDeductNum(float monthDeductNum) {
+            public void setMonthDeductNum(int monthDeductNum) {
                 this.monthDeductNum = monthDeductNum;
             }
 
@@ -442,13 +445,13 @@ public class OrderDetailModel {
         public static class BindMaterList{
            public String name;
            private int id;
-           private float num;
+           private int num;
 
-            public float getNum() {
+            public int getNum() {
                 return num;
             }
 
-            public void setNum(float num) {
+            public void setNum(int num) {
                 this.num = num;
             }
 
