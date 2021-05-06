@@ -21,7 +21,7 @@ public class AddMainTainRecordActivityPresenter {
 
     /**
      * [客户]新增/编辑维护记录
-     * @param id
+     * @param
      * @param customerId
      * @param maintainInfo
      * @param distance
@@ -49,7 +49,8 @@ public class AddMainTainRecordActivityPresenter {
                  if (jsonObject.getInt("result")==1){
                      iLoadDataView.successLoad("success");
                  }else {
-                     iLoadDataView.successLoad("fail");
+                     String message = jsonObject.getString("message");
+                     iLoadDataView.errorLoad(message);
                  }
              }catch (Exception e){
                  e.printStackTrace();

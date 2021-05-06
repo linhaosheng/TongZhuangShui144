@@ -148,6 +148,6 @@ public class AddMainTainRecordActivity extends BaseActivity implements ILoadData
     @Override
     public void errorLoad(String error) {
         WaitDialog.dismiss();
-        Utils.showCenterTomast("提交失败");
+        Utils.showCenterTomast("提交失败： "+ error);
     }
 }
