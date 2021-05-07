@@ -597,7 +597,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         totalPrice = 0;
         amount_receivable = 0;
         actual_amount = 0;
-        int month_mount = 0;
+        float month_mount = 0;
 
         try {
             List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
@@ -609,8 +609,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 float shopPrice =  Float.parseFloat(goodsListBean1.getGoodsPrice());
                 //总价格 : 所有商品金额之和
                 float currentAmount = Float.parseFloat(goodsListBean1.getNum()) * shopPrice;
-
-                // Log.i("TAG===","currentAmount==="+currentAmount +"==shopPrice==="+shopPrice);
 
                 totalPrice += currentAmount;
                 if (goodsListBean1.getDeductWater()!=null){
@@ -635,10 +633,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     //实收价格  【单个商品总价-（单个商品抵扣数量*单价）】之和；
                     float deductMonthNum = Float.parseFloat(goodsListBean1.getDeductMonth().getDeductNum());
                     month_mount += deductMonthNum * shopPrice;
-                    // actual_amount += amount_receivable - deductMonthNum * shopPrice;
-                }else {
-                    //  Log.i("TAG===","amount_receivable==="+amount_receivable);
-                    //   actual_amount += amount_receivable;
                 }
             }
             totalMerchandiseNum.setText(totalPrice +"");

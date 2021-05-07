@@ -443,7 +443,6 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 }
                 amount_receivable += (waterDeductNum + couponDeductNum)*goodsListBean.getGoodsPrice();  //应收金额
                 actual_amount += monthDeductNum * goodsListBean.getGoodsPrice();   //实收金额
-            //    Log.i("TAG====","actual_amount===="+actual_amount +"==monthDeductNum==="+monthDeductNum);
             }
 
             amountReceivableNum.setText((totalPrice - amount_receivable) +"");
