@@ -64,6 +64,7 @@
             app:isShowRightText = "false"
             app:rightText="请输入"
             app:showEditInput="true"
+            app:inputType = "2"
             app:rightIconSize="@dimen/dp_22" />
 
         <pro.haichuang.tzs144.view.LSettingItem
@@ -77,6 +78,7 @@
             app:isShowRightText = "false"
             app:rightText="请输入"
             app:showEditInput="true"
+            app:inputType = "2"
             app:rightIconSize="@dimen/dp_22" />
 
         <pro.haichuang.tzs144.view.LSettingItem

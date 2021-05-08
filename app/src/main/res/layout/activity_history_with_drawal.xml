@@ -144,6 +144,7 @@
                     app:rightIconSize="@dimen/dp_22"
                     app:rightStyle="iconHide"
                     app:rightText="请输入"
+                    app:inputType = "2"
                     app:showEditInput="true" />
 
                 <pro.haichuang.tzs144.view.LSettingItem
@@ -157,6 +158,7 @@
                     app:rightIconSize="@dimen/dp_22"
                     app:rightStyle="iconHide"
                     app:rightText="请输入"
+                    app:inputType = "2"
                     app:showEditInput="true" />
 
 

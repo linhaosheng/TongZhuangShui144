@@ -113,6 +113,7 @@
         app:rightText="请选择 >"
         app:isShowUnderLine="true"
         app:showEditInput="true"
+        app:inputType = "2"
         app:rightIconSize="@dimen/dp_22" />
 
     <pro.haichuang.tzs144.view.LSettingItem
@@ -127,6 +128,7 @@
         app:rightText="请选择 >"
         app:showEditInput="true"
         app:isShowUnderLine="true"
+        app:inputType = "2"
         app:rightIconSize="@dimen/dp_22" />
 
     <pro.haichuang.tzs144.view.LSettingItem

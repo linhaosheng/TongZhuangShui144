@@ -83,6 +83,7 @@
                 app:rightIconSize="@dimen/dp_22"
                 app:rightStyle="iconHide"
                 app:rightText="请选择 >"
+                app:inputType = "1"
                 app:showEditInput="true" />
 
 

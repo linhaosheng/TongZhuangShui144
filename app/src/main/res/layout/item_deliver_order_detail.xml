@@ -456,6 +456,7 @@
             app:leftText="水票数量"
             app:rightIconSize="@dimen/dp_22"
             app:rightText="请输入"
+            app:inputType = "2"
             app:showEditInput="true" />
 
 
@@ -471,6 +472,7 @@
             app:leftText="抵扣数量"
             app:rightIconSize="@dimen/dp_22"
             app:rightText="请输入"
+            app:inputType = "2"
             app:showEditInput="true" />
 
         <LinearLayout
@@ -512,6 +514,7 @@
             app:leftText="抵扣数量"
             app:rightIconSize="@dimen/dp_22"
             app:rightText="请输入"
+            app:inputType = "2"
             app:showEditInput="true" />
 
         <LinearLayout
@@ -554,6 +557,7 @@
             app:leftTextMarginLeft="@dimen/dp_10"
             app:rightIconSize="@dimen/dp_22"
             app:rightText="请输入"
+            app:inputType = "2"
             app:showEditInput="true" />
 
     </LinearLayout>

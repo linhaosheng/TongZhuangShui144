@@ -5,8 +5,10 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -242,7 +244,13 @@ public class LSettingItem extends RelativeLayout {
                 }else {
                     editinput.setVisibility(GONE);
                 }
-            }else if (attr==R.styleable.LSettingView_showEditInfo){
+            }else if (attr==R.styleable.LSettingView_inputType){
+                if (a.getInteger(attr,0)==1){
+                    editinput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }else if (a.getInteger(attr,0)==2){
+                    editinput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                }
+            } else if (attr==R.styleable.LSettingView_showEditInfo){
                 if (a.getBoolean(attr,false)){
                     editInfo.setVisibility(VISIBLE);
                 }else {

@@ -105,6 +105,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     private boolean lastPage;
     private int currentPage = 1;
     private boolean lastOrder = true;
+    private boolean visibleToUser;
 
     public OrderInfoFragment() {
         super();
@@ -309,7 +310,9 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     protected void setUpData() {
-        orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
+        if (orderInfoFragmentPresenter==null){
+            orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
+        }
         orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
     }
 
@@ -468,10 +471,24 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && visibleToUser){
+            onRefresh();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        visibleToUser = true;
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        visibleToUser = false;
     }
 }

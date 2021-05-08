@@ -95,6 +95,9 @@ public class FindDespositActivity extends BaseActivity implements OnRefreshListe
                 finish();
             }
         });
+        searchEdit.requestFocus();
+        searchEdit.setFocusable(true);
+        searchEdit.setFocusableInTouchMode(true);
     }
 
     @Override

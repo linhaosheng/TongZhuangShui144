@@ -128,12 +128,13 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
         tabs.setupWithViewPager(vpView);
         tabs.setTabsFromPagerAdapter(myPagerAdapter);
         vpView.setCurrentItem(0);
-
     }
 
     @Override
     protected void setUpData() {
-        inventoryFragmentPresenter = new InventoryFragmentPresenter(this);
+        if (inventoryFragmentPresenter==null){
+            inventoryFragmentPresenter = new InventoryFragmentPresenter(this);
+        }
         inventoryFragmentPresenter.findGoodsCategory();
 
         Log.i(TAG,"findGoodsCategory====");

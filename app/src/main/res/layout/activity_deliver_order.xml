@@ -294,7 +294,7 @@
                         android:layout_toRightOf="@+id/price_unit2"
                         android:background="@drawable/set_bg_btn18"
                         android:gravity="center"
-                        android:numeric="integer"
+                        android:inputType="numberDecimal"
                         android:text="0.00"
                         android:textColor="#333333"
                         android:textSize="14sp" />

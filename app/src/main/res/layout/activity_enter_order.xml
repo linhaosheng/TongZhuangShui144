@@ -172,7 +172,7 @@
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="1"
-                    android:numeric="integer"
+                    android:inputType="numberDecimal"
                     android:textColor="#32C5FF"
                     android:textSize="16sp" />
 
@@ -225,7 +225,7 @@
                     android:background="@drawable/set_bg_btn26"
                     android:gravity="center"
                     android:text="30.00"
-                    android:numeric="integer"
+                    android:inputType="numberDecimal"
                     android:textColor="#3F3F3F"
                     android:textSize="16sp" />
 
@@ -321,6 +321,7 @@
                     app:isShowRightText = "false"
                     app:rightText="请输入"
                     app:showEditInput="true"
+                    app:inputType = "1"
                     android:visibility="gone"/>
 
 
@@ -336,6 +337,7 @@
                     app:rightIconSize="@dimen/dp_22"
                     app:rightText="请输入"
                     app:showEditInput="true"
+                    app:inputType = "1"
                     android:visibility="gone"/>
 
                 <LinearLayout
@@ -376,6 +378,7 @@
                     app:isShowUnderLine="true"
                     app:leftText="抵扣数量"
                     app:rightIconSize="@dimen/dp_22"
+                    app:inputType = "1"
                     app:rightText="请输入"
                     app:showEditInput="true"/>
 
@@ -419,6 +422,7 @@
                     app:leftText="抵扣数量"
                     app:leftTextMarginLeft="@dimen/dp_10"
                     app:rightIconSize="@dimen/dp_22"
+                    app:inputType="1"
                     app:rightText="请输入"
                     app:showEditInput="true"/>
 
@@ -571,7 +575,7 @@
                         android:textColor="#333333"
                         android:textSize="18sp"
                         android:gravity="center"
-                        android:numeric="integer"
+                        android:inputType="numberDecimal"
                         android:background="@drawable/set_bg_btn18"
                         android:layout_toRightOf="@+id/price_unit2"
                         android:layout_below="@+id/actual_merchandise"

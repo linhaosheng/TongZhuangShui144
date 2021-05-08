@@ -26,6 +26,7 @@
             android:imeOptions="actionSearch"
             android:singleLine="true"
             android:background="@null"
+            android:inputType="numberDecimal"
             android:layout_marginRight="@dimen/dp_18"/>
 
     </LinearLayout>
