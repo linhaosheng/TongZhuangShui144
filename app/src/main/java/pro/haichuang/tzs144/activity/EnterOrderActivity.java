@@ -219,8 +219,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         mDataBea = dataBean;
                         selectTicket.setLeftText(dataBean.getName()+"   "+dataBean.getSpecs());
                         waterId = dataBean.getId();
-                        selectWaterNum.setEditinput(String.valueOf(dataBean.getWaterNum()));
-                        selectDeductionNunm.setEditinput(String.valueOf(dataBean.getWaterNum()));
+                        if (dataBean.getWaterNum()>0){
+                            selectWaterNum.setEditinput(String.valueOf(dataBean.getWaterNum()));
+                            selectDeductionNunm.setEditinput(String.valueOf(dataBean.getWaterNum()));
+                        }else {
+                            selectWaterNum.setEditinput("");
+                            selectDeductionNunm.setEditinput("");
+                        }
 
                     }
                 },dataBean.getId());
