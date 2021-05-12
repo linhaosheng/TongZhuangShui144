@@ -62,6 +62,16 @@ public class Utils {
     }
 
 
+    private final static long INTERNAL_TIME = 300;
+    private static long lastClickTimeStamp = 0L;
+
+    public static boolean isFastDoubleClick() {
+        long curTimeStamp = System.currentTimeMillis();
+        boolean isInvalid = curTimeStamp - lastClickTimeStamp < INTERNAL_TIME;
+        lastClickTimeStamp = curTimeStamp;
+        return isInvalid;
+    }
+
     public static String formatSelectTime(Date date){
       return   simpleDateFormat.format(date);
     }
