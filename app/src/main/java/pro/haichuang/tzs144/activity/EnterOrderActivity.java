@@ -219,14 +219,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         mDataBea = dataBean;
                         selectTicket.setLeftText(dataBean.getName()+"   "+dataBean.getSpecs());
                         waterId = dataBean.getId();
-                        if (dataBean.getWaterNum()>0){
-                            selectWaterNum.setEditinput(String.valueOf(dataBean.getWaterNum()));
-                            selectDeductionNunm.setEditinput(String.valueOf(dataBean.getWaterNum()));
-                        }else {
-                            selectWaterNum.setEditinput("");
-                            selectDeductionNunm.setEditinput("");
-                        }
-
+//                        if (dataBean.getWaterNum()>0){
+//                            selectWaterNum.setEditinput(String.valueOf(dataBean.getWaterNum()));
+//                            selectDeductionNunm.setEditinput(String.valueOf(dataBean.getWaterNum()));
+//                        }else {
+//                            selectWaterNum.setEditinput("");
+//                            selectDeductionNunm.setEditinput("");
+//                        }
                     }
                 },dataBean.getId());
                 selectWaterTicketDialog.show(getSupportFragmentManager(),"");
@@ -588,6 +587,16 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
 
                 shop_amount_view.setVisibility(View.VISIBLE);
                 initViewData();
+
+                selectTicket.setLeftText("水票");
+                selectWaterNum.setEditinput("");
+                selectDeductionNunm.setEditinput("");
+                rewardDeductionNunm.setEditinput("");
+                monthDeductionNunm.setEditinput("");
+                uploadReward.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
+                uploadMonth.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
+
+
                 break;
             case R.id.select_client:
                 Intent intent2 = new Intent(this,SaleSearchActivity.class);
