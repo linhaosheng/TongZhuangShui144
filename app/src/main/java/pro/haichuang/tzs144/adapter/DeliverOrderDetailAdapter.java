@@ -232,7 +232,11 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
 
         LSettingItem select_water_num =  helper.getView(R.id.select_water_num);
-        select_water_num.setEditinput(item.getWaterNum()+"");
+        if (item.getWaterNum()>0){
+            select_water_num.setEditinput(item.getWaterNum()+"");
+        }else {
+            select_water_num.setEditinput("");
+        }
         select_water_num.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
             public void editListner(String text) {
@@ -254,12 +258,12 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         });
 
         LSettingItem select_deduction_nunm =  helper.getView(R.id.select_deduction_nunm);
-        select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
-//        if (item.getWaterDeductNum()!=0){
-//            select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
-//        }else {
-//            select_deduction_nunm.setEditinput("");
-//        }
+       // select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
+        if (item.getWaterDeductNum()!=0){
+            select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
+        }else {
+            select_deduction_nunm.setEditinput("");
+        }
         select_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
             @Override
             public void editListner(String text) {

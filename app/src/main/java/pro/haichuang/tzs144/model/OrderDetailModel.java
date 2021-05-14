@@ -74,13 +74,13 @@ public class OrderDetailModel {
         private int orderType;
         private String payMode;
         private String completeTime;
-        private int totalPrice;
+        private double totalPrice;
         private String customerName;
         private String customerTypeName;
         private String customerPhone;
         private String addressName;
-        private int receivablePrice;
-        private int realPrice;
+        private double receivablePrice;
+        private double realPrice;
         private String distance;
         private List<GoodsListBean> goodsList;
 
@@ -188,11 +188,11 @@ public class OrderDetailModel {
             this.completeTime = completeTime;
         }
 
-        public int getTotalPrice() {
+        public double getTotalPrice() {
             return totalPrice;
         }
 
-        public void setTotalPrice(int totalPrice) {
+        public void setTotalPrice(double totalPrice) {
             this.totalPrice = totalPrice;
         }
 
@@ -228,19 +228,19 @@ public class OrderDetailModel {
             this.addressName = addressName;
         }
 
-        public int getReceivablePrice() {
+        public double getReceivablePrice() {
             return receivablePrice;
         }
 
-        public void setReceivablePrice(int receivablePrice) {
+        public void setReceivablePrice(double receivablePrice) {
             this.receivablePrice = receivablePrice;
         }
 
-        public int getRealPrice() {
+        public double getRealPrice() {
             return realPrice;
         }
 
-        public void setRealPrice(int realPrice) {
+        public void setRealPrice(double realPrice) {
             this.realPrice = realPrice;
         }
 
