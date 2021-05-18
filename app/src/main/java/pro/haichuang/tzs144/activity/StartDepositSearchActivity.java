@@ -196,7 +196,7 @@ public class StartDepositSearchActivity extends BaseActivity implements SwipeRef
                Utils.showCenterTomast("退押成功");
                startDepositSearchActivityPresenter.findDepositBookList(searchEdit.getText().toString(),1);
            }else {
-               Utils.showCenterTomast("退押失败");
+               Utils.showCenterTomast("退押失败 : "+ event.result);
            }
         }
     }

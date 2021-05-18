@@ -175,12 +175,11 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             if (event.type==4){
                 if (event.status== Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("结账成功");
-                    Log.i("TAG===","asdssdsdsd");
                    // billOrder.setVisibility(View.GONE);
                     clientRealTimeDatapPresenter.ssManagerCount();
                     clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
                 }else {
-                    Utils.showCenterTomast("结账失败");
+                    Utils.showCenterTomast("结账失败: "+event.result);
                 }
             }else if (event.type==5){
                 if (event.status== Config.LOAD_SUCCESS){
@@ -188,7 +187,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                     Utils.showCenterTomast("订单作废成功");
                     clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
                 }else {
-                    Utils.showCenterTomast("订单作废失败");
+                    Utils.showCenterTomast("订单作废失败 : "+event.result);
                 }
             }
         }

@@ -248,7 +248,7 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                 Utils.showCenterTomast("新增退押记录成功");
                 finish();
             } else {
-                Utils.showCenterTomast("新增失败");
+                Utils.showCenterTomast("新增失败 : "+event.result);
             }
         }
 

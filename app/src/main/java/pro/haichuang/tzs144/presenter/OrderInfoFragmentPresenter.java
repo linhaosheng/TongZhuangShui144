@@ -129,7 +129,9 @@ public class OrderInfoFragmentPresenter {
                     if (result1==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,currentId));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,currentId));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,currentId);
+                        statusEvent.setResult(jsonObject.getString("message"));
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

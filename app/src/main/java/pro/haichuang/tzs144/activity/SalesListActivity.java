@@ -306,7 +306,7 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                 lastPage=false;
                 salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, 1);
             } else {
-                Utils.showCenterTomast("订单作废失败");
+                Utils.showCenterTomast("订单作废失败: " + event.result);
             }
         }
         Log.i(TAG, "onMessageEvent===");

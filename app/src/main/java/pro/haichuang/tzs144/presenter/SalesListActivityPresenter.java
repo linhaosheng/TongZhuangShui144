@@ -110,7 +110,10 @@ public class SalesListActivityPresenter {
                     if (result1==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,2));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,2));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,2);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

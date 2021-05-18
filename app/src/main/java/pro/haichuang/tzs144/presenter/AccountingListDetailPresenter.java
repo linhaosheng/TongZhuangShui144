@@ -77,7 +77,10 @@ public class AccountingListDetailPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,7));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,7));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,7);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -110,7 +113,10 @@ public class AccountingListDetailPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,8));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,8));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,8);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

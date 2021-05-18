@@ -81,7 +81,9 @@ public class WithDrawalOrderPresenter {
                 if (withDrawalOrderModel.getResult()==1){
                     EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,20));
                 }else {
-                    EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,20));
+                    StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,20);
+                    statusEvent.setResult(withDrawalOrderModel.getMessage());
+                    EventBus.getDefault().post(statusEvent);
                 }
             }
 

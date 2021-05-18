@@ -320,21 +320,21 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
                     Utils.showCenterTomast("订单作废成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("订单作废失败");
+                    Utils.showCenterTomast("订单作废失败 : "+event.result);
                 }
             } else if (event.type == 1) {
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("接单成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("订单作废失败");
+                    Utils.showCenterTomast("订单作废失败 : "+event.result);
                 }
             } else if (event.type == 4) {
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("转成功");
                     finish();
                 } else {
-                    Utils.showCenterTomast("转单失败");
+                    Utils.showCenterTomast("转单失败: "+event.result);
                 }
             }
         }

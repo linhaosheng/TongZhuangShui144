@@ -433,7 +433,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                         Utils.showCenterTomast("接单成功...");
                         orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1);
                     }else {
-                        Utils.showCenterTomast("接单失败...");
+                        Utils.showCenterTomast("接单失败: "+event.result);
                     }
                 }
                 Log.i(TAG, "onMessageEvent==id=" + event.type + " === id===" + id);

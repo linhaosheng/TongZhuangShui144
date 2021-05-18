@@ -172,7 +172,7 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
                 orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.void_state));
                 EventBus.getDefault().post(new RefreshEvent("refresh",0));
             } else {
-                Utils.showCenterTomast("订单作废失败");
+                Utils.showCenterTomast("订单作废失败 :" +event.result);
             }
         }
         Log.i(TAG, "onMessageEvent===");

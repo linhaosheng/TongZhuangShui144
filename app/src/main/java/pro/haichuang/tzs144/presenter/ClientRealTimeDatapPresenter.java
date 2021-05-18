@@ -106,7 +106,9 @@ public class ClientRealTimeDatapPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,4));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,4));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,4);
+                        statusEvent.setResult(jsonObject.getString("message"));
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -141,7 +143,9 @@ public class ClientRealTimeDatapPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,5));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,5));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,5);
+                        statusEvent.setResult(jsonObject.getString("message"));
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

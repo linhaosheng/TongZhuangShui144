@@ -44,9 +44,11 @@ public class AddWithDrawalOrderActivityPresenter {
                   JSONObject jsonObject = new JSONObject(result);
                   String message = jsonObject.getString("message");
                   if (jsonObject.getInt("result")==1){
-                      EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,8));
+                      EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,9));
                   }else {
-                      EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,9));
+                      StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,9);
+                      statusEvent.setResult(message);
+                      EventBus.getDefault().post(statusEvent);
                   }
               }catch (Exception e){
                   e.printStackTrace();

@@ -222,14 +222,14 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
                 Utils.showCenterTomast("销账成功");
                 accountingListDetailPresenter.getAccountInfo(id);
             } else {
-                Utils.showCenterTomast("销账失败");
+                Utils.showCenterTomast("销账失败: "+event.result);
             }
         }else if (event != null && event.type==8){
             if (event.status == Config.LOAD_SUCCESS) {
                 Utils.showCenterTomast("结账成功");
                 accountingListDetailPresenter.getAccountInfo(id);
             } else {
-                Utils.showCenterTomast("结账失败");
+                Utils.showCenterTomast("结账失败 : "+event.result);
             }
         }
         Log.i(TAG, "onMessageEvent===");
