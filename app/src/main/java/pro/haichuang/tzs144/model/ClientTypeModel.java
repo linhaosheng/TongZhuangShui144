@@ -47,7 +47,17 @@ public class ClientTypeModel {
         private boolean isCheck = true;
         private String name;
         private int id;
+        private boolean isWarnType = false;
         private boolean isTimeType = false;
+
+
+        public boolean isWarnType() {
+            return isWarnType;
+        }
+
+        public void setWarnType(boolean warnType) {
+            isWarnType = warnType;
+        }
 
         public boolean isTimeType() {
             return isTimeType;

@@ -45,7 +45,6 @@ import pro.haichuang.tzs144.view.ShowMoreDialog;
 public class MainActivity extends BaseActivity {
 
 
-
     @BindView(R.id.navigationBar)
     EasyNavigationBar navigationBar;
     private boolean isLocation = false;

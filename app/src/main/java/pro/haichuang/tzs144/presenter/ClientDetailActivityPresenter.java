@@ -47,7 +47,7 @@ public class ClientDetailActivityPresenter {
                 if (clientDetailModel!=null && clientDetailModel.getResult()==1){
                     iLoadDataView.successLoad(clientDetailModel.getData());
                 }else {
-                    iLoadDataView.errorLoad("获取失败");
+                    iLoadDataView.errorLoad(clientDetailModel.getMessage());
                 }
 
             }

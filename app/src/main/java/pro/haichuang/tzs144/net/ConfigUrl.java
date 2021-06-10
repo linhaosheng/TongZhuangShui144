@@ -388,4 +388,9 @@ public class ConfigUrl {
      */
     public static final String UNPACK = "/api/app/unpackLog/unpack";
 
+    /**
+     * 获取维护用户信息
+     */
+    public static final String GET_WHCUSTOMER_INFP = "/api/app/kh/getWhCustomerInfo";
+
 }

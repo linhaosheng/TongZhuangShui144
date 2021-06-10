@@ -1,6 +1,7 @@
 package pro.haichuang.tzs144.presenter;
 
 import android.util.ArrayMap;
+import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,9 +27,12 @@ public class ClientFragmentPresenter {
     /**
      * [客户]列表统计
      */
-    public void countKh(){
+    public void countKh(String type){
 
-        HttpRequestEngine.postRequest(ConfigUrl.COUNT_KH, null, new HttpRequestResultListener() {
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("type",type);
+
+        HttpRequestEngine.postRequest(ConfigUrl.COUNT_KH, params, new HttpRequestResultListener() {
             @Override
             public void start() {
                 iLoadDataView.startLoad();
@@ -67,7 +71,7 @@ public class ClientFragmentPresenter {
      * @param khStatus
      * @param page
      */
-    public void findKhList(String khName,String startTime,String endTime,String khTypeId,String khStatus,int page){
+    public void findKhList(String type,String khName,String startTime,String endTime,String khTypeId,String khStatus,int page){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("khName",khName);
@@ -76,6 +80,7 @@ public class ClientFragmentPresenter {
         params.put("khTypeId",khTypeId);
         params.put("khStatus",khStatus);
         params.put("page",page);
+        params.put("type",type);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_KHLIST, params, new HttpRequestResultListener() {
             @Override
@@ -99,4 +104,18 @@ public class ClientFragmentPresenter {
             }
         });
     }
+
+
+    /**
+     * [客户]获取维护用户信息
+     * @param
+     */
+    public void getWhCustomerInfo(String customerId,HttpRequestResultListener httpRequestResultListener){
+
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("customerId",customerId);
+
+        HttpRequestEngine.postRequest(ConfigUrl.GET_WHCUSTOMER_INFP, params,httpRequestResultListener);
+    }
+
 }
