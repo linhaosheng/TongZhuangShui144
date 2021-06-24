@@ -55,13 +55,14 @@
                 android:textColor="#000000"
                 android:textSize="12sp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/shop_num"
-                android:layout_width="@dimen/dp_50"
+                android:layout_width="@dimen/dp_100"
                 android:layout_height="@dimen/dp_20"
                 android:background="@drawable/set_bg_btn26"
                 android:gravity="center"
                 android:text="0"
+                android:inputType="numberDecimal"
                 android:textColor="#32C5FF"
                 android:textSize="12sp" />
 

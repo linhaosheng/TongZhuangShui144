@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -106,6 +107,7 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
                 switch (view.getId()) {
                     case R.id.delete:
                         try {
+
                             if (goodBeanModelList!=null){
                                 goodBeanModelList.remove(position);
                             }
@@ -118,6 +120,7 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
                         }
                         break;
                     case R.id.reduce:
+
                         List<GoodBeanModel> data1 = demandListAdapter.getData();
                         GoodBeanModel goodBeanModel = data1.get(position);
                         if (goodBeanModel.getNum()==0){
@@ -167,12 +170,12 @@ public class AllocationActivity extends BaseActivity implements ILoadDataView<St
         });
     }
 
+
     @Override
     protected void setUpData() {
 
         allocationActivityPresenter = new AllocationActivityPresenter(this);
         allocationActivityPresenter.findAllotGoods("");
-
     }
 
 

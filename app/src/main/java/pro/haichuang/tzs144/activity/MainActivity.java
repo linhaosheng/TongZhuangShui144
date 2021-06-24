@@ -17,7 +17,13 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.kongzue.dialog.v3.BottomMenu;
 import com.next.easynavigation.view.EasyNavigationBar;
+import com.kongzue.dialog.v3.WaitDialog;
 
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import pro.haichuang.tzs144.R;
 
 import pro.haichuang.tzs144.fragment.AccountFragment;
@@ -30,6 +36,7 @@ import pro.haichuang.tzs144.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import permissions.dispatcher.NeedsPermission;
@@ -55,7 +62,7 @@ public class MainActivity extends BaseActivity {
     private int[] normalIcon = {R.mipmap.order_n, R.mipmap.inventory_n, R.mipmap.account_n, R.mipmap.client_n};
 
     private List<Fragment> fragments;
-    private List<String>tabList;
+    private List<String> tabList;
 
     @Override
     protected int setLayoutResourceID() {
@@ -64,20 +71,36 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setUpView() {
-
+        WaitDialog.show(this, "加载中...");
+        Observable.just("")
+                .delay(2000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        WaitDialog.dismiss();
+                    }
+                });
     }
 
     @Override
     protected void setUpData() {
         MainActivityPermissionsDispatcher.allplyPermissionWithPermissionCheck(this);
         mainActivityPresenter = new MainActivityPresenter();
-        mainActivityPresenter.findKhTypes();
-        mainActivityPresenter.getAllClient();
-        mainActivityPresenter.findAreas();
-        mainActivityPresenter.findStockMainList();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mainActivityPresenter.findKhTypes();
+                mainActivityPresenter.getAllClient();
+                mainActivityPresenter.findAreas();
+                mainActivityPresenter.findStockMainList();
+            }
+        }).start();
     }
 
     private long exitTime = 0;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -93,12 +116,12 @@ public class MainActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA})
     public void allplyPermission() {
-      initView();
+        initView();
     }
 
-    public void initView(){
+    public void initView() {
         fragments = new ArrayList<>();
         fragments.add(new OrderFragment());
         fragments.add(new InventoryFragment());
@@ -137,7 +160,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public boolean onCenterTabSelectEvent(View view) {
                         ShowMoreDialog showMoreDialog = new ShowMoreDialog(MainActivity.this);
-                        showMoreDialog.show(getSupportFragmentManager(),"");
+                        showMoreDialog.show(getSupportFragmentManager(), "");
                         return false;
                     }
                 })
@@ -155,7 +178,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 申请权限被拒绝时
      */
-    @OnPermissionDenied({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
+    @OnPermissionDenied({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA})
     void onWriteAndReadDenied() {
         Utils.showCenterTomast("写入和读取以及摄像头权限被拒，有可能导致无法使用");
     }
@@ -163,7 +186,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 申请权限被拒绝并勾选不再提醒时
      */
-    @OnNeverAskAgain({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA})
+    @OnNeverAskAgain({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA})
     void onInstallNeverAskAgain() {
         Utils.showCenterTomast("写入和读取以及摄像头权限被拒，有可能导致无法使用");
     }
