@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
     protected void setUpView() {
         WaitDialog.show(this, "加载中...");
         Observable.just("")
-                .delay(2000, TimeUnit.MILLISECONDS)
+                .delay(3000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
