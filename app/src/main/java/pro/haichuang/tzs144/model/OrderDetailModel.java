@@ -284,7 +284,7 @@ public class OrderDetailModel {
             private int couponDeductNum;
             private String couponImg;
             private String goodsName;
-            private float goodsNum;
+            private int goodsNum;
             private String monthImg;
             private int monthDeductNum;
             private List<String> materialList;
@@ -409,11 +409,11 @@ public class OrderDetailModel {
                 this.goodsName = goodsName;
             }
 
-            public float getGoodsNum() {
+            public int getGoodsNum() {
                 return goodsNum;
             }
 
-            public void setGoodsNum(float goodsNum) {
+            public void setGoodsNum(int goodsNum) {
                 this.goodsNum = goodsNum;
             }
 

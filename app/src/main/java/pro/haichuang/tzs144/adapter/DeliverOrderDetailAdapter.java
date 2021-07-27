@@ -366,7 +366,6 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
             }
         });
 
-
         EditText shop_num_tong2 = helper.getView(R.id.shop_num_tong2);
         if (shop_num_tong2.getText()!=null && shop_num_tong2.getText().length()>0){
             shop_num_tong2.setSelection(shop_num_tong2.getText().toString().length());
