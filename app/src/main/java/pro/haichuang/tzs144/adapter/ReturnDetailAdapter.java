@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ import pro.haichuang.tzs144.model.ReturnDetailModel;
 /**
  * 需求列表适配器
  */
-public class ReturnDetailAdapter extends BaseQuickAdapter<ReturnDetailModel.DataBean, BaseViewHolder> {
+public class ReturnDetailAdapter extends BaseQuickAdapter<ReturnDetailModel.DataBean, BaseViewHolder>implements LoadMoreModule {
 
 
     public ReturnDetailAdapter() {

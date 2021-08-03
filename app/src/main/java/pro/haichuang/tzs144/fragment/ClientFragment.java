@@ -151,7 +151,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         });
         orderPaymentAdapter.getLoadMoreModule().setAutoLoadMore(true);
         //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
-        orderPaymentAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+        orderPaymentAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(true);
 
 
         orderTrendAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -230,7 +230,6 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         }
         String substring = stringBuilder.substring(0, stringBuilder.length() - 1);
         khTypeId = substring;
-        Log.i("TAG===",khTypeId);
 
         endTime = Utils.formatSelectTime(new Date());
         clientFragmentPresenter = new ClientFragmentPresenter(this);
@@ -334,7 +333,6 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     public void successLoad(ClientTrendModel data) {
-        refresh.setRefreshing(false);
         if (data!=null){
             trendList.clear();
             ClientTrendModel.DataBean data1 = data.getData();
@@ -374,6 +372,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ClientEvent event) {
+        refresh.setRefreshing(false);
         if (event!=null){
              if (event.dataBean==null){
                  Utils.showCenterTomast("获取客户列表失败");

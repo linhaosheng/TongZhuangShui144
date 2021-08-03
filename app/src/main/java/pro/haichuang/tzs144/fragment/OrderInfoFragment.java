@@ -64,6 +64,7 @@ import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.OrderInfoModel;
 import pro.haichuang.tzs144.model.PageEvent;
+import pro.haichuang.tzs144.model.ShopListModel;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.StatusUpdateEvent;
 import pro.haichuang.tzs144.model.UpdateOrderEvent;
@@ -71,6 +72,7 @@ import pro.haichuang.tzs144.presenter.OrderInfoFragmentPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.MyMapView;
+import pro.haichuang.tzs144.view.SelectShopDialog;
 import pro.haichuang.tzs144.view.ShopDetailDialog;
 import pro.haichuang.tzs144.view.ShowMoreOrderInfoDialog;
 
@@ -90,6 +92,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     RelativeLayout emptyDataView;
     TextView lastTime;
     TextView selectTime;
+    TextView selectShop;
     @BindView(R.id.map)
     MapView mapView;
     @BindView(R.id.myMapView)
@@ -113,17 +116,11 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     public OrderInfoFragment(int mId) {
         this.id = mId;
-        Log.i("TAG==","id===="+mId);
     }
 
     @Override
     public boolean lazyLoader() {
-//        if (id!=0){
-//            return true;
-//        }else {
-//            return false;
-//        }
-        return false;
+        return true;
     }
 
     @Override
@@ -219,6 +216,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             orderInfoAdapter.addHeaderView(headTimeView);
             lastTime = headTimeView.findViewById(R.id.last_time);
             selectTime = headTimeView.findViewById(R.id.select_time);
+            selectShop = headTimeView.findViewById(R.id.select_shop);
             selectTimeData();
             selectTime.setText(Utils.formatSelectTime(new Date()));
         }
@@ -292,14 +290,40 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 pvTime.show();
             }
         });
+        selectShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * 商品类型
+                 */
+                SelectShopDialog selectShopDialog  = new SelectShopDialog(getActivity(), 0,new SelectShopDialog.SelectShopListener() {
+                    @Override
+                    public void selectShop(ShopListModel.DataBean.DataListBean dataBean) {
+                    }
+                });
+                selectShopDialog.show(getChildFragmentManager(),"");
+            }
+        });
     }
 
     @Override
-    protected void setUpData() {
-        if (orderInfoFragmentPresenter==null){
-            orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
+    public void onResume() {
+        super.onResume();
+        visibleToUser = true;
+        if (orderInfoFragmentPresenter==null&& id == 0){
+            setUpData();
         }
-        orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+    }
+
+
+    @Override
+    protected void setUpData() {
+        if (refresh!=null){
+            if (orderInfoFragmentPresenter==null){
+                orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
+            }
+            orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+        }
     }
 
     @Override
@@ -463,12 +487,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         if (isVisibleToUser && visibleToUser){
             onRefresh();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        visibleToUser = true;
     }
 
     @Override

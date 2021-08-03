@@ -67,30 +67,31 @@ public class AccountFragment extends BaseFragment {
 
     @Override
     protected void setUpView() {
+
+    }
+
+    @Override
+    protected void setUpData() {
         back.setVisibility(View.GONE);
         title.setText("财务管理");
         tipImg.setVisibility(View.VISIBLE);
         tipImg.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.mipmap.more));
 
-        orderTitleList = new ArrayList<>();
-        orderTitleList.add("实时数据");
-        orderTitleList.add("历史数据");
+        if (orderTitleList==null){
+            orderTitleList = new ArrayList<>();
+            orderTitleList.add("实时数据");
+            orderTitleList.add("历史数据");
 
+            orderList = new ArrayList<>();
+            orderList.add(new ClientRealTimeDataFragment());
+            orderList.add(new ClientHistoryTimeDataFragment());
 
-        orderList = new ArrayList<>();
-        orderList.add(new ClientRealTimeDataFragment());
-        orderList.add(new ClientHistoryTimeDataFragment());
-
-        myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(), orderList, orderTitleList);
-        vpView.setAdapter(myPagerAdapter);
-        tabs.setupWithViewPager(vpView);
-        tabs.setTabsFromPagerAdapter(myPagerAdapter);
-        vpView.setCurrentItem(0);
-    }
-
-    @Override
-    protected void setUpData() {
-
+            myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(), orderList, orderTitleList);
+            vpView.setAdapter(myPagerAdapter);
+            tabs.setupWithViewPager(vpView);
+            tabs.setTabsFromPagerAdapter(myPagerAdapter);
+            vpView.setCurrentItem(0);
+        }
     }
 
     @OnClick(R.id.tip_img)

@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -70,6 +71,9 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     private TextView updateTime;
     private ClientRealTimeDatapPresenter clientRealTimeDatapPresenter;
     private List<TrendModel> trendModelList;
+    private String date;
+    private boolean lastPage;
+    private int currentPage = 1;
 
 
     @Override
@@ -84,15 +88,29 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
 
     @Override
     protected void setUpView() {
+        date = "2021-01-01";
 
         refresh.setOnRefreshListener(this);
         orderPaymentAdapter = new OrderPaymentAdapter();
+        orderPaymentAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        orderPaymentAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+
+        orderPaymentAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage) {
+                    currentPage++;
+                    clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
+                }
+            }
+        });
+
         orderTrendAdapter = new OrderTrendAdapter();
 
         headView = LayoutInflater.from(getActivity()).inflate(R.layout.item_update_time, null);
         orderTrendAdapter.addHeaderView(headView);
         updateTime = headView.findViewById(R.id.update_time);
-
 
         recycleDataTrend.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recycleDataTrend.setAdapter(orderTrendAdapter);
@@ -113,8 +131,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 switch (view.getId()){
                     case R.id.void_order:
-                        AccountOrderModel.DataBean dataBean = orderPaymentAdapter.getData().get(position);
 
+                        AccountOrderModel.DataBean dataBean = orderPaymentAdapter.getData().get(position);
                         clientRealTimeDatapPresenter.cancel(dataBean.getId());
                         break;
                 }
@@ -134,15 +152,21 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
 
     @Override
     protected void setUpData() {
-        clientRealTimeDatapPresenter = new ClientRealTimeDatapPresenter(this);
-        clientRealTimeDatapPresenter.ssManagerCount();
-        clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
+        if (refresh!=null){
+            currentPage = 1;
+            lastPage = false;
+            clientRealTimeDatapPresenter = new ClientRealTimeDatapPresenter(this);
+            clientRealTimeDatapPresenter.ssManagerCount();
+            clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
+        }
     }
 
     @Override
     public void onRefresh() {
+        currentPage = 1;
+        lastPage = false;
         clientRealTimeDatapPresenter.ssManagerCount();
-        clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
+        clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
     }
 
     @Override
@@ -159,25 +183,46 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RealAccountEvent event) {
-        if (event != null && event.type==1) {
-            if (event.dataBean == null || event.dataBean.getData() == null || event.dataBean.getData().size() == 0) {
+
+        if (event.type!=1){
+            return;
+        }
+        refresh.setRefreshing(false);
+
+        if (event.dataBean == null || event.dataBean.getData() == null || event.dataBean.getData().size() == 0) {
+            lastPage = true;
+            if (currentPage == 1) {
                 emptyView.setVisibility(View.VISIBLE);
-            } else {
+            }else {
                 emptyView.setVisibility(View.GONE);
             }
+        }
+
+        if (currentPage==1){
+            if (event.dataBean!=null && event.dataBean.getData().size()<10){
+                lastPage = true;
+                orderPaymentAdapter.getLoadMoreModule().loadMoreEnd();
+            }
             orderPaymentAdapter.setList(event.dataBean.getData());
+        }else {
+            orderPaymentAdapter.addData(event.dataBean.getData());
+            orderPaymentAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+        if (lastPage) {
+            orderPaymentAdapter.getLoadMoreModule().loadMoreEnd();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StatusEvent event) {
+        currentPage = 1;
         if (event != null) {
             if (event.type==4){
                 if (event.status== Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("结账成功");
                    // billOrder.setVisibility(View.GONE);
                     clientRealTimeDatapPresenter.ssManagerCount();
-                    clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
+                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
                 }else {
                     Utils.showCenterTomast("结账失败: "+event.result);
                 }
@@ -185,7 +230,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                 if (event.status== Config.LOAD_SUCCESS){
                     clientRealTimeDatapPresenter.ssManagerCount();
                     Utils.showCenterTomast("订单作废成功");
-                    clientRealTimeDatapPresenter.findSsOrders("2020-01-10", Utils.formatSelectTime(new Date()));
+                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
                 }else {
                     Utils.showCenterTomast("订单作废失败 : "+event.result);
                 }
@@ -201,7 +246,6 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
 
     @Override
     public void successLoad(AccountRealTimeModel.DataBean data) {
-        refresh.setRefreshing(false);
         if (trendModelList == null) {
             trendModelList = new ArrayList<>();
         }

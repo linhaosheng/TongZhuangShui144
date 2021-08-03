@@ -35,6 +35,7 @@ public class ReturnDetailActivityPresenter {
         params.put("staffId",staffId);
         params.put("page",page);
         params.put("query",query);
+        params.put("limit",10);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_QSST_LOGS, params, new HttpRequestResultListener() {
             @Override

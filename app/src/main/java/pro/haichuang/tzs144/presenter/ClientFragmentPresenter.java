@@ -35,7 +35,7 @@ public class ClientFragmentPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.COUNT_KH, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-                iLoadDataView.startLoad();
+
             }
 
             @Override
@@ -57,7 +57,6 @@ public class ClientFragmentPresenter {
 
             @Override
             public void error(String error) {
-                iLoadDataView.errorLoad(error);
             }
         });
     }
@@ -85,7 +84,7 @@ public class ClientFragmentPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.FIND_KHLIST, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                iLoadDataView.startLoad();
             }
 
             @Override

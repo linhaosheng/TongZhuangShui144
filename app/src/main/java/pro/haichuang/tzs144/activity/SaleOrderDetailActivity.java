@@ -88,6 +88,7 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
 
     private OrderDetailPresenter orderDetailPresenter;
     private  String id;
+    private int settleStatus;
 
     @Override
     protected int setLayoutResourceID() {
@@ -109,6 +110,12 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     @Override
     protected void setUpData() {
         id = getIntent().getStringExtra("id");
+        settleStatus = getIntent().getIntExtra("settleStatus",0);
+        if (settleStatus!=0){
+            tips.setVisibility(View.GONE);
+        }else {
+            tips.setVisibility(View.VISIBLE);
+        }
         orderDetailPresenter = new OrderDetailPresenter(this);
         orderDetailPresenter.getOrderInfo(id);
     }
@@ -121,6 +128,10 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
                 finish();
                 break;
             case R.id.tips:
+                if (settleStatus!=0){
+                    Utils.showCenterTomast("只能作废未结账的订单");
+                    return;
+                }
                 WaitDialog.show(this,"提交中...");
                 orderDetailPresenter.directSelling(id);
                 break;

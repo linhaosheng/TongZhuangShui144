@@ -153,9 +153,12 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         saleListItemAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                String orderNumId = saleListItemAdapter.getData().get(position).getId();
+                SaleListModel.DataBean dataBean = saleListItemAdapter.getData().get(position);
+                String orderNumId = dataBean.getId();
+
                 Intent intent = new Intent(SalesListActivity.this,SaleOrderDetailActivity.class);
                 intent.putExtra("id",orderNumId);
+                intent.putExtra("settleStatus",dataBean.getSettleStatus());
                 startActivity(intent);
             }
         });

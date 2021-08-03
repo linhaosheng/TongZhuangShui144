@@ -34,7 +34,7 @@ public class ClientRealTimeDatapPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.MANAGER_COUNT, null, new HttpRequestResultListener() {
             @Override
             public void start() {
-                iLoadDataView.startLoad();
+
             }
 
             @Override
@@ -49,7 +49,7 @@ public class ClientRealTimeDatapPresenter {
 
             @Override
             public void error(String error) {
-                iLoadDataView.errorLoad(error);
+
             }
         });
     }
@@ -60,16 +60,18 @@ public class ClientRealTimeDatapPresenter {
      * @param startTime
      * @param endTime
      */
-    public final void findSsOrders(String startTime,String endTime){
+    public final void findSsOrders(String startTime,String endTime,int page){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("startTime",startTime);
         params.put("endTime",endTime);
+        params.put("page",page);
+
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_SS_ORDERS, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                iLoadDataView.startLoad();
             }
 
             @Override

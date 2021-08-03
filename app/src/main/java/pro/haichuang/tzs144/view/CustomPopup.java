@@ -183,7 +183,7 @@ public class CustomPopup extends PartShadowPopupView{
         dialog.show();
     }
 
-    public static interface FilterInterface{
+    public interface FilterInterface{
         void filter(String startTime,String endTime,String id);
     }
 

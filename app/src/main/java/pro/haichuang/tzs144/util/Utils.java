@@ -73,7 +73,7 @@ public class Utils {
     }
 
     public static String formatSelectTime(Date date){
-      return   simpleDateFormat.format(date);
+      return  simpleDateFormat.format(date);
     }
 
     public static String transformTime(Date date){

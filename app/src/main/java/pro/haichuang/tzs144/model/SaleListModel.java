@@ -70,6 +70,15 @@ public class SaleListModel {
         private String salesDistance;
         private String isWaterRead;
         private int orderStatus;
+        private int settleStatus;
+
+        public int getSettleStatus() {
+            return settleStatus;
+        }
+
+        public void setSettleStatus(int settleStatus) {
+            this.settleStatus = settleStatus;
+        }
 
         public String getIsWaterRead() {
             return isWaterRead;

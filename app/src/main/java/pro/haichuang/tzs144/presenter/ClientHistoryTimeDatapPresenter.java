@@ -34,7 +34,7 @@ public class ClientHistoryTimeDatapPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.COUNT_LS_ORDER, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-                iLoadDataView.startLoad();
+
             }
 
             @Override
@@ -54,7 +54,7 @@ public class ClientHistoryTimeDatapPresenter {
 
             @Override
             public void error(String error) {
-                iLoadDataView.errorLoad(error);
+
             }
         });
     }
@@ -65,17 +65,18 @@ public class ClientHistoryTimeDatapPresenter {
      * @param startTime
      * @param endTime
      */
-    public final void findLsOrders(String time,String startTime,String endTime){
+    public final void findLsOrders(String time,String startTime,String endTime,int page){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("time",time);
         params.put("startTime",startTime);
         params.put("endTime",endTime);
+        params.put("page",page);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_LS_ORDERS, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                iLoadDataView.startLoad();
             }
 
             @Override
