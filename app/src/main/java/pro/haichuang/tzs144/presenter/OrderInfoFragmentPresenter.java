@@ -29,6 +29,51 @@ public class OrderInfoFragmentPresenter {
     }
 
 
+
+    /**
+     * 根据状态获取对应的订单数据
+     * @param deliveryStatus
+     * @param page
+     */
+    public void loadOrderByStatus(int deliveryStatus,String startTime,String endTime,int page,int goodsId){
+
+        Map<String,Object> params = new ArrayMap<>();
+        params.put("deliveryStatus",deliveryStatus);
+        params.put("startTime",startTime);
+        params.put("endTime",endTime);
+        params.put("goodsId",goodsId);
+        params.put("page",page);
+        params.put("limit", Config.LIMIT);
+
+        HttpRequestEngine.postRequest(ConfigUrl.HOME_ORDER, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+                iLoadDataView.startLoad();
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    OrderInfoModel orderInfoModel = Utils.gsonInstane().fromJson(result, OrderInfoModel.class);
+                    if (orderInfoModel!=null && orderInfoModel.getResult()==1){
+                        iLoadDataView.successLoad(orderInfoModel.getData());
+                    }else {
+                        iLoadDataView.errorLoad("获取错误");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iLoadDataView.errorLoad(error);
+            }
+        });
+    }
+
+
+
     /**
      * 根据状态获取对应的订单数据
      * @param deliveryStatus

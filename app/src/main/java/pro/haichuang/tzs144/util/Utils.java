@@ -310,4 +310,20 @@ public class Utils {
         return formatSelectTime(m);
     }
 
+    /**
+     * 获取过去第几天的日期
+     *
+     * @param past
+     * @return
+     */
+    public static String getPastDate(int past,Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - past);
+        Date today = calendar.getTime();
+        String result = simpleDateFormat.format(today);
+        return result;
+    }
+
+
 }

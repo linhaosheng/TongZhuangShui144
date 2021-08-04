@@ -107,8 +107,11 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     private boolean lastPage;
     private int currentPage = 1;
-    private boolean lastOrder = true;
+    private int goodId = 144;
     private boolean visibleToUser;
+
+    private String startTime;
+    private String endTime;
 
     public OrderInfoFragment() {
         super();
@@ -120,7 +123,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public boolean lazyLoader() {
-        return true;
+        return false;
     }
 
     @Override
@@ -141,7 +144,12 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             public void onLoadMore() {
                 if (!lastPage) {
                     currentPage++;
-                    orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
+                    if (id==4){
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage);
+                    //    orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
+                    }else {
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+                    }
                 }
 
             }
@@ -247,6 +255,15 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             myMapView.setVisibility(View.GONE);
             mapView.setVisibility(View.GONE);
         }
+        initData();
+    }
+
+    private void initData(){
+        startTime =  Utils.getPastDate(7,new Date());
+        endTime = Utils.formatSelectTime(new Date());
+        if (orderInfoFragmentPresenter==null){
+            orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
+        }
     }
 
     /**
@@ -263,15 +280,16 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 selectTime.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.set_bg_btn50));
                 currentPage = 1;
                 lastPage = false;
-                lastOrder = true;
-                orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+                startTime =  Utils.getPastDate(7,new Date());
+                endTime = Utils.formatSelectTime(new Date());
+                orderInfoFragmentPresenter.loadOrderByStatus(id, startTime, currentPage);
+              //  orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
             }
         });
 
         selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lastOrder = false;
                 selectTime.setTextColor(Color.parseColor("#32C5FF"));
                 lastTime.setTextColor(Color.parseColor("#333333"));
                 selectTime.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.set_bg_btn24));
@@ -283,7 +301,10 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                         selectTime.setText(Utils.formatSelectTime(date));
                         currentPage = 1;
                         lastPage = false;
-                        orderInfoFragmentPresenter.loadOrderByStatus(id, selectTime.getText().toString(), currentPage);
+                        startTime = selectTime.getText().toString();
+                        endTime = startTime;
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage);
+                      // orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
                     }
                 })
                         .build();
@@ -299,6 +320,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 SelectShopDialog selectShopDialog  = new SelectShopDialog(getActivity(), 0,new SelectShopDialog.SelectShopListener() {
                     @Override
                     public void selectShop(ShopListModel.DataBean.DataListBean dataBean) {
+                        String id = dataBean.getId();
+                        Log.i("TAG===","selectShop==="+id);
                     }
                 });
                 selectShopDialog.show(getChildFragmentManager(),"");
@@ -310,19 +333,17 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     public void onResume() {
         super.onResume();
         visibleToUser = true;
-        if (orderInfoFragmentPresenter==null&& id == 0){
-            setUpData();
-        }
+        onRefresh();
     }
 
 
     @Override
     protected void setUpData() {
-        if (refresh!=null){
-            if (orderInfoFragmentPresenter==null){
-                orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
-            }
+        if (id!=4){
             orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+        }else {
+            orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
+            //   orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
         }
     }
 
@@ -330,10 +351,11 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     public void onRefresh() {
         currentPage = 1;
         lastPage = false;
-        if (lastOrder){
-            orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
-        }else {
+        if (id==4){
             orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
+         //    orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
+        }else {
+            orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
         }
     }
 
@@ -425,7 +447,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 int currentId = Integer.parseInt(event.id);
                 if (currentId == id) {
                     onRefresh();
-                   // orderInfoFragmentPresenter.loadOrderByStatus(currentId, Utils.formatSelectTime(new Date()), 1);
                 }
                 Log.i(TAG, "onMessageEvent==id=" + event.id + " === id===" + id);
             } catch (Exception e) {
@@ -481,13 +502,13 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         }
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && visibleToUser){
-            onRefresh();
-        }
-    }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser && visibleToUser){
+//            onRefresh();
+//        }
+//    }
 
     @Override
     public void onDestroy() {
