@@ -74,6 +74,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     private TextView filter;
     private String startTime;
     private String endTime;
+    private String pickTime;
     private ClientHistoryTimeDatapPresenter clientHistoryTimeDatapPresenter;
     private List<TrendModel>trendModelList;
 
@@ -113,7 +114,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
             public void onLoadMore() {
                 if (!lastPage) {
                     currentPage++;
-                    clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime,currentPage);
+                    clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
                 }
             }
         });
@@ -127,15 +128,16 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
                     public void selectTime(String mStartTime, String mEndTime) {
                         lastPage = false;
                         currentPage  =1;
-                       startTime = mStartTime;
-                       endTime = mEndTime;
-                        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime,currentPage);
+                        startTime = mStartTime;
+                        endTime = mEndTime;
+                        pickTime = null;
+                        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
                     }
                 });
                 timeDialog.show(getChildFragmentManager(), "");
             }
         });
-         filter = headView.findViewById(R.id.filter);
+        filter = headView.findViewById(R.id.filter);
         checkOutTime = headView.findViewById(R.id.check_out_time);
         checkOutTime.setText(Utils.formatSelectTime(new Date()));
         checkOutTime.setOnClickListener(new View.OnClickListener() {
@@ -147,8 +149,11 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
                         lastPage = false;
                         currentPage=1;
                         checkOutTime.setText(Utils.formatSelectTime(date));
-                        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
-                        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime,currentPage);
+                        pickTime = checkOutTime.getText().toString();
+                        clientHistoryTimeDatapPresenter.countLsOrder(pickTime);
+                        startTime = null;
+                        endTime = null;
+                        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
                     }
                 })
                         .build();
@@ -184,16 +189,17 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     @Override
     protected void setUpData() {
         clientHistoryTimeDatapPresenter = new ClientHistoryTimeDatapPresenter(this);
-        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
-        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime,currentPage);
+        pickTime = checkOutTime.getText().toString();
+        clientHistoryTimeDatapPresenter.countLsOrder(pickTime);
+        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
     }
 
     @Override
     public void onRefresh() {
         currentPage = 1;
         lastPage = false;
-        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
-        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime,currentPage);
+        clientHistoryTimeDatapPresenter.countLsOrder(pickTime);
+        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
     }
 
     @Override
@@ -280,8 +286,8 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
         if (event != null) {
             if (event.type==4){
                 if (event.status== Config.LOAD_SUCCESS){
-                    clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
-                    clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime,currentPage);
+                    clientHistoryTimeDatapPresenter.countLsOrder(pickTime);
+                    clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
                 }
             }
         }

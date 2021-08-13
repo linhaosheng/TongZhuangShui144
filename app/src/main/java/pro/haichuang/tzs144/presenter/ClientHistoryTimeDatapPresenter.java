@@ -68,9 +68,12 @@ public class ClientHistoryTimeDatapPresenter {
     public final void findLsOrders(String time,String startTime,String endTime,int page){
 
         Map<String,Object>params = new ArrayMap<>();
-        params.put("time",time);
-        params.put("startTime",startTime);
-        params.put("endTime",endTime);
+        if (time!=null) {
+            params.put("time",time);
+        }else {
+            params.put("startTime",startTime);
+            params.put("endTime",endTime);
+        }
         params.put("page",page);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_LS_ORDERS, params, new HttpRequestResultListener() {

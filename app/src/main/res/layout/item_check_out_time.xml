@@ -23,7 +23,7 @@
         android:layout_height="@dimen/dp_40"
         android:background="@drawable/set_bg_btn36"
         android:gravity="center"
-        android:text="2019-06-22"
+        android:text="2021-06-22"
         android:textColor="#32C5FF"
         android:layout_toRightOf="@+id/check_out"
         android:layout_centerVertical="true"

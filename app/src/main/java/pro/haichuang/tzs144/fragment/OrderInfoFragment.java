@@ -336,7 +336,6 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         onRefresh();
     }
 
-
     @Override
     protected void setUpData() {
         if (id!=4){
