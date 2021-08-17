@@ -44,6 +44,15 @@ public class LoginModel {
 
         private String authority;
         private String verification;
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public String getAuthority() {
             return authority;

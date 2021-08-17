@@ -439,13 +439,14 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     }
 
     @Override
-    public void successLoad(String data) {
+    public void successLoad(String id) {
 
         /**
          * 极光推送，添加tag
          */
         Set<String> tags = new HashSet<>();
         tags.add(Config.CURRENT_MAIN_ID);
+        tags.add(id);
 
         JPushInterface.setTags(this, tags, new TagAliasCallback() {
             @Override
