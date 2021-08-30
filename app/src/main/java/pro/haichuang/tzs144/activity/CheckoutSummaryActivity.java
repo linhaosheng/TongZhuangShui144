@@ -52,34 +52,26 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
     ImageView back;
     @BindView(R.id.title)
     TextView title;
-
     @BindView(R.id.inventory_subject)
     LSettingItem inventory_subject;
-
     @BindView(R.id.financial_status)
     LSettingItem financial_status;
-
     @BindView(R.id.time_rand)
     LSettingItem time_rand;
-
     @BindView(R.id.shop_type)
     LSettingItem shop_type;
-
     @BindView(R.id.cash_num)
     TextView cash_num;
-
     @BindView(R.id.platform_num)
     TextView platform_num;
-
     @BindView(R.id.coupon_num)
     TextView coupon_num;
-
     @BindView(R.id.takeaway_num)
     TextView takeawayNum;
-
+    @BindView(R.id.give_away_num)
+    TextView giveAwayNum;
     @BindView(R.id.tabs)
     TabLayout tabs;
-
     @BindView(R.id.vp_view)
     ViewPager vp_view;
 
@@ -289,6 +281,7 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
         cash_num.setText("0元");
         platform_num.setText("0元");
         takeawayNum.setText("0元");
+        giveAwayNum.setText("0元");
         takeNum = 0.0f;
         if (datas != null && datas.size() >= 0) {
             for (SummaryModel.DataBean dataBean : datas) {
@@ -297,7 +290,9 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
                         cash_num.setText(dataBean.getPrice() + "元");
                     } else if ("1".equals(dataBean.getType())) {
                         platform_num.setText(dataBean.getPrice() + "元");
-                    }else if ("2".equals(dataBean.getPrice()) || "3".equals(dataBean.getPrice())){
+                    }else if ("5".equals(dataBean.getType())){
+                        giveAwayNum.setText(dataBean.getPrice() + "元");
+                    } else if ("2".equals(dataBean.getType()) || "3".equals(dataBean.getType())){
                         try {
                             takeNum = takeNum + Float.parseFloat(dataBean.getPrice());
                         }catch (Exception e){

@@ -137,6 +137,10 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     ImageView uploadMonth;
     @BindView(R.id.month_deduction_nunm)
     LSettingItem monthDeductionNunm;
+    @BindView(R.id.give_away_nunm)
+    LSettingItem giveAwayNunm;
+    @BindView(R.id.give_away)
+    TextView giveAway;
     @BindView(R.id.confirm_add_shop)
     Button confirmAddShop;
     @BindView(R.id.shop_detail)
@@ -179,6 +183,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private boolean selectWater;
     private boolean selectReward;
     private boolean selectMonth;
+    private boolean selectGiveAway;
 
     private final static int REQUEST_CODE_CHOOSE_PICTURE_REWARD = 0x1110;
     private final static int REQUEST_CODE_CHOOSE_PICTURE_MONTH = 0x1111;
@@ -379,7 +384,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     }
 
 
-    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add})
+    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.give_away,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.reduce:
@@ -514,6 +519,19 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
                 selectMonth =!selectMonth;
                 break;
+            case R.id.give_away:
+
+                if (selectGiveAway){
+                    giveAwayNunm.setEditinput("");
+                    giveAway.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
+                    giveAwayNunm.setVisibility(View.GONE);
+                }else {
+                    giveAway.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
+                    giveAwayNunm.setVisibility(View.VISIBLE);
+                }
+                selectGiveAway=!selectGiveAway;
+                break;
+
             case R.id.confirm_add_shop:
 
                 if (mDataBea==null){
