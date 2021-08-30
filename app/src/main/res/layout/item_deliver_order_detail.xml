@@ -422,6 +422,17 @@
             android:textColor="#32C5FF"
             android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/give_away"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_24"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@drawable/set_bg_btn33"
+            android:gravity="center"
+            android:text="赠送"
+            android:textColor="#32C5FF"
+            android:textSize="16sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -559,6 +570,36 @@
             app:rightText="请输入"
             app:inputType = "2"
             app:showEditInput="true" />
+
+        <pro.haichuang.tzs144.view.LSettingItem
+            android:id="@+id/give_away_money"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="51dp"
+            app:LtextColor="#333333"
+            app:isShowRightLogo="true"
+            app:isShowRightText="false"
+            app:isShowUnderLine="true"
+            app:leftText="赠送金额"
+            app:rightIconSize="@dimen/dp_22"
+            app:inputType="2"
+            app:rightText="请输入"
+            app:showEditInput="true"/>
+
+        <pro.haichuang.tzs144.view.LSettingItem
+            android:id="@+id/give_away_nunm"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="51dp"
+            app:LtextColor="#333333"
+            app:isShowRightLogo="true"
+            app:isShowRightText="false"
+            app:isShowUnderLine="true"
+            app:leftText="赠送数量"
+            app:rightIconSize="@dimen/dp_22"
+            app:inputType="1"
+            app:rightText="请输入"
+            app:showEditInput="true"/>
 
     </LinearLayout>
 

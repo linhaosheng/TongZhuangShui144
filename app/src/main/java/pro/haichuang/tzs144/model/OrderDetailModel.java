@@ -292,6 +292,15 @@ public class OrderDetailModel {
             private boolean showWater;
             private boolean showReward;
             private boolean showMonth;
+            private boolean showSend;
+
+            public boolean isShowSend() {
+                return showSend;
+            }
+
+            public void setShowSend(boolean showSend) {
+                this.showSend = showSend;
+            }
 
             public String getGoodsSpecsName() {
                 if (goodsSpecsName==null){

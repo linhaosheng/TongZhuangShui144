@@ -39,7 +39,6 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
                 helper.getView(R.id.water_view).setVisibility(View.GONE);
             }
 
-
             String priceNum = "¥" + item.getGoodsPrice() + "x" + item.getNum();
             String totalPrice = "¥" + Float.parseFloat(item.getGoodsPrice()) * Float.parseFloat(item.getNum());
 
@@ -90,6 +89,14 @@ public class AddOrderAdapter extends BaseQuickAdapter<AddOrderModel.GoodsListBea
                 Utils.showImage(monthImg, item.getDeductMonth().getMonthImg());
                 String month_discount = "抵扣 -" + item.getDeductMonth().getDeductNum();
                 helper.setText(R.id.month_discount, month_discount);
+            }
+
+            if (item.getSendNum()>0){
+                helper.getView(R.id.give_away_relative).setVisibility(View.VISIBLE);
+                String giveAwayInfo = item.getSendNum() + "*" + item.getSendPrice();
+                helper.setText(R.id.give_away_info,giveAwayInfo);
+            }else {
+                helper.getView(R.id.give_away_relative).setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();

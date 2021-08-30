@@ -180,7 +180,6 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     @Override
     protected void setUpView() {
         title.setText("订单详情");
-
     }
 
     @Override

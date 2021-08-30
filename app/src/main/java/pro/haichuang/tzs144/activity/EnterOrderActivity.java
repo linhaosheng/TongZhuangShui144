@@ -139,6 +139,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     LSettingItem monthDeductionNunm;
     @BindView(R.id.give_away_nunm)
     LSettingItem giveAwayNunm;
+    @BindView(R.id.give_away_money)
+    LSettingItem giveAwayMoney;
     @BindView(R.id.give_away)
     TextView giveAway;
     @BindView(R.id.confirm_add_shop)
@@ -522,12 +524,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             case R.id.give_away:
 
                 if (selectGiveAway){
+                    giveAwayMoney.setEditinput("");
                     giveAwayNunm.setEditinput("");
                     giveAway.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
                     giveAwayNunm.setVisibility(View.GONE);
+                    giveAwayMoney.setVisibility(View.GONE);
                 }else {
                     giveAway.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
                     giveAwayNunm.setVisibility(View.VISIBLE);
+                    giveAwayMoney.setVisibility(View.VISIBLE);
+                    if (shopDataBean!=null){
+                        giveAwayMoney.setEditinput(String.valueOf(shopDataBean.getPrice()));
+                    }
                 }
                 selectGiveAway=!selectGiveAway;
                 break;
@@ -590,6 +598,16 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     e.printStackTrace();
                 }
 
+                try {
+                    int num = Integer.parseInt(giveAwayNunm.getEditText());
+                    if (num>0){
+                        goodsListBean.setSendNum(num);
+                        goodsListBean.setSendPrice(Float.parseFloat(giveAwayMoney.getEditText()));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 String json = Utils.gsonInstane().toJson(goodsListBean);
                 Log.i(TAG,"json====="+json);
                 List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
@@ -597,7 +615,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     data = new ArrayList<>();
                 }
                 data.add(0,goodsListBean);
-
                 addOrderAdapter.setList(data);
 
                 shopDetail.setVisibility(View.GONE);
@@ -614,7 +631,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 uploadReward.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
                 uploadMonth.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
 
-
                 break;
             case R.id.select_client:
                 Intent intent2 = new Intent(this,SaleSearchActivity.class);
@@ -630,6 +646,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         amount_receivable = 0;
         actual_amount = 0;
         float month_mount = 0;
+        float sendMoney = 0;
 
         try {
             List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
@@ -638,6 +655,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     // Utils.showCenterTomast("请选择水票");
                     // break;
                 }
+
                 float shopPrice =  Float.parseFloat(goodsListBean1.getGoodsPrice());
                 //总价格 : 所有商品金额之和
                 float currentAmount = Float.parseFloat(goodsListBean1.getNum()) * shopPrice;
@@ -666,10 +684,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     float deductMonthNum = Float.parseFloat(goodsListBean1.getDeductMonth().getDeductNum());
                     month_mount += deductMonthNum * shopPrice;
                 }
+                if (goodsListBean1.getSendNum()>0){
+                    sendMoney += goodsListBean1.getSendPrice() * goodsListBean1.getSendNum();
+                }
             }
             totalMerchandiseNum.setText(totalPrice +"");
             amountReceivableNum.setText(amount_receivable +"");
-            actualAmount.setText((amount_receivable - month_mount)+"");
+            actualAmount.setText((amount_receivable - month_mount - sendMoney)+"");
         }catch (Exception e){
             e.printStackTrace();
         }

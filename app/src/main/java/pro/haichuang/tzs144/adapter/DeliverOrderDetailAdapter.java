@@ -209,6 +209,20 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
             helper.getView(R.id.month_deduction_nunm).setVisibility(View.GONE);
         }
 
+        /**
+         * 赠送金额
+         */
+        if (item.isShowSend()){
+            helper.getView(R.id.give_away).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn17));
+            helper.getView(R.id.give_away_money).setVisibility(View.VISIBLE);
+            helper.getView(R.id.give_away_nunm).setVisibility(View.VISIBLE);
+        }else {
+            helper.getView(R.id.give_away).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn33));
+            helper.getView(R.id.give_away_money).setVisibility(View.GONE);
+            helper.getView(R.id.give_away_nunm).setVisibility(View.GONE);
+        }
+
+
         ImageView uploadReward = helper.getView(R.id.upload_reward);
         if (item.getCouponImg()!=null && !"".equals(item.getCouponImg())){
             Utils.showImage(uploadReward,item.getCouponImg());
@@ -329,7 +343,6 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
                 }
             }
         });
-
 
         EditText shop_num_tong = helper.getView(R.id.shop_num_tong);
         if (shop_num_tong.getText()!=null && shop_num_tong.getText().length()>0){
