@@ -408,12 +408,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
             }
         });
 
-        deliverOrderDetailAdapter.setCaculateMoneyListener(new DeliverOrderDetailAdapter.CaculateMoneyListener() {
-            @Override
-            public void caculate() {
-                caculateData();
-            }
-        });
+        deliverOrderDetailAdapter.setCaculateMoneyListener(() -> caculateData());
         caculateData();
     }
 
@@ -421,6 +416,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         try {
             amount_receivable = 0;
             actual_amount = 0;
+            float sendMoneyAmount = 0;
 
             totalPrice =  Float.parseFloat(totalMerchandiseNum.getText().toString());
 
@@ -442,10 +438,11 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 }
                 amount_receivable += (waterDeductNum + couponDeductNum)*goodsListBean.getGoodsPrice();  //应收金额
                 actual_amount += monthDeductNum * goodsListBean.getGoodsPrice();   //实收金额
+                sendMoneyAmount += goodsListBean.getSendNum() * goodsListBean.getSendPrice();
             }
 
             amountReceivableNum.setText((totalPrice - amount_receivable) +"");
-            actualAmount.setText(((totalPrice - amount_receivable) - actual_amount)+"");
+            actualAmount.setText(((totalPrice - amount_receivable) - actual_amount - sendMoneyAmount)+"");
 
         }catch (Exception e){
             e.printStackTrace();
@@ -487,6 +484,8 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
 
                     ShopDeleveModel.GoodsListBean goodsListBean1 = new ShopDeleveModel.GoodsListBean();
                     goodsListBean1.setOrderGoodsId(goodsListBean.getOrderGoodsId());
+                    goodsListBean1.setSendNum(goodsListBean.getSendNum());
+                    goodsListBean1.setSendPrice(goodsListBean.getSendPrice());
 
                     if (goodsListBean.getWaterGoodsId()!=0){
                         ShopDeleveModel.GoodsListBean.DeductWaterBean deductWaterBean = new ShopDeleveModel.GoodsListBean.DeductWaterBean();

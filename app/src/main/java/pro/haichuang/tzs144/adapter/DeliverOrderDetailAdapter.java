@@ -212,14 +212,57 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         /**
          * 赠送金额
          */
+        LSettingItem giveMoneySettingItem = helper.getView(R.id.give_away_money);
+        LSettingItem giveNumSettingItem = helper.getView(R.id.give_away_nunm);
+
+        giveMoneySettingItem.setEditTextListner(text -> {
+            int position = helper.getPosition();
+            OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+            try {
+                goodsListBean.setSendPrice(Float.parseFloat(text));
+                DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if (caculateMoneyListener!=null){
+                    caculateMoneyListener.caculate();
+                }
+            }
+        });
+
+        giveNumSettingItem.setEditTextListner(text -> {
+            int position = helper.getPosition();
+            OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+            try {
+                goodsListBean.setSendNum(Integer.parseInt(text));
+                DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if (caculateMoneyListener!=null){
+                    caculateMoneyListener.caculate();
+                }
+            }
+        });
+
         if (item.isShowSend()){
             helper.getView(R.id.give_away).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn17));
-            helper.getView(R.id.give_away_money).setVisibility(View.VISIBLE);
-            helper.getView(R.id.give_away_nunm).setVisibility(View.VISIBLE);
+            giveMoneySettingItem.setVisibility(View.VISIBLE);
+            giveNumSettingItem.setVisibility(View.VISIBLE);
+            if (item.getSendPrice()>0){
+                giveMoneySettingItem.setEditinput(String.valueOf(item.getSendPrice()));
+            }else {
+                giveMoneySettingItem.setEditinput("");
+            }
+            if (item.getSendNum()>0){
+                giveNumSettingItem.setEditinput(String.valueOf(item.getSendNum()));
+            }else {
+                giveNumSettingItem.setEditinput("");
+            }
         }else {
             helper.getView(R.id.give_away).setBackground(ContextCompat.getDrawable(context,R.drawable.set_bg_btn33));
-            helper.getView(R.id.give_away_money).setVisibility(View.GONE);
-            helper.getView(R.id.give_away_nunm).setVisibility(View.GONE);
+            giveMoneySettingItem.setVisibility(View.GONE);
+            giveNumSettingItem.setVisibility(View.GONE);
         }
 
 
@@ -237,12 +280,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
             uploadMonth.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.upload));
         }
 
-        lSettingItem.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
-            @Override
-            public void click(boolean isChecked, View view) {
-                selectWaterListener.selectClick(helper.getPosition());
-            }
-        });
+        lSettingItem.setmOnLSettingItemClick((isChecked, view) -> selectWaterListener.selectClick(helper.getPosition()));
 
 
         LSettingItem select_water_num =  helper.getView(R.id.select_water_num);
@@ -251,47 +289,38 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         }else {
             select_water_num.setEditinput("");
         }
-        select_water_num.setEditTextListner(new LSettingItem.EditTextListner() {
-            @Override
-            public void editListner(String text) {
-                int position = helper.getPosition();
-                Log.i("TAG===",text+"===position=="+position);
-                OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
-                try {
-                    goodsListBean.setWaterNum(Integer.parseInt(text));
-                    DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    if (caculateMoneyListener!=null){
-                        caculateMoneyListener.caculate();
-                    }
+        select_water_num.setEditTextListner(text -> {
+            int position = helper.getPosition();
+            OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+            try {
+                goodsListBean.setWaterNum(Integer.parseInt(text));
+                DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if (caculateMoneyListener!=null){
+                    caculateMoneyListener.caculate();
                 }
             }
         });
 
         LSettingItem select_deduction_nunm =  helper.getView(R.id.select_deduction_nunm);
-       // select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
         if (item.getWaterDeductNum()!=0){
             select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
         }else {
             select_deduction_nunm.setEditinput("");
         }
-        select_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
-            @Override
-            public void editListner(String text) {
-                int position = helper.getPosition();
-                OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
-                try {
-                    goodsListBean.setWaterDeductNum(Integer.parseInt(text));
-                    DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    if (caculateMoneyListener!=null){
-                        caculateMoneyListener.caculate();
-                    }
+        select_deduction_nunm.setEditTextListner(text -> {
+            int position = helper.getPosition();
+            OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+            try {
+                goodsListBean.setWaterDeductNum(Integer.parseInt(text));
+                DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if (caculateMoneyListener!=null){
+                    caculateMoneyListener.caculate();
                 }
             }
         });
@@ -302,20 +331,17 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         }else {
             reward_deduction_nunm.setEditinput("");
         }
-        reward_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
-            @Override
-            public void editListner(String text) {
-                int position = helper.getPosition();
-                OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
-                try {
-                    goodsListBean.setCouponDeductNum(Integer.parseInt(text));
-                    DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    if (caculateMoneyListener!=null){
-                        caculateMoneyListener.caculate();
-                    }
+        reward_deduction_nunm.setEditTextListner(text -> {
+            int position = helper.getPosition();
+            OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+            try {
+                goodsListBean.setCouponDeductNum(Integer.parseInt(text));
+                DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if (caculateMoneyListener!=null){
+                    caculateMoneyListener.caculate();
                 }
             }
         });
@@ -326,20 +352,17 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
         }else {
             month_deduction_nunm.setEditinput("");
         }
-        month_deduction_nunm.setEditTextListner(new LSettingItem.EditTextListner() {
-            @Override
-            public void editListner(String text) {
-                int position = helper.getPosition();
-                OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
-                try {
-                    goodsListBean.setMonthDeductNum(Integer.parseInt(text));
-                    DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    if (caculateMoneyListener!=null){
-                        caculateMoneyListener.caculate();
-                    }
+        month_deduction_nunm.setEditTextListner(text -> {
+            int position = helper.getPosition();
+            OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
+            try {
+                goodsListBean.setMonthDeductNum(Integer.parseInt(text));
+                DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if (caculateMoneyListener!=null){
+                    caculateMoneyListener.caculate();
                 }
             }
         });
