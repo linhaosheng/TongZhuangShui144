@@ -330,6 +330,14 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && refresh!=null){
+            onRefresh();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         visibleToUser = true;
@@ -360,12 +368,16 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public void startLoad() {
-        refresh.setRefreshing(true);
+        refresh.postDelayed(()->{
+            refresh.setRefreshing(true);
+        },200);
     }
 
     @Override
     public void successLoad(List<OrderInfoModel.DataBean> data) {
-        refresh.setRefreshing(false);
+        refresh.postDelayed(()->{
+            refresh.setRefreshing(false);
+        },200);
         if (data == null || data.size() == 0) {
             lastPage = true;
         }

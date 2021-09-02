@@ -213,7 +213,7 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
 
         try {
             String unpackNum = shopNum.getEditText();
-            float inputNum = Float.parseFloat(unpackNum);
+            double inputNum = Double.parseDouble(unpackNum);
             if (inputNum<=0){
                 Utils.showCenterTomast("请输入商品数量");
                 return;
@@ -229,7 +229,7 @@ public class UnpackActivity extends BaseActivity implements ILoadDataView<String
             }
 
             String num = unpackShopNum.getEditText();
-            inputNum = Float.parseFloat(num);
+            inputNum = Double.parseDouble(num);
 
             if (inputNum<=0){
                 Utils.showCenterTomast("请输入拆解后的商品数量");
