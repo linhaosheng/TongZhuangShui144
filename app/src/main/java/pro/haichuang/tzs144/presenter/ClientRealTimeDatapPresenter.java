@@ -5,6 +5,7 @@ import android.util.ArrayMap;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
@@ -92,9 +93,13 @@ public class ClientRealTimeDatapPresenter {
     /**
      * [账务]账务管理 - 结账
      */
-    public final void settle(){
+    public final void settle(List<Integer>orderIds){
 
-        HttpRequestEngine.postRequest(ConfigUrl.SETTLE, null, new HttpRequestResultListener() {
+        Map<String,Object>params = new ArrayMap<>();
+        if (orderIds!=null && orderIds.size()>0){
+            params.put("orderIds",orderIds);
+        }
+        HttpRequestEngine.postRequest(ConfigUrl.SETTLE, params, new HttpRequestResultListener() {
             @Override
             public void start() {
 

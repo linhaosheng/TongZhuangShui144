@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -65,6 +66,8 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     RelativeLayout emptyView;
     @BindView(R.id.bill_order)
     TextView billOrder;
+    @BindView(R.id.filter_view)
+    LinearLayout filterView;
 
     private OrderPaymentAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
@@ -94,12 +97,13 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Override
     protected void setUpView() {
+        filterView.setVisibility(View.GONE);
         startTime = "2019-10-22";
         endTime = Utils.formatSelectTime(new Date());
 
         billOrder.setVisibility(View.GONE);
         refresh.setOnRefreshListener(this);
-        orderPaymentAdapter = new OrderPaymentAdapter();
+        orderPaymentAdapter = new OrderPaymentAdapter(0);
         orderTrendAdapter  = new OrderTrendAdapter();
 
         headView = LayoutInflater.from(getActivity()).inflate(R.layout.item_check_out_time,null);

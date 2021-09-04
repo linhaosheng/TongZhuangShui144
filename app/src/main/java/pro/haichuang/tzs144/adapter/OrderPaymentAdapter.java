@@ -1,6 +1,9 @@
 package pro.haichuang.tzs144.adapter;
 
 import android.view.View;
+import android.widget.ImageView;
+
+import androidx.core.content.ContextCompat;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
@@ -16,9 +19,11 @@ import pro.haichuang.tzs144.model.AccountOrderModel;
  */
 public class OrderPaymentAdapter extends BaseQuickAdapter<AccountOrderModel.DataBean, BaseViewHolder> implements LoadMoreModule {
 
+    private int orderType;
 
-    public OrderPaymentAdapter() {
+    public OrderPaymentAdapter(int mOrderType) {
         super(R.layout.item_order_payment);
+        this.orderType = mOrderType;
     }
 
     @Override
@@ -81,5 +86,16 @@ public class OrderPaymentAdapter extends BaseQuickAdapter<AccountOrderModel.Data
             baseViewHolder.getView(R.id.settle_date).setVisibility(View.GONE);
         }
 
+        ImageView checkImg = baseViewHolder.getView(R.id.check_img);
+        if (orderType==1){
+            checkImg.setVisibility(View.VISIBLE);
+        }else {
+            checkImg.setVisibility(View.GONE);
+        }
+        if (dataBean.isCheck()){
+           checkImg.setImageDrawable(ContextCompat.getDrawable(getContext(),R.mipmap.check_box));
+        }else {
+            checkImg.setImageDrawable(ContextCompat.getDrawable(getContext(),R.mipmap.check));
+        }
     }
 }

@@ -45,7 +45,7 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
         }else {
             deposit_type = "开押类型 ：暂欠";
         }
-        String with_drawal_time = "记录时间 ："+dataBean.getTime();
+        String with_drawal_time = "记录时间 ："+dataBean.getReturnTime();
         String with_drawal_name = "退押人 ："+dataBean.getReturnName();
 
         ImageView orderStateImg = baseViewHolder.getView(R.id.order_state);

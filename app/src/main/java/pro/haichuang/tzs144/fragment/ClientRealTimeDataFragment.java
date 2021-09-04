@@ -2,9 +2,11 @@ package pro.haichuang.tzs144.fragment;
 
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +21,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
+import com.kongzue.dialog.v3.BottomMenu;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,6 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
+import pro.haichuang.tzs144.activity.CheckoutSummaryActivity;
 import pro.haichuang.tzs144.activity.MainActivity;
 import pro.haichuang.tzs144.activity.SaleOrderDetailActivity;
 import pro.haichuang.tzs144.activity.SalesListActivity;
@@ -41,10 +46,13 @@ import pro.haichuang.tzs144.iview.ILoadDataView;
 import pro.haichuang.tzs144.model.AccountOrderModel;
 import pro.haichuang.tzs144.model.AccountRealTimeModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
+import pro.haichuang.tzs144.model.RefreshCountEvent;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.TrendModel;
+import pro.haichuang.tzs144.model.TypeListModel;
 import pro.haichuang.tzs144.presenter.ClientRealTimeDatapPresenter;
 import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
 
 /**
@@ -63,6 +71,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     RelativeLayout emptyView;
     @BindView(R.id.bill_order)
     TextView billOrder;
+    @BindView(R.id.filter_view)
+    LinearLayout filterView;
 
     private OrderPaymentAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
@@ -74,6 +84,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     private String date;
     private boolean lastPage;
     private int currentPage = 1;
+    private List<CharSequence> shopTypeList;
+    private TypeListModel typeListModel;
 
 
     @Override
@@ -88,10 +100,10 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
 
     @Override
     protected void setUpView() {
+        shopTypeList = new ArrayList<>();
         date = "2021-01-01";
-
         refresh.setOnRefreshListener(this);
-        orderPaymentAdapter = new OrderPaymentAdapter();
+        orderPaymentAdapter = new OrderPaymentAdapter(1);
         orderPaymentAdapter.getLoadMoreModule().setAutoLoadMore(true);
         //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
         orderPaymentAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
@@ -125,15 +137,19 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
         recycleDataDetail.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         recycleDataDetail.setAdapter(orderPaymentAdapter);
 
-        orderPaymentAdapter.addChildClickViewIds(R.id.void_order);
+        orderPaymentAdapter.addChildClickViewIds(R.id.void_order,R.id.check_img);
         orderPaymentAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 switch (view.getId()){
                     case R.id.void_order:
-
                         AccountOrderModel.DataBean dataBean = orderPaymentAdapter.getData().get(position);
                         clientRealTimeDatapPresenter.cancel(dataBean.getId());
+                        break;
+                    case R.id.check_img:
+                        AccountOrderModel.DataBean dataBean2 = orderPaymentAdapter.getData().get(position);
+                        dataBean2.setCheck(!dataBean2.isCheck());
+                        orderPaymentAdapter.setData(position,dataBean2);
                         break;
                 }
             }
@@ -158,6 +174,19 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             clientRealTimeDatapPresenter = new ClientRealTimeDatapPresenter(this);
             clientRealTimeDatapPresenter.ssManagerCount();
             clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
+        }
+    }
+
+    /**
+     * 初始化商品种类的数据
+     */
+    private void initShopTypeData(){
+        String shopTypeJson = SPUtils.getString(Config.GOODS_CATEGORY_LIST,"");
+        if (!TextUtils.isEmpty(shopTypeJson)){
+            typeListModel = Utils.gsonInstane().fromJson(shopTypeJson, TypeListModel.class);
+            for (TypeListModel.DataBean dataBean : typeListModel.getData()) {
+                shopTypeList.add(dataBean.getName());
+            }
         }
     }
 
@@ -283,12 +312,32 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
         refresh.setRefreshing(false);
     }
 
-    @OnClick({R.id.bill_order})
+    @OnClick({R.id.bill_order,R.id.filter_view})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.bill_order:
                 Utils.showCenterTomast("正在结账");
-                clientRealTimeDatapPresenter.settle();
+                List<AccountOrderModel.DataBean> data = orderPaymentAdapter.getData();
+                List<Integer> orderIds = new ArrayList<>();
+                for (AccountOrderModel.DataBean dataBean : data){
+                    if (dataBean.isCheck()){
+                        orderIds.add(dataBean.getId());
+                    }
+                }
+                Log.i(TAG,"==="+Utils.gsonInstane().toJson(orderIds));
+                clientRealTimeDatapPresenter.settle(orderIds);
+                break;
+            case R.id.filter_view:
+                if (shopTypeList.size()==0){
+                    initShopTypeData();
+                }
+                BottomMenu.show((AppCompatActivity) getActivity(), shopTypeList, new OnMenuItemClickListener() {
+                    @Override
+                    public void onClick(String text, int index) {
+
+                    }
+                });
+
                 break;
         }
     }

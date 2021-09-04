@@ -106,6 +106,15 @@
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10">
 
+        <ImageView
+            android:id="@+id/check_img"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/check"
+            android:scaleType="center"
+            />
+
         <TextView
             android:id="@+id/payment_method"
             android:layout_width="wrap_content"

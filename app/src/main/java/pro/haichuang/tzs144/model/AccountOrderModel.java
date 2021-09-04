@@ -70,7 +70,15 @@ public class AccountOrderModel {
         private String monthNum;
         private String deliveryTime;
         private String settleTime;
+        private boolean check;
 
+        public boolean isCheck() {
+            return check;
+        }
+
+        public void setCheck(boolean check) {
+            this.check = check;
+        }
 
         public String getDeliveryTime() {
             return deliveryTime;

@@ -39,6 +39,32 @@
                         android:textStyle="bold"
                         android:layout_centerVertical="true"/>
 
+                    <LinearLayout
+                        android:id="@+id/filter_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp_40">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/filter"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="筛选"
+                            android:textColor="#32C5FF"
+                            android:textSize="12sp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/dp_10"
+                            android:layout_alignParentRight="true"/>
+
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/bill_order"
                         android:layout_width="wrap_content"
