@@ -84,7 +84,23 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     LinearLayout orderView;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
+
+    @BindView(R.id.deposit_info_view)
+    LinearLayout deposit_info_view;
+    @BindView(R.id.deposit_num)
+    TextView deposit_num;
+    @BindView(R.id.deposit_name)
+    TextView deposit_name;
+    @BindView(R.id.deposit_total)
+    TextView deposit_total;
+    @BindView(R.id.deposit_person)
+    TextView deposit_person;
+    @BindView(R.id.deposit_time)
+    TextView deposit_time;
+
     private OrderDetailAdapter orderDetailAdapter;
+
+
 
     private OrderDetailPresenter orderDetailPresenter;
     private  String id;
@@ -171,6 +187,19 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
         }else {
             tips.setVisibility(View.VISIBLE);
         }
+
+        if (data.getKyInfo()!=null){
+            OrderDetailModel.DataBean.KyInfo kyInfo = data.getKyInfo();
+            deposit_info_view.setVisibility(View.VISIBLE);
+            deposit_num.setText("押金本编号 : "+kyInfo.getBookNo());
+            deposit_name.setText("物品名称 : "+kyInfo.getGoodsName());
+            deposit_total.setText("总价 : "+kyInfo.getYjTotalPrice());
+            deposit_person.setText("开押人 : "+kyInfo.getKyName());
+            deposit_time.setText("退押时间 : "+kyInfo.getTyTime());
+        }else {
+            deposit_info_view.setVisibility(View.GONE);
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

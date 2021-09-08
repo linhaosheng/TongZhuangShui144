@@ -83,6 +83,15 @@ public class OrderDetailModel {
         private double realPrice;
         private String distance;
         private List<GoodsListBean> goodsList;
+        private KyInfo kyInfo;
+
+        public KyInfo getKyInfo() {
+            return kyInfo;
+        }
+
+        public void setKyInfo(KyInfo kyInfo) {
+            this.kyInfo = kyInfo;
+        }
 
         public int getOrderStatus() {
             return orderStatus;
@@ -496,6 +505,126 @@ public class OrderDetailModel {
 
             public void setId(int id) {
                 this.id = id;
+            }
+        }
+
+        public static class KyInfo{
+            private String bookNo = "";
+            private String customerName;
+            private String  goodsName = "";
+            private String kyName ="";
+            private String kyTime;
+            private String tyName;
+            private String tyTime = "";
+            private String yjNo = "";
+            private int yjNum;
+            private double yjPrice;
+            private String yjTotalPrice;
+            private int yjStatus;
+            private int yjType;
+
+            public String getBookNo() {
+                return bookNo;
+            }
+
+            public void setBookNo(String bookNo) {
+                this.bookNo = bookNo;
+            }
+
+            public String getCustomerName() {
+                return customerName;
+            }
+
+            public void setCustomerName(String customerName) {
+                this.customerName = customerName;
+            }
+
+            public String getGoodsName() {
+                return goodsName;
+            }
+
+            public void setGoodsName(String goodsName) {
+                this.goodsName = goodsName;
+            }
+
+            public String getKyName() {
+                return kyName;
+            }
+
+            public void setKyName(String kyName) {
+                this.kyName = kyName;
+            }
+
+            public String getKyTime() {
+                return kyTime;
+            }
+
+            public void setKyTime(String kyTime) {
+                this.kyTime = kyTime;
+            }
+
+            public String getTyName() {
+                return tyName;
+            }
+
+            public void setTyName(String tyName) {
+                this.tyName = tyName;
+            }
+
+            public String getTyTime() {
+                return tyTime;
+            }
+
+            public void setTyTime(String tyTime) {
+                this.tyTime = tyTime;
+            }
+
+            public String getYjNo() {
+                return yjNo;
+            }
+
+            public void setYjNo(String yjNo) {
+                this.yjNo = yjNo;
+            }
+
+            public int getYjNum() {
+                return yjNum;
+            }
+
+            public void setYjNum(int yjNum) {
+                this.yjNum = yjNum;
+            }
+
+            public double getYjPrice() {
+                return yjPrice;
+            }
+
+            public void setYjPrice(double yjPrice) {
+                this.yjPrice = yjPrice;
+            }
+
+            public String getYjTotalPrice() {
+                return yjTotalPrice;
+            }
+
+            public void setYjTotalPrice(String yjTotalPrice) {
+                this.yjTotalPrice = yjTotalPrice;
+            }
+
+            public int getYjStatus() {
+                return yjStatus;
+            }
+
+            public void setYjStatus(int yjStatus) {
+                this.yjStatus = yjStatus;
+            }
+
+            public int getYjType() {
+                return yjType;
+            }
+
+            public void setYjType(int yjType) {
+                this.yjType = yjType;
             }
         }
     }

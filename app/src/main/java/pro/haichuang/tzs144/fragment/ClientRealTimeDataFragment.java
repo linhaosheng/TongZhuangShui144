@@ -319,10 +319,16 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                 Utils.showCenterTomast("正在结账");
                 List<AccountOrderModel.DataBean> data = orderPaymentAdapter.getData();
                 List<Integer> orderIds = new ArrayList<>();
+                boolean pick = false;
                 for (AccountOrderModel.DataBean dataBean : data){
                     if (dataBean.isCheck()){
+                        pick = true;
                         orderIds.add(dataBean.getId());
                     }
+                }
+                if (!pick){
+                    Utils.showCenterTomast("请选择需要结账的订单");
+                    return;
                 }
                 Log.i(TAG,"==="+Utils.gsonInstane().toJson(orderIds));
                 clientRealTimeDatapPresenter.settle(orderIds);
