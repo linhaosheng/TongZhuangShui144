@@ -194,7 +194,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         recycleData.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         recycleData.setAdapter(deliverOrderDetailAdapter);
 
-        deliverOrderDetailAdapter.addChildClickViewIds(R.id.shop_add_tong,R.id.reduce_tong,R.id.shop_add_tong2,R.id.reduce_tong2,R.id.shop_add_tong3,R.id.reduce_tong3,R.id.shop_add_tong4,R.id.reduce_tong4,R.id.shop_add_tong5,R.id.reduce_tong5,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_reward,R.id.upload_month);
+        deliverOrderDetailAdapter.addChildClickViewIds(R.id.shop_add_tong,R.id.reduce_tong,R.id.shop_add_tong2,R.id.reduce_tong2,R.id.shop_add_tong3,R.id.reduce_tong3,R.id.shop_add_tong4,R.id.reduce_tong4,R.id.shop_add_tong5,R.id.reduce_tong5,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.give_away,R.id.upload_reward,R.id.upload_month);
         deliverOrderDetailAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
@@ -364,6 +364,20 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                         }
                         deliverOrderDetailAdapter.setData(position,goodsListBean2);
                         caculateData();
+                        break;
+                    case R.id.give_away:
+                        OrderDetailModel.DataBean.GoodsListBean goodsListBean4 = deliverOrderDetailAdapter.getData().get(position);
+                        if (goodsListBean4.isShowSend()){
+                            goodsListBean4.setSendNum(0);
+                            goodsListBean4.setSendPrice(0);
+                            goodsListBean4.setShowSend(false);
+                        }else {
+                            goodsListBean4.setShowSend(true);
+                            goodsListBean4.setSendPrice(goodsListBean4.getGoodsPrice() * goodsListBean4.getGoodsNum());
+                        }
+                        deliverOrderDetailAdapter.setData(position,goodsListBean4);
+                        caculateData();
+
                         break;
                     case R.id.water_tickets:
                         OrderDetailModel.DataBean.GoodsListBean goodsListBean1 = deliverOrderDetailAdapter.getData().get(position);

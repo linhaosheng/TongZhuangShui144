@@ -2,7 +2,9 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -353,6 +355,58 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectDeductionNunm.setEditinput(text);
             }
         });
+
+        shopNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (selectGiveAway){
+                    if (shopDataBean!=null){
+                        try {
+                            double shopNumData = Double.parseDouble(shopNum.getText().toString());
+                            giveAwayMoney.setEditinput(String.valueOf(shopDataBean.getPrice() * shopNumData));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        shopPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (selectGiveAway){
+                    if (shopDataBean!=null){
+                        try {
+                            double shopNumData = Double.parseDouble(shopNum.getText().toString());
+                            double shopPriceData = Double.parseDouble(shopPrice.getText().toString());
+                            giveAwayMoney.setEditinput(String.valueOf(shopPriceData* shopNumData));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -534,7 +588,12 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     giveAwayNunm.setVisibility(View.VISIBLE);
                     giveAwayMoney.setVisibility(View.VISIBLE);
                     if (shopDataBean!=null){
-                        giveAwayMoney.setEditinput(String.valueOf(shopDataBean.getPrice()));
+                        try {
+                            double shopNumData = Double.parseDouble(shopNum.getText().toString());
+                            giveAwayMoney.setEditinput(String.valueOf(shopDataBean.getPrice() * shopNumData));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 }
                 selectGiveAway=!selectGiveAway;
