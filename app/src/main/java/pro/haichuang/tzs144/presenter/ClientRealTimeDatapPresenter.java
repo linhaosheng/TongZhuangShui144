@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.presenter;
 
+import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import org.greenrobot.eventbus.EventBus;
@@ -61,13 +62,15 @@ public class ClientRealTimeDatapPresenter {
      * @param startTime
      * @param endTime
      */
-    public final void findSsOrders(String startTime,String endTime,int page){
+    public final void findSsOrders(String startTime,String endTime,int page,String categoryName){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("startTime",startTime);
         params.put("endTime",endTime);
         params.put("page",page);
-
+        if (!"全部".equals(categoryName)){
+            params.put("categoryName",categoryName);
+        }
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_SS_ORDERS, params, new HttpRequestResultListener() {
             @Override

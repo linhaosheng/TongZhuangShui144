@@ -73,6 +73,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     TextView billOrder;
     @BindView(R.id.filter_view)
     LinearLayout filterView;
+    @BindView(R.id.select_type)
+    TextView select_type;
 
     private OrderPaymentAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
@@ -86,7 +88,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     private int currentPage = 1;
     private List<CharSequence> shopTypeList;
     private TypeListModel typeListModel;
-
+    private String categoryName = "全部";
 
     @Override
     public boolean lazyLoader() {
@@ -113,7 +115,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             public void onLoadMore() {
                 if (!lastPage) {
                     currentPage++;
-                    clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
+                    clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage,categoryName);
                 }
             }
         });
@@ -173,7 +175,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             lastPage = false;
             clientRealTimeDatapPresenter = new ClientRealTimeDatapPresenter(this);
             clientRealTimeDatapPresenter.ssManagerCount();
-            clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
+            clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage,categoryName);
         }
     }
 
@@ -187,6 +189,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             for (TypeListModel.DataBean dataBean : typeListModel.getData()) {
                 shopTypeList.add(dataBean.getName());
             }
+            shopTypeList.add("全部");
         }
     }
 
@@ -195,7 +198,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
         currentPage = 1;
         lastPage = false;
         clientRealTimeDatapPresenter.ssManagerCount();
-        clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
+        clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage,categoryName);
     }
 
     @Override
@@ -251,7 +254,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                     Utils.showCenterTomast("结账成功");
                    // billOrder.setVisibility(View.GONE);
                     clientRealTimeDatapPresenter.ssManagerCount();
-                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
+                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage,categoryName);
                 }else {
                     Utils.showCenterTomast("结账失败: "+event.result);
                 }
@@ -259,7 +262,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                 if (event.status== Config.LOAD_SUCCESS){
                     clientRealTimeDatapPresenter.ssManagerCount();
                     Utils.showCenterTomast("订单作废成功");
-                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
+                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage,categoryName);
                 }else {
                     Utils.showCenterTomast("订单作废失败 : "+event.result);
                 }
@@ -340,7 +343,11 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                 BottomMenu.show((AppCompatActivity) getActivity(), shopTypeList, new OnMenuItemClickListener() {
                     @Override
                     public void onClick(String text, int index) {
-
+                        lastPage = false;
+                        currentPage = 1;
+                        select_type.setText(text);
+                        categoryName = text;
+                        clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage,categoryName);
                     }
                 });
 
