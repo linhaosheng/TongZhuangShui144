@@ -34,8 +34,8 @@ public class StartDepositSearchAdapter extends BaseQuickAdapter<WithDrawalOrderM
         String end_code = "客户名称："+dataBean.getKhName();
         String code_time = "开押物品："+dataBean.getGoodsName();
         String with_drawal_price = "开押单价："+dataBean.getPrice();
-        String with_drawal_num = "数量 ："+dataBean.getNum();
-        String with_drawal_money = "金额 ："+dataBean.getTotalPrice();
+        String with_drawal_num = "开押数量 ："+dataBean.getNum();
+        String with_drawal_money = "开押金额 ："+dataBean.getTotalPrice();
         String deposit_type = "";
         if (dataBean.getType()==0){
             deposit_type = "开押类型 ：押金";
