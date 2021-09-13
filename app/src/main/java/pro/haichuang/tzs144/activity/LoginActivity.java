@@ -102,7 +102,6 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private boolean showDialog = true;
 
 
-
     /**消息Id**/
     private static final String KEY_MSGID = "msg_id";
     /**该通知的下发通道**/

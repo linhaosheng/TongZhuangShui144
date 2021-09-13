@@ -360,6 +360,11 @@ public class ConfigUrl {
     public static final String FIND_SUMMARY_HJ = "/api/pc/xs/summary/findSummaryHj";
 
     /**
+     * [5.0]销售汇总
+     */
+    public static final String FIND_ORDER_SUM_LIST = "/api/app/order/findOrderSumList";
+
+    /**
      * 库存主体 - 结账汇总 - 收入情况
      */
     public static final String FIND_SUMMARY_SR = "/api/pc/xs/summary/findSummarySr";

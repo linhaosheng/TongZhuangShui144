@@ -37,7 +37,7 @@ import pro.haichuang.tzs144.util.Utils;
 /**
  * 库存数量
  */
-public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , ILoadDataView<InventoryNumModel> {
+public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,ILoadDataView<InventoryNumModel> {
 
 
 

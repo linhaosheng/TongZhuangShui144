@@ -50,6 +50,7 @@ public class LoginPresenter {
                     LoginModel loginModel = Utils.gsonInstane().fromJson(result, LoginModel.class);
                     if (loginModel!=null && loginModel.getResult()==1){
                         SPUtils.putString(Config.VERIFICATION,loginModel.getData().getVerification());
+                        Config.AUTHORITY = loginModel.getData().getAuthority();
                         iLoadDataView.successLoad(loginModel.getResult()+"");
                     }else {
                         iLoadDataView.errorLoad(loginModel.getMessage());
