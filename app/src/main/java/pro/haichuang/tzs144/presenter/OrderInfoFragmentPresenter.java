@@ -36,7 +36,7 @@ public class OrderInfoFragmentPresenter {
      * @param deliveryStatus
      * @param page
      */
-    public void loadOrderByStatus(int deliveryStatus,String startTime,String endTime,int page,int goodsId){
+    public void loadOrderByStatus(int deliveryStatus,String startTime,String endTime,int page,String goodsId){
 
         Map<String,Object> params = new ArrayMap<>();
         params.put("deliveryStatus",deliveryStatus);

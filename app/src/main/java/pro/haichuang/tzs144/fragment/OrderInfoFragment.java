@@ -155,8 +155,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 if (!lastPage) {
                     currentPage++;
                     if (id==4){
-                        orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage,goodsId);
-                    //    orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodsId);
                     }else {
                         orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage,null);
                     }
@@ -305,8 +304,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 lastPage = false;
                 startTime =  Utils.getPastDate(7,new Date());
                 endTime = Utils.formatSelectTime(new Date());
-                orderInfoFragmentPresenter.loadOrderByStatus(id, startTime, currentPage,goodsId);
-              //  orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
+                orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodsId);
             }
         });
 
@@ -369,7 +367,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         if (id!=4){
             orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage,null);
         }else {
-            orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage,goodsId);
+            orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage,goodsId);
         }
     }
 
@@ -378,8 +376,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         currentPage = 1;
         lastPage = false;
         if (id==4){
-            orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage,goodsId);
-         //    orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
+            orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodsId);
         }else {
             orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage,null);
         }
@@ -549,7 +546,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 goodsId = String.valueOf(data.getIntExtra("goodsId",0));
                 String goodName = data.getStringExtra("goodsName");
                 selectShop.setText(goodName);
-                orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage,goodsId);
+                orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodsId);
 
             }catch (Exception e){
                 e.printStackTrace();
