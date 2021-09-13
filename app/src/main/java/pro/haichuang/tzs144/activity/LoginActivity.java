@@ -464,7 +464,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     public void errorLoad(String error) {
-        Utils.showCenterTomast("登录失败，请检查账户和密码是否正确");
+        Utils.showCenterTomast(error);
         WaitDialog.dismiss();
     }
 

@@ -22,6 +22,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
+import com.kongzue.dialog.util.BaseDialog;
+import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -169,23 +172,36 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                 break;
             case R.id.with_drawal_btn:
                 StringBuilder idBuilder = new StringBuilder();
+                StringBuilder content = new StringBuilder();
                 for (WithDrawalOrderModel.DataBean dataBean : addWithDrawalOrderAdapter.getData()){
                     if (dataBean.isChecked()){
                         idBuilder.append(dataBean.getId()).append(",");
+                        content.append("开押数量 : "+dataBean.getNum()).append("\n")
+                        .append("开押金额 : "+dataBean.getTotalPrice()).append("\n\n");
+
                     }
                 }
                 if (idBuilder.length()<=0){
                     Utils.showCenterTomast("请选择退押选项");
                     return;
                 }
-                try {
-                    //去除多余的逗号
-                    String ids = idBuilder.substring(0, idBuilder.toString().length() - 1);
-                    Log.i(TAG,"ids===="+ids);
-                    addWithDrawalOrderActivityPresenter.returnDeposits(ids);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+
+                MessageDialog.show(this,"提示",content," 确定","取消")
+                        .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                            @Override
+                            public boolean onClick(BaseDialog baseDialog, View v) {
+                                try {
+                                    //去除多余的逗号
+                                    String ids = idBuilder.substring(0, idBuilder.toString().length() - 1);
+                                    Log.i(TAG,"ids===="+ids);
+                                    addWithDrawalOrderActivityPresenter.returnDeposits(ids);
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+                                return false;
+                            }
+                        });
                 break;
             case R.id.address_detail:
                 Intent intent1 = new Intent(this,SelectAddressActivity.class);
