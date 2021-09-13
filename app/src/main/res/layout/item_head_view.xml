@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="#fff"
-    android:paddingBottom="@dimen/dp_10">
+    android:layout_marginTop="@dimen/dp_10"
+    android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/last_time"
@@ -28,7 +29,8 @@
         android:text="2019-06-22"
         android:gravity="center"
         android:textColor="#333333"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:textSize="14sp"
+        android:layout_marginLeft="@dimen/dp_10"
         android:background="@drawable/set_bg_btn50"
         android:visibility="visible"
         />
@@ -41,11 +43,11 @@
         android:text="商品"
         android:gravity="center"
         android:textColor="#333333"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_10"
         android:visibility="visible"
+        android:textSize="14sp"
         android:background="@drawable/set_bg_btn50"
         />
-
 
 </LinearLayout>

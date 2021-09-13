@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.fragment;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +43,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
+import com.kongzue.dialog.v3.BottomMenu;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,8 +61,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.DeliveryOrderActivity;
+import pro.haichuang.tzs144.activity.FindGoodsActivity;
 import pro.haichuang.tzs144.activity.OrderDetailActivity;
 import pro.haichuang.tzs144.activity.SaleOrderDetailActivity;
+import pro.haichuang.tzs144.activity.SaleSummaryActivity;
 import pro.haichuang.tzs144.adapter.OrderInfoAdapter;
 import pro.haichuang.tzs144.application.MyApplication;
 import pro.haichuang.tzs144.iview.ILoadDataView;
@@ -67,9 +73,11 @@ import pro.haichuang.tzs144.model.PageEvent;
 import pro.haichuang.tzs144.model.ShopListModel;
 import pro.haichuang.tzs144.model.StatusEvent;
 import pro.haichuang.tzs144.model.StatusUpdateEvent;
+import pro.haichuang.tzs144.model.TypeListModel;
 import pro.haichuang.tzs144.model.UpdateOrderEvent;
 import pro.haichuang.tzs144.presenter.OrderInfoFragmentPresenter;
 import pro.haichuang.tzs144.util.Config;
+import pro.haichuang.tzs144.util.SPUtils;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.MyMapView;
 import pro.haichuang.tzs144.view.SelectShopDialog;
@@ -107,11 +115,13 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 
     private boolean lastPage;
     private int currentPage = 1;
-    private int goodId = 144;
     private boolean visibleToUser;
 
     private String startTime;
     private String endTime;
+    private List<CharSequence> shopList;
+    private TypeListModel typeListModel;
+    private String goodsId;
 
     public OrderInfoFragment() {
         super();
@@ -145,10 +155,10 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 if (!lastPage) {
                     currentPage++;
                     if (id==4){
-                        orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage);
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage,goodsId);
                     //    orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
                     }else {
-                        orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage,null);
                     }
                 }
 
@@ -227,6 +237,19 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             selectShop = headTimeView.findViewById(R.id.select_shop);
             selectTimeData();
             selectTime.setText(Utils.formatSelectTime(new Date()));
+
+            /**
+             * 商品品类
+             */
+            String categoryListJson = SPUtils.getString(Config.GOODS_CATEGORY_LIST, "");
+            if (!categoryListJson.equals("")) {
+                shopList = new ArrayList<>();
+                typeListModel = Utils.gsonInstane().fromJson(categoryListJson, TypeListModel.class);
+                for (TypeListModel.DataBean dataBean : typeListModel.getData()) {
+                    shopList.add(dataBean.getName());
+                }
+            }
+
         }
         Log.i(TAG, "----id" + id);
         if (id == 1) {
@@ -282,7 +305,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 lastPage = false;
                 startTime =  Utils.getPastDate(7,new Date());
                 endTime = Utils.formatSelectTime(new Date());
-                orderInfoFragmentPresenter.loadOrderByStatus(id, startTime, currentPage);
+                orderInfoFragmentPresenter.loadOrderByStatus(id, startTime, currentPage,goodsId);
               //  orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
             }
         });
@@ -303,8 +326,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                         lastPage = false;
                         startTime = selectTime.getText().toString();
                         endTime = startTime;
-                        orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage);
-                      // orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
+                        orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage,goodsId);
                     }
                 })
                         .build();
@@ -314,17 +336,15 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         selectShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
-                 * 商品类型
-                 */
-                SelectShopDialog selectShopDialog  = new SelectShopDialog(getActivity(), 0,new SelectShopDialog.SelectShopListener() {
+                BottomMenu.show((AppCompatActivity) getActivity(), shopList, new OnMenuItemClickListener() {
                     @Override
-                    public void selectShop(ShopListModel.DataBean.DataListBean dataBean) {
-                        String id = dataBean.getId();
-                        Log.i("TAG===","selectShop==="+id);
+                    public void onClick(String text, int index) {
+                        String categoryId = String.valueOf(typeListModel.getData().get(index).getId());
+                        Intent intent = new Intent(getActivity(), FindGoodsActivity.class);
+                        intent.putExtra("categoryId",categoryId);
+                        startActivityForResult(intent,20000);
                     }
                 });
-                selectShopDialog.show(getChildFragmentManager(),"");
             }
         });
     }
@@ -347,10 +367,9 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     protected void setUpData() {
         if (id!=4){
-            orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+            orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage,null);
         }else {
-            orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
-            //   orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
+            orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage,goodsId);
         }
     }
 
@@ -359,10 +378,10 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
         currentPage = 1;
         lastPage = false;
         if (id==4){
-            orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage);
+            orderInfoFragmentPresenter.loadOrderByStatus(id, Utils.formatSelectTime(new Date()), currentPage,goodsId);
          //    orderInfoFragmentPresenter.loadOrderByStatus(id, startTime,endTime, currentPage,goodId);
         }else {
-            orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage);
+            orderInfoFragmentPresenter.loadOrderByStatus(id, null, currentPage,null);
         }
     }
 
@@ -473,7 +492,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
                 if (event.type==id){
                     if (event.status==Config.LOAD_SUCCESS){
                         Utils.showCenterTomast("接单成功...");
-                        orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1);
+                        orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1,null);
                     }else {
                         Utils.showCenterTomast("接单失败: "+event.result);
                     }
@@ -491,7 +510,7 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
             try {
                 if (event.type==id){
                     if (event.status==Config.LOAD_SUCCESS){
-                        orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1);
+                        orderInfoFragmentPresenter.loadOrderByStatus(event.type, Utils.formatSelectTime(new Date()), 1,null);
                           EventBus.getDefault().post(new PageEvent(event.type));
                     }else {
                         Utils.showCenterTomast("操作失败");
@@ -520,6 +539,23 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
 //            onRefresh();
 //        }
 //    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==20000 && resultCode== Activity.RESULT_OK){
+            try {
+                goodsId = String.valueOf(data.getIntExtra("goodsId",0));
+                String goodName = data.getStringExtra("goodsName");
+                selectShop.setText(goodName);
+                orderInfoFragmentPresenter.loadOrderByStatus(id, endTime, currentPage,goodsId);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void onDestroy() {

@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.presenter;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import org.greenrobot.eventbus.EventBus;
@@ -73,18 +74,21 @@ public class OrderInfoFragmentPresenter {
     }
 
 
-
     /**
      * 根据状态获取对应的订单数据
      * @param deliveryStatus
      * @param page
      */
-    public void loadOrderByStatus(int deliveryStatus,String queryTime,int page){
+    public void loadOrderByStatus(int deliveryStatus,String queryTime,int page,String goodsId){
 
         Map<String,Object> params = new ArrayMap<>();
         params.put("deliveryStatus",deliveryStatus);
         if (deliveryStatus==4 && queryTime!=null){
             params.put("queryTime",queryTime);
+        }
+
+        if (deliveryStatus==4 && !TextUtils.isEmpty(goodsId)){
+            params.put("goodsId",goodsId);
         }
         params.put("page",page);
         params.put("limit", Config.LIMIT);
