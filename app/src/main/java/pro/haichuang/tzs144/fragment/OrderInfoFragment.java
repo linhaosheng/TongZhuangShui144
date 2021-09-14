@@ -281,8 +281,8 @@ public class OrderInfoFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     private void initData(){
-        startTime =  Utils.getPastDate(7,new Date());
-        endTime = Utils.formatSelectTime(new Date());
+   //     startTime =  Utils.getPastDate(7,new Date());
+   //     endTime = Utils.formatSelectTime(new Date());
         if (orderInfoFragmentPresenter==null){
             orderInfoFragmentPresenter = new OrderInfoFragmentPresenter(this);
         }
