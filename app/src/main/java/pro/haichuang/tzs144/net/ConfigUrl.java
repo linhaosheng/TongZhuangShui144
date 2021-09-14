@@ -229,6 +229,11 @@ public class ConfigUrl {
     public static final String ENTER_ORFER = "/api/app/order/enterOrder";
 
     /**
+     * [2.0]客户商品价格配置-获取指定客户商品单价
+     */
+    public static final String GET_CUSTOMER_PRICE = "/api/pc/kh/customerGoodsConfig/getCustomerPrice";
+
+    /**
      * [直接销售]-订单详情
      */
     public static final String GET_ORDER_INFO = "/api/app/order/getOrderInfo";

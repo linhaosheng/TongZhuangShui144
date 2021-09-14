@@ -82,6 +82,42 @@ public class EnterOrderActivityPresenter {
         });
     }
 
+
+    /**
+     * [直接销售]-录入订单
+     */
+    public void getCustomerPrice(int customerId,int goodsId){
+
+        Map<String,Object> params = new ArrayMap<>();
+        params.put("goodsId",goodsId);
+        params.put("customerId",customerId);
+
+        HttpRequestEngine.postRequest(ConfigUrl.GET_CUSTOMER_PRICE, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    CustomerPriceModel customerPriceModel = Utils.gsonInstane().fromJson(result, CustomerPriceModel.class);
+                    if (customerPriceModel.getResult()==1){
+                        EventBus.getDefault().post(customerPriceModel);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iUpLoadFileView.errorLoad(error);
+            }
+        });
+    }
+
+
     /**
      * 上传文件
      * @param key
@@ -114,6 +150,36 @@ public class EnterOrderActivityPresenter {
                 iUpLoadFileView.errorLoad(error);
             }
         });
+    }
+
+    public static class CustomerPriceModel{
+        private int result;
+        private String message;
+        private String data;
+
+        public int getResult() {
+            return result;
+        }
+
+        public void setResult(int result) {
+            this.result = result;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
     }
 
 }

@@ -523,6 +523,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         shopPrice.setText(dataBean.getPrice()+"");
                         shopId = dataBean.getId();
                         materialListAdapter.setList(dataBeanList);
+
+                        enterOrderActivityPresenter.getCustomerPrice(dataBean.getId(),dataBean.getId());
                     }
                 });
                 addShopDialog.show(getSupportFragmentManager(),"");
@@ -1015,6 +1017,19 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
            }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EnterOrderActivityPresenter.CustomerPriceModel model) {
+        if (model!=null){
+            try {
+                shopPrice.setText(model.getData()+"");
+                shopDataBean.setPrice(Double.parseDouble(model.getData()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     public void errorLoad(String error) {

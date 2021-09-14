@@ -170,6 +170,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     private int customerId;
     private AddOrderDepositDialog addOrderDepositDialog;
     private int currentUploadPosition;
+    private boolean needKaiYa;
 
 
     @Override
@@ -549,15 +550,9 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                             .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
                                 @Override
                                 public boolean onClick(BaseDialog baseDialog, View v) {
-                                    addOrderDepositDialog = new AddOrderDepositDialog(DeliveryOrderActivity.this, id, customerId, new AddOrderDepositDialog.StartDespositListener() {
-                                       @Override
-                                       public void despositResult(boolean success) {
-                                           if (success){
-                                               orderDetailPresenter.deliveryOrder(id,totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),goodsListBeanList);
-                                           }
-                                       }
-                                   });
-                                    addOrderDepositDialog.show(getSupportFragmentManager(),"");
+                                    needKaiYa = true;
+                                    orderDetailPresenter.deliveryOrder(id,totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),goodsListBeanList);
+
                                     return false;
                                 }
                             }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
@@ -805,7 +800,17 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
             if (event.type==3){
                 if (event.status==Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("配送成功");
-                    finish();
+                    addOrderDepositDialog = new AddOrderDepositDialog(DeliveryOrderActivity.this, id, customerId, new AddOrderDepositDialog.StartDespositListener() {
+                        @Override
+                        public void despositResult(boolean success) {
+                            if (success){
+
+                            }
+                            finish();
+                        }
+                    });
+                    addOrderDepositDialog.show(getSupportFragmentManager(),"");
+
                 }else {
                     Utils.showCenterTomast("配送失败 : "+ event.result);
                 }
