@@ -206,6 +206,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private float actual_amount;
     private int orderType;
     private AddOrderDepositDialog addOrderDepositDialog;
+    private int customeId;
 
     private boolean saveAdd = true;
 
@@ -429,6 +430,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             addressName.setText(dataBean.getAddressName());
             addressDetail.setText(dataBean.getAddress());
             type.setText(dataBean.getType());
+            customeId = dataBean.getId();
         }
     }
 
@@ -524,7 +526,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         shopId = dataBean.getId();
                         materialListAdapter.setList(dataBeanList);
 
-                        enterOrderActivityPresenter.getCustomerPrice(dataBean.getId(),dataBean.getId());
+                        enterOrderActivityPresenter.getCustomerPrice(customeId,dataBean.getId());
                     }
                 });
                 addShopDialog.show(getSupportFragmentManager(),"");
