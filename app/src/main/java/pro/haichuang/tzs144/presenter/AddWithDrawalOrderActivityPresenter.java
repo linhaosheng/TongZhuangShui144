@@ -28,9 +28,11 @@ public class AddWithDrawalOrderActivityPresenter {
      * [押金]提交退押
      * @param ids
      */
-    public void returnDeposits(String ids){
+    public void returnDeposits(String ids,String returnCount,String returnPrice){
         Map<String,Object>params = new ArrayMap<>();
         params.put("ids",ids);
+        params.put("returnCount",returnCount);
+        params.put("returnPrice",returnPrice);
 
         HttpRequestEngine.postRequest(ConfigUrl.RETURN_DEPOSIT, params, new HttpRequestResultListener() {
             @Override
