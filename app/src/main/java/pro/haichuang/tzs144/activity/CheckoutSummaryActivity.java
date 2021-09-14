@@ -106,15 +106,17 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
         inventory_subject.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
-//                BottomMenu.show(CheckoutSummaryActivity.this, subjectList, new OnMenuItemClickListener() {
-//                    @Override
-//                    public void onClick(String text, int index) {
-//                        inventory_subject.setRightText(text);
-//                        scMainId = String.valueOf(stockMainModel.getData().get(index).getId());
-//                        EventBus.getDefault().post(new RefreshCountEvent(0));
-//                        checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
-//                    }
-//                });
+                if (Config.AUTHORITY.contains("8")){
+                    BottomMenu.show(CheckoutSummaryActivity.this, subjectList, new OnMenuItemClickListener() {
+                    @Override
+                    public void onClick(String text, int index) {
+                        inventory_subject.setRightText(text);
+                        scMainId = String.valueOf(stockMainModel.getData().get(index).getId());
+                        EventBus.getDefault().post(new RefreshCountEvent(0));
+                        checkoutSummaryPresenter.findSummaryHj(scMainId, type, startTime, endTime, categoryId);
+                    }
+                });
+                }
             }
         });
 
