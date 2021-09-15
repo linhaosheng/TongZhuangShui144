@@ -102,9 +102,7 @@ public class EnterOrderActivityPresenter {
             public void success(String result) {
                 try {
                     CustomerPriceModel customerPriceModel = Utils.gsonInstane().fromJson(result, CustomerPriceModel.class);
-                    if (customerPriceModel.getResult()==1){
-                        EventBus.getDefault().post(customerPriceModel);
-                    }
+                    EventBus.getDefault().post(customerPriceModel);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

@@ -47,8 +47,8 @@ public class StartDepositSearchAdapter extends BaseQuickAdapter<WithDrawalOrderM
         String start_drawal_name = "开押人 ：" + dataBean.getCreateName();
 
         String with_drawal_time = "退押时间 ：" + dataBean.getReturnTime();
-        String with_drawal_name = "退押人 ：" + dataBean.getReturnCount();
-        String with_drawal_buy_count = "退押人 ：" + dataBean.getReturnCount();
+        String with_drawal_name = "退押人 ：" + dataBean.getReturnName();
+        String with_drawal_buy_count = "退押数量 ：" + dataBean.getReturnCount();
 
         String with_drawal_money_count = "退押金额 ：" + dataBean.getReturnPrice();
         String with_drawal_count = "买断数量 ：" + dataBean.getMdPrice();

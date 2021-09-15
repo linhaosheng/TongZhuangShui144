@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.model;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 public class OrderDetailModel {
@@ -604,6 +606,9 @@ public class OrderDetailModel {
             }
 
             public String getYjTotalPrice() {
+                if (TextUtils.isEmpty(yjTotalPrice)){
+                    return "";
+                }
                 return yjTotalPrice;
             }
 

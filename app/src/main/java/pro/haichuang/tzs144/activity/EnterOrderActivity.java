@@ -1024,8 +1024,15 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     public void onMessageEvent(EnterOrderActivityPresenter.CustomerPriceModel model) {
         if (model!=null){
             try {
-                shopPrice.setText(model.getData()+"");
-                shopDataBean.setPrice(Double.parseDouble(model.getData()));
+                if (model.getResult()==1){
+                    shopPrice.setText(model.getData()+"");
+                    shopDataBean.setPrice(Double.parseDouble(model.getData()));
+                    shopPrice.setFocusable(false);
+                    shopPrice.setFocusableInTouchMode(false);
+                }else{
+                    shopPrice.setFocusable(true);
+                    shopPrice.setFocusableInTouchMode(true);
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
