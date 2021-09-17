@@ -48,6 +48,11 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
         String with_drawal_time = "记录时间 ："+dataBean.getReturnTime();
         String with_drawal_name = "退押人 ："+dataBean.getReturnName();
 
+        String with_drawal_money_data = "退押金额 : "+dataBean.getReturnPrice();
+        String with_drawal_num_data = "退押数量 : "+dataBean.getReturnCount();
+        String with_buy_num_data = "买断数量 : "+dataBean.getMdCount();
+        String loss_num_data = "损耗费 : "+dataBean.getHsPrice();
+
         ImageView orderStateImg = baseViewHolder.getView(R.id.order_state);
         TextView voilTxt = baseViewHolder.getView(R.id.voil_txt);
 
@@ -81,7 +86,11 @@ public class WithDrawalOrderAdapter extends BaseQuickAdapter<WithDrawalOrderMode
                 .setText(R.id.with_drawal_money,with_drawal_money)
                 .setText(R.id.deposit_type,deposit_type)
                 .setText(R.id.with_drawal_time,with_drawal_time)
-                .setText(R.id.with_drawal_name,with_drawal_name);
+                .setText(R.id.with_drawal_name,with_drawal_name)
+        .setText(R.id.with_drawal_money_data,with_drawal_money_data)
+        .setText(R.id.with_drawal_num_data,with_drawal_num_data)
+        .setText(R.id.with_buy_num_data,with_buy_num_data)
+        .setText(R.id.loss_num_data,loss_num_data);
 
         if (dataBean.getReturnName()==null){
           baseViewHolder.getView(R.id.with_drawal_name).setVisibility(View.GONE);

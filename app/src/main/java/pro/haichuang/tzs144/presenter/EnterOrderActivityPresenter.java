@@ -84,7 +84,7 @@ public class EnterOrderActivityPresenter {
 
 
     /**
-     * [直接销售]-录入订单
+     *
      */
     public void getCustomerPrice(int customerId,int goodsId){
 
@@ -153,7 +153,7 @@ public class EnterOrderActivityPresenter {
     public static class CustomerPriceModel{
         private int result;
         private String message;
-        private String data;
+        private DataBean data;
 
         public int getResult() {
             return result;
@@ -171,12 +171,34 @@ public class EnterOrderActivityPresenter {
             this.message = message;
         }
 
-        public String getData() {
+        public DataBean getData() {
             return data;
         }
 
-        public void setData(String data) {
+        public void setData(DataBean data) {
             this.data = data;
+        }
+
+        public class DataBean{
+
+            private String price;
+            private boolean isEdit;
+
+            public String getPrice() {
+                return price;
+            }
+
+            public void setPrice(String price) {
+                this.price = price;
+            }
+
+            public boolean isEdit() {
+                return isEdit;
+            }
+
+            public void setEdit(boolean edit) {
+                isEdit = edit;
+            }
         }
     }
 

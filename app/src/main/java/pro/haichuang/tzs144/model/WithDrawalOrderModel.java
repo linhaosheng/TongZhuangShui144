@@ -60,7 +60,31 @@ public class WithDrawalOrderModel {
         private String cancelTime;
         private String returnPrice;
         private String returnCount;
-        private String mdPrice;
+        private String mdCount;
+        private String hsPrice;
+
+
+        public String getMdCount() {
+            if (TextUtils.isEmpty(mdCount)){
+                return "";
+            }
+            return mdCount;
+        }
+
+        public void setMdCount(String mdCount) {
+            this.mdCount = mdCount;
+        }
+
+        public String getHsPrice() {
+            if (TextUtils.isEmpty(hsPrice)){
+                return "";
+            }
+            return hsPrice;
+        }
+
+        public void setHsPrice(String hsPrice) {
+            this.hsPrice = hsPrice;
+        }
 
         public Integer getIsAdd() {
             return isAdd;
@@ -88,16 +112,6 @@ public class WithDrawalOrderModel {
             this.returnCount = returnCount;
         }
 
-        public String getMdPrice() {
-            if (TextUtils.isEmpty(mdPrice)){
-                return "";
-            }
-            return mdPrice;
-        }
-
-        public void setMdPrice(String mdPrice) {
-            this.mdPrice = mdPrice;
-        }
 
         public String getAddressName() {
             return addressName;
