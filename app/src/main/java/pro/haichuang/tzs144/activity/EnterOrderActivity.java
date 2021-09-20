@@ -20,6 +20,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
@@ -35,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,6 +70,7 @@ import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.AddOrderDepositDialog;
 import pro.haichuang.tzs144.view.AddShopDialog;
+import pro.haichuang.tzs144.view.ClientFilterDialog;
 import pro.haichuang.tzs144.view.LSettingItem;
 import pro.haichuang.tzs144.view.SelectWaterTicketDialog;
 
@@ -141,10 +146,14 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     LSettingItem monthDeductionNunm;
     @BindView(R.id.give_away_nunm)
     LSettingItem giveAwayNunm;
+    @BindView(R.id.record_time_date)
+    LSettingItem recordTimeDate;
     @BindView(R.id.give_away_money)
     LSettingItem giveAwayMoney;
     @BindView(R.id.give_away)
     TextView giveAway;
+    @BindView(R.id.record_time)
+    TextView recordTime;
     @BindView(R.id.confirm_add_shop)
     Button confirmAddShop;
     @BindView(R.id.shop_detail)
@@ -188,6 +197,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private boolean selectReward;
     private boolean selectMonth;
     private boolean selectGiveAway;
+    private boolean selectRecord;
 
     private final static int REQUEST_CODE_CHOOSE_PICTURE_REWARD = 0x1110;
     private final static int REQUEST_CODE_CHOOSE_PICTURE_MONTH = 0x1111;
@@ -220,6 +230,20 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
       title.setText("直接销售");
       tipImg.setVisibility(View.VISIBLE);
       tipImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.search));
+
+        recordTimeDate.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+                TimePickerView pvTime = new TimePickerBuilder(EnterOrderActivity.this, new OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {
+                        recordTimeDate.setRightText(Utils.formatSelectTime(date));
+                    }
+                })
+                        .build();
+                pvTime.show();
+            }
+        });
       selectTicket.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
@@ -292,6 +316,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                             rewardTickets.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
                             upload_reward_view.setVisibility(View.GONE);
                             rewardDeductionNunm.setVisibility(View.GONE);
+                        }
+
+                        if (orderType==1){
+                            if (!TextUtils.isEmpty(goodsListBean.getTime())){
+                                selectRecord = true;
+                                recordTimeDate.setRightText(goodsListBean.getTime());
+                                recordTimeDate.setVisibility(View.VISIBLE);
+                            }else{
+                                selectRecord = false;
+                                recordTimeDate.setRightText("请选择");
+                                recordTimeDate.setVisibility(View.GONE);
+                            }
                         }
                         materialListAdapter.setList(goodsListBean.getMaterials());
 
@@ -438,11 +474,14 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     protected void setUpData() {
         orderType = getIntent().getIntExtra("order_type",0);
         uploadOrderModel = new UploadOrderModel();
-       enterOrderActivityPresenter = new EnterOrderActivityPresenter(this);
+        enterOrderActivityPresenter = new EnterOrderActivityPresenter(this);
+        if (orderType!=1){
+            recordTime.setVisibility(View.GONE);
+        }
     }
 
 
-    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.give_away,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add})
+    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.give_away,R.id.record_time,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.reduce:
@@ -603,6 +642,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectGiveAway=!selectGiveAway;
                 break;
 
+            case R.id.record_time:
+
+                if (selectRecord){
+                    recordTimeDate.setRightText("请选择");
+                    recordTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
+                    recordTimeDate.setVisibility(View.GONE);
+                }else {
+                    recordTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
+                    recordTimeDate.setVisibility(View.VISIBLE);
+                }
+                selectRecord=!selectRecord;
+                break;
             case R.id.confirm_add_shop:
 
                 if (mDataBea==null){
@@ -671,6 +722,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     e.printStackTrace();
                 }
 
+                if (orderType==1){
+                    String recordTime = recordTimeDate.getRightText();
+                    if (!TextUtils.isEmpty(recordTime) && !recordTime.contains("请选择")){
+                        goodsListBean.setTime(recordTime);
+                    }
+                }
+
                 String json = Utils.gsonInstane().toJson(goodsListBean);
                 Log.i(TAG,"json====="+json);
                 List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
@@ -691,6 +749,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectDeductionNunm.setEditinput("");
                 rewardDeductionNunm.setEditinput("");
                 monthDeductionNunm.setEditinput("");
+                recordTimeDate.setRightText("请选择");
                 uploadReward.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
                 uploadMonth.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
 

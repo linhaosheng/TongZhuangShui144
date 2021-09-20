@@ -325,6 +325,11 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
             } else if (event.type == 1) {
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("接单成功");
+                    Intent intent = new Intent(this, DeliveryOrderActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("typeId", typeId);
+                    intent.putExtra("orderStatus", 1);
+                    startActivity(intent);
                     finish();
                 } else {
                     Utils.showCenterTomast("订单作废失败 : "+event.result);

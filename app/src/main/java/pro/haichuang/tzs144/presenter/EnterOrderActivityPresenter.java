@@ -7,6 +7,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.IUpLoadFileView;
@@ -48,6 +49,7 @@ public class EnterOrderActivityPresenter {
         params.put("totalPrice",totalPrice);
         params.put("receivablePrice",receivablePrice);
         params.put("realPrice",realPrice);
+
 
 //        String s = Utils.gsonInstane().toJson(params);
 //        Log.i("JSON==",s);

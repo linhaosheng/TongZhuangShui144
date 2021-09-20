@@ -130,7 +130,9 @@ public class MainActivity extends BaseActivity {
 
         tabList = new ArrayList<>();
         tabList.add("直接销售");
-        tabList.add("补录订单");
+        if (Config.AUTHORITY.contains("8")){
+            tabList.add("补录订单");
+        }
         tabList.add("开押");
         tabList.add("退押");
 

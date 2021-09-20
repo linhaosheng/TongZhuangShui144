@@ -298,6 +298,17 @@
                     android:textColor="#32C5FF"
                     android:textSize="16sp" />
 
+                <TextView
+                    android:id="@+id/record_time"
+                    android:layout_width="@dimen/dp_60"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:background="@drawable/set_bg_btn33"
+                    android:gravity="center"
+                    android:text="补录"
+                    android:textColor="#32C5FF"
+                    android:textSize="16sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -465,6 +476,20 @@
                     app:inputType="1"
                     app:rightText="请输入"
                     app:showEditInput="true"/>
+
+                <pro.haichuang.tzs144.view.LSettingItem
+                    android:id="@+id/record_time_date"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="51dp"
+                    app:LtextColor="#333333"
+                    app:isShowRightLogo="true"
+                    app:isShowRightText="true"
+                    app:isShowUnderLine="true"
+                    app:leftText="补录时间"
+                    app:rightIconSize="@dimen/dp_22"
+                    app:rightText="请选择"
+                    app:showEditInput="false"/>
 
                 <Button
                     android:id="@+id/confirm_add_shop"

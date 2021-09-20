@@ -82,6 +82,15 @@ public class AddOrderModel {
         private List<MaterialModel.DataBean> materials;
         private int sendNum;
         private float sendPrice;
+        private String time;
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
 
         public float getSendPrice() {
             return sendPrice;

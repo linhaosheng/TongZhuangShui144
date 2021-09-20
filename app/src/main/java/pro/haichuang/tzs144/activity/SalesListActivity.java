@@ -214,9 +214,17 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                 finish();
                 break;
             case R.id.tip_img:
+
+                String [] list = null;
+                if (Config.AUTHORITY.contains("8")){
+                    list = new String[]{"直接销售", "补录订单"};
+                }else {
+                    list = new String[]{"直接销售"};
+                }
+
                 new XPopup.Builder(this)
                         .atView(tipImg)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
-                        .asAttachList(new String[]{"直接销售", "补录订单"},
+                        .asAttachList(list,
                                 new int[]{},
                                 new OnSelectListener() {
                                     @Override
