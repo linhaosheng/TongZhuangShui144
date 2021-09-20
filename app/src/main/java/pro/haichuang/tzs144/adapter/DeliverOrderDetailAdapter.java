@@ -282,7 +282,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
 
         lSettingItem.setmOnLSettingItemClick((isChecked, view) -> selectWaterListener.selectClick(helper.getPosition()));
 
-
+        LSettingItem select_deduction_nunm =  helper.getView(R.id.select_deduction_nunm);
         LSettingItem select_water_num =  helper.getView(R.id.select_water_num);
         if (item.getWaterNum()>0){
             select_water_num.setEditinput(item.getWaterNum()+"");
@@ -293,6 +293,7 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
             int position = helper.getPosition();
             OrderDetailModel.DataBean.GoodsListBean goodsListBean = DeliverOrderDetailAdapter.this.getData().get(position);
             try {
+                select_deduction_nunm.setEditinput(text);
                 goodsListBean.setWaterNum(Integer.parseInt(text));
                 DeliverOrderDetailAdapter.this.getData().set(position,goodsListBean);
             }catch (Exception e){
@@ -304,7 +305,6 @@ public class DeliverOrderDetailAdapter extends BaseQuickAdapter<OrderDetailModel
             }
         });
 
-        LSettingItem select_deduction_nunm =  helper.getView(R.id.select_deduction_nunm);
         if (item.getWaterDeductNum()!=0){
             select_deduction_nunm.setEditinput(item.getWaterDeductNum()+"");
         }else {
