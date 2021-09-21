@@ -216,7 +216,7 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
             case R.id.tip_img:
 
                 String [] list = null;
-                if (Config.AUTHORITY.contains("8")){
+                if (Config.AUTHORITY.contains("5")){
                     list = new String[]{"直接销售", "补录订单"};
                 }else {
                     list = new String[]{"直接销售"};
