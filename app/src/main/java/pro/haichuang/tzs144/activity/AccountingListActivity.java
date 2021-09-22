@@ -170,8 +170,8 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
             emptyView.setVisibility(View.VISIBLE);
         }else {
             emptyView.setVisibility(View.GONE);
-            accountingListAdapter.setList(data);
         }
+        accountingListAdapter.setList(data);
     }
 
     @Override
