@@ -53,6 +53,15 @@ public class AccountListModel {
         private String price;
         private String realName;
         private String time;
+        private int settleStatus;
+
+        public int getSettleStatus() {
+            return settleStatus;
+        }
+
+        public void setSettleStatus(int settleStatus) {
+            this.settleStatus = settleStatus;
+        }
 
         public String getId() {
             return id;

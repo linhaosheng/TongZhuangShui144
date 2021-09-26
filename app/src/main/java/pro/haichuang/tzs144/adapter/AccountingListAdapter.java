@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.view.View;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
@@ -27,5 +29,13 @@ public class AccountingListAdapter  extends BaseQuickAdapter<AccountListModel.Da
                 .setText(R.id.name_info,name_info)
                 .setText(R.id.end_time,end_time);
 
+        /**
+         *  1 表示已结账，2 已收账，3 表示已压帐
+         */
+        if (dataBean.getSettleStatus()==1){
+            baseViewHolder.getView(R.id.write_off).setVisibility(View.VISIBLE);
+        }else {
+            baseViewHolder.getView(R.id.write_off).setVisibility(View.GONE);
+        }
     }
 }

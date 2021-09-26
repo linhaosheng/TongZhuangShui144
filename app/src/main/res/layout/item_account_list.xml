@@ -22,13 +22,12 @@
         android:id="@+id/write_off"
         android:layout_width="@dimen/dp_55"
         android:layout_height="@dimen/dp_20"
-        android:text="销账"
         android:layout_alignParentRight="true"
-        android:textColor="#32C5FF"
-        android:textAlignment="center"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_10"
-       />
+        android:text="销账"
+        android:textAlignment="center"
+        android:textColor="#32C5FF" />
 
     <View
         android:id="@+id/line"
