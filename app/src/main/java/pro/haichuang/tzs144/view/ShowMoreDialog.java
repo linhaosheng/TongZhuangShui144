@@ -28,6 +28,7 @@ import pro.haichuang.tzs144.activity.SaleSearchActivity;
 import pro.haichuang.tzs144.activity.SalesListActivity;
 import pro.haichuang.tzs144.activity.StartDepositActivity;
 import pro.haichuang.tzs144.activity.WithDrawalOrderActivity;
+import pro.haichuang.tzs144.util.Config;
 
 public class ShowMoreDialog extends DialogFragment {
 
@@ -79,6 +80,11 @@ public class ShowMoreDialog extends DialogFragment {
         if (view == null) {
             view = inflater.inflate(R.layout.dialog_show_more, container, false);
             ButterKnife.bind(this, view);
+            if (Config.AUTHORITY.contains("5")){
+                makeUpOrder.setVisibility(View.VISIBLE);
+            }else{
+                makeUpOrder.setVisibility(View.GONE);
+            }
         }
         return view;
     }
