@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.adapter;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -84,6 +85,14 @@ public class OrderPaymentAdapter extends BaseQuickAdapter<AccountOrderModel.Data
             baseViewHolder.getView(R.id.settle_date).setVisibility(View.VISIBLE);
         } else {
             baseViewHolder.getView(R.id.settle_date).setVisibility(View.GONE);
+        }
+
+        if (TextUtils.isEmpty(dataBean.getBlTime())){
+            baseViewHolder.getView(R.id.order_blTime).setVisibility(View.GONE);
+        }else{
+            String orderBlTime = "补录时间: "+dataBean.getBlTime();
+            baseViewHolder.getView(R.id.order_blTime).setVisibility(View.VISIBLE);
+            baseViewHolder.setText(R.id.order_blTime, orderBlTime);
         }
 
 

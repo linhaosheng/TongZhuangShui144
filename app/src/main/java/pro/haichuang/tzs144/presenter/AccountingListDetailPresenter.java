@@ -45,7 +45,7 @@ public class AccountingListDetailPresenter {
                 if (accountListDetailModel!=null && accountListDetailModel.getResult()==1){
                     iLoadDataView.successLoad(accountListDetailModel.getData());
                 }else {
-                    iLoadDataView.errorLoad("获取错误");
+                    iLoadDataView.errorLoad(accountListDetailModel.getMessage());
                 }
             }
 

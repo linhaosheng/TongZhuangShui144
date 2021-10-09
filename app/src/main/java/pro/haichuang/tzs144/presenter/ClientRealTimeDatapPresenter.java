@@ -97,7 +97,7 @@ public class ClientRealTimeDatapPresenter {
      * [账务]账务管理 - 结账
      */
     public final void settle(List<Integer>orderIds){
-
+        Utils.showCenterTomast("正在结账");
         Map<String,Object>params = new ArrayMap<>();
         if (orderIds!=null && orderIds.size()>0){
             params.put("orderIds",orderIds);

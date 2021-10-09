@@ -99,6 +99,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:text="应收收入  1000元   实际收入   600元"/>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -165,7 +166,21 @@
                 android:textSize="12sp"/>
         </LinearLayout>
 
+
+
     </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/order_blTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3F3F3F"
+        android:textSize="12sp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
+        android:visibility="gone"
+        android:text="补录时间:  1000元"/>
 
     <TextView
         android:id="@+id/deleve_date"

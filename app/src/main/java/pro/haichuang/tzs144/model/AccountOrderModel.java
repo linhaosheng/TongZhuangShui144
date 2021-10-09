@@ -72,6 +72,15 @@ public class AccountOrderModel {
         private String deliveryTime;
         private String settleTime;
         private boolean check;
+        private String blTime;
+
+        public String getBlTime() {
+            return blTime;
+        }
+
+        public void setBlTime(String blTime) {
+            this.blTime = blTime;
+        }
 
         public int getDeliveryStatus() {
             return deliveryStatus;

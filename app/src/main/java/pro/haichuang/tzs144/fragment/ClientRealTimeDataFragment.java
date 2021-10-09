@@ -21,8 +21,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialog.interfaces.OnMenuItemClickListener;
+import com.kongzue.dialog.util.BaseDialog;
 import com.kongzue.dialog.v3.BottomMenu;
+import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -319,7 +322,6 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.bill_order:
-                Utils.showCenterTomast("正在结账");
                 List<AccountOrderModel.DataBean> data = orderPaymentAdapter.getData();
                 List<Integer> orderIds = new ArrayList<>();
                 boolean pick = false;
@@ -330,10 +332,23 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                     }
                 }
                 if (!pick){
-                    Utils.showCenterTomast("请选择需要结账的订单");
+                    MessageDialog.show((AppCompatActivity)getActivity(), "提示", "是否要全部结账", "确定","取消")
+                            .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                                @Override
+                                public boolean onClick(BaseDialog baseDialog, View v) {
+                                    clientRealTimeDatapPresenter.settle(orderIds);
+                                    return false;
+                                }
+                            }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
+                        @Override
+                        public boolean onClick(BaseDialog baseDialog, View v) {
+                            return false;
+                        }
+                    });
+
+                  //  Utils.showCenterTomast("请选择需要结账的订单");
                     return;
                 }
-                Log.i(TAG,"==="+Utils.gsonInstane().toJson(orderIds));
                 clientRealTimeDatapPresenter.settle(orderIds);
                 break;
             case R.id.filter_view:

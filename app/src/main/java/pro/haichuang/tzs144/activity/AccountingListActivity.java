@@ -91,9 +91,11 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
         accountingListAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                String id = accountingListAdapter.getData().get(position).getId();
+                AccountListModel.DataBean dataBean = accountingListAdapter.getData().get(position);
+                String id = dataBean.getId();
                 Intent intent = new Intent(AccountingListActivity.this,AccountingListDetailActivity.class);
                 intent.putExtra("id",id);
+                intent.putExtra("settleStatus",dataBean.getSettleStatus());
                 startActivity(intent);
             }
         });
