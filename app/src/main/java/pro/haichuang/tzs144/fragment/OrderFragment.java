@@ -35,6 +35,7 @@ import pro.haichuang.tzs144.activity.SalesListActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
 import pro.haichuang.tzs144.model.PageEvent;
 import pro.haichuang.tzs144.model.StatusUpdateEvent;
+import pro.haichuang.tzs144.model.UpdateOrderEvent;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.CustomViewPager;
@@ -102,7 +103,6 @@ public class OrderFragment extends BaseFragment {
         tabs.setupWithViewPager(vpView);
         tabs.setTabsFromPagerAdapter(myPagerAdapter);
         vpView.setCurrentItem(0);
-
     }
 
 
@@ -129,7 +129,17 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     protected void setUpData() {
-
+         Log.i(TAG,"setUpData====");
+        /**
+         * 切换页面，刷新数据
+         */
+        if (vpView!=null){
+             int currentItem = vpView.getCurrentItem();
+             if (currentItem>=2){
+                 currentItem++;
+             }
+             EventBus.getDefault().post(new UpdateOrderEvent(String.valueOf(currentItem)));
+         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

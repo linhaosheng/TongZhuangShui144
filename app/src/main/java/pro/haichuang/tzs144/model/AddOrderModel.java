@@ -80,6 +80,33 @@ public class AddOrderModel {
         private DeductCouponBean deductCoupon;
         private DeductMonthBean deductMonth;
         private List<MaterialModel.DataBean> materials;
+        private int sendNum;
+        private float sendPrice;
+        private String time;
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+
+        public float getSendPrice() {
+            return sendPrice;
+        }
+
+        public void setSendPrice(float sendPrice) {
+            this.sendPrice = sendPrice;
+        }
+
+        public int getSendNum() {
+            return sendNum;
+        }
+
+        public void setSendNum(int sendNum) {
+            this.sendNum = sendNum;
+        }
 
         public List<MaterialModel.DataBean> getMaterials() {
             return materials;

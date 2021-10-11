@@ -58,11 +58,38 @@ public class ClientDetailModel {
         private String business;
         private String phone;
         private String inviter;
+        private String distance;
         private int id;
         private String customerName;
         private String contacts;
+        private String time;
+        private String typeName;
         private List<AddressListBean> addressList;
         private List<MaintainListBean> maintainList;
+
+        public String getTypeName() {
+            return typeName;
+        }
+
+        public void setTypeName(String typeName) {
+            this.typeName = typeName;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
+        }
 
         public String getArea() {
             return area;
@@ -73,6 +100,9 @@ public class ClientDetailModel {
         }
 
         public String getCustomerType() {
+           if (customerType==null){
+               customerType = typeName;
+           }
             return customerType;
         }
 

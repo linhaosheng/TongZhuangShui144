@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.model;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 public class WithDrawalOrderModel {
@@ -56,6 +58,60 @@ public class WithDrawalOrderModel {
         private int khId;
         private boolean checked;
         private String cancelTime;
+        private String returnPrice;
+        private String returnCount;
+        private String mdCount;
+        private String hsPrice;
+
+
+        public String getMdCount() {
+            if (TextUtils.isEmpty(mdCount)){
+                return "";
+            }
+            return mdCount;
+        }
+
+        public void setMdCount(String mdCount) {
+            this.mdCount = mdCount;
+        }
+
+        public String getHsPrice() {
+            if (TextUtils.isEmpty(hsPrice)){
+                return "";
+            }
+            return hsPrice;
+        }
+
+        public void setHsPrice(String hsPrice) {
+            this.hsPrice = hsPrice;
+        }
+
+        public Integer getIsAdd() {
+            return isAdd;
+        }
+
+        public String getReturnPrice() {
+            if (TextUtils.isEmpty(returnPrice)){
+                return "";
+            }
+            return returnPrice;
+        }
+
+        public void setReturnPrice(String returnPrice) {
+            this.returnPrice = returnPrice;
+        }
+
+        public String getReturnCount() {
+            if (TextUtils.isEmpty(returnCount)){
+                return "";
+            }
+            return returnCount;
+        }
+
+        public void setReturnCount(String returnCount) {
+            this.returnCount = returnCount;
+        }
+
 
         public String getAddressName() {
             return addressName;

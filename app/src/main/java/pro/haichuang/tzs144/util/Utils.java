@@ -45,9 +45,12 @@ public class Utils {
     public static final String YMDHMS_BREAK = "yyyy-MM-dd HH:mm:ss";
     public static final String YMDHMS_BREAK2 = "yyyy-MM-dd HH:mm";
     public static final String YMD = "yyyy-MM-dd";
+    public static final String YMD2 = "MM-dd";
     private static SimpleDateFormat sdf = new SimpleDateFormat(YMDHMS_BREAK);// 格式化时间
     private static SimpleDateFormat sdf2 = new SimpleDateFormat(YMDHMS_BREAK2);// 格式化时间
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YMD);// 格式化时间
+    private static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(YMD2);// 格式化时间
+
     private static Gson gson;
 
     public static Gson gsonInstane() {
@@ -62,8 +65,18 @@ public class Utils {
     }
 
 
+    private final static long INTERNAL_TIME = 300;
+    private static long lastClickTimeStamp = 0L;
+
+    public static boolean isFastDoubleClick() {
+        long curTimeStamp = System.currentTimeMillis();
+        boolean isInvalid = curTimeStamp - lastClickTimeStamp < INTERNAL_TIME;
+        lastClickTimeStamp = curTimeStamp;
+        return isInvalid;
+    }
+
     public static String formatSelectTime(Date date){
-      return   simpleDateFormat.format(date);
+      return  simpleDateFormat.format(date);
     }
 
     public static String transformTime(Date date){
@@ -73,6 +86,11 @@ public class Utils {
 
     public static String transformTime2(Date date){
         String formatTime = sdf2.format(date);
+        return formatTime;
+    }
+
+    public static String transformTime3(Date date){
+        String formatTime = simpleDateFormat2.format(date);
         return formatTime;
     }
 
@@ -299,5 +317,21 @@ public class Utils {
         Date m = c.getTime();
         return formatSelectTime(m);
     }
+
+    /**
+     * 获取过去第几天的日期
+     *
+     * @param past
+     * @return
+     */
+    public static String getPastDate(int past,Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - past);
+        Date today = calendar.getTime();
+        String result = simpleDateFormat.format(today);
+        return result;
+    }
+
 
 }

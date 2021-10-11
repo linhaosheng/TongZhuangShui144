@@ -218,7 +218,7 @@ public class AddDepositDialog extends DialogFragment {
 
             @Override
             public void error(String error) {
-                Utils.showCenterTomast("提交失败");
+                Utils.showCenterTomast("提交失败："+error);
             }
         });
     }

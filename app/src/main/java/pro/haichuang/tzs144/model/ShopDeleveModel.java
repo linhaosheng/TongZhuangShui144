@@ -43,6 +43,24 @@ public class ShopDeleveModel {
         private DeductCouponBean deductCoupon;
         private DeductMonthBean deductMonth;
         private List<MaterialsBean> materials;
+        private int sendNum;
+        private float sendPrice;
+
+        public int getSendNum() {
+            return sendNum;
+        }
+
+        public void setSendNum(int sendNum) {
+            this.sendNum = sendNum;
+        }
+
+        public float getSendPrice() {
+            return sendPrice;
+        }
+
+        public void setSendPrice(float sendPrice) {
+            this.sendPrice = sendPrice;
+        }
 
         public int getOrderGoodsId() {
             return orderGoodsId;

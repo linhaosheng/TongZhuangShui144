@@ -67,10 +67,13 @@ public class ClientFilterDialog extends DialogFragment {
     TextView type;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
+    @BindView(R.id.recycle_data_warn)
+    RecyclerView recycleDataWarn;
 
     ClientTypeSearchModel clientTypeSearchModel;
     private ClientTypeListener clientTypeListener;
     private ClientFilterAdapter clientFilterAdapter;
+    private ClientFilterAdapter clientFilterWarnAdapter;
     private View view;
     private Context context;
     private final static  int SELECT_START_TIME = 0x110;
@@ -78,6 +81,7 @@ public class ClientFilterDialog extends DialogFragment {
 
     private String khStatus = "";
     private String khTypeId = "";
+    private String warnType = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,9 +94,10 @@ public class ClientFilterDialog extends DialogFragment {
         this.clientTypeListener = mClientTypeListener;
     }
 
-    public void setStatus(String khStatus,String khTypeId){
+    public void setStatus(String khStatus,String khTypeId,String type){
         this.khStatus = khStatus;
         this.khTypeId = khTypeId;
+        this.warnType = type;
     }
 
 
@@ -135,6 +140,10 @@ public class ClientFilterDialog extends DialogFragment {
         clientFilterAdapter = new ClientFilterAdapter(context);
         recycleData.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recycleData.setAdapter(clientFilterAdapter);
+
+        clientFilterWarnAdapter = new ClientFilterAdapter(context);
+        recycleDataWarn.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        recycleDataWarn.setAdapter(clientFilterWarnAdapter);
 
         String clientType = SPUtils.getString(Config.CLIENT_TYPE, "");
         if (!clientType.equals("")){
@@ -221,7 +230,79 @@ public class ClientFilterDialog extends DialogFragment {
         });
 
         endTime.setText(Utils.formatSelectTime(new Date()));
+        initWarnTypeData();
+        initWarnClickListener();
     }
+
+
+    /***
+     * 初始化下单预警类型数据
+     */
+    private final void initWarnTypeData(){
+
+        List<ClientTypeModel.DataBean> data = new ArrayList<>();
+        for (int i = 0; i<4;i++){
+            String name = "";
+             if (i==0){
+                name = "正常";
+            }else if (i==1){
+                name = "提醒";
+            }else if (i==2){
+                name = "警告";
+            }else if (i==3){
+                name = "超期";
+            }
+
+            ClientTypeModel.DataBean datBean1 = new ClientTypeModel.DataBean();
+
+            datBean1.setId(i);
+            datBean1.setName(name);
+            datBean1.setWarnType(true);
+            if (warnType!=null && warnType.equals(String.valueOf(i))){
+                datBean1.setCheck(true);
+            }else {
+                datBean1.setCheck(false);
+            }
+            data.add(datBean1);
+        }
+        clientFilterWarnAdapter.setList(data);
+    }
+
+
+    /**
+     * 初始化下单预警点击事件
+     */
+    private final void initWarnClickListener(){
+        clientFilterWarnAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+
+                ClientTypeModel.DataBean dataBean = clientFilterWarnAdapter.getData().get(position);
+                if (dataBean.isCheck()){
+                    dataBean.setCheck(false);
+                    clientFilterWarnAdapter.setData(position,dataBean);
+                    warnType = null;
+                }else {
+                    Log.i("TAG====","position==="+position);
+                    warnType = String.valueOf(position);
+                    List<ClientTypeModel.DataBean> data = clientFilterWarnAdapter.getData();
+                    List<ClientTypeModel.DataBean> tempData = new ArrayList<>();
+                    for (int i=0;i<data.size();i++){
+                        ClientTypeModel.DataBean dataBean1 = data.get(i);
+                        if (i==position){
+                            dataBean1.setCheck(true);
+                        }else {
+                            dataBean1.setCheck(false);
+                        }
+                        tempData.add(dataBean1);
+                    }
+                    clientFilterWarnAdapter.setList(tempData);
+                }
+            }
+        });
+
+    }
+
 
 
     @Override
@@ -260,8 +341,7 @@ public class ClientFilterDialog extends DialogFragment {
 
                 clientTypeSearchModel.setEndTime(endTime.getText().toString());
                 clientTypeSearchModel.setStartTime(startTime.getText().toString());
-                clientTypeListener.filterSearch(clientFilterAdapter.getData(),startTime.getText().toString(),endTime.getText().toString());
-
+                clientTypeListener.filterSearch(clientFilterAdapter.getData(),warnType,startTime.getText().toString(),endTime.getText().toString());
                 dismiss();
                 break;
         }
@@ -286,6 +366,6 @@ public class ClientFilterDialog extends DialogFragment {
     }
 
     public interface ClientTypeListener{
-        void filterSearch( List<ClientTypeModel.DataBean> data,String startTime,String endTime);
+        void filterSearch(List<ClientTypeModel.DataBean> data,String type,String startTime,String endTime);
     }
 }

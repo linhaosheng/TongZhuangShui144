@@ -511,6 +511,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activity.ServerConfigActivity" />
+        <activity android:name=".activity.SaleSummaryActivity" />
+        <activity android:name=".activity.FindGoodsActivity" />
 
         <meta-data
             android:name="com.vivo.push.api_key"

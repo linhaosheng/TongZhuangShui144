@@ -48,6 +48,7 @@
         app:rightIconSize="@dimen/dp_22"
         app:rightStyle="iconHide"
         app:showEditInput="true"
+        app:inputType = "2"
         />
 
     <pro.haichuang.tzs144.view.LSettingItem
@@ -75,6 +76,7 @@
         app:rightIconSize="@dimen/dp_22"
         app:rightStyle="iconHide"
         app:showEditInput="true"
+        app:inputType = "2"
         />
 
 

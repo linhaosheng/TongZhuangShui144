@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.activity;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,6 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import butterknife.ButterKnife;
+import pro.haichuang.tzs144.util.Utils;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -32,6 +34,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         setUpView();
         setUpData();
     }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        int action = ev.getAction();
+        //防抖
+        if (action==MotionEvent.ACTION_UP&& Utils.isFastDoubleClick()){
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+
 
     protected abstract int setLayoutResourceID();
     protected abstract void setUpView();

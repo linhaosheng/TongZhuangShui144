@@ -384,7 +384,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                         addressListAdapter.setList(data);
                     }
                 }else {
-                    Utils.showCenterTomast("删除失败");
+                    Utils.showCenterTomast("删除失败 : "+event.result);
                 }
             }else if (event.type==1){
                 if (event.status==Config.LOAD_SUCCESS){
@@ -395,7 +395,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                         mainTainRecordAdapter.setList(data);
                     }
                 }else {
-                    Utils.showCenterTomast("删除失败");
+                    Utils.showCenterTomast("删除失败: "+event.result);
                 }
             }else if (event.type==2){
                 maintainInfo = "";
@@ -406,7 +406,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                     mainTainRecordAdapter.setList(data);
                     updateAddress.setVisibility(View.VISIBLE);
                 }else {
-                    Utils.showCenterTomast("编辑失败");
+                    Utils.showCenterTomast("编辑失败 :" + event.result);
                 }
             }else if (event.type==3){
                 if (event.status==Config.LOAD_SUCCESS){
@@ -417,7 +417,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                     updateAddress.setVisibility(View.VISIBLE);
                     clientDetailActivityPresenter.getCustomerInfo(customerId);
                 }else {
-                    Utils.showCenterTomast("编辑失败");
+                    Utils.showCenterTomast("编辑失败 : " +event.result);
                 }
             }
         }

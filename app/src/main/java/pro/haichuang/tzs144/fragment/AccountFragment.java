@@ -26,7 +26,9 @@ import pro.haichuang.tzs144.activity.CheckoutSummaryActivity;
 import pro.haichuang.tzs144.activity.DemandListActivity;
 import pro.haichuang.tzs144.activity.DepositManagementSearchActivity;
 import pro.haichuang.tzs144.activity.ReturnDetailActivity;
+import pro.haichuang.tzs144.activity.SaleSummaryActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
+import pro.haichuang.tzs144.util.Config;
 
 /**
  * 账务
@@ -67,49 +69,70 @@ public class AccountFragment extends BaseFragment {
 
     @Override
     protected void setUpView() {
+
+    }
+
+    @Override
+    protected void setUpData() {
         back.setVisibility(View.GONE);
         title.setText("财务管理");
         tipImg.setVisibility(View.VISIBLE);
         tipImg.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.mipmap.more));
 
-        orderTitleList = new ArrayList<>();
-        orderTitleList.add("实时数据");
-        orderTitleList.add("历史数据");
+        if (orderTitleList==null){
+            orderTitleList = new ArrayList<>();
+            orderTitleList.add("实时数据");
+            orderTitleList.add("历史数据");
 
+            orderList = new ArrayList<>();
+            orderList.add(new ClientRealTimeDataFragment());
+            orderList.add(new ClientHistoryTimeDataFragment());
 
-        orderList = new ArrayList<>();
-        orderList.add(new ClientRealTimeDataFragment());
-        orderList.add(new ClientHistoryTimeDataFragment());
-
-        myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(), orderList, orderTitleList);
-        vpView.setAdapter(myPagerAdapter);
-        tabs.setupWithViewPager(vpView);
-        tabs.setTabsFromPagerAdapter(myPagerAdapter);
-        vpView.setCurrentItem(0);
-    }
-
-    @Override
-    protected void setUpData() {
-
+            myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(), orderList, orderTitleList);
+            vpView.setAdapter(myPagerAdapter);
+            tabs.setupWithViewPager(vpView);
+            tabs.setTabsFromPagerAdapter(myPagerAdapter);
+            vpView.setCurrentItem(0);
+        }
     }
 
     @OnClick(R.id.tip_img)
     public void onViewClicked() {
+        String list[];
+        if (Config.AUTHORITY.contains("8")){
+            list = new String[]{"销售汇总","结账汇总","账目列表", "押金本管理"};
+        }else {
+            list = new String[]{"结账汇总","账目列表", "押金本管理"};
+        }
+
         new XPopup.Builder(getActivity())
                 .atView(tipImg)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
-                .asAttachList(new String[]{"结账汇总","账目列表", "押金本管理"},
+                .asAttachList(list,
                         new int[]{},
                         new OnSelectListener() {
                             @Override
                             public void onSelect(int position, String text) {
                                 Intent intent = new Intent();
-                                if (position==0){
-                                    intent.setClass(getActivity(), CheckoutSummaryActivity.class);
-                                }else if (position == 1) {
-                                    intent.setClass(getActivity(), AccountingListActivity.class);
-                                } else if (position == 2) {
-                                    intent.setClass(getActivity(), DepositManagementSearchActivity.class);
+                                if (Config.AUTHORITY.contains("8")){
+                                    if (position==0){
+                                        intent.setClass(getActivity(), SaleSummaryActivity.class);
+                                    }else if (position==1){
+                                        intent.setClass(getActivity(), CheckoutSummaryActivity.class);
+                                    }else if (position == 2) {
+                                        intent.setClass(getActivity(), AccountingListActivity.class);
+                                    } else if (position == 3) {
+                                        intent.setClass(getActivity(), DepositManagementSearchActivity.class);
+                                    }
+                                }else {
+                                    if (position==0){
+                                        intent.setClass(getActivity(), CheckoutSummaryActivity.class);
+                                    }else if (position == 1) {
+                                        intent.setClass(getActivity(), AccountingListActivity.class);
+                                    } else if (position == 2) {
+                                        intent.setClass(getActivity(), DepositManagementSearchActivity.class);
+                                    }
                                 }
+
                                 startActivity(intent);
                             }
                         })

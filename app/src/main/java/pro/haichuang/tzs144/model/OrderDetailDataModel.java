@@ -64,18 +64,18 @@ public class OrderDetailDataModel {
         private String orderNo;
         private int distance;
         private String timeTitle;
-        private int totalPrice;
+        private double totalPrice;
         private String payMode;
         private String completeTime;
         private String customerName;
         private String customerTypeName;
         private String customerPhone;
         private String addressName;
-        private int receivablePrice;
+        private double receivablePrice;
         private int deliveryStatus;
         private String timeStatus;
         private String timeRange;
-        private int realPrice;
+        private double realPrice;
         private int customerId;
 
         public int getCustomerId() {
@@ -128,11 +128,11 @@ public class OrderDetailDataModel {
             this.timeTitle = timeTitle;
         }
 
-        public int getTotalPrice() {
+        public double getTotalPrice() {
             return totalPrice;
         }
 
-        public void setTotalPrice(int totalPrice) {
+        public void setTotalPrice(double totalPrice) {
             this.totalPrice = totalPrice;
         }
 
@@ -184,11 +184,11 @@ public class OrderDetailDataModel {
             this.addressName = addressName;
         }
 
-        public int getReceivablePrice() {
+        public double getReceivablePrice() {
             return receivablePrice;
         }
 
-        public void setReceivablePrice(int receivablePrice) {
+        public void setReceivablePrice(double receivablePrice) {
             this.receivablePrice = receivablePrice;
         }
 
@@ -216,11 +216,11 @@ public class OrderDetailDataModel {
             this.timeRange = timeRange;
         }
 
-        public int getRealPrice() {
+        public double getRealPrice() {
             return realPrice;
         }
 
-        public void setRealPrice(int realPrice) {
+        public void setRealPrice(double realPrice) {
             this.realPrice = realPrice;
         }
 
@@ -253,7 +253,7 @@ public class OrderDetailDataModel {
             private Object waterDeductNum;
             private String goodsSpecsName;
             private int goodsId;
-            private int goodsPrice;
+            private double goodsPrice;
             private Object couponDeductNum;
             private String goodsName;
             private int goodsNum;
@@ -319,11 +319,11 @@ public class OrderDetailDataModel {
                 this.goodsId = goodsId;
             }
 
-            public int getGoodsPrice() {
+            public double getGoodsPrice() {
                 return goodsPrice;
             }
 
-            public void setGoodsPrice(int goodsPrice) {
+            public void setGoodsPrice(double goodsPrice) {
                 this.goodsPrice = goodsPrice;
             }
 

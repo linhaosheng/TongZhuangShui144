@@ -184,6 +184,7 @@
         <attr name="rightTextColor" format="color" />
         <attr name="rightIconSize" format="dimension" />
         <attr name="showEditInput" format="boolean"/>
+        <attr name="inputType" format="integer"/>
         <attr name="showEditInfo" format="boolean"/>
 
     </declare-styleable>

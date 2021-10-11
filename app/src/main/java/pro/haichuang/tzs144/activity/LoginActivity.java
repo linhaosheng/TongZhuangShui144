@@ -102,7 +102,6 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     private boolean showDialog = true;
 
 
-
     /**消息Id**/
     private static final String KEY_MSGID = "msg_id";
     /**该通知的下发通道**/
@@ -439,13 +438,14 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
     }
 
     @Override
-    public void successLoad(String data) {
+    public void successLoad(String id) {
 
         /**
          * 极光推送，添加tag
          */
         Set<String> tags = new HashSet<>();
         tags.add(Config.CURRENT_MAIN_ID);
+        tags.add(id);
 
         JPushInterface.setTags(this, tags, new TagAliasCallback() {
             @Override
@@ -464,7 +464,7 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
 
     @Override
     public void errorLoad(String error) {
-        Utils.showCenterTomast("登录失败，请检查账户和密码是否正确");
+        Utils.showCenterTomast(error);
         WaitDialog.dismiss();
     }
 

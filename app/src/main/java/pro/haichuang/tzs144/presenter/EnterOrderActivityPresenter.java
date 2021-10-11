@@ -7,6 +7,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.IUpLoadFileView;
@@ -49,6 +50,7 @@ public class EnterOrderActivityPresenter {
         params.put("receivablePrice",receivablePrice);
         params.put("realPrice",realPrice);
 
+
 //        String s = Utils.gsonInstane().toJson(params);
 //        Log.i("JSON==",s);
 //        if (true){
@@ -82,6 +84,40 @@ public class EnterOrderActivityPresenter {
         });
     }
 
+
+    /**
+     *
+     */
+    public void getCustomerPrice(int customerId,int goodsId){
+
+        Map<String,Object> params = new ArrayMap<>();
+        params.put("goodsId",goodsId);
+        params.put("customerId",customerId);
+
+        HttpRequestEngine.postRequest(ConfigUrl.GET_CUSTOMER_PRICE, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    CustomerPriceModel customerPriceModel = Utils.gsonInstane().fromJson(result, CustomerPriceModel.class);
+                    EventBus.getDefault().post(customerPriceModel);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                iUpLoadFileView.errorLoad(error);
+            }
+        });
+    }
+
+
     /**
      * 上传文件
      * @param key
@@ -114,6 +150,58 @@ public class EnterOrderActivityPresenter {
                 iUpLoadFileView.errorLoad(error);
             }
         });
+    }
+
+    public static class CustomerPriceModel{
+        private int result;
+        private String message;
+        private DataBean data;
+
+        public int getResult() {
+            return result;
+        }
+
+        public void setResult(int result) {
+            this.result = result;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public DataBean getData() {
+            return data;
+        }
+
+        public void setData(DataBean data) {
+            this.data = data;
+        }
+
+        public class DataBean{
+
+            private String price;
+            private boolean isEdit;
+
+            public String getPrice() {
+                return price;
+            }
+
+            public void setPrice(String price) {
+                this.price = price;
+            }
+
+            public boolean isEdit() {
+                return isEdit;
+            }
+
+            public void setEdit(boolean edit) {
+                isEdit = edit;
+            }
+        }
     }
 
 }

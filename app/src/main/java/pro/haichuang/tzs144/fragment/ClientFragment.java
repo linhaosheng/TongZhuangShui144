@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,12 +23,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+import com.kongzue.dialog.v3.MessageDialog;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,16 +42,20 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import pro.haichuang.tzs144.R;
 import pro.haichuang.tzs144.activity.AddClientActivity;
+import pro.haichuang.tzs144.activity.AddMainTainRecordActivity;
 import pro.haichuang.tzs144.activity.ClientDetailActivity;
 import pro.haichuang.tzs144.adapter.MyPagerAdapter;
 import pro.haichuang.tzs144.adapter.OrderNumTrendAdapter;
 import pro.haichuang.tzs144.adapter.OrderPaymentAdapter;
 import pro.haichuang.tzs144.adapter.OrderTrendAdapter;
 import pro.haichuang.tzs144.iview.ILoadDataView;
+import pro.haichuang.tzs144.model.ClientDetailModel;
 import pro.haichuang.tzs144.model.ClientEvent;
+import pro.haichuang.tzs144.model.ClientListModel;
 import pro.haichuang.tzs144.model.ClientTrendModel;
 import pro.haichuang.tzs144.model.ClientTypeModel;
 import pro.haichuang.tzs144.model.TrendModel;
+import pro.haichuang.tzs144.net.HttpRequestResultListener;
 import pro.haichuang.tzs144.presenter.ClientFragmentPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.SPUtils;
@@ -98,6 +107,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     private String startTime = "2019-10-10";
     private String khStatus = "0";
     private String khTypeId = "";
+    private String type;
 
 
     @Override
@@ -135,7 +145,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
             public void onLoadMore() {
                 if (!lastPage){
                     currentPage++;
-                    clientFragmentPresenter.findKhList("",startTime,endTime,khTypeId,khStatus,currentPage);
+                    clientFragmentPresenter.findKhList(type,"",startTime,endTime,khTypeId,khStatus,currentPage);
                 }
             }
         });
@@ -154,6 +164,49 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         recycleClientList.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
         recycleClientList.setAdapter(orderPaymentAdapter);
 
+        orderPaymentAdapter.addChildClickViewIds(R.id.order_state);
+        orderPaymentAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
+                if (view.getId()==R.id.order_state){
+                    WaitDialog.show((AppCompatActivity) getActivity(),"加载中....");
+                    ClientListModel.DataBean dataBean = orderPaymentAdapter.getData().get(position);
+                    String id = dataBean.getId();
+                    clientFragmentPresenter.getWhCustomerInfo(id, new HttpRequestResultListener() {
+                        @Override
+                        public void start() {
+
+                        }
+
+                        @Override
+                        public void success(String result) {
+                            WaitDialog.dismiss();
+                            try {
+                                ClientDetailModel clientDetailModel = Utils.gsonInstane().fromJson(result, ClientDetailModel.class);
+                                if (clientDetailModel!=null && clientDetailModel.getResult()==1){
+                                    Intent intent = new Intent(getActivity(), AddMainTainRecordActivity.class);
+                                    ClientDetailModel.DataBean data = clientDetailModel.getData();
+                                    String dataJson = Utils.gsonInstane().toJson(data);
+                                    intent.putExtra("dataJson",dataJson);
+                                    startActivity(intent);
+                                }else {
+                                    MessageDialog.show((AppCompatActivity) getActivity(), "提示", clientDetailModel.getMessage()).show();
+                                }
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void error(String error) {
+                          WaitDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
         orderPaymentAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
@@ -177,12 +230,11 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
         }
         String substring = stringBuilder.substring(0, stringBuilder.length() - 1);
         khTypeId = substring;
-        Log.i("TAG===",khTypeId);
 
         endTime = Utils.formatSelectTime(new Date());
         clientFragmentPresenter = new ClientFragmentPresenter(this);
-        clientFragmentPresenter.countKh();
-        clientFragmentPresenter.findKhList("",startTime,endTime,khTypeId,khStatus,currentPage);
+        clientFragmentPresenter.countKh(type);
+        clientFragmentPresenter.findKhList(type,"",startTime,endTime,khTypeId,khStatus,currentPage);
         trendList = new ArrayList<>();
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -200,7 +252,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                 if (searchEdit.getText()!=null){
                     currentPage = 1;
                     lastPage = false;
-                    clientFragmentPresenter.findKhList(searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
+                    clientFragmentPresenter.findKhList(type,searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
                 }
             }
         });
@@ -229,7 +281,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
             case R.id.filter:
                 ClientFilterDialog clientFilterDialog = new ClientFilterDialog(getActivity(), new ClientFilterDialog.ClientTypeListener() {
                     @Override
-                    public void filterSearch(List<ClientTypeModel.DataBean> data,String selectStartTime,String selectEndTime) {
+                    public void filterSearch(List<ClientTypeModel.DataBean> data,String warnType,String selectStartTime,String selectEndTime) {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (ClientTypeModel.DataBean dataBean : data){
                             if (dataBean.isTimeType() && dataBean.isCheck()){
@@ -245,15 +297,17 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                             khTypeId = stringBuilder.toString().substring(0,stringBuilder.toString().length()-1);
                         }
 
+                        type = warnType;
                         currentPage = 1;
                         lastPage = false;
                         startTime = selectStartTime;
                         endTime = selectEndTime;
-                        clientFragmentPresenter.findKhList(searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
+                        clientFragmentPresenter.countKh(type);
+                        clientFragmentPresenter.findKhList(type,searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
                         Log.i(TAG,"khTypeId===="+khTypeId);
                     }
                 });
-                clientFilterDialog.setStatus(khStatus,khTypeId);
+                clientFilterDialog.setStatus(khStatus,khTypeId,type);
                 clientFilterDialog.show(getChildFragmentManager(),"");
                 break;
             case R.id.cancel:
@@ -268,8 +322,8 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void onRefresh() {
         currentPage = 1;
         lastPage = false;
-        clientFragmentPresenter.countKh();
-        clientFragmentPresenter.findKhList(searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
+        clientFragmentPresenter.countKh(type);
+        clientFragmentPresenter.findKhList(type,searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);
     }
 
     @Override
@@ -279,7 +333,6 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     public void successLoad(ClientTrendModel data) {
-        refresh.setRefreshing(false);
         if (data!=null){
             trendList.clear();
             ClientTrendModel.DataBean data1 = data.getData();
@@ -319,6 +372,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ClientEvent event) {
+        refresh.setRefreshing(false);
         if (event!=null){
              if (event.dataBean==null){
                  Utils.showCenterTomast("获取客户列表失败");

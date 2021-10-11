@@ -91,9 +91,11 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
         accountingListAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                String id = accountingListAdapter.getData().get(position).getId();
+                AccountListModel.DataBean dataBean = accountingListAdapter.getData().get(position);
+                String id = dataBean.getId();
                 Intent intent = new Intent(AccountingListActivity.this,AccountingListDetailActivity.class);
                 intent.putExtra("id",id);
+                intent.putExtra("settleStatus",dataBean.getSettleStatus());
                 startActivity(intent);
             }
         });
@@ -170,8 +172,8 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
             emptyView.setVisibility(View.VISIBLE);
         }else {
             emptyView.setVisibility(View.GONE);
-            accountingListAdapter.setList(data);
         }
+        accountingListAdapter.setList(data);
     }
 
     @Override
@@ -187,7 +189,7 @@ public class AccountingListActivity extends BaseActivity implements ILoadDataVie
                 Utils.showCenterTomast("销账成功");
                 accountingListPresenter.findOrderAccounts(startTime.getText().toString(),endTime.getText().toString());
             } else {
-                Utils.showCenterTomast("销账失败");
+                Utils.showCenterTomast("销账失败 : "+event.result);
             }
         }
         Log.i(TAG, "onMessageEvent===");

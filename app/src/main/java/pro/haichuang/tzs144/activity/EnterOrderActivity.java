@@ -2,7 +2,9 @@ package pro.haichuang.tzs144.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
@@ -33,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,6 +70,7 @@ import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.AddOrderDepositDialog;
 import pro.haichuang.tzs144.view.AddShopDialog;
+import pro.haichuang.tzs144.view.ClientFilterDialog;
 import pro.haichuang.tzs144.view.LSettingItem;
 import pro.haichuang.tzs144.view.SelectWaterTicketDialog;
 
@@ -137,6 +144,16 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     ImageView uploadMonth;
     @BindView(R.id.month_deduction_nunm)
     LSettingItem monthDeductionNunm;
+    @BindView(R.id.give_away_nunm)
+    LSettingItem giveAwayNunm;
+    @BindView(R.id.record_time_date)
+    LSettingItem recordTimeDate;
+    @BindView(R.id.give_away_money)
+    LSettingItem giveAwayMoney;
+    @BindView(R.id.give_away)
+    TextView giveAway;
+    @BindView(R.id.record_time)
+    TextView recordTime;
     @BindView(R.id.confirm_add_shop)
     Button confirmAddShop;
     @BindView(R.id.shop_detail)
@@ -179,6 +196,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private boolean selectWater;
     private boolean selectReward;
     private boolean selectMonth;
+    private boolean selectGiveAway;
+    private boolean selectRecord;
 
     private final static int REQUEST_CODE_CHOOSE_PICTURE_REWARD = 0x1110;
     private final static int REQUEST_CODE_CHOOSE_PICTURE_MONTH = 0x1111;
@@ -197,6 +216,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     private float actual_amount;
     private int orderType;
     private AddOrderDepositDialog addOrderDepositDialog;
+    private int customeId;
 
     private boolean saveAdd = true;
 
@@ -210,6 +230,20 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
       title.setText("直接销售");
       tipImg.setVisibility(View.VISIBLE);
       tipImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.search));
+
+        recordTimeDate.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click(boolean isChecked, View view) {
+                TimePickerView pvTime = new TimePickerBuilder(EnterOrderActivity.this, new OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {
+                        recordTimeDate.setRightText(Utils.formatSelectTime(date));
+                    }
+                })
+                        .build();
+                pvTime.show();
+            }
+        });
       selectTicket.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click(boolean isChecked, View view) {
@@ -219,9 +253,13 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         mDataBea = dataBean;
                         selectTicket.setLeftText(dataBean.getName()+"   "+dataBean.getSpecs());
                         waterId = dataBean.getId();
-                        selectWaterNum.setEditinput(String.valueOf(dataBean.getWaterNum()));
-                        selectDeductionNunm.setEditinput(String.valueOf(dataBean.getWaterNum()));
-
+//                        if (dataBean.getWaterNum()>0){
+//                            selectWaterNum.setEditinput(String.valueOf(dataBean.getWaterNum()));
+//                            selectDeductionNunm.setEditinput(String.valueOf(dataBean.getWaterNum()));
+//                        }else {
+//                            selectWaterNum.setEditinput("");
+//                            selectDeductionNunm.setEditinput("");
+//                        }
                     }
                 },dataBean.getId());
                 selectWaterTicketDialog.show(getSupportFragmentManager(),"");
@@ -278,6 +316,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                             rewardTickets.setBackground(ContextCompat.getDrawable(EnterOrderActivity.this,R.drawable.set_bg_btn33));
                             upload_reward_view.setVisibility(View.GONE);
                             rewardDeductionNunm.setVisibility(View.GONE);
+                        }
+
+                        if (orderType==1){
+                            if (!TextUtils.isEmpty(goodsListBean.getTime())){
+                                selectRecord = true;
+                                recordTimeDate.setRightText(goodsListBean.getTime());
+                                recordTimeDate.setVisibility(View.VISIBLE);
+                            }else{
+                                selectRecord = false;
+                                recordTimeDate.setRightText("请选择");
+                                recordTimeDate.setVisibility(View.GONE);
+                            }
                         }
                         materialListAdapter.setList(goodsListBean.getMaterials());
 
@@ -342,6 +392,58 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectDeductionNunm.setEditinput(text);
             }
         });
+
+        shopNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (selectGiveAway){
+                    if (shopDataBean!=null){
+                        try {
+                            double shopNumData = Double.parseDouble(shopNum.getText().toString());
+                            giveAwayMoney.setEditinput(String.valueOf(shopDataBean.getPrice() * shopNumData));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        shopPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (selectGiveAway){
+                    if (shopDataBean!=null){
+                        try {
+                            double shopNumData = Double.parseDouble(shopNum.getText().toString());
+                            double shopPriceData = Double.parseDouble(shopPrice.getText().toString());
+                            giveAwayMoney.setEditinput(String.valueOf(shopPriceData* shopNumData));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -364,6 +466,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             addressName.setText(dataBean.getAddressName());
             addressDetail.setText(dataBean.getAddress());
             type.setText(dataBean.getType());
+            customeId = dataBean.getId();
         }
     }
 
@@ -371,11 +474,14 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
     protected void setUpData() {
         orderType = getIntent().getIntExtra("order_type",0);
         uploadOrderModel = new UploadOrderModel();
-       enterOrderActivityPresenter = new EnterOrderActivityPresenter(this);
+        enterOrderActivityPresenter = new EnterOrderActivityPresenter(this);
+        if (orderType!=1){
+            recordTime.setVisibility(View.GONE);
+        }
     }
 
 
-    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add})
+    @OnClick({R.id.back, R.id.upload_reward, R.id.upload_month, R.id.receive_payment,R.id.tip_img,R.id.address_detail,R.id.add_shop_btn,R.id.water_tickets,R.id.reward_tickets,R.id.monthly,R.id.give_away,R.id.record_time,R.id.upload_month_view,R.id.confirm_add_shop,R.id.select_client,R.id.reduce,R.id.shop_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.reduce:
@@ -458,6 +564,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                         shopPrice.setText(dataBean.getPrice()+"");
                         shopId = dataBean.getId();
                         materialListAdapter.setList(dataBeanList);
+
+                        enterOrderActivityPresenter.getCustomerPrice(customeId,dataBean.getId());
                     }
                 });
                 addShopDialog.show(getSupportFragmentManager(),"");
@@ -509,6 +617,42 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     monthDeductionNunm.setVisibility(View.VISIBLE);
                 }
                 selectMonth =!selectMonth;
+                break;
+            case R.id.give_away:
+
+                if (selectGiveAway){
+                    giveAwayMoney.setEditinput("");
+                    giveAwayNunm.setEditinput("");
+                    giveAway.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
+                    giveAwayNunm.setVisibility(View.GONE);
+                    giveAwayMoney.setVisibility(View.GONE);
+                }else {
+                    giveAway.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
+                    giveAwayNunm.setVisibility(View.VISIBLE);
+                    giveAwayMoney.setVisibility(View.VISIBLE);
+                    if (shopDataBean!=null){
+                        try {
+                            double shopNumData = Double.parseDouble(shopNum.getText().toString());
+                            giveAwayMoney.setEditinput(String.valueOf(shopDataBean.getPrice() * shopNumData));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                selectGiveAway=!selectGiveAway;
+                break;
+
+            case R.id.record_time:
+
+                if (selectRecord){
+                    recordTimeDate.setRightText("请选择");
+                    recordTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn33));
+                    recordTimeDate.setVisibility(View.GONE);
+                }else {
+                    recordTime.setBackground(ContextCompat.getDrawable(this,R.drawable.set_bg_btn17));
+                    recordTimeDate.setVisibility(View.VISIBLE);
+                }
+                selectRecord=!selectRecord;
                 break;
             case R.id.confirm_add_shop:
 
@@ -568,6 +712,23 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     e.printStackTrace();
                 }
 
+                try {
+                    int num = Integer.parseInt(giveAwayNunm.getEditText());
+                    if (num>0){
+                        goodsListBean.setSendNum(num);
+                        goodsListBean.setSendPrice(Float.parseFloat(giveAwayMoney.getEditText()));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                if (orderType==1){
+                    String recordTime = recordTimeDate.getRightText();
+                    if (!TextUtils.isEmpty(recordTime) && !recordTime.contains("请选择")){
+                        goodsListBean.setTime(recordTime);
+                    }
+                }
+
                 String json = Utils.gsonInstane().toJson(goodsListBean);
                 Log.i(TAG,"json====="+json);
                 List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
@@ -575,7 +736,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     data = new ArrayList<>();
                 }
                 data.add(0,goodsListBean);
-
                 addOrderAdapter.setList(data);
 
                 shopDetail.setVisibility(View.GONE);
@@ -583,6 +743,16 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
 
                 shop_amount_view.setVisibility(View.VISIBLE);
                 initViewData();
+
+                selectTicket.setLeftText("水票");
+                selectWaterNum.setEditinput("");
+                selectDeductionNunm.setEditinput("");
+                rewardDeductionNunm.setEditinput("");
+                monthDeductionNunm.setEditinput("");
+                recordTimeDate.setRightText("请选择");
+                uploadReward.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
+                uploadMonth.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
+
                 break;
             case R.id.select_client:
                 Intent intent2 = new Intent(this,SaleSearchActivity.class);
@@ -597,7 +767,8 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         totalPrice = 0;
         amount_receivable = 0;
         actual_amount = 0;
-        int month_mount = 0;
+        float month_mount = 0;
+        float sendMoney = 0;
 
         try {
             List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
@@ -606,11 +777,10 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     // Utils.showCenterTomast("请选择水票");
                     // break;
                 }
+
                 float shopPrice =  Float.parseFloat(goodsListBean1.getGoodsPrice());
                 //总价格 : 所有商品金额之和
                 float currentAmount = Float.parseFloat(goodsListBean1.getNum()) * shopPrice;
-
-                // Log.i("TAG===","currentAmount==="+currentAmount +"==shopPrice==="+shopPrice);
 
                 totalPrice += currentAmount;
                 if (goodsListBean1.getDeductWater()!=null){
@@ -635,15 +805,14 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     //实收价格  【单个商品总价-（单个商品抵扣数量*单价）】之和；
                     float deductMonthNum = Float.parseFloat(goodsListBean1.getDeductMonth().getDeductNum());
                     month_mount += deductMonthNum * shopPrice;
-                    // actual_amount += amount_receivable - deductMonthNum * shopPrice;
-                }else {
-                    //  Log.i("TAG===","amount_receivable==="+amount_receivable);
-                    //   actual_amount += amount_receivable;
+                }
+                if (goodsListBean1.getSendNum()>0){
+                    sendMoney += goodsListBean1.getSendPrice() * goodsListBean1.getSendNum();
                 }
             }
             totalMerchandiseNum.setText(totalPrice +"");
             amountReceivableNum.setText(amount_receivable +"");
-            actualAmount.setText((amount_receivable - month_mount)+"");
+            actualAmount.setText((amount_receivable - month_mount - sendMoney)+"");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -909,6 +1078,27 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
            }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EnterOrderActivityPresenter.CustomerPriceModel model) {
+        if (model!=null){
+            try {
+                if (model.getResult()==1){
+                    EnterOrderActivityPresenter.CustomerPriceModel.DataBean data = model.getData();
+                    shopPrice.setText(data.getPrice()+"");
+                    shopDataBean.setPrice(Double.parseDouble(data.getPrice()));
+                    shopPrice.setFocusable(data.isEdit());
+                    shopPrice.setFocusableInTouchMode(data.isEdit());
+                }else{
+                    shopPrice.setFocusable(true);
+                    shopPrice.setFocusableInTouchMode(true);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     public void errorLoad(String error) {

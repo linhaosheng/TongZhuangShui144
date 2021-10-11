@@ -50,9 +50,10 @@ public class LoginPresenter {
                     LoginModel loginModel = Utils.gsonInstane().fromJson(result, LoginModel.class);
                     if (loginModel!=null && loginModel.getResult()==1){
                         SPUtils.putString(Config.VERIFICATION,loginModel.getData().getVerification());
-                        iLoadDataView.successLoad(result);
+                        Config.AUTHORITY = loginModel.getData().getAuthority();
+                        iLoadDataView.successLoad(loginModel.getResult()+"");
                     }else {
-                        iLoadDataView.errorLoad("登录失败");
+                        iLoadDataView.errorLoad(loginModel.getMessage());
                     }
                 }else {
                     iLoadDataView.errorLoad("登录失败");
@@ -81,7 +82,6 @@ public class LoginPresenter {
                 if (showDialog){
                     iLoadDataView.startLoad();
                 }
-                Log.i("TAH===","start====");
             }
 
             @Override
@@ -89,7 +89,6 @@ public class LoginPresenter {
                 if (result!=null){
                     SubjectModel subjectModel = Utils.gsonInstane().fromJson(result, SubjectModel.class);
                     if (subjectModel!=null && subjectModel.getResult()==1){
-                        Log.i("TAH===","result====");
                         EventBus.getDefault().post(new MessageEvent(subjectModel));
                         SPUtils.putString(Config.SUBJECT_LIST,result);
                     }else {
@@ -101,7 +100,6 @@ public class LoginPresenter {
             @Override
             public void error(String error) {
                 iLoadDataView.errorLoad(error);
-                Log.i("TAH===","error===="+error);
             }
         });
     }

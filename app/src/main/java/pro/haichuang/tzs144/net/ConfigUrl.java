@@ -11,7 +11,7 @@ public class ConfigUrl {
     public static final int GET = 0X110;
     public static final int POST = 0X111;
 
-    public final static String DEFAULT_SERVER_URL = "http://114.215.137.110:9090";  // https://api-tzs144.haichuang.pro
+    public final static String DEFAULT_SERVER_URL = "http://114.215.137.110:9090";  // https://api-tzs144.haichuang.pro  //http://114.215.137.110:9090
 
 
     /**
@@ -229,6 +229,11 @@ public class ConfigUrl {
     public static final String ENTER_ORFER = "/api/app/order/enterOrder";
 
     /**
+     * [2.0]客户商品价格配置-获取指定客户商品单价
+     */
+    public static final String GET_CUSTOMER_PRICE = "/api/pc/kh/customerGoodsConfig/getCustomerPrice";
+
+    /**
      * [直接销售]-订单详情
      */
     public static final String GET_ORDER_INFO = "/api/app/order/getOrderInfo";
@@ -360,6 +365,11 @@ public class ConfigUrl {
     public static final String FIND_SUMMARY_HJ = "/api/pc/xs/summary/findSummaryHj";
 
     /**
+     * [5.0]销售汇总
+     */
+    public static final String FIND_ORDER_SUM_LIST = "/api/app/order/findOrderSumList";
+
+    /**
      * 库存主体 - 结账汇总 - 收入情况
      */
     public static final String FIND_SUMMARY_SR = "/api/pc/xs/summary/findSummarySr";
@@ -387,5 +397,10 @@ public class ConfigUrl {
      * [新增]拆包
      */
     public static final String UNPACK = "/api/app/unpackLog/unpack";
+
+    /**
+     * 获取维护用户信息
+     */
+    public static final String GET_WHCUSTOMER_INFP = "/api/app/kh/getWhCustomerInfo";
 
 }

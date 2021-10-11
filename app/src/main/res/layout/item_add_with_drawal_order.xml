@@ -25,6 +25,17 @@
         android:layout_marginBottom="@dimen/dp_12">
 
         <TextView
+            android:id="@+id/with_drawal_end_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="@dimen/dp_30"
+            android:text="退押时间 ：2020-11-23"
+            android:textColor="#3F3F3F"
+            android:textSize="12sp" />
+
+        <TextView
             android:id="@+id/deposit_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,17 +143,6 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="@dimen/dp_30"
             android:text="开押人 ：张三"
-            android:textColor="#3F3F3F"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/with_drawal_end_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_32"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="@dimen/dp_30"
-            android:text="退押时间 ：2020-11-23"
             android:textColor="#3F3F3F"
             android:textSize="12sp" />
 

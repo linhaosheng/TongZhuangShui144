@@ -169,6 +169,38 @@
             android:textColor="#3F3F3F"
             android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/with_drawal_money_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="@dimen/dp_30"
+            android:text="退押金额 ：张三"
+            android:textColor="#3F3F3F"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/with_drawal_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="@dimen/dp_30"
+            android:text="退押数量 ：张三"
+            android:textColor="#3F3F3F"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/with_drawal_buy_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="@dimen/dp_30"
+            android:text="买断数量 ：张三"
+            android:textColor="#3F3F3F"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

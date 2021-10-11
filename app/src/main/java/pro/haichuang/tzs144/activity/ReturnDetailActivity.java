@@ -3,6 +3,7 @@ package pro.haichuang.tzs144.activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
 import com.lxj.xpopup.XPopup;
 
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
     private String endTime;
     private String id = "1";
     private int currentPage=1;
+    private boolean lastPage;
 
 
     @Override
@@ -100,13 +103,27 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
                 return false;
             }
         });
+
+        returnDetailAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage) {
+                    currentPage++;
+                    returnDetailActivityPresenter.findQsstLogs(startTime,endTime,id,currentPage,searchEdit.getText().toString());
+                }
+
+            }
+        });
+        returnDetailAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        returnDetailAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
     }
 
     @Override
     protected void setUpData() {
 
         returnDetailActivityPresenter = new ReturnDetailActivityPresenter(this);
-        returnDetailActivityPresenter.findQsstLogs(startTime,endTime,id,currentPage,"");
+        returnDetailActivityPresenter.findQsstLogs(startTime,endTime,"",currentPage,"");
     }
 
 
@@ -127,6 +144,8 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
 
     @Override
     public void onRefresh() {
+        lastPage = false;
+        currentPage =1;
         returnDetailActivityPresenter.findQsstLogs(startTime,endTime,id,currentPage,searchEdit.getText().toString());
     }
 
@@ -138,12 +157,30 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
     @Override
     public void successLoad(List<ReturnDetailModel.DataBean> data) {
         refresh.setRefreshing(false);
+        if (data == null || data.size() == 0) {
+            lastPage = true;
+        }
 
-        returnDetailAdapter.setList(data);
-        if (data!=null && data.size()>0){
-            emptyView.setVisibility(View.GONE);
-        }else {
-            emptyView.setVisibility(View.VISIBLE);
+        if (currentPage==1){
+            if (data!=null && data.size()>0){
+                emptyView.setVisibility(View.GONE);
+            }else {
+                emptyView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (currentPage == 1) {
+            returnDetailAdapter.setList(data);
+            if (data.size() < 10) {
+                lastPage = true;
+                returnDetailAdapter.getLoadMoreModule().loadMoreEnd();
+            }
+        } else {
+            returnDetailAdapter.addData(data);
+            returnDetailAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+        if (lastPage) {
+            returnDetailAdapter.getLoadMoreModule().loadMoreEnd();
         }
     }
 
@@ -158,5 +195,8 @@ public class ReturnDetailActivity extends BaseActivity implements SwipeRefreshLa
          this.startTime = startTime;
          this.endTime = endTime;
          this.id = id;
+         currentPage =1;
+         lastPage = false;
+        returnDetailActivityPresenter.findQsstLogs(startTime,endTime,id,currentPage,searchEdit.getText().toString());
     }
 }

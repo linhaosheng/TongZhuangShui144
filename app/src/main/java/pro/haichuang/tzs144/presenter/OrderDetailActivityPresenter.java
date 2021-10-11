@@ -119,7 +119,10 @@ public class OrderDetailActivityPresenter {
                     if (result1==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,4));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,4));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,4);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -195,7 +198,10 @@ public class OrderDetailActivityPresenter {
                     if (result1==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,1));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,1));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,1);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

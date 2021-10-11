@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,6 +66,8 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     RelativeLayout emptyView;
     @BindView(R.id.bill_order)
     TextView billOrder;
+    @BindView(R.id.filter_view)
+    LinearLayout filterView;
 
     private OrderPaymentAdapter orderPaymentAdapter;
     private OrderTrendAdapter orderTrendAdapter;
@@ -72,13 +77,17 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     private TextView filter;
     private String startTime;
     private String endTime;
+    private String pickTime;
     private ClientHistoryTimeDatapPresenter clientHistoryTimeDatapPresenter;
     private List<TrendModel>trendModelList;
+
+    private boolean lastPage;
+    private int currentPage = 1;
 
 
     @Override
     public boolean lazyLoader() {
-        return false;
+        return true;
     }
 
     @Override
@@ -88,16 +97,31 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Override
     protected void setUpView() {
+        filterView.setVisibility(View.GONE);
         startTime = "2019-10-22";
         endTime = Utils.formatSelectTime(new Date());
 
         billOrder.setVisibility(View.GONE);
         refresh.setOnRefreshListener(this);
-        orderPaymentAdapter = new OrderPaymentAdapter();
+        orderPaymentAdapter = new OrderPaymentAdapter(0);
         orderTrendAdapter  = new OrderTrendAdapter();
 
         headView = LayoutInflater.from(getActivity()).inflate(R.layout.item_check_out_time,null);
         orderTrendAdapter.addHeaderView(headView);
+
+        orderPaymentAdapter.getLoadMoreModule().setAutoLoadMore(true);
+        //当自动加载开启，同时数据不满一屏时，是否继续执行自动加载更多(默认为true)
+        orderPaymentAdapter.getLoadMoreModule().setEnableLoadMoreIfNotFullPage(false);
+
+        orderPaymentAdapter.getLoadMoreModule().setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (!lastPage) {
+                    currentPage++;
+                    clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
+                }
+            }
+        });
 
         headView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,15 +130,18 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
                 TimeDialog timeDialog = new TimeDialog(getActivity(), new TimeDialog.SelectTimeListener() {
                     @Override
                     public void selectTime(String mStartTime, String mEndTime) {
-                       startTime = mStartTime;
-                       endTime = mEndTime;
-                        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
+                        lastPage = false;
+                        currentPage  =1;
+                        startTime = mStartTime;
+                        endTime = mEndTime;
+                        pickTime = null;
+                        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
                     }
                 });
                 timeDialog.show(getChildFragmentManager(), "");
             }
         });
-         filter = headView.findViewById(R.id.filter);
+        filter = headView.findViewById(R.id.filter);
         checkOutTime = headView.findViewById(R.id.check_out_time);
         checkOutTime.setText(Utils.formatSelectTime(new Date()));
         checkOutTime.setOnClickListener(new View.OnClickListener() {
@@ -123,9 +150,14 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
                 TimePickerView pvTime = new TimePickerBuilder(getActivity(), new OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {
+                        lastPage = false;
+                        currentPage=1;
                         checkOutTime.setText(Utils.formatSelectTime(date));
-                        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
-                        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
+                        pickTime = checkOutTime.getText().toString();
+                        clientHistoryTimeDatapPresenter.countLsOrder(pickTime);
+                        startTime = null;
+                        endTime = null;
+                        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
                     }
                 })
                         .build();
@@ -161,14 +193,17 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     @Override
     protected void setUpData() {
         clientHistoryTimeDatapPresenter = new ClientHistoryTimeDatapPresenter(this);
-        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
-        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
+        pickTime = checkOutTime.getText().toString();
+        clientHistoryTimeDatapPresenter.countLsOrder(pickTime);
+        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
     }
 
     @Override
     public void onRefresh() {
-        clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
-        clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
+        currentPage = 1;
+        lastPage = false;
+        clientHistoryTimeDatapPresenter.countLsOrder(pickTime);
+        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
     }
 
     @Override
@@ -178,7 +213,6 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Override
     public void successLoad(AccountHistoryModel.DataBean data) {
-        refresh.setRefreshing(false);
         if (trendModelList==null){
             trendModelList = new ArrayList<>();
         }
@@ -219,23 +253,45 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RealAccountEvent event) {
-        if (event!=null && event.type==2){
-            if (event.dataBean==null || event.dataBean.getData()==null || event.dataBean.getData().size()==0){
+
+        if (event==null && event.type!=2){
+            return;
+        }
+        refresh.setRefreshing(false);
+
+        if (event.dataBean == null || event.dataBean.getData() == null || event.dataBean.getData().size() == 0) {
+            lastPage = true;
+            if (currentPage == 1) {
                 emptyView.setVisibility(View.VISIBLE);
             }else {
                 emptyView.setVisibility(View.GONE);
             }
+        }
+
+        if (currentPage==1){
+            if (event.dataBean!=null && event.dataBean.getData().size()<10){
+                lastPage = true;
+                orderPaymentAdapter.getLoadMoreModule().loadMoreEnd();
+            }
             orderPaymentAdapter.setList(event.dataBean.getData());
+        }else {
+            orderPaymentAdapter.addData(event.dataBean.getData());
+            orderPaymentAdapter.getLoadMoreModule().loadMoreComplete();
+        }
+        if (lastPage) {
+            orderPaymentAdapter.getLoadMoreModule().loadMoreEnd();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StatusEvent event) {
+        currentPage=1;
+        lastPage = false;
         if (event != null) {
             if (event.type==4){
                 if (event.status== Config.LOAD_SUCCESS){
-                    clientHistoryTimeDatapPresenter.countLsOrder(checkOutTime.getText().toString());
-                    clientHistoryTimeDatapPresenter.findLsOrders(checkOutTime.getText().toString(),startTime,endTime);
+                    clientHistoryTimeDatapPresenter.countLsOrder(pickTime);
+                    clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
                 }
             }
         }

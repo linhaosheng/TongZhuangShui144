@@ -4,7 +4,7 @@
 
     <solid android:color="#ff34b6fa" />
     <corners android:radius="25dp" />
-    <item name="android:shadowColor">##32C5FF</item>
+    <item name="android:shadowColor">#8034b6fa</item>
     <item name="android:shadowDx">0</item>
     <item name="android:shadowDy">4</item>
 </shape>

@@ -22,6 +22,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnLoadMoreListener;
+import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
+import com.kongzue.dialog.util.BaseDialog;
+import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,6 +46,7 @@ import pro.haichuang.tzs144.model.WithDrawalOrderModel;
 import pro.haichuang.tzs144.presenter.AddWithDrawalOrderActivityPresenter;
 import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
+import pro.haichuang.tzs144.view.WithDrawalDepositDialog;
 
 /**
  * 新增退押记录
@@ -169,23 +173,31 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                 break;
             case R.id.with_drawal_btn:
                 StringBuilder idBuilder = new StringBuilder();
+                StringBuilder content = new StringBuilder();
+
                 for (WithDrawalOrderModel.DataBean dataBean : addWithDrawalOrderAdapter.getData()){
                     if (dataBean.isChecked()){
                         idBuilder.append(dataBean.getId()).append(",");
+                        content.append("开押数量 : "+dataBean.getNum()).append("\n")
+                                .append("开押金额 : "+dataBean.getTotalPrice()).append("\n\n");
+
                     }
                 }
+
                 if (idBuilder.length()<=0){
                     Utils.showCenterTomast("请选择退押选项");
                     return;
                 }
-                try {
-                    //去除多余的逗号
-                    String ids = idBuilder.substring(0, idBuilder.toString().length() - 1);
-                    Log.i(TAG,"ids===="+ids);
-                    addWithDrawalOrderActivityPresenter.returnDeposits(ids);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+                WithDrawalDepositDialog  withDrawalDepositDialog = new WithDrawalDepositDialog(AddWithDrawalOrderActivity.this, new WithDrawalDepositDialog.AddDepositListener() {
+                    @Override
+                    public void addDespositStatus(String ids,String returnCount,String returnPrice) {
+                        Log.i("TAG===","ids==="+ids+"====returnCount=="+returnCount+"-=====returnPrice=="+returnPrice);
+                        addWithDrawalOrderActivityPresenter.returnDeposits(ids,returnCount,returnPrice);
+                    }
+                });
+                withDrawalDepositDialog.setData(addWithDrawalOrderAdapter.getData());
+                withDrawalDepositDialog.show(getSupportFragmentManager(),"");
+
                 break;
             case R.id.address_detail:
                 Intent intent1 = new Intent(this,SelectAddressActivity.class);
@@ -248,7 +260,7 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
                 Utils.showCenterTomast("新增退押记录成功");
                 finish();
             } else {
-                Utils.showCenterTomast("新增失败");
+                Utils.showCenterTomast("新增失败 : "+event.result);
             }
         }
 
@@ -295,4 +307,6 @@ public class AddWithDrawalOrderActivity extends BaseActivity implements ILoadDat
         lastPage = false;
         addWithDrawalOrderActivityPresenter.findByKhReturnDeposits(searchEdit.getText().toString(),currentPage);
     }
+
+
 }

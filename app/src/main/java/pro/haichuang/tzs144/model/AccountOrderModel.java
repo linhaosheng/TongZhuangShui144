@@ -56,6 +56,7 @@ public class AccountOrderModel {
 
         private int settleStatus = -1;
         private int id;
+        private int deliveryStatus;
         private String no;
         private String type;
         private String customerName;
@@ -70,7 +71,32 @@ public class AccountOrderModel {
         private String monthNum;
         private String deliveryTime;
         private String settleTime;
+        private boolean check;
+        private String blTime;
 
+        public String getBlTime() {
+            return blTime;
+        }
+
+        public void setBlTime(String blTime) {
+            this.blTime = blTime;
+        }
+
+        public int getDeliveryStatus() {
+            return deliveryStatus;
+        }
+
+        public void setDeliveryStatus(int deliveryStatus) {
+            this.deliveryStatus = deliveryStatus;
+        }
+
+        public boolean isCheck() {
+            return check;
+        }
+
+        public void setCheck(boolean check) {
+            this.check = check;
+        }
 
         public String getDeliveryTime() {
             return deliveryTime;

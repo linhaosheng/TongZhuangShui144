@@ -128,13 +128,16 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
         tabs.setupWithViewPager(vpView);
         tabs.setTabsFromPagerAdapter(myPagerAdapter);
         vpView.setCurrentItem(0);
-
     }
 
     @Override
     protected void setUpData() {
-        inventoryFragmentPresenter = new InventoryFragmentPresenter(this);
-        inventoryFragmentPresenter.findGoodsCategory();
+        if (title!=null){
+            if (inventoryFragmentPresenter==null){
+                inventoryFragmentPresenter = new InventoryFragmentPresenter(this);
+            }
+            inventoryFragmentPresenter.findGoodsCategory();
+        }
 
         Log.i(TAG,"findGoodsCategory====");
 
@@ -193,10 +196,8 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
              dataBean.setName("全部商品");
              dataBean.setId(0);
              dataBeanList = new ArrayList<>();
-
              dataBeanList.add(dataBean);
              dataBeanList.addAll(data);
-
              data.clear();
              initData();
          }
@@ -211,7 +212,6 @@ public class InventoryFragment extends BaseFragment implements ILoadDataView<Lis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdateTitleEvent event) {
         if (event!=null){
-            Log.i(TAG,"onMessageEvent===");
             tabs.getTabAt(0).setText("全部 "+event.inventoryNumModel.getData().getAllNum());
             tabs.getTabAt(1).setText("可售 "+event.inventoryNumModel.getData().getSellNum());
             tabs.getTabAt(2).setText("已售罄 "+event.inventoryNumModel.getData().getSellOutNum());

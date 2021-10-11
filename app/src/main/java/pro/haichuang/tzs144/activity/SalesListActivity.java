@@ -153,9 +153,12 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
         saleListItemAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                String orderNumId = saleListItemAdapter.getData().get(position).getId();
+                SaleListModel.DataBean dataBean = saleListItemAdapter.getData().get(position);
+                String orderNumId = dataBean.getId();
+
                 Intent intent = new Intent(SalesListActivity.this,SaleOrderDetailActivity.class);
                 intent.putExtra("id",orderNumId);
+                intent.putExtra("settleStatus",dataBean.getSettleStatus());
                 startActivity(intent);
             }
         });
@@ -211,9 +214,17 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                 finish();
                 break;
             case R.id.tip_img:
+
+                String [] list = null;
+                if (Config.AUTHORITY.contains("5")){
+                    list = new String[]{"直接销售", "补录订单"};
+                }else {
+                    list = new String[]{"直接销售"};
+                }
+
                 new XPopup.Builder(this)
                         .atView(tipImg)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
-                        .asAttachList(new String[]{"直接销售", "补录订单"},
+                        .asAttachList(list,
                                 new int[]{},
                                 new OnSelectListener() {
                                     @Override
@@ -306,7 +317,7 @@ public class SalesListActivity extends BaseActivity implements SwipeRefreshLayou
                 lastPage=false;
                 salesListActivityPresenter.findDirectSales(cutomerType, startTime, endTime, 1);
             } else {
-                Utils.showCenterTomast("订单作废失败");
+                Utils.showCenterTomast("订单作废失败: " + event.result);
             }
         }
         Log.i(TAG, "onMessageEvent===");

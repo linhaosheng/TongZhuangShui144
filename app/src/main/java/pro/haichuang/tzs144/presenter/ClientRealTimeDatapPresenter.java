@@ -1,10 +1,12 @@
 package pro.haichuang.tzs144.presenter;
 
+import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 import pro.haichuang.tzs144.iview.ILoadDataView;
@@ -34,7 +36,7 @@ public class ClientRealTimeDatapPresenter {
         HttpRequestEngine.postRequest(ConfigUrl.MANAGER_COUNT, null, new HttpRequestResultListener() {
             @Override
             public void start() {
-                iLoadDataView.startLoad();
+
             }
 
             @Override
@@ -49,7 +51,7 @@ public class ClientRealTimeDatapPresenter {
 
             @Override
             public void error(String error) {
-                iLoadDataView.errorLoad(error);
+
             }
         });
     }
@@ -60,16 +62,20 @@ public class ClientRealTimeDatapPresenter {
      * @param startTime
      * @param endTime
      */
-    public final void findSsOrders(String startTime,String endTime){
+    public final void findSsOrders(String startTime,String endTime,int page,String categoryName){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("startTime",startTime);
         params.put("endTime",endTime);
+        params.put("page",page);
+        if (!"全部".equals(categoryName)){
+            params.put("categoryName",categoryName);
+        }
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_SS_ORDERS, params, new HttpRequestResultListener() {
             @Override
             public void start() {
-
+                iLoadDataView.startLoad();
             }
 
             @Override
@@ -90,9 +96,13 @@ public class ClientRealTimeDatapPresenter {
     /**
      * [账务]账务管理 - 结账
      */
-    public final void settle(){
-
-        HttpRequestEngine.postRequest(ConfigUrl.SETTLE, null, new HttpRequestResultListener() {
+    public final void settle(List<Integer>orderIds){
+        Utils.showCenterTomast("正在结账");
+        Map<String,Object>params = new ArrayMap<>();
+        if (orderIds!=null && orderIds.size()>0){
+            params.put("orderIds",orderIds);
+        }
+        HttpRequestEngine.postRequest(ConfigUrl.SETTLE, params, new HttpRequestResultListener() {
             @Override
             public void start() {
 
@@ -106,7 +116,9 @@ public class ClientRealTimeDatapPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,4));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,4));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,4);
+                        statusEvent.setResult(jsonObject.getString("message"));
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -141,7 +153,9 @@ public class ClientRealTimeDatapPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,5));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,5));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,5);
+                        statusEvent.setResult(jsonObject.getString("message"));
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

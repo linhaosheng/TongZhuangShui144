@@ -295,7 +295,7 @@ public class StartDepositActivity extends BaseActivity implements ILoadDataView<
     @Override
     public void errorLoad(String error) {
         WaitDialog.dismiss();
-        Utils.showCenterTomast("提交失败");
+        Utils.showCenterTomast("提交失败 : "+ error);
     }
 
     @Override

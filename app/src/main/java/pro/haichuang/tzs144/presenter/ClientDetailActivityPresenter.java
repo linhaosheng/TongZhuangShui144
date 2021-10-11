@@ -47,7 +47,7 @@ public class ClientDetailActivityPresenter {
                 if (clientDetailModel!=null && clientDetailModel.getResult()==1){
                     iLoadDataView.successLoad(clientDetailModel.getData());
                 }else {
-                    iLoadDataView.errorLoad("获取失败");
+                    iLoadDataView.errorLoad(clientDetailModel.getMessage());
                 }
 
             }
@@ -93,7 +93,10 @@ public class ClientDetailActivityPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,3));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,3));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,3);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -128,7 +131,10 @@ public class ClientDetailActivityPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,0));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,0));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,0);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -165,7 +171,10 @@ public class ClientDetailActivityPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,1));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,1));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,1);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -205,7 +214,10 @@ public class ClientDetailActivityPresenter {
                     if (jsonObject.getInt("result")==1){
                         EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,2));
                     }else {
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,2));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,2);
+                        String message = jsonObject.getString("message");
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

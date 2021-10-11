@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.model;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 public class OrderDetailModel {
@@ -74,15 +76,24 @@ public class OrderDetailModel {
         private int orderType;
         private String payMode;
         private String completeTime;
-        private int totalPrice;
+        private double totalPrice;
         private String customerName;
         private String customerTypeName;
         private String customerPhone;
         private String addressName;
-        private int receivablePrice;
-        private int realPrice;
+        private double receivablePrice;
+        private double realPrice;
         private String distance;
         private List<GoodsListBean> goodsList;
+        private KyInfo kyInfo;
+
+        public KyInfo getKyInfo() {
+            return kyInfo;
+        }
+
+        public void setKyInfo(KyInfo kyInfo) {
+            this.kyInfo = kyInfo;
+        }
 
         public int getOrderStatus() {
             return orderStatus;
@@ -188,11 +199,11 @@ public class OrderDetailModel {
             this.completeTime = completeTime;
         }
 
-        public int getTotalPrice() {
+        public double getTotalPrice() {
             return totalPrice;
         }
 
-        public void setTotalPrice(int totalPrice) {
+        public void setTotalPrice(double totalPrice) {
             this.totalPrice = totalPrice;
         }
 
@@ -228,19 +239,19 @@ public class OrderDetailModel {
             this.addressName = addressName;
         }
 
-        public int getReceivablePrice() {
+        public double getReceivablePrice() {
             return receivablePrice;
         }
 
-        public void setReceivablePrice(int receivablePrice) {
+        public void setReceivablePrice(double receivablePrice) {
             this.receivablePrice = receivablePrice;
         }
 
-        public int getRealPrice() {
+        public double getRealPrice() {
             return realPrice;
         }
 
-        public void setRealPrice(int realPrice) {
+        public void setRealPrice(double realPrice) {
             this.realPrice = realPrice;
         }
 
@@ -284,7 +295,7 @@ public class OrderDetailModel {
             private int couponDeductNum;
             private String couponImg;
             private String goodsName;
-            private float goodsNum;
+            private int goodsNum;
             private String monthImg;
             private int monthDeductNum;
             private List<String> materialList;
@@ -292,6 +303,33 @@ public class OrderDetailModel {
             private boolean showWater;
             private boolean showReward;
             private boolean showMonth;
+            private boolean showSend;
+            private int sendNum;
+            private float sendPrice;
+
+            public int getSendNum() {
+                return sendNum;
+            }
+
+            public void setSendNum(int sendNum) {
+                this.sendNum = sendNum;
+            }
+
+            public float getSendPrice() {
+                return sendPrice;
+            }
+
+            public void setSendPrice(float sendPrice) {
+                this.sendPrice = sendPrice;
+            }
+
+            public boolean isShowSend() {
+                return showSend;
+            }
+
+            public void setShowSend(boolean showSend) {
+                this.showSend = showSend;
+            }
 
             public String getGoodsSpecsName() {
                 if (goodsSpecsName==null){
@@ -409,11 +447,11 @@ public class OrderDetailModel {
                 this.goodsName = goodsName;
             }
 
-            public float getGoodsNum() {
+            public int getGoodsNum() {
                 return goodsNum;
             }
 
-            public void setGoodsNum(float goodsNum) {
+            public void setGoodsNum(int goodsNum) {
                 this.goodsNum = goodsNum;
             }
 
@@ -469,6 +507,129 @@ public class OrderDetailModel {
 
             public void setId(int id) {
                 this.id = id;
+            }
+        }
+
+        public static class KyInfo{
+            private String bookNo = "";
+            private String customerName;
+            private String  goodsName = "";
+            private String kyName ="";
+            private String kyTime;
+            private String tyName;
+            private String tyTime = "";
+            private String yjNo = "";
+            private int yjNum;
+            private double yjPrice;
+            private String yjTotalPrice;
+            private int yjStatus;
+            private int yjType;
+
+            public String getBookNo() {
+                return bookNo;
+            }
+
+            public void setBookNo(String bookNo) {
+                this.bookNo = bookNo;
+            }
+
+            public String getCustomerName() {
+                return customerName;
+            }
+
+            public void setCustomerName(String customerName) {
+                this.customerName = customerName;
+            }
+
+            public String getGoodsName() {
+                return goodsName;
+            }
+
+            public void setGoodsName(String goodsName) {
+                this.goodsName = goodsName;
+            }
+
+            public String getKyName() {
+                return kyName;
+            }
+
+            public void setKyName(String kyName) {
+                this.kyName = kyName;
+            }
+
+            public String getKyTime() {
+                return kyTime;
+            }
+
+            public void setKyTime(String kyTime) {
+                this.kyTime = kyTime;
+            }
+
+            public String getTyName() {
+                return tyName;
+            }
+
+            public void setTyName(String tyName) {
+                this.tyName = tyName;
+            }
+
+            public String getTyTime() {
+                return tyTime;
+            }
+
+            public void setTyTime(String tyTime) {
+                this.tyTime = tyTime;
+            }
+
+            public String getYjNo() {
+                return yjNo;
+            }
+
+            public void setYjNo(String yjNo) {
+                this.yjNo = yjNo;
+            }
+
+            public int getYjNum() {
+                return yjNum;
+            }
+
+            public void setYjNum(int yjNum) {
+                this.yjNum = yjNum;
+            }
+
+            public double getYjPrice() {
+                return yjPrice;
+            }
+
+            public void setYjPrice(double yjPrice) {
+                this.yjPrice = yjPrice;
+            }
+
+            public String getYjTotalPrice() {
+                if (TextUtils.isEmpty(yjTotalPrice)){
+                    return "";
+                }
+                return yjTotalPrice;
+            }
+
+            public void setYjTotalPrice(String yjTotalPrice) {
+                this.yjTotalPrice = yjTotalPrice;
+            }
+
+            public int getYjStatus() {
+                return yjStatus;
+            }
+
+            public void setYjStatus(int yjStatus) {
+                this.yjStatus = yjStatus;
+            }
+
+            public int getYjType() {
+                return yjType;
+            }
+
+            public void setYjType(int yjType) {
+                this.yjType = yjType;
             }
         }
     }

@@ -28,9 +28,11 @@ public class AddWithDrawalOrderActivityPresenter {
      * [押金]提交退押
      * @param ids
      */
-    public void returnDeposits(String ids){
+    public void returnDeposits(String ids,String returnCount,String returnPrice){
         Map<String,Object>params = new ArrayMap<>();
         params.put("ids",ids);
+        params.put("returnCount",returnCount);
+        params.put("returnPrice",returnPrice);
 
         HttpRequestEngine.postRequest(ConfigUrl.RETURN_DEPOSIT, params, new HttpRequestResultListener() {
             @Override
@@ -44,9 +46,11 @@ public class AddWithDrawalOrderActivityPresenter {
                   JSONObject jsonObject = new JSONObject(result);
                   String message = jsonObject.getString("message");
                   if (jsonObject.getInt("result")==1){
-                      EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,8));
+                      EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,9));
                   }else {
-                      EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,9));
+                      StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,9);
+                      statusEvent.setResult(message);
+                      EventBus.getDefault().post(statusEvent);
                   }
               }catch (Exception e){
                   e.printStackTrace();

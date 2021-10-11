@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F8F8F8">
+    android:background="#F8F8F8"
+    android:orientation="vertical">
 
-    <include layout="@layout/header"/>
+    <include layout="@layout/header" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -24,76 +23,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_12"
-                android:paddingBottom="@dimen/dp_10"
-                android:background="#FFFFFF">
+                android:background="#FFFFFF"
+                android:paddingBottom="@dimen/dp_10">
 
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="张三"
-                android:textColor="#3F3F3F"
-                android:textSize="@dimen/sp_16"
-                android:layout_marginTop="@dimen/dp_10"
-                />
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="张三"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/sp_16" />
 
-            <TextView
-                android:id="@+id/order_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="18909293021"
-                android:textSize="14sp"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginLeft="@dimen/dp_15"
-                android:layout_toRightOf="@+id/name"
-                android:textColor="#999999"/>
+                <TextView
+                    android:id="@+id/order_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_toRightOf="@+id/name"
+                    android:text="18909293021"
+                    android:textColor="#999999"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="经销商"
-                    android:textColor="#1677FF"
-                    android:textSize="12sp"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_toRightOf="@+id/order_num"
                     android:background="@drawable/set_bg_btn32"
-                    android:layout_marginTop="@dimen/dp_10"
                     android:paddingLeft="@dimen/dp_5"
                     android:paddingRight="@dimen/dp_5"
-                    android:layout_marginLeft="@dimen/dp_10"/>
+                    android:text="经销商"
+                    android:textColor="#1677FF"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/order_state_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true" />
 
                 <TextView
                     android:id="@+id/address"
                     android:layout_width="@dimen/dp_100"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/name"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:text="麓谷大道店"
                     android:textColor="#3F3F3F"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_below="@+id/name"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/address_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="湖南省长沙市岳麓区麓谷大道1928号"
-                    android:textColor="#3F3F3F"
-                    android:textSize="14sp"
-                    android:layout_toRightOf="@+id/address"
+                    android:layout_below="@+id/name"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_10"
-                    android:layout_below="@+id/name"/>
+                    android:layout_toRightOf="@+id/address"
+                    android:text="湖南省长沙市岳麓区麓谷大道1928号"
+                    android:textColor="#3F3F3F"
+                    android:textSize="14sp" />
 
-          </RelativeLayout>
+            </RelativeLayout>
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -106,53 +104,53 @@
                 android:id="@+id/price_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
-                android:orientation="vertical"
-                android:background="#ffffff">
+                android:background="#ffffff"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tatal_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="商品金额"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
+                    android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:layout_marginLeft="@dimen/dp_10"/>
+                    android:text="商品金额"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
 
 
                 <TextView
                     android:id="@+id/need_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="应收金额"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
-                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_below="@+id/tatal_price"
                     android:layout_marginLeft="@dimen/dp_10"
-                    android:layout_below="@+id/tatal_price"/>
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="应收金额"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
 
 
                 <TextView
                     android:id="@+id/actual_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="实收金额"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
-                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_below="@+id/need_price"
                     android:layout_marginLeft="@dimen/dp_10"
-                    android:layout_below="@+id/need_price" />
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="实收金额"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
 
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#F8F8F8"
                     android:layout_below="@+id/actual_price"
-                    android:layout_marginTop="@dimen/dp_15">
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="#F8F8F8">
 
                 </View>
 
@@ -169,45 +167,114 @@
                     android:id="@+id/order_num_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="订单编号：lr20201124001"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
+                    android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:layout_marginLeft="@dimen/dp_20"/>
+                    android:text="订单编号：lr20201124001"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
 
                 <TextView
                     android:id="@+id/record_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="录入时间：2020-11-24 12:00:00"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
+                    android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:layout_marginLeft="@dimen/dp_20"/>
+                    android:text="录入时间：2020-11-24 12:00:00"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
 
                 <TextView
                     android:id="@+id/record_persion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="录入人：李四"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
-                    android:layout_marginTop="@dimen/dp_15"
                     android:layout_marginLeft="@dimen/dp_20"
-                    android:layout_marginBottom="@dimen/dp_20"/>
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:text="录入人：李四"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
 
                 <TextView
                     android:id="@+id/finish_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="录入时与客户距离：400M"
-                    android:textSize="@dimen/dp_12"
-                    android:textColor="#3F3F3F"
                     android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginBottom="@dimen/dp_20"
-                    android:visibility="visible"/>
+                    android:text="录入时与客户距离：400M"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12"
+                    android:visibility="visible" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/deposit_info_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/actual_price"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="#F8F8F8">
+                </View>
+
+                <TextView
+                    android:id="@+id/deposit_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="订单编号：lr20201124001"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
+
+                <TextView
+                    android:id="@+id/deposit_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="订单编号：lr20201124001"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
+
+                <TextView
+                    android:id="@+id/deposit_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="订单编号：lr20201124001"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
+
+                <TextView
+                    android:id="@+id/deposit_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="订单编号：lr20201124001"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
+
+                <TextView
+                    android:id="@+id/deposit_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="订单编号：lr20201124001"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

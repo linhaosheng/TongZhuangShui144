@@ -21,6 +21,7 @@ public class Config {
     public static final String SUBJECT_LIST  = "subject_list";
     public static final String LIMIT = "10";
     public static final String VERIFICATION = "verification";
+    public static String AUTHORITY = "";
 
     public static  double LATITUDE = 0;
     public static  double LONGITUDE = 0;

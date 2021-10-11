@@ -37,7 +37,7 @@ import pro.haichuang.tzs144.util.Utils;
 /**
  * 库存数量
  */
-public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , ILoadDataView<InventoryNumModel> {
+public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,ILoadDataView<InventoryNumModel> {
 
 
 
@@ -67,11 +67,7 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
 
     @Override
     public boolean lazyLoader() {
-//        if (id.equals("0")){
-//            return false;
-//        }
-//        return true;
-        return false;
+        return true;
     }
 
     @Override
@@ -116,10 +112,20 @@ public class InventoryNumFragment extends BaseFragment implements SwipeRefreshLa
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if ("0".equals(id)){
+            setUpData();
+        }
+    }
+
+    @Override
     protected void setUpData() {
-       if (inventoryNumAdapter.getData()==null || inventoryNumAdapter.getData().size()==0){
-           inventoryNumFragmentPresenter.findGoodsWithType("",categoryId,id);
-       }
+        if (refresh!=null){
+            if (inventoryNumAdapter.getData()==null || inventoryNumAdapter.getData().size()==0){
+                inventoryNumFragmentPresenter.findGoodsWithType("",categoryId,id);
+            }
+        }
     }
 
     @Override

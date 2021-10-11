@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/shop_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品名称：31231314"
+        android:textSize="12sp"
+        android:textColor="#3F3F3F"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"/>
+
+    <TextView
+        android:id="@+id/to_year_sale_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="今年数量：31231314"
+        android:textSize="12sp"
+        android:textColor="#3F3F3F"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"/>
+
+
+    <TextView
+        android:id="@+id/last_year_sale_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="去年数量：31231314"
+        android:textSize="12sp"
+        android:textColor="#3F3F3F"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"/>
+
+
+    <TextView
+        android:id="@+id/before_last_year_sale_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="前年数量：31231314"
+        android:textSize="12sp"
+        android:textColor="#3F3F3F"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_one"
+        android:layout_marginTop="@dimen/dp_20"/>
+
+</LinearLayout>

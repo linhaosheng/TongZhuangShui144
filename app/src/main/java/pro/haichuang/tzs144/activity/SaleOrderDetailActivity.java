@@ -84,10 +84,27 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     LinearLayout orderView;
     @BindView(R.id.recycle_data)
     RecyclerView recycleData;
+
+    @BindView(R.id.deposit_info_view)
+    LinearLayout deposit_info_view;
+    @BindView(R.id.deposit_num)
+    TextView deposit_num;
+    @BindView(R.id.deposit_name)
+    TextView deposit_name;
+    @BindView(R.id.deposit_total)
+    TextView deposit_total;
+    @BindView(R.id.deposit_person)
+    TextView deposit_person;
+    @BindView(R.id.deposit_time)
+    TextView deposit_time;
+
     private OrderDetailAdapter orderDetailAdapter;
+
+
 
     private OrderDetailPresenter orderDetailPresenter;
     private  String id;
+    private int settleStatus;
 
     @Override
     protected int setLayoutResourceID() {
@@ -109,6 +126,12 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     @Override
     protected void setUpData() {
         id = getIntent().getStringExtra("id");
+        settleStatus = getIntent().getIntExtra("settleStatus",0);
+        if (settleStatus!=0){
+            tips.setVisibility(View.GONE);
+        }else {
+            tips.setVisibility(View.VISIBLE);
+        }
         orderDetailPresenter = new OrderDetailPresenter(this);
         orderDetailPresenter.getOrderInfo(id);
     }
@@ -121,6 +144,10 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
                 finish();
                 break;
             case R.id.tips:
+                if (settleStatus!=0){
+                    Utils.showCenterTomast("只能作废未结账的订单");
+                    return;
+                }
                 WaitDialog.show(this,"提交中...");
                 orderDetailPresenter.directSelling(id);
                 break;
@@ -160,6 +187,19 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
         }else {
             tips.setVisibility(View.VISIBLE);
         }
+
+        if (data.getKyInfo()!=null){
+            OrderDetailModel.DataBean.KyInfo kyInfo = data.getKyInfo();
+            deposit_info_view.setVisibility(View.VISIBLE);
+            deposit_num.setText("押金本编号 : "+kyInfo.getBookNo());
+            deposit_name.setText("物品名称 : "+kyInfo.getGoodsName());
+            deposit_total.setText("总价 : "+kyInfo.getYjTotalPrice());
+            deposit_person.setText("开押人 : "+kyInfo.getKyName());
+            deposit_time.setText("退押时间 : "+kyInfo.getTyTime());
+        }else {
+            deposit_info_view.setVisibility(View.GONE);
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -172,7 +212,7 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
                 orderStateImg.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.void_state));
                 EventBus.getDefault().post(new RefreshEvent("refresh",0));
             } else {
-                Utils.showCenterTomast("订单作废失败");
+                Utils.showCenterTomast("订单作废失败 :" +event.result);
             }
         }
         Log.i(TAG, "onMessageEvent===");

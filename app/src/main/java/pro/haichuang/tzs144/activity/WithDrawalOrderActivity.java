@@ -256,7 +256,7 @@ public class WithDrawalOrderActivity extends BaseActivity implements SwipeRefres
                 withDrawalOrderPresenter.findReturnDeposits(searchEdit.getText().toString(),page);
 
             }else if (event.status==Config.LOAD_FAIL && event.type==20){
-                Utils.showCenterTomast("作废失败");
+                Utils.showCenterTomast("作废失败 : "+event.result);
             }
         }
     }

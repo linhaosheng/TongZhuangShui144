@@ -19,6 +19,9 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
+import com.kongzue.dialog.util.BaseDialog;
+import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -132,6 +135,12 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
         id = getIntent().getStringExtra("id");
         accountingListDetailPresenter = new AccountingListDetailPresenter(this);
         accountingListDetailPresenter.getAccountInfo(id);
+        int settleStatus = getIntent().getIntExtra("settleStatus", 0);
+        if (settleStatus==1){
+            tips.setVisibility(View.VISIBLE);
+        }else{
+            tips.setVisibility(View.GONE);
+        }
     }
 
 
@@ -191,6 +200,19 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
     @Override
     public void successLoad(AccountListDetailModel.DataBean data) {
 
+        if (data==null){
+            MessageDialog.show(this, "提示", "数据为空", "确定")
+                    .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                        @Override
+                        public boolean onClick(BaseDialog baseDialog, View v) {
+                            finish();
+                            return false;
+                        }
+                    })
+                    .show();
+            return;
+        }
+
         WaitDialog.dismiss();
         cash.setText(data.getXjPrice()+"元");
         //coupon.setText(dataBean.);
@@ -222,14 +244,14 @@ public class AccountingListDetailActivity extends BaseActivity implements ILoadD
                 Utils.showCenterTomast("销账成功");
                 accountingListDetailPresenter.getAccountInfo(id);
             } else {
-                Utils.showCenterTomast("销账失败");
+                Utils.showCenterTomast("销账失败: "+event.result);
             }
         }else if (event != null && event.type==8){
             if (event.status == Config.LOAD_SUCCESS) {
                 Utils.showCenterTomast("结账成功");
                 accountingListDetailPresenter.getAccountInfo(id);
             } else {
-                Utils.showCenterTomast("结账失败");
+                Utils.showCenterTomast("结账失败 : "+event.result);
             }
         }
         Log.i(TAG, "onMessageEvent===");

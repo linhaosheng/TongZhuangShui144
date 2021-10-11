@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.presenter;
 
+import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import java.util.Map;
@@ -30,11 +31,14 @@ public class ReturnDetailActivityPresenter {
     public void findQsstLogs(String startTime,String endTime,String staffId,int page ,String query){
 
         Map<String,Object>params = new ArrayMap<>();
-        params.put("startTime",startTime);
-        params.put("endTime",endTime);
-        params.put("staffId",staffId);
-        params.put("page",page);
+        if (!TextUtils.isEmpty(staffId)){
+            params.put("startTime",startTime);
+            params.put("endTime",endTime);
+            params.put("staffId",staffId);
+        }
         params.put("query",query);
+        params.put("page",page);
+        params.put("limit",10);
 
         HttpRequestEngine.postRequest(ConfigUrl.FIND_QSST_LOGS, params, new HttpRequestResultListener() {
             @Override

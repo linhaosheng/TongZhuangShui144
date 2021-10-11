@@ -46,18 +46,17 @@ public class AddressSearchAdapter extends BaseQuickAdapter<AddressBean, BaseView
       baseViewHolder.setText(R.id.address,dataBean.getAddress())
               .setText(R.id.address_detail,dataBean.getAddressInfo());
 
-
-        BitmapDescriptor bitmap = null;
-        bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
-
-        LatLng point = new LatLng(dataBean.getLatitude(), dataBean.getLongitude());
-
-        OverlayOptions option = new MarkerOptions()
-                .position(point)
-                .clickable(true)
-                .icon(bitmap);
-        baiduMap.addOverlay(option);
-        bitmap.recycle();
+//        BitmapDescriptor bitmap = null;
+//        bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.address2);
+//
+//        LatLng point = new LatLng(dataBean.getLatitude(), dataBean.getLongitude());
+//
+//        OverlayOptions option = new MarkerOptions()
+//                .position(point)
+//                .clickable(true)
+//                .icon(bitmap);
+//        baiduMap.addOverlay(option);
+//        bitmap.recycle();
 
     }
 }
