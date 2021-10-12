@@ -454,6 +454,8 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             }
         });
 
+        JPushInterface.setAlias(this,0,id);
+
         Config.IS_LOGIN = true;
         WaitDialog.dismiss();
 

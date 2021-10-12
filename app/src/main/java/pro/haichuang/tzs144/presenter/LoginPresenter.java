@@ -51,7 +51,7 @@ public class LoginPresenter {
                     if (loginModel!=null && loginModel.getResult()==1){
                         SPUtils.putString(Config.VERIFICATION,loginModel.getData().getVerification());
                         Config.AUTHORITY = loginModel.getData().getAuthority();
-                        iLoadDataView.successLoad(loginModel.getResult()+"");
+                        iLoadDataView.successLoad(loginModel.getData().getId()+"");
                     }else {
                         iLoadDataView.errorLoad(loginModel.getMessage());
                     }
