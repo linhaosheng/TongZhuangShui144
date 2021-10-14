@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.model;
 
+import android.text.TextUtils;
+
 public class AccountHistoryModel {
 
 
@@ -72,33 +74,42 @@ public class AccountHistoryModel {
         private String jqDayRatio;
         private String jqWeekRatio;
 
-        private String couponPrice;  //优惠券价格
-        private String couponDayRatio;  //比昨日
-        private String couponWeekRatio;  //比上周
+        private String yhqVal;  //优惠券价格
+        private String yhqDayRatio;  //比昨日
+        private String yhqWeekRatio;  //比上周
 
 
         public String getCouponPrice() {
-            return couponPrice;
+            if (TextUtils.isEmpty(yhqVal)){
+                return "0.0";
+            }
+            return yhqVal;
         }
 
         public void setCouponPrice(String couponPrice) {
-            this.couponPrice = couponPrice;
+            this.yhqVal = couponPrice;
         }
 
         public String getCouponDayRatio() {
-            return couponDayRatio;
+            if (TextUtils.isEmpty(yhqDayRatio)){
+                return "0.0";
+            }
+            return yhqDayRatio;
         }
 
         public void setCouponDayRatio(String couponDayRatio) {
-            this.couponDayRatio = couponDayRatio;
+            this.yhqDayRatio = couponDayRatio;
         }
 
         public String getCouponWeekRatio() {
-            return couponWeekRatio;
+            if (TextUtils.isEmpty(yhqWeekRatio)){
+                return "0.0";
+            }
+            return yhqWeekRatio;
         }
 
         public void setCouponWeekRatio(String couponWeekRatio) {
-            this.couponWeekRatio = couponWeekRatio;
+            this.yhqWeekRatio = couponWeekRatio;
         }
 
         public String getXjVal() {

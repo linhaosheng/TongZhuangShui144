@@ -61,6 +61,7 @@ public class OrderDetailDataModel {
 
         private String orderType;
         private String address;
+        private AddressOther addressOther;
         private String orderNo;
         private int distance;
         private String timeTitle;
@@ -77,6 +78,15 @@ public class OrderDetailDataModel {
         private String timeRange;
         private double realPrice;
         private int customerId;
+
+
+        public AddressOther getAddressOther() {
+            return addressOther;
+        }
+
+        public void setAddressOther(AddressOther addressOther) {
+            this.addressOther = addressOther;
+        }
 
         public int getCustomerId() {
             return customerId;
@@ -230,6 +240,54 @@ public class OrderDetailDataModel {
 
         public void setGoodsList(List<OrderDetailModel.DataBean.GoodsListBean> goodsList) {
             this.goodsList = goodsList;
+        }
+
+        public static class AddressOther{
+            private String address;
+            private String longitude;
+            private String addressName;
+            private String latitude;
+            private int id;
+
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
+
+            public String getLongitude() {
+                return longitude;
+            }
+
+            public void setLongitude(String longitude) {
+                this.longitude = longitude;
+            }
+
+            public String getAddressName() {
+                return addressName;
+            }
+
+            public void setAddressName(String addressName) {
+                this.addressName = addressName;
+            }
+
+            public String getLatitude() {
+                return latitude;
+            }
+
+            public void setLatitude(String latitude) {
+                this.latitude = latitude;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
         }
 
         public static class GoodsListBean {

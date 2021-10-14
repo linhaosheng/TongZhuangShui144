@@ -41,6 +41,7 @@ public class Config {
     public static final String CLIENT_TYPE = "client_type";
 
     public static final String PERSION_INFO = "persion_info";
+    public static final String GOOD_LIST = "good_list";
 
     public static final int LOAD_SUCCESS = 0x1110;
     public static final int LOAD_FAIL = 0x1111;

@@ -44,6 +44,7 @@ import pro.haichuang.tzs144.model.DespositEvent;
 import pro.haichuang.tzs144.model.FileUploadEvent;
 import pro.haichuang.tzs144.model.OrderDetailDataModel;
 import pro.haichuang.tzs144.model.OrderDetailModel;
+import pro.haichuang.tzs144.model.SaleDataModel;
 import pro.haichuang.tzs144.model.ShopDeleveModel;
 import pro.haichuang.tzs144.model.ShopModel;
 import pro.haichuang.tzs144.model.StatusEvent;
@@ -53,6 +54,7 @@ import pro.haichuang.tzs144.util.Config;
 import pro.haichuang.tzs144.util.Utils;
 import pro.haichuang.tzs144.view.AddOrderDepositDialog;
 import pro.haichuang.tzs144.view.SelectWaterTicketDialog;
+import rxhttp.wrapper.utils.GsonUtil;
 
 /**
  * 订单配送
@@ -158,6 +160,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     private AddOrderDepositDialog addOrderDepositDialog;
     private int currentUploadPosition;
     private boolean needKaiYa;
+    private OrderDetailDataModel.DataBean userInfo;
 
 
     @Override
@@ -635,6 +638,7 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
     public void successLoad(OrderDetailDataModel.DataBean data) {
         WaitDialog.dismiss();
 
+        userInfo = data;
         name.setText(data.getCustomerName());
         orderNum.setText(data.getCustomerPhone());
         if (data.getCustomerTypeName() == null || data.getCustomerTypeName().equals("")) {
@@ -804,11 +808,41 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
             } else if (event.type == 2) {
                 if (event.status == Config.LOAD_SUCCESS) {
                     Utils.showCenterTomast("订单作废成功");
+                    gotoSale();
                     finish();
+
                 } else {
                     Utils.showCenterTomast("订单作废失败 : " + event.result);
                 }
             }
+        }
+    }
+
+    private void gotoSale(){
+        /**
+         * 跳转到订单详情
+         */
+
+        if (userInfo!=null){
+            SaleDataModel.DataBean dataBean = new SaleDataModel.DataBean();
+            dataBean.setAddress(userInfo.getAddress());
+            dataBean.setPhone(userInfo.getCustomerPhone());
+            dataBean.setName(userInfo.getCustomerName());
+            dataBean.setAddressName(userInfo.getAddressName());
+            dataBean.setId(userInfo.getCustomerId());
+            dataBean.setType(userInfo.getCustomerTypeName());
+
+            if (userInfo.getAddressOther()!=null){
+                dataBean.setAddressId(userInfo.getAddressOther().getId()+"");
+                dataBean.setLatitude(userInfo.getAddressOther().getLatitude());
+                dataBean.setLongitude(userInfo.getAddressOther().getLongitude());
+            }
+
+            Intent intent = new Intent(this, EnterOrderActivity.class);
+            intent.putExtra("order_type", 0);
+            intent.putExtra(Config.PERSION_INFO, GsonUtil.toJson(dataBean));
+            intent.putExtra(Config.GOOD_LIST, GsonUtil.toJson(userInfo));
+            startActivity(intent);
         }
     }
 

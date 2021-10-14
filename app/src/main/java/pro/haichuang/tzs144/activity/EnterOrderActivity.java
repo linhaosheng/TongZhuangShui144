@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.hjq.toast.ToastUtils;
 import com.kongzue.dialog.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialog.util.BaseDialog;
 import com.kongzue.dialog.v3.MessageDialog;
@@ -58,6 +60,8 @@ import pro.haichuang.tzs144.model.AddOrderModel;
 import pro.haichuang.tzs144.model.AddOrderStatusEvent;
 import pro.haichuang.tzs144.model.DespositEvent;
 import pro.haichuang.tzs144.model.MaterialModel;
+import pro.haichuang.tzs144.model.OrderDetailDataModel;
+import pro.haichuang.tzs144.model.OrderDetailModel;
 import pro.haichuang.tzs144.model.RealAccountEvent;
 import pro.haichuang.tzs144.model.SaleDataModel;
 import pro.haichuang.tzs144.model.ShopDeleveModel;
@@ -73,6 +77,7 @@ import pro.haichuang.tzs144.view.AddShopDialog;
 import pro.haichuang.tzs144.view.ClientFilterDialog;
 import pro.haichuang.tzs144.view.LSettingItem;
 import pro.haichuang.tzs144.view.SelectWaterTicketDialog;
+import rxhttp.wrapper.utils.GsonUtil;
 
 /**
  * 录入订单   直接销售
@@ -444,6 +449,26 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
             }
         });
+     //   initGoodList();
+    }
+
+    private void initGoodList(){
+        String goodListJson = getIntent().getStringExtra(Config.GOOD_LIST);
+        if (!TextUtils.isEmpty(goodListJson)){
+            OrderDetailDataModel.DataBean dataBean = GsonUtil.fromJson(goodListJson,OrderDetailDataModel.DataBean.class);
+            List<OrderDetailModel.DataBean.GoodsListBean> goodsList = dataBean.getGoodsList();
+            if (goodsList!=null && goodsList.size()>0){
+                for (OrderDetailModel.DataBean.GoodsListBean goodsListBean : goodsList){
+                    AddOrderModel.GoodsListBean goodsListBean1 = new AddOrderModel.GoodsListBean();
+                    goodsListBean1.setGoodsId(goodsListBean.getOrderGoodsId()+"");
+                    goodsListBean1.setGoodName(goodsListBean.getGoodsName());
+                    goodsListBean1.setGoodsPrice(goodsListBean.getGoodsPrice()+"");
+                    goodsListBean1.setNum(goodsListBean.getGoodsNum()+"");
+                    goodsListBean1.setSpecs(goodsListBean.getGoodsSpecsName());
+                    //goodsListBean1.setMaterials(goodsListBean.getMaterialList());
+                }
+            }
+        }
     }
 
     /**
@@ -655,110 +680,118 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 selectRecord=!selectRecord;
                 break;
             case R.id.confirm_add_shop:
-
-                if (mDataBea==null){
-                 //   Utils.showCenterTomast("请选择水票类型");
-                    //return;
-                }
-                saveAdd = true;
-
-                Log.i("TAG==","PRICE==="+shopPrice.getText().toString());
-                AddOrderModel.GoodsListBean goodsListBean = new AddOrderModel.GoodsListBean();
-                goodsListBean.setGoodName(shopName.getText().toString());
-                goodsListBean.setGoodsId(String.valueOf(shopId));
-                goodsListBean.setNum(shopNum.getText().toString());
-                goodsListBean.setGoodsPrice(shopPrice.getText().toString());
-                goodsListBean.setSpecs(shopCapacity.getText().toString());
-
-                List<MaterialModel.DataBean>tempData = new ArrayList<>();
-                for (MaterialModel.DataBean dataBean : materialListAdapter.getData()){
-                    dataBean.setMaterialId(dataBean.getId());
-                    tempData.add(dataBean);
-                }
-                goodsListBean.setMaterials(tempData);
-
-                if (waterId!=-1){
-                    AddOrderModel.GoodsListBean.DeductWaterBean deductWaterBean = new AddOrderModel.GoodsListBean.DeductWaterBean();
-                    deductWaterBean.setWaterGoodsId(String.valueOf(waterId));
-                    deductWaterBean.setNum(selectWaterNum.getEditText());
-                    deductWaterBean.setDeductNum(selectDeductionNunm.getEditText());
-                    goodsListBean.setDeductWater(deductWaterBean);
-                    waterId = -1;
-                    selectWaterNum.setRightText("");
-                    selectDeductionNunm.setRightText("");
-                }
-
-                try {
-                    float num = Float.parseFloat(rewardDeductionNunm.getEditText());
-                    if (num>0){
-                        AddOrderModel.GoodsListBean.DeductCouponBean deductCouponBean = new AddOrderModel.GoodsListBean.DeductCouponBean();
-                        deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
-                        deductCouponBean.setCouponImg(rewardUrl);
-                        goodsListBean.setDeductCoupon(deductCouponBean);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                try {
-                    float num = Float.parseFloat(monthDeductionNunm.getEditText());
-                    if (num>0){
-                        AddOrderModel.GoodsListBean.DeductMonthBean deductMonthBean = new AddOrderModel.GoodsListBean.DeductMonthBean();
-                        deductMonthBean.setMonthImg(monthUrl);
-                        deductMonthBean.setDeductNum(monthDeductionNunm.getEditText());
-                        goodsListBean.setDeductMonth(deductMonthBean);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                try {
-                    int num = Integer.parseInt(giveAwayNunm.getEditText());
-                    if (num>0){
-                        goodsListBean.setSendNum(num);
-                        goodsListBean.setSendPrice(Float.parseFloat(giveAwayMoney.getEditText()));
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                if (orderType==1){
-                    String recordTime = recordTimeDate.getRightText();
-                    if (!TextUtils.isEmpty(recordTime) && !recordTime.contains("请选择")){
-                        goodsListBean.setTime(recordTime);
-                    }
-                }
-
-                String json = Utils.gsonInstane().toJson(goodsListBean);
-                Log.i(TAG,"json====="+json);
-                List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
-                if (data==null){
-                    data = new ArrayList<>();
-                }
-                data.add(0,goodsListBean);
-                addOrderAdapter.setList(data);
-
-                shopDetail.setVisibility(View.GONE);
-                caculateShopMount();
-
-                shop_amount_view.setVisibility(View.VISIBLE);
-                initViewData();
-
-                selectTicket.setLeftText("水票");
-                selectWaterNum.setEditinput("");
-                selectDeductionNunm.setEditinput("");
-                rewardDeductionNunm.setEditinput("");
-                monthDeductionNunm.setEditinput("");
-                recordTimeDate.setRightText("请选择");
-                uploadReward.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
-                uploadMonth.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
-
+                confirmAdd();
                 break;
             case R.id.select_client:
                 Intent intent2 = new Intent(this,SaleSearchActivity.class);
                 startActivityForResult(intent2,SELECT_ADDRESS_INFO);
                 break;
         }
+    }
+
+
+    private void confirmAdd(){
+        if (mDataBea==null){
+            //   Utils.showCenterTomast("请选择水票类型");
+            //return;
+        }
+        saveAdd = true;
+
+        Log.i("TAG==","PRICE==="+shopPrice.getText().toString());
+        AddOrderModel.GoodsListBean goodsListBean = new AddOrderModel.GoodsListBean();
+        goodsListBean.setGoodName(shopName.getText().toString());
+        goodsListBean.setGoodsId(String.valueOf(shopId));
+        goodsListBean.setNum(shopNum.getText().toString());
+        goodsListBean.setGoodsPrice(shopPrice.getText().toString());
+        goodsListBean.setSpecs(shopCapacity.getText().toString());
+
+        List<MaterialModel.DataBean>tempData = new ArrayList<>();
+        for (MaterialModel.DataBean dataBean : materialListAdapter.getData()){
+            dataBean.setMaterialId(dataBean.getId());
+            tempData.add(dataBean);
+        }
+        goodsListBean.setMaterials(tempData);
+
+        if (waterId!=-1){
+            AddOrderModel.GoodsListBean.DeductWaterBean deductWaterBean = new AddOrderModel.GoodsListBean.DeductWaterBean();
+            deductWaterBean.setWaterGoodsId(String.valueOf(waterId));
+            if (TextUtils.isEmpty(selectWaterNum.getEditText())){
+                Utils.showCenterTomast("请输入水票数量");
+                return;
+            }
+            deductWaterBean.setNum(selectWaterNum.getEditText());
+            deductWaterBean.setDeductNum(selectDeductionNunm.getEditText());
+            goodsListBean.setDeductWater(deductWaterBean);
+            waterId = -1;
+            selectWaterNum.setRightText("");
+            selectDeductionNunm.setRightText("");
+        }
+
+        try {
+            float num = Float.parseFloat(rewardDeductionNunm.getEditText());
+            if (num>0){
+                AddOrderModel.GoodsListBean.DeductCouponBean deductCouponBean = new AddOrderModel.GoodsListBean.DeductCouponBean();
+                deductCouponBean.setDeductNum(rewardDeductionNunm.getEditText());
+                deductCouponBean.setCouponImg(rewardUrl);
+                goodsListBean.setDeductCoupon(deductCouponBean);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        try {
+            float num = Float.parseFloat(monthDeductionNunm.getEditText());
+            if (num>0){
+                AddOrderModel.GoodsListBean.DeductMonthBean deductMonthBean = new AddOrderModel.GoodsListBean.DeductMonthBean();
+                deductMonthBean.setMonthImg(monthUrl);
+                deductMonthBean.setDeductNum(monthDeductionNunm.getEditText());
+                goodsListBean.setDeductMonth(deductMonthBean);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        try {
+            int num = Integer.parseInt(giveAwayNunm.getEditText());
+            if (num>0){
+                goodsListBean.setSendNum(num);
+                goodsListBean.setSendPrice(Float.parseFloat(giveAwayMoney.getEditText()));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        if (orderType==1){
+            String recordTime = recordTimeDate.getRightText();
+            if (!TextUtils.isEmpty(recordTime) && !recordTime.contains("请选择")){
+                goodsListBean.setTime(recordTime);
+            }
+        }
+
+        String json = Utils.gsonInstane().toJson(goodsListBean);
+        Log.i(TAG,"json====="+json);
+        List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
+        if (data==null){
+            data = new ArrayList<>();
+        }
+        data.add(0,goodsListBean);
+        addOrderAdapter.setList(data);
+
+        shopDetail.setVisibility(View.GONE);
+        caculateShopMount();
+
+        shop_amount_view.setVisibility(View.VISIBLE);
+        initViewData();
+
+        selectTicket.setLeftText("水票");
+        selectWaterNum.setEditinput("");
+        selectDeductionNunm.setEditinput("");
+        rewardDeductionNunm.setEditinput("");
+        monthDeductionNunm.setEditinput("");
+        recordTimeDate.setRightText("请选择");
+        uploadReward.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
+        uploadMonth.setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.upload));
+
     }
 
 

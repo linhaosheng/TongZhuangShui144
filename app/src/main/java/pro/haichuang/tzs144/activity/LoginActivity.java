@@ -454,7 +454,12 @@ public class LoginActivity extends BaseActivity implements ILoadDataView<String>
             }
         });
 
-        JPushInterface.setAlias(this,0,id);
+        JPushInterface.setAlias(this, id, new TagAliasCallback() {
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+                Log.i(TAG,"setAlias===="+i+"======s===="+s);
+            }
+        });
 
         Config.IS_LOGIN = true;
         WaitDialog.dismiss();

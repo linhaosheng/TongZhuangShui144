@@ -1,5 +1,6 @@
 package pro.haichuang.tzs144.presenter;
 
+import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,10 +27,19 @@ public class ClientHistoryTimeDatapPresenter {
     /**
      * [账务]历史订单统计
      */
-    public final void countLsOrder(String time){
+    public final void countLsOrder(String time,String startTime,String endTime){
 
         Map<String,Object>params = new ArrayMap<>();
-        params.put("time",time);
+        if (!TextUtils.isEmpty(time)){
+            params.put("time",time);
+        }
+        if (!TextUtils.isEmpty(startTime)){
+            params.put("startTime",startTime);
+        }
+        if (!TextUtils.isEmpty(endTime)){
+            params.put("endTime",endTime);
+        }
+
 
         HttpRequestEngine.postRequest(ConfigUrl.COUNT_LS_ORDER, params, new HttpRequestResultListener() {
             @Override
@@ -41,11 +51,6 @@ public class ClientHistoryTimeDatapPresenter {
             public void success(String result) {
                 AccountHistoryModel accountHistoryModel =   Utils.gsonInstane().fromJson(result, AccountHistoryModel.class);
                 if (accountHistoryModel!=null && accountHistoryModel.getResult()==1){
-                    AccountHistoryModel.DataBean data = accountHistoryModel.getData();
-                    data.setCouponPrice("0.0");
-                    data.setCouponDayRatio("0");
-                    data.setCouponWeekRatio("0");
-                    accountHistoryModel.setData(data);
                     iLoadDataView.successLoad(accountHistoryModel.getData());
                 }else {
                     iLoadDataView.errorLoad("获取错误");
