@@ -58,9 +58,9 @@ public class AccountListDetailModel {
         private Integer monthNum;
         private String time;
         private List<ListBean> list;
-        private Integer xjPrice;
-        private Integer wxPrice;
-        private Integer elPrice;
+        private Double xjPrice;
+        private Double wxPrice;
+        private Double elPrice;
 
         public Integer getCouponNum() {
             return couponNum;
@@ -110,27 +110,27 @@ public class AccountListDetailModel {
             this.list = list;
         }
 
-        public Integer getXjPrice() {
+        public Double getXjPrice() {
             return xjPrice;
         }
 
-        public void setXjPrice(Integer xjPrice) {
+        public void setXjPrice(Double xjPrice) {
             this.xjPrice = xjPrice;
         }
 
-        public Integer getWxPrice() {
+        public Double getWxPrice() {
             return wxPrice;
         }
 
-        public void setWxPrice(Integer wxPrice) {
+        public void setWxPrice(Double wxPrice) {
             this.wxPrice = wxPrice;
         }
 
-        public Integer getElPrice() {
+        public Double getElPrice() {
             return elPrice;
         }
 
-        public void setElPrice(Integer elPrice) {
+        public void setElPrice(Double elPrice) {
             this.elPrice = elPrice;
         }
 
@@ -153,17 +153,17 @@ public class AccountListDetailModel {
 
             private Integer couponNum;
             private String no;
-            private Integer totalPrice;
+            private Double totalPrice;
             private Integer type;
             private String customerName;
-            private Integer waterNum;
+            private Double waterNum;
             private String customerType;
             private String phone;
-            private Integer receivablePrice;
-            private Integer monthNum;
+            private Double receivablePrice;
+            private Double monthNum;
             private Integer id;
-            private Integer xjPrice;
-            private Integer realPrice;
+            private Double xjPrice;
+            private Double realPrice;
 
             public Integer getCouponNum() {
                 return couponNum;
@@ -181,11 +181,11 @@ public class AccountListDetailModel {
                 this.no = no;
             }
 
-            public Integer getTotalPrice() {
+            public Double getTotalPrice() {
                 return totalPrice;
             }
 
-            public void setTotalPrice(Integer totalPrice) {
+            public void setTotalPrice(Double totalPrice) {
                 this.totalPrice = totalPrice;
             }
 
@@ -205,11 +205,11 @@ public class AccountListDetailModel {
                 this.customerName = customerName;
             }
 
-            public Integer getWaterNum() {
+            public Double getWaterNum() {
                 return waterNum;
             }
 
-            public void setWaterNum(Integer waterNum) {
+            public void setWaterNum(Double waterNum) {
                 this.waterNum = waterNum;
             }
 
@@ -229,19 +229,19 @@ public class AccountListDetailModel {
                 this.phone = phone;
             }
 
-            public Integer getReceivablePrice() {
+            public Double getReceivablePrice() {
                 return receivablePrice;
             }
 
-            public void setReceivablePrice(Integer receivablePrice) {
+            public void setReceivablePrice(Double receivablePrice) {
                 this.receivablePrice = receivablePrice;
             }
 
-            public Integer getMonthNum() {
+            public Double getMonthNum() {
                 return monthNum;
             }
 
-            public void setMonthNum(Integer monthNum) {
+            public void setMonthNum(Double monthNum) {
                 this.monthNum = monthNum;
             }
 
@@ -253,19 +253,19 @@ public class AccountListDetailModel {
                 this.id = id;
             }
 
-            public Integer getXjPrice() {
+            public Double getXjPrice() {
                 return xjPrice;
             }
 
-            public void setXjPrice(Integer xjPrice) {
+            public void setXjPrice(Double xjPrice) {
                 this.xjPrice = xjPrice;
             }
 
-            public Integer getRealPrice() {
+            public Double getRealPrice() {
                 return realPrice;
             }
 
-            public void setRealPrice(Integer realPrice) {
+            public void setRealPrice(Double realPrice) {
                 this.realPrice = realPrice;
             }
         }
