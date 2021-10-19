@@ -37,9 +37,12 @@ public class MainTainRecordAdapter extends BaseQuickAdapter<ClientDetailModel.Da
 
         if (data.isEdit()){
             baseViewHolder.getView(R.id.edit_content).setVisibility(View.VISIBLE);
+            baseViewHolder.getView(R.id.record_txt).setVisibility(View.GONE);
         }else {
             baseViewHolder.getView(R.id.record_txt).setVisibility(View.VISIBLE);
+            baseViewHolder.getView(R.id.edit_content).setVisibility(View.GONE);
         }
+
 
        EditText editContent =  baseViewHolder.getView(R.id.edit_content);
         editContent.addTextChangedListener(new TextWatcher() {

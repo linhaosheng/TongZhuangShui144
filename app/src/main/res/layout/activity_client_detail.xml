@@ -154,13 +154,13 @@
                     android:id="@+id/add_maintain_record"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/sp_11"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_toRightOf="@+id/main_record_txt"
                     android:text="新增"
-                    android:textStyle="bold"
                     android:textColor="#32C5FF"
                     android:textSize="14sp"
-                    android:layout_toRightOf="@+id/main_record_txt"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginLeft="@dimen/sp_11"/>
+                    android:textStyle="bold" />
 
 
                 <TextView

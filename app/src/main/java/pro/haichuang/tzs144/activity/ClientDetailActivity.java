@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -115,7 +116,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
     protected void setUpView() {
         title.setText("客户详情");
         tips.setVisibility(View.VISIBLE);
-        tips.setTextSize(12);
+        tips.setTextSize(15);
         tips.setText("订单记录");
 
         addressListAdapter = new AddressListAdapter(this, new AddressListAdapter.AddressNameListener() {
@@ -196,12 +197,22 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
             public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 switch (view.getId()){
                     case R.id.edit:
-                        editType = 2;
-                        tips.setText("保存");
-                        orderRecord.setVisibility(View.VISIBLE);
-                        ClientDetailModel.DataBean.MaintainListBean maintainListBean1 = mainTainRecordAdapter.getData().get(position);
-                        maintainListBean1.setEdit(true);
-                        mainTainRecordAdapter.setData(position,maintainListBean1);
+                        try {
+                            EditText editText =  (EditText)adapter.getViewByPosition(position,R.id.edit_content);
+                            editText.setVisibility(View.VISIBLE);
+                            adapter.getViewByPosition(position,R.id.record_txt).setVisibility(View.GONE);
+
+                            Utils.showCenterTomast("请输入新的维修记录，然后点击右上方的保存");
+                            editType = 2;
+                            tips.setText("保存");
+                            //           orderRecord.setVisibility(View.VISIBLE);
+                            ClientDetailModel.DataBean.MaintainListBean maintainListBean1 = mainTainRecordAdapter.getData().get(position);
+                            maintainListBean1.setEdit(true);
+                            mainTainRecordAdapter.setData(position,maintainListBean1);
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
 
                         break;
                     case R.id.delete:
@@ -401,7 +412,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                 maintainInfo = "";
                 if (event.status==Config.LOAD_SUCCESS){
                     tips.setText("订单记录");
-                    orderRecord.setVisibility(View.GONE);
+           //         orderRecord.setVisibility(View.GONE);
                     Utils.showCenterTomast("编辑成功");
                     mainTainRecordAdapter.setList(data);
                     updateAddress.setVisibility(View.VISIBLE);
@@ -412,7 +423,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                 if (event.status==Config.LOAD_SUCCESS){
                     tips.setText("订单记录");
                     addAddress.setVisibility(View.GONE);
-                    orderRecord.setVisibility(View.GONE);
+          //          orderRecord.setVisibility(View.GONE);
                     Utils.showCenterTomast("地址修改成功");
                     updateAddress.setVisibility(View.VISIBLE);
                     clientDetailActivityPresenter.getCustomerInfo(customerId);

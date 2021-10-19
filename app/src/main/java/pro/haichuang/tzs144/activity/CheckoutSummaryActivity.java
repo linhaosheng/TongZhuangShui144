@@ -284,6 +284,7 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
         platform_num.setText("0元");
         takeawayNum.setText("0元");
         giveAwayNum.setText("0元");
+        coupon_num.setText("0元");
         takeNum = 0.0f;
         if (datas != null && datas.size() >= 0) {
             for (SummaryModel.DataBean dataBean : datas) {
@@ -300,6 +301,8 @@ public class CheckoutSummaryActivity extends BaseActivity implements ILoadDataVi
                         }catch (Exception e){
                             e.printStackTrace();
                         }
+                    } else if ("4".equals(dataBean.getType())){
+                        coupon_num.setText(dataBean.getPrice() + "元");
                     }
                 }
             }
