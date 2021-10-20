@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.kongzue.dialog.v3.MessageDialog;
 import com.kongzue.dialog.v3.WaitDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -216,6 +218,7 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
 
                         break;
                     case R.id.delete:
+                        tips.setText("订单记录");
                         deletePosition = position;
                         ClientDetailModel.DataBean.MaintainListBean maintainListBean = mainTainRecordAdapter.getData().get(position);
                         int id = maintainListBean.getId();
@@ -276,6 +279,17 @@ public class ClientDetailActivity extends BaseActivity implements ILoadDataView<
                 break;
             case R.id.add_maintain_record:
                 if (dataBean!=null){
+                    boolean containAddress = false;
+                    for (ClientDetailModel.DataBean.AddressListBean addressListBean : dataBean.getAddressList()){
+                        if (!TextUtils.isEmpty(addressListBean.getLongitude()) && !TextUtils.isEmpty(addressListBean.getLatitude())){
+                            containAddress = true;
+                            break;
+                        }
+                    }
+                    if (!containAddress){
+                        MessageDialog.show(this, "提示", "客户地址无坐标，请先维护跳转客户地址").show();
+                        return;
+                    }
                     String dataJson = Utils.gsonInstane().toJson(dataBean);
                     Intent intent = new Intent(this,AddMainTainRecordActivity.class);
                     intent.putExtra("dataJson",dataJson);

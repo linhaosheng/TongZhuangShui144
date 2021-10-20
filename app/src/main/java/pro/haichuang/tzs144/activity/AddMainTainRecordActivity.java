@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,6 +84,7 @@ public class AddMainTainRecordActivity extends BaseActivity implements ILoadData
         addMainTainRecordActivityPresenter = new AddMainTainRecordActivityPresenter(this);
 
         String dataJson = getIntent().getStringExtra("dataJson");
+        Log.i("TAG==",dataJson);
         if (dataJson!=null){
             dataBean = Utils.gsonInstane().fromJson(dataJson,ClientDetailModel.DataBean.class);
             clientName.setText("客户名称："+dataBean.getCustomerName());
@@ -95,21 +97,26 @@ public class AddMainTainRecordActivity extends BaseActivity implements ILoadData
 
             List<ClientDetailModel.DataBean.AddressListBean> addressList = dataBean.getAddressList();
             if (addressList!=null){
-                ClientDetailModel.DataBean.AddressListBean addressListBean = addressList.get(0);
-                try {
-                    double longitude = Double.parseDouble(addressListBean.getLongitude());
-                    double latitude = Double.parseDouble(addressListBean.getLatitude());
-                    distanceData = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, longitude, latitude);
+                for (ClientDetailModel.DataBean.AddressListBean addressListBean : addressList){
+                    try {
+                        if (!TextUtils.isEmpty(addressListBean.getLongitude()) && !TextUtils.isEmpty(addressListBean.getLatitude())){
+                            double longitude = Double.parseDouble(addressListBean.getLongitude());
+                            double latitude = Double.parseDouble(addressListBean.getLatitude());
+                            distanceData = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, longitude, latitude);
 
-                    if (distanceData<=1000){
-                        distance.setText("   距客户："+distanceData+"米");
-                    }else {
-                        distance.setText("   距客户："+(float)distanceData/1000+"千米");
+                            if (distanceData<=1000){
+                                distance.setText("   距客户："+distanceData+"米");
+                            }else {
+                                distance.setText("   距客户："+(float)distanceData/1000+"千米");
+                            }
+                            break;
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
+
             }
 
         }

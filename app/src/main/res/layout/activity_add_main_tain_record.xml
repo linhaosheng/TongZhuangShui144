@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_17"
-        android:text="距客户：500米"
+        android:text="距客户："
         android:textColor="#3F3F3F"
         android:textSize="12sp" />
 
