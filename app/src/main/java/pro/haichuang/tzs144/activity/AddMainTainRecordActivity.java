@@ -95,6 +95,20 @@ public class AddMainTainRecordActivity extends BaseActivity implements ILoadData
 
             customerId = dataBean.getId() +"";
 
+            if (!TextUtils.isEmpty(dataBean.getDistance())){
+                try {
+                    double distanceNum = Double.parseDouble(dataBean.getDistance());
+                    if (distanceNum<=1000){
+                        distance.setText("   距客户："+distanceNum+"米");
+                    }else {
+                        distance.setText("   距客户："+(float)distanceNum/1000+"千米");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return;
+            }
+
             List<ClientDetailModel.DataBean.AddressListBean> addressList = dataBean.getAddressList();
             if (addressList!=null){
                 for (ClientDetailModel.DataBean.AddressListBean addressListBean : addressList){
@@ -134,8 +148,11 @@ public class AddMainTainRecordActivity extends BaseActivity implements ILoadData
                     Utils.showCenterTomast("请输入维护记录");
                     return;
                 }
-                addMainTainRecordActivityPresenter.saveMaintainLog(customerId,edit.getText().toString(),String.valueOf(distanceData),Utils.transformTime(new Date()));
-
+                if (!TextUtils.isEmpty(dataBean.getDistance())){
+                    addMainTainRecordActivityPresenter.saveMaintainLog(customerId,edit.getText().toString(),dataBean.getDistance(),Utils.transformTime(new Date()));
+                }else{
+                    addMainTainRecordActivityPresenter.saveMaintainLog(customerId,edit.getText().toString(),String.valueOf(distanceData),Utils.transformTime(new Date()));
+                }
                 break;
         }
     }
