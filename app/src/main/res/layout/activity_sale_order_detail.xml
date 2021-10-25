@@ -205,6 +205,17 @@
                     android:textSize="@dimen/dp_12"
                     android:visibility="visible" />
 
+                <TextView
+                    android:id="@+id/remark_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:text="录入时与客户距离：400M"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12"
+                    android:visibility="visible" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -225,6 +236,16 @@
 
                 <TextView
                     android:id="@+id/deposit_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="订单编号：lr20201124001"
+                    android:textColor="#3F3F3F"
+                    android:textSize="@dimen/dp_12" />
+
+                <TextView
+                    android:id="@+id/deposit_money_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_20"

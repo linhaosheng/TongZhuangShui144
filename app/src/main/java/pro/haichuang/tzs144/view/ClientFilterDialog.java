@@ -135,6 +135,7 @@ public class ClientFilterDialog extends DialogFragment {
     }
 
     private void initView(){
+        startTime.setText(SPUtils.getString("filt_start_time","2019-06-22"));
         clientTypeSearchModel = new ClientTypeSearchModel();
         Log.i("TAG==","initView===");
         clientFilterAdapter = new ClientFilterAdapter(context);

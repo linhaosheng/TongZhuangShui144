@@ -87,6 +87,18 @@ public class OrderDetailModel {
         private String distance;
         private List<GoodsListBean> goodsList;
         private KyInfo kyInfo;
+        private String orderDesc;
+
+        public String getOrderDesc() {
+            if (TextUtils.isEmpty(orderDesc)){
+                return "";
+            }
+            return orderDesc;
+        }
+
+        public void setOrderDesc(String orderDesc) {
+            this.orderDesc = orderDesc;
+        }
 
         public AddressOther getAddressOther() {
             return addressOther;

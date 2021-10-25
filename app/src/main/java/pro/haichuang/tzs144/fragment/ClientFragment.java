@@ -122,6 +122,8 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     @Override
     protected void setUpView() {
+        startTime = SPUtils.getString("filt_start_time","2019-10-10");
+
         refresh.setOnRefreshListener(this);
         back.setVisibility(View.GONE);
         leftText.setVisibility(View.VISIBLE);
@@ -301,6 +303,7 @@ public class ClientFragment extends BaseFragment implements SwipeRefreshLayout.O
                         currentPage = 1;
                         lastPage = false;
                         startTime = selectStartTime;
+                        SPUtils.putString("filt_start_time",selectStartTime);
                         endTime = selectEndTime;
                         clientFragmentPresenter.countKh(type);
                         clientFragmentPresenter.findKhList(type,searchEdit.getText().toString(),startTime,endTime,khTypeId,khStatus,currentPage);

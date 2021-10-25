@@ -89,6 +89,8 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     LinearLayout deposit_info_view;
     @BindView(R.id.deposit_num)
     TextView deposit_num;
+    @BindView(R.id.deposit_money_num)
+    TextView deposit_money_num;
     @BindView(R.id.deposit_name)
     TextView deposit_name;
     @BindView(R.id.deposit_total)
@@ -97,6 +99,8 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
     TextView deposit_person;
     @BindView(R.id.deposit_time)
     TextView deposit_time;
+    @BindView(R.id.remark_info)
+    TextView remark_info;
 
     private OrderDetailAdapter orderDetailAdapter;
 
@@ -179,6 +183,7 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
         recordTime.setText("录入时间：" + data.getTime());
         recordPersion.setText("录入人：" + data.getCreateName());
         finishDistance.setText("录入时与客户距离：" + data.getSalesDistance() + "M");
+        remark_info.setText("备注信息: "+data.getOrderDesc());
         orderDetailAdapter.setList(data.getGoodsList());
 
         if (data.getOrderStatus()==1){
@@ -192,6 +197,7 @@ public class SaleOrderDetailActivity extends BaseActivity implements ILoadDataVi
             OrderDetailModel.DataBean.KyInfo kyInfo = data.getKyInfo();
             deposit_info_view.setVisibility(View.VISIBLE);
             deposit_num.setText("押金本编号 : "+kyInfo.getBookNo());
+            deposit_money_num.setText(("押金编号 : "+kyInfo.getYjNo()));
             deposit_name.setText("物品名称 : "+kyInfo.getGoodsName());
             deposit_total.setText("总价 : "+kyInfo.getYjTotalPrice());
             deposit_person.setText("开押人 : "+kyInfo.getKyName());
