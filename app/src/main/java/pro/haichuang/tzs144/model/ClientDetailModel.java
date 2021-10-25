@@ -58,7 +58,7 @@ public class ClientDetailModel {
         private String business;
         private String phone;
         private String inviter;
-        private String distance;
+        private int distance;
         private int id;
         private String customerName;
         private String contacts;
@@ -83,11 +83,11 @@ public class ClientDetailModel {
             this.time = time;
         }
 
-        public String getDistance() {
+        public int getDistance() {
             return distance;
         }
 
-        public void setDistance(String distance) {
+        public void setDistance(int distance) {
             this.distance = distance;
         }
 
