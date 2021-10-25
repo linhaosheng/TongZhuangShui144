@@ -92,6 +92,8 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
     TextView timeSend;
     @BindView(R.id.tatal_price)
     TextView tatalPrice;
+    @BindView(R.id.remark_info)
+    TextView remark_info;
     @BindView(R.id.need_price)
     TextView needPrice;
     @BindView(R.id.actual_price)
@@ -230,6 +232,7 @@ public class OrderDetailActivity extends BaseActivity implements ILoadDataView<O
         timeSend.setText(data.getTimeRange());
         timeOut.setText(data.getTimeStatus());
 
+        remark_info.setText("备注信息 : "+data.getOrderDesc());
         tatalPrice.setText("¥" + data.getTotalPrice());
         needPrice.setText("¥" + data.getReceivablePrice());
         orderNumData.setText("订单编号：" + data.getOrderNo());

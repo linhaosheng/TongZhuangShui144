@@ -1,5 +1,7 @@
 package pro.haichuang.tzs144.model;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 public class OrderDetailDataModel {
@@ -78,7 +80,19 @@ public class OrderDetailDataModel {
         private String timeRange;
         private double realPrice;
         private int customerId;
+        private String orderDesc;
 
+
+        public String getOrderDesc() {
+            if (TextUtils.isEmpty(orderDesc)){
+                return "";
+            }
+            return orderDesc;
+        }
+
+        public void setOrderDesc(String orderDesc) {
+            this.orderDesc = orderDesc;
+        }
 
         public AddressOther getAddressOther() {
             return addressOther;
