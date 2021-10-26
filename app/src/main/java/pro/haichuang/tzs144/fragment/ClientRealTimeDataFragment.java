@@ -118,7 +118,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             public void onLoadMore() {
                 if (!lastPage) {
                     currentPage++;
-                    clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage,categoryName);
+                    clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
                 }
             }
         });
@@ -177,8 +177,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             currentPage = 1;
             lastPage = false;
             clientRealTimeDatapPresenter = new ClientRealTimeDatapPresenter(this);
-            clientRealTimeDatapPresenter.ssManagerCount();
-            clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage,categoryName);
+            clientRealTimeDatapPresenter.ssManagerCount(categoryName);
+            clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
         }
     }
 
@@ -200,8 +200,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     public void onRefresh() {
         currentPage = 1;
         lastPage = false;
-        clientRealTimeDatapPresenter.ssManagerCount();
-        clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage,categoryName);
+        clientRealTimeDatapPresenter.ssManagerCount(categoryName);
+        clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
     }
 
     @Override
@@ -256,16 +256,16 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                 if (event.status== Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("结账成功");
                    // billOrder.setVisibility(View.GONE);
-                    clientRealTimeDatapPresenter.ssManagerCount();
-                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage,categoryName);
+                    clientRealTimeDatapPresenter.ssManagerCount(categoryName);
+                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
                 }else {
                     Utils.showCenterTomast("结账失败: "+event.result);
                 }
             }else if (event.type==5){
                 if (event.status== Config.LOAD_SUCCESS){
-                    clientRealTimeDatapPresenter.ssManagerCount();
+                    clientRealTimeDatapPresenter.ssManagerCount(categoryName);
                     Utils.showCenterTomast("订单作废成功");
-                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage,categoryName);
+                    clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
                 }else {
                     Utils.showCenterTomast("订单作废失败 : "+event.result);
                 }
@@ -362,8 +362,8 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                         currentPage = 1;
                         select_type.setText(text);
                         categoryName = text;
-                        clientRealTimeDatapPresenter.ssManagerCount();
-                        clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage,categoryName);
+                        clientRealTimeDatapPresenter.ssManagerCount(categoryName);
+                        clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
                     }
                 });
 
