@@ -362,6 +362,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                         currentPage = 1;
                         select_type.setText(text);
                         categoryName = text;
+                        clientRealTimeDatapPresenter.ssManagerCount();
                         clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage,categoryName);
                     }
                 });
