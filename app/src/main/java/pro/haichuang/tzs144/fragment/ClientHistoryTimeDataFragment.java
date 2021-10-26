@@ -255,6 +255,9 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RealAccountEvent event) {
 
+        if (orderPaymentAdapter==null){
+            return;
+        }
         if (event==null && event.type!=2){
             return;
         }
@@ -286,13 +289,15 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StatusEvent event) {
-        currentPage=1;
-        lastPage = false;
-        if (event != null) {
-            if (event.type==4){
-                if (event.status== Config.LOAD_SUCCESS){
-                    clientHistoryTimeDatapPresenter.countLsOrder(pickTime,null,null);
-                    clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
+        if (clientHistoryTimeDatapPresenter!=null){
+            currentPage=1;
+            lastPage = false;
+            if (event != null) {
+                if (event.type==4){
+                    if (event.status== Config.LOAD_SUCCESS){
+                        clientHistoryTimeDatapPresenter.countLsOrder(pickTime,null,null);
+                        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
+                    }
                 }
             }
         }

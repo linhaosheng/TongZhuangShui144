@@ -336,7 +336,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                             .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
                                 @Override
                                 public boolean onClick(BaseDialog baseDialog, View v) {
-                                    clientRealTimeDatapPresenter.settle(orderIds);
+                                    clientRealTimeDatapPresenter.settle(orderIds,categoryName);
                                     return false;
                                 }
                             }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
@@ -349,7 +349,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                   //  Utils.showCenterTomast("请选择需要结账的订单");
                     return;
                 }
-                clientRealTimeDatapPresenter.settle(orderIds);
+                clientRealTimeDatapPresenter.settle(orderIds,categoryName);
                 break;
             case R.id.filter_view:
                 if (shopTypeList.size()==0){
