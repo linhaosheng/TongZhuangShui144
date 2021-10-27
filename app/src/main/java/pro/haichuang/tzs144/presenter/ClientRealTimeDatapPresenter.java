@@ -106,6 +106,9 @@ public class ClientRealTimeDatapPresenter {
         if (orderIds!=null && orderIds.size()>0){
             params.put("orderIds",orderIds);
         }
+        if (TextUtils.isEmpty(categoryName)){
+            params.put("categoryName",categoryName);
+        }
         HttpRequestEngine.postRequest(ConfigUrl.SETTLE, params, new HttpRequestResultListener() {
             @Override
             public void start() {
