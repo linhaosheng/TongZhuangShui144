@@ -31,12 +31,13 @@ public class ClientRealTimeDatapPresenter {
     /**
      * [账务]账务管理统计
      */
-    public final void ssManagerCount(String categoryName){
+    public final void ssManagerCount(String categoryName,String categoryId){
         Map<String,Object>params = null;
 
         if (!"全部".equals(categoryName)){
             params = new ArrayMap<>();
             params.put("categoryName",categoryName);
+            params.put("categoryId",categoryId);
         }
 
         HttpRequestEngine.postRequest(ConfigUrl.MANAGER_COUNT, params, new HttpRequestResultListener() {

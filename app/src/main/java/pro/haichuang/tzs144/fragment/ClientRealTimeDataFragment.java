@@ -92,6 +92,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     private List<CharSequence> shopTypeList;
     private TypeListModel typeListModel;
     private String categoryName = "全部";
+    private String categoryId;
 
     @Override
     public boolean lazyLoader() {
@@ -177,7 +178,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
             currentPage = 1;
             lastPage = false;
             clientRealTimeDatapPresenter = new ClientRealTimeDatapPresenter(this);
-            clientRealTimeDatapPresenter.ssManagerCount(categoryName);
+            clientRealTimeDatapPresenter.ssManagerCount(categoryName,categoryId);
             clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
         }
     }
@@ -200,7 +201,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     public void onRefresh() {
         currentPage = 1;
         lastPage = false;
-        clientRealTimeDatapPresenter.ssManagerCount(categoryName);
+        clientRealTimeDatapPresenter.ssManagerCount(categoryName,categoryId);
         clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
     }
 
@@ -256,14 +257,14 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                 if (event.status== Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("结账成功");
                    // billOrder.setVisibility(View.GONE);
-                    clientRealTimeDatapPresenter.ssManagerCount(categoryName);
+                    clientRealTimeDatapPresenter.ssManagerCount(categoryName,categoryId);
                     clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
                 }else {
                     Utils.showCenterTomast("结账失败: "+event.result);
                 }
             }else if (event.type==5){
                 if (event.status== Config.LOAD_SUCCESS){
-                    clientRealTimeDatapPresenter.ssManagerCount(categoryName);
+                    clientRealTimeDatapPresenter.ssManagerCount(categoryName,categoryId);
                     Utils.showCenterTomast("订单作废成功");
                     clientRealTimeDatapPresenter.findSsOrders(date, Utils.formatSelectTime(new Date()),currentPage);
                 }else {
@@ -358,12 +359,21 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
                 BottomMenu.show((AppCompatActivity) getActivity(), shopTypeList, new OnMenuItemClickListener() {
                     @Override
                     public void onClick(String text, int index) {
-                        lastPage = false;
-                        currentPage = 1;
-                        select_type.setText(text);
-                        categoryName = text;
-                        clientRealTimeDatapPresenter.ssManagerCount(categoryName);
-                        clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
+                        try {
+                            lastPage = false;
+                            currentPage = 1;
+                            select_type.setText(text);
+                            categoryName = text;
+                            if ("全部".equals(categoryName)){
+                                categoryId = null;
+                            }else {
+                                categoryId = String.valueOf(typeListModel.getData().get(index).getId());
+                            }
+                            clientRealTimeDatapPresenter.ssManagerCount(categoryName,categoryId);
+                            clientRealTimeDatapPresenter.findSsOrders(date,Utils.formatSelectTime(new Date()),currentPage);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 });
 
