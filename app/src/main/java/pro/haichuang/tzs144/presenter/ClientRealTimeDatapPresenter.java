@@ -105,15 +105,17 @@ public class ClientRealTimeDatapPresenter {
     /**
      * [账务]账务管理 - 结账
      */
-    public final void settle(List<Integer>orderIds,String categoryName){
+    public final void settle(List<Integer>orderIds,String categoryName,String categoryId){
         Utils.showCenterTomast("正在结账");
         Map<String,Object>params = new ArrayMap<>();
         if (orderIds!=null && orderIds.size()>0){
             params.put("orderIds",orderIds);
         }
-        if (TextUtils.isEmpty(categoryName)){
+        if (!"全部".equals(categoryName)){
             params.put("categoryName",categoryName);
+            params.put("categoryId",categoryId);
         }
+
         HttpRequestEngine.postRequest(ConfigUrl.SETTLE, params, new HttpRequestResultListener() {
             @Override
             public void start() {
