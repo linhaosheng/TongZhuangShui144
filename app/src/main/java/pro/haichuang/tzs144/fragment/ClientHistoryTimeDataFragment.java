@@ -143,6 +143,7 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
             }
         });
         filter = headView.findViewById(R.id.filter);
+        filter.setVisibility(View.GONE);
         checkOutTime = headView.findViewById(R.id.check_out_time);
         checkOutTime.setText(Utils.formatSelectTime(new Date()));
         checkOutTime.setOnClickListener(new View.OnClickListener() {

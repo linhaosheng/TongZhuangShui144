@@ -253,7 +253,7 @@ public class ClientRealTimeDataFragment extends BaseFragment implements SwipeRef
     public void onMessageEvent(StatusEvent event) {
         currentPage = 1;
         if (event != null) {
-            if (event.type==4){
+            if (event.type==100){
                 if (event.status== Config.LOAD_SUCCESS){
                     Utils.showCenterTomast("结账成功");
                    // billOrder.setVisibility(View.GONE);

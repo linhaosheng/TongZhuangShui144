@@ -128,9 +128,9 @@ public class ClientRealTimeDatapPresenter {
                     JSONObject jsonObject = new JSONObject(result);
                     //结账成功
                     if (jsonObject.getInt("result")==1){
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,4));
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,100));
                     }else {
-                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,4);
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,100);
                         statusEvent.setResult(jsonObject.getString("message"));
                         EventBus.getDefault().post(statusEvent);
                     }
