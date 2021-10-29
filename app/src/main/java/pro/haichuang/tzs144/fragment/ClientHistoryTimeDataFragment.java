@@ -123,25 +123,25 @@ public class ClientHistoryTimeDataFragment extends BaseFragment implements Swipe
             }
         });
 
-        headView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //时间选择器
-                TimeDialog timeDialog = new TimeDialog(getActivity(), new TimeDialog.SelectTimeListener() {
-                    @Override
-                    public void selectTime(String mStartTime, String mEndTime) {
-                        lastPage = false;
-                        currentPage  =1;
-                        startTime = mStartTime;
-                        endTime = mEndTime;
-                        pickTime = null;
-                        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
-                        clientHistoryTimeDatapPresenter.countLsOrder(null,startTime,endTime);
-                    }
-                });
-                timeDialog.show(getChildFragmentManager(), "");
-            }
-        });
+//        headView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //时间选择器
+//                TimeDialog timeDialog = new TimeDialog(getActivity(), new TimeDialog.SelectTimeListener() {
+//                    @Override
+//                    public void selectTime(String mStartTime, String mEndTime) {
+//                        lastPage = false;
+//                        currentPage  =1;
+//                        startTime = mStartTime;
+//                        endTime = mEndTime;
+//                        pickTime = null;
+//                        clientHistoryTimeDatapPresenter.findLsOrders(pickTime,startTime,endTime,currentPage);
+//                        clientHistoryTimeDatapPresenter.countLsOrder(null,startTime,endTime);
+//                    }
+//                });
+//                timeDialog.show(getChildFragmentManager(), "");
+//            }
+//        });
         filter = headView.findViewById(R.id.filter);
         filter.setVisibility(View.GONE);
         checkOutTime = headView.findViewById(R.id.check_out_time);
