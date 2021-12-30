@@ -36,7 +36,7 @@ public class EnterOrderActivityPresenter {
     /**
      * [直接销售]-录入订单
      */
-    public void enterOrder(AddOrderModel addOrderModel,String totalPrice,String receivablePrice,String realPrice){
+    public void enterOrder(AddOrderModel addOrderModel,String totalPrice,String receivablePrice,String realPrice,int select){
 
         if (addOrderModel==null){
             return;
@@ -68,7 +68,8 @@ public class EnterOrderActivityPresenter {
                 try {
                     OrderStatusModel orderStatusModel = Utils.gsonInstane().fromJson(result, OrderStatusModel.class);
                     if (orderStatusModel.getResult()==1){
-                        EventBus.getDefault().post(new AddOrderStatusEvent(Config.LOAD_SUCCESS,orderStatusModel.getData().getId()));
+                        orderStatusModel.setSelect(select);
+                        EventBus.getDefault().post(new AddOrderStatusEvent(Config.LOAD_SUCCESS,orderStatusModel.getData().getId(),select));
                     }else {
                         iUpLoadFileView.errorLoad(orderStatusModel.getMessage());
                     }
@@ -80,6 +81,48 @@ public class EnterOrderActivityPresenter {
             @Override
             public void error(String error) {
                 iUpLoadFileView.errorLoad(error);
+            }
+        });
+    }
+
+
+
+    /**
+     * [押金]提交退押
+     * @param ids
+     */
+    public void returnDeposits(String ids,String returnCount,String returnPrice){
+        Map<String,Object>params = new ArrayMap<>();
+        params.put("ids",ids);
+        params.put("returnCount",returnCount);
+        params.put("returnPrice",returnPrice);
+
+        HttpRequestEngine.postRequest(ConfigUrl.RETURN_DEPOSIT, params, new HttpRequestResultListener() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void success(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String message = jsonObject.getString("message");
+                    if (jsonObject.getInt("result")==1){
+                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,9));
+                    }else {
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_FAIL,9);
+                        statusEvent.setResult(message);
+                        EventBus.getDefault().post(statusEvent);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error(String error) {
+                EventBus.getDefault().post(new StatusEvent(Config.LOAD_FAIL,9));
             }
         });
     }

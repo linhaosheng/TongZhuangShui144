@@ -9,6 +9,7 @@ public class OrderStatusModel {
      * data : {"id":12}
      */
 
+    private int select;
     private int result;
     private String message;
     private DataBean data;
@@ -35,6 +36,15 @@ public class OrderStatusModel {
 
     public void setData(DataBean data) {
         this.data = data;
+    }
+
+
+    public int getSelect() {
+        return select;
+    }
+
+    public void setSelect(int select) {
+        this.select = select;
     }
 
     public static class DataBean {

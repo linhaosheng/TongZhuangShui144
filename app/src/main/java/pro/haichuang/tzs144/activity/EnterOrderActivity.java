@@ -77,6 +77,7 @@ import pro.haichuang.tzs144.view.AddShopDialog;
 import pro.haichuang.tzs144.view.ClientFilterDialog;
 import pro.haichuang.tzs144.view.LSettingItem;
 import pro.haichuang.tzs144.view.SelectWaterTicketDialog;
+import pro.haichuang.tzs144.view.WithDrawalDepositDialog;
 import rxhttp.wrapper.utils.GsonUtil;
 
 /**
@@ -547,10 +548,6 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                     Utils.showCenterTomast("请点击确认添加按钮");
                     return;
                 }
-                boolean despositTips = tipOpenDesposit();
-                if (despositTips){
-                    return;
-                }
                 int distance = (int)Utils.GetDistance(Config.LONGITUDE, Config.LATITUDE, dataBean.getLongitude(), dataBean.getLatitude());
 
                 if (distance>400){
@@ -870,7 +867,66 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         addOrderModel.setAddressId(dataBean.getAddressId()+"");
         addOrderModel.setGoodsList(addOrderAdapter.getData());
 
-        enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString());
+
+        int materialNum = 0;
+        int shopNum = 0;
+        boolean haveMaterials = false;
+        for (AddOrderModel.GoodsListBean goodsListBean : addOrderAdapter.getData()){
+            List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
+            if (goodsListBean.getMaterials()!=null && goodsListBean.getMaterials().size()>0){
+                haveMaterials = true;
+            }
+            for (MaterialModel.DataBean dataBean : materials){
+                materialNum +=dataBean.getNum();
+            }
+            shopNum+=Integer.parseInt(goodsListBean.getNum());
+        }
+        if (haveMaterials){
+            String content = "";
+            String left = "";
+            String right = "";
+            if (shopNum>materialNum){
+                // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
+                 content = "商品数量大于空桶数量";
+                 left = "开押";
+                 right = "存桶";
+
+                MessageDialog.show(this, "提示", content, left,right)
+                        .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                            @Override
+                            public boolean onClick(BaseDialog baseDialog, View v) {
+                                enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),0);
+                                return false;
+                            }
+                        }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
+                    @Override
+                    public boolean onClick(BaseDialog baseDialog, View v) {
+                        enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),1);
+                        return false;
+                    }
+                });
+
+            }else{
+                content = "商品数量小于空桶数量";
+                left = "存桶";
+                right = "退桶";
+                MessageDialog.show(this, "提示", content, left,right)
+                        .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
+                            @Override
+                            public boolean onClick(BaseDialog baseDialog, View v) {
+                                enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),0);
+                                return false;
+                            }
+                        }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
+                    @Override
+                    public boolean onClick(BaseDialog baseDialog, View v) {
+                        tuitong();
+                        return false;
+                    }
+                });
+            }
+        }
+
     }
 
     /**
@@ -987,7 +1043,7 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             if (event.status==Config.LOAD_SUCCESS){
                 WaitDialog.dismiss();
                 Utils.showCenterTomast("提交成功");
-                if (!addDesposit(event.id)){
+                if (!addDesposit(event.id,event.select)){
                     finish();
                 }
             }
@@ -1050,11 +1106,36 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         return false;
     }
 
+
+    private void tuitong(){
+        List<AddOrderModel.GoodsListBean> data = addOrderAdapter.getData();
+        List<AddOrderModel.GoodsListBean>tempData = new ArrayList<>();
+
+        for (int i = 0;i<data.size();i++){
+            int goodsNum =  Integer.parseInt(data.get(i).getNum());
+            AddOrderModel.GoodsListBean goodsListBean = data.get(i);
+            List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
+            List<MaterialModel.DataBean> tempMaterials = new ArrayList<>();
+            for (MaterialModel.DataBean dataBean : materials){
+                dataBean.setNum(0);
+                tempMaterials.add(dataBean);
+            }
+
+            MaterialModel.DataBean dataBean = tempMaterials.get(0);
+            dataBean.setNum(goodsNum);
+            tempMaterials.set(0,dataBean);
+            goodsListBean.setMaterials(tempMaterials);
+            tempData.add(goodsListBean);
+        }
+        addOrderAdapter.setList(tempData);
+        caculateShopMount();
+    }
+
     /**
      * 判断是否需要添加开押单
      * @return
      */
-    public boolean addDesposit(int orderId){
+    public boolean addDesposit(int orderId,int select){
         int materialNum = 0;
         int shopNum = 0;
         try {
@@ -1069,32 +1150,26 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
                 }
                 shopNum+=Integer.parseInt(goodsListBean.getNum());
             }
-            if (shopNum>materialNum && haveMaterials){
-                // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
-                String content = "商品数量大于空桶数量，是否填写开押单？";
-                MessageDialog.show(this, "提示", content, "确定","取消")
-                        .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
-                            @Override
-                            public boolean onClick(BaseDialog baseDialog, View v) {
-                                addOrderDepositDialog = new AddOrderDepositDialog(EnterOrderActivity.this, String.valueOf(orderId), dataBean.getId(), new AddOrderDepositDialog.StartDespositListener() {
-                                    @Override
-                                    public void despositResult(boolean success) {
-                                        if (success){
-                                            finish();
-                                        }
-                                    }
-                                });
-                                addOrderDepositDialog.show(getSupportFragmentManager(),"");
-                                return false;
+            if (haveMaterials){
+                if (select==0){
+                    finish();
+                    return true;
+                }
+                if (shopNum>materialNum){
+                    addOrderDepositDialog = new AddOrderDepositDialog(EnterOrderActivity.this, String.valueOf(orderId), dataBean.getId(), new AddOrderDepositDialog.StartDespositListener() {
+                        @Override
+                        public void despositResult(boolean success) {
+                            if (success){
+                                finish();
                             }
-                        }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
-                    @Override
-                    public boolean onClick(BaseDialog baseDialog, View v) {
-                        finish();
-                        return false;
-                    }
-                });
-                return true;
+                        }
+                    });
+                    addOrderDepositDialog.show(getSupportFragmentManager(),"");
+                    return true;
+                }else{
+                    finish();
+                    return true;
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
