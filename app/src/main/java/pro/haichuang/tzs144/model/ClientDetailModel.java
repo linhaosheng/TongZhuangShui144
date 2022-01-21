@@ -58,7 +58,7 @@ public class ClientDetailModel {
         private String business;
         private String phone;
         private String inviter;
-        private int distance;
+        private String distance;
         private int id;
         private String customerName;
         private String contacts;
@@ -84,10 +84,15 @@ public class ClientDetailModel {
         }
 
         public int getDistance() {
-            return distance;
+            try {
+                return (int) Double.parseDouble(distance);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return 0;
         }
 
-        public void setDistance(int distance) {
+        public void setDistance(String distance) {
             this.distance = distance;
         }
 

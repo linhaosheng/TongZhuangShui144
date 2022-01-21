@@ -2,6 +2,7 @@ package pro.haichuang.tzs144.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,8 @@ public class MainActivity extends BaseActivity {
 
     private List<Fragment> fragments;
     private List<String> tabList;
+    public LocationClient mLocationClient = null;
+    private MyLocationListener myListener = new MyLocationListener();
 
     @Override
     protected int setLayoutResourceID() {
@@ -97,6 +100,22 @@ public class MainActivity extends BaseActivity {
                 mainActivityPresenter.findStockMainList();
             }
         }).start();
+        initMap();
+    }
+
+    private void initMap(){
+        mLocationClient = new LocationClient(getApplicationContext());
+        //声明LocationClient类
+        mLocationClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
+        option.setNeedNewVersionRgc(true);
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd09ll");
+        option.setScanSpan(1000);
+        option.setOpenGps(true);
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
     }
 
     private long exitTime = 0;
@@ -197,6 +216,21 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    public class MyLocationListener extends BDAbstractLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location){
+            //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
+            //以下只列举部分获取经纬度相关（常用）的结果信息
+            //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
+            Config.LATITUDE = location.getLatitude();    //获取纬度信息
+            Config.LONGITUDE = location.getLongitude();    //获取经度信息
+            Config.CITY = location.getCity();    //获取城市
+           // Log.i("TAG","==="+Config.CITY);
+        }
     }
 
 }
