@@ -220,7 +220,7 @@ public class OrderDetailActivityPresenter {
      * 配送
      * @param
      */
-    public void deliveryOrder(String id, String totalPrice,String receivablePrice,String realPrice,List<ShopDeleveModel.GoodsListBean> goodsListBeanList){
+    public void deliveryOrder(String id, String totalPrice,String receivablePrice,String realPrice,List<ShopDeleveModel.GoodsListBean> goodsListBeanList,int select){
 
         Map<String,Object>params = new ArrayMap<>();
         params.put("id",id);
@@ -241,7 +241,9 @@ public class OrderDetailActivityPresenter {
                     JSONObject jsonObject = new JSONObject(result);
                     int result1 = jsonObject.getInt("result");
                     if (result1==1){
-                        EventBus.getDefault().post(new StatusEvent(Config.LOAD_SUCCESS,3));
+                        StatusEvent statusEvent = new StatusEvent(Config.LOAD_SUCCESS,3);
+                        statusEvent.setSelect(select);
+                        EventBus.getDefault().post(statusEvent);
                     }else {
                         String error = jsonObject.getString("message");
                         StatusEvent statusEvent =  new StatusEvent(Config.LOAD_FAIL,3);

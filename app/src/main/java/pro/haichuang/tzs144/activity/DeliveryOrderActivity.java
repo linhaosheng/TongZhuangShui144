@@ -479,16 +479,6 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 boolean haveBindMaterList = false;
                 for (OrderDetailModel.DataBean.GoodsListBean goodsListBean : data) {
 
-                    shopNum += goodsListBean.getGoodsNum();
-                    if (goodsListBean.getBindMaterList() != null && goodsListBean.getBindMaterList().size() > 0) {
-                        haveBindMaterList = true;
-                    } else {
-                        haveBindMaterList = false;
-                    }
-                    for (OrderDetailModel.DataBean.BindMaterList bindMaterList : goodsListBean.getBindMaterList()) {
-                        materialNum += bindMaterList.getNum();
-                    }
-
                     ShopDeleveModel.GoodsListBean goodsListBean1 = new ShopDeleveModel.GoodsListBean();
                     goodsListBean1.setOrderGoodsId(goodsListBean.getOrderGoodsId());
                     goodsListBean1.setSendNum(goodsListBean.getSendNum());
@@ -529,6 +519,31 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                         goodsListBean1.setMaterials(materials);
                     }
                     goodsListBeanList.add(goodsListBean1);
+
+
+                    int bindMaterListNum = 0;
+
+                    for (OrderDetailModel.DataBean.BindMaterList bindMaterList2 : goodsListBean.getBindMaterList()) {
+                        bindMaterListNum += bindMaterList2.getNum();
+                    }
+
+                    if (goodsListBean.getBindMaterList().isEmpty()){
+                        continue;
+                    }
+
+                    if (bindMaterListNum == goodsListBean.getGoodsNum()){
+                        continue;
+                    }
+
+                    if (goodsListBean.getBindMaterList() != null && goodsListBean.getBindMaterList().size() > 0) {
+                        haveBindMaterList = true;
+                    } else {
+                        haveBindMaterList = false;
+                    }
+                    for (OrderDetailModel.DataBean.BindMaterList bindMaterList2 : goodsListBean.getBindMaterList()) {
+                        materialNum += bindMaterList2.getNum();
+                    }
+                    shopNum += goodsListBean.getGoodsNum();
                 }
 
                 if (priceView.getVisibility() == View.VISIBLE) {
@@ -538,83 +553,99 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
                 }
                 if (shopNum > materialNum && haveBindMaterList) {
                     String content = "商品数量大于空桶数量，是否填写开押单？";
-                    MessageDialog.show(this, "提示", content, "确定", "取消")
+                    MessageDialog.show(this, "提示", content, "开押", "存桶")
                             .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
                                 @Override
                                 public boolean onClick(BaseDialog baseDialog, View v) {
                                     needKaiYa = true;
-                                    orderDetailPresenter.deliveryOrder(id, totalMerchandiseNum.getText().toString(), amountReceivableNum.getText().toString(), actualAmount.getText().toString(), goodsListBeanList);
-
+                                    orderDetailPresenter.deliveryOrder(id, totalMerchandiseNum.getText().toString(), amountReceivableNum.getText().toString(), actualAmount.getText().toString(), goodsListBeanList,3);
                                     return false;
                                 }
                             }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
                         @Override
                         public boolean onClick(BaseDialog baseDialog, View v) {
 
-                            List<OrderDetailModel.DataBean.GoodsListBean> tempList = new ArrayList<>();
-
-                            for (int i = 0; i < data.size(); i++) {
-
-                                OrderDetailModel.DataBean.GoodsListBean goodsListBean1 = data.get(i);
-                                float goodsNum = goodsListBean1.getGoodsNum();
-
-                                List<OrderDetailModel.DataBean.BindMaterList> tempBindMaterList = new ArrayList<>();
-                                List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean1.getBindMaterList();
-                                if (bindMaterList != null) {
-                                    for (int j = 0; j < bindMaterList.size(); j++) {
-                                        OrderDetailModel.DataBean.BindMaterList bindMaterList1 = bindMaterList.get(j);
-                                        if (j == 0) {
-                                            bindMaterList1.setNum((int) goodsNum);
-                                        } else {
-                                            bindMaterList1.setNum(0);
-                                        }
-                                        tempBindMaterList.add(bindMaterList1);
-                                    }
-                                    goodsListBean1.setBindMaterList(tempBindMaterList);
-                                    tempList.add(goodsListBean1);
-                                }
-                            }
-                            deliverOrderDetailAdapter.setList(tempList);
-                            caculateData();
+                            orderDetailPresenter.deliveryOrder(id, totalMerchandiseNum.getText().toString(), amountReceivableNum.getText().toString(), actualAmount.getText().toString(), goodsListBeanList,2);
                             return false;
+//                            List<OrderDetailModel.DataBean.GoodsListBean> tempList = new ArrayList<>();
+//                            for (int i = 0; i < data.size(); i++) {
+//                                OrderDetailModel.DataBean.GoodsListBean goodsListBean1 = data.get(i);
+//                                float goodsNum = goodsListBean1.getGoodsNum();
+//
+//                                List<OrderDetailModel.DataBean.BindMaterList> tempBindMaterList = new ArrayList<>();
+//                                List<OrderDetailModel.DataBean.BindMaterList> bindMaterList = goodsListBean1.getBindMaterList();
+//                                if (bindMaterList != null) {
+//                                    for (int j = 0; j < bindMaterList.size(); j++) {
+//                                        OrderDetailModel.DataBean.BindMaterList bindMaterList1 = bindMaterList.get(j);
+//                                        if (j == 0) {
+//                                            bindMaterList1.setNum((int) goodsNum);
+//                                        } else {
+//                                            bindMaterList1.setNum(0);
+//                                        }
+//                                        tempBindMaterList.add(bindMaterList1);
+//                                    }
+//                                    goodsListBean1.setBindMaterList(tempBindMaterList);
+//                                    tempList.add(goodsListBean1);
+//                                }
+//                            }
+//                            deliverOrderDetailAdapter.setList(tempList);
+//                            caculateData();
+//                            return false;
                         }
                     });
-                } else if (materialNum > shopNum) {
-                    String tip = "多了" + (materialNum - shopNum) + "个回收材料，请单独退押";
-                    MessageDialog.show(DeliveryOrderActivity.this, "提示", tip, "确定", "取消")
+                } else if (materialNum > shopNum && haveBindMaterList) {
+                    String tip = "商品数量小于空桶数量";
+                    MessageDialog.show(DeliveryOrderActivity.this, "提示", tip, "退桶", "存桶")
                             .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
                                 @Override
                                 public boolean onClick(BaseDialog baseDialog, View v) {
-
-                                    List<ShopDeleveModel.GoodsListBean> tempList = new ArrayList<>();
-
-                                    for (int i = 0; i < data.size(); i++) {
-                                        float goodsNum = data.get(i).getGoodsNum();
-
-                                        ShopDeleveModel.GoodsListBean goodsListBean = goodsListBeanList.get(i);
-                                        List<ShopDeleveModel.GoodsListBean.MaterialsBean> materials = goodsListBean.getMaterials();
-                                        List<ShopDeleveModel.GoodsListBean.MaterialsBean> tempMaterials = new ArrayList<>();
-
-                                        for (ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean : materials) {
-                                            materialsBean.setNum("0");
-                                            tempMaterials.add(materialsBean);
-                                        }
-
-                                        ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = tempMaterials.get(0);
-                                        materialsBean.setNum(goodsNum + "");
-                                        tempMaterials.set(0, materialsBean);
-                                        goodsListBean.setMaterials(tempMaterials);
-                                        tempList.add(goodsListBean);
-                                    }
-                                    orderDetailPresenter.deliveryOrder(id, totalMerchandiseNum.getText().toString(), amountReceivableNum.getText().toString(), actualAmount.getText().toString(), tempList);
+                                    orderDetailPresenter.deliveryOrder(id, totalMerchandiseNum.getText().toString(), amountReceivableNum.getText().toString(), actualAmount.getText().toString(), goodsListBeanList,0);
                                     return false;
                                 }
-                            });
+                            }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
+                        @Override
+                        public boolean onClick(BaseDialog baseDialog, View v) {
+                            try {
+                                List<ShopDeleveModel.GoodsListBean> tempList = tuitong(goodsListBeanList);
+                                orderDetailPresenter.deliveryOrder(id, totalMerchandiseNum.getText().toString(), amountReceivableNum.getText().toString(), actualAmount.getText().toString(), tempList,0);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            return false;
+                        }
+                    });
                 } else {
-                    orderDetailPresenter.deliveryOrder(id, totalMerchandiseNum.getText().toString(), amountReceivableNum.getText().toString(), actualAmount.getText().toString(), goodsListBeanList);
+                    orderDetailPresenter.deliveryOrder(id, totalMerchandiseNum.getText().toString(), amountReceivableNum.getText().toString(), actualAmount.getText().toString(), goodsListBeanList,0);
                 }
                 break;
         }
+    }
+
+    private List<ShopDeleveModel.GoodsListBean> tuitong(List<ShopDeleveModel.GoodsListBean> goodsListBeanList ){
+
+        List<OrderDetailModel.DataBean.GoodsListBean> data = deliverOrderDetailAdapter.getData();
+        List<ShopDeleveModel.GoodsListBean> tempList = new ArrayList<>();
+
+        for (int i = 0; i < data.size(); i++) {
+            float goodsNum = data.get(i).getGoodsNum();
+
+            ShopDeleveModel.GoodsListBean goodsListBean = goodsListBeanList.get(i);
+            List<ShopDeleveModel.GoodsListBean.MaterialsBean> materials = goodsListBean.getMaterials();
+            if (!materials.isEmpty()){
+                List<ShopDeleveModel.GoodsListBean.MaterialsBean> tempMaterials = new ArrayList<>();
+                for (ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean : materials) {
+                    materialsBean.setNum("0");
+                    tempMaterials.add(materialsBean);
+                }
+
+                ShopDeleveModel.GoodsListBean.MaterialsBean materialsBean = tempMaterials.get(0);
+                materialsBean.setNum(goodsNum + "");
+                tempMaterials.set(0, materialsBean);
+                goodsListBean.setMaterials(tempMaterials);
+                tempList.add(goodsListBean);
+            }
+        }
+        return tempList;
     }
 
     /**
@@ -792,8 +823,9 @@ public class DeliveryOrderActivity extends BaseActivity implements ILoadDataView
         if (event != null) {
             if (event.type == 3) {
                 if (event.status == Config.LOAD_SUCCESS) {
+                    int select = event.select;
                     Utils.showCenterTomast("配送成功");
-                    if (needKaiYa) {
+                    if (select==3) {
                         addOrderDepositDialog = new AddOrderDepositDialog(DeliveryOrderActivity.this, id, customerId, new AddOrderDepositDialog.StartDespositListener() {
                             @Override
                             public void despositResult(boolean success) {

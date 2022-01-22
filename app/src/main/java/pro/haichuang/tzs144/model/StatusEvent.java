@@ -5,6 +5,7 @@ public class StatusEvent {
     public final int status;
     public final int type;
     public String result = "";
+    public int select;
 
     public StatusEvent(int mStatus,int mType){
         this.status = mStatus;
@@ -13,6 +14,10 @@ public class StatusEvent {
 
     public void setResult(String result){
         this.result = result;
+    }
+
+    public void setSelect(int select){
+        this.select = select;
     }
 
 }

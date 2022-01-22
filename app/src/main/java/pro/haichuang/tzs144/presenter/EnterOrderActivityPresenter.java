@@ -50,12 +50,12 @@ public class EnterOrderActivityPresenter {
         params.put("receivablePrice",receivablePrice);
         params.put("realPrice",realPrice);
 
-
 //        String s = Utils.gsonInstane().toJson(params);
 //        Log.i("JSON==",s);
 //        if (true){
 //            return;
 //        }
+
 
         HttpRequestEngine.postRequest(ConfigUrl.ENTER_ORFER, params, new HttpRequestResultListener() {
             @Override

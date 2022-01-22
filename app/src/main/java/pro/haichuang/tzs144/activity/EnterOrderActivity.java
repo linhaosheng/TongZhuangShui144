@@ -867,12 +867,24 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
         addOrderModel.setAddressId(dataBean.getAddressId()+"");
         addOrderModel.setGoodsList(addOrderAdapter.getData());
 
-
         int materialNum = 0;
         int shopNum = 0;
         boolean haveMaterials = false;
         for (AddOrderModel.GoodsListBean goodsListBean : addOrderAdapter.getData()){
             List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
+
+            if (materials.isEmpty()){
+                continue;
+            }
+            int num = Integer.parseInt(goodsListBean.getNum());
+            int materialSize = 0;
+            for (MaterialModel.DataBean dataBean : materials){
+                materialSize+= dataBean.getNum();
+            }
+            if (materialSize==num){
+                continue;
+            }
+
             if (goodsListBean.getMaterials()!=null && goodsListBean.getMaterials().size()>0){
                 haveMaterials = true;
             }
@@ -888,45 +900,51 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             if (shopNum>materialNum){
                 // String content = "回收材料多了"+(materialNum - shopNum) +"，请单独退押";
                  content = "商品数量大于空桶数量";
-                 left = "开押";
-                 right = "存桶";
+                 left = "存桶";     // select 0
+                 right = "开押";   // select 1
 
-                MessageDialog.show(this, "提示", content, left,right)
+                MessageDialog.show(this, "提示", content, right,left)
                         .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
                             @Override
                             public boolean onClick(BaseDialog baseDialog, View v) {
-                                enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),0);
+                                enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),1);
                                 return false;
                             }
                         }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
                     @Override
                     public boolean onClick(BaseDialog baseDialog, View v) {
-                        enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),1);
+                        enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),0);
                         return false;
                     }
                 });
-
-            }else{
+              return;
+            }else if (shopNum<materialNum){
                 content = "商品数量小于空桶数量";
-                left = "存桶";
-                right = "退桶";
+                left = "退桶";
+                right = "存桶";
                 MessageDialog.show(this, "提示", content, left,right)
                         .setOnOkButtonClickListener(new OnDialogButtonClickListener() {
                             @Override
                             public boolean onClick(BaseDialog baseDialog, View v) {
-                                enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),0);
+                                try {
+                                    tuitong();
+                                    enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),0);
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
                                 return false;
                             }
                         }).setOnCancelButtonClickListener(new OnDialogButtonClickListener() {
                     @Override
                     public boolean onClick(BaseDialog baseDialog, View v) {
-                        tuitong();
+                        enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),0);
                         return false;
                     }
                 });
+                return;
             }
         }
-
+        enterOrderActivityPresenter.enterOrder(addOrderModel, totalMerchandiseNum.getText().toString(),amountReceivableNum.getText().toString(),actualAmount.getText().toString(),0);
     }
 
     /**
@@ -1115,17 +1133,18 @@ public class EnterOrderActivity extends BaseActivity implements IUpLoadFileView<
             int goodsNum =  Integer.parseInt(data.get(i).getNum());
             AddOrderModel.GoodsListBean goodsListBean = data.get(i);
             List<MaterialModel.DataBean> materials = goodsListBean.getMaterials();
-            List<MaterialModel.DataBean> tempMaterials = new ArrayList<>();
-            for (MaterialModel.DataBean dataBean : materials){
-                dataBean.setNum(0);
-                tempMaterials.add(dataBean);
+            if (!materials.isEmpty()){
+                List<MaterialModel.DataBean> tempMaterials = new ArrayList<>();
+                for (MaterialModel.DataBean dataBean : materials){
+                    dataBean.setNum(0);
+                    tempMaterials.add(dataBean);
+                }
+                MaterialModel.DataBean dataBean = tempMaterials.get(0);
+                dataBean.setNum(goodsNum);
+                tempMaterials.set(0,dataBean);
+                goodsListBean.setMaterials(tempMaterials);
+                tempData.add(goodsListBean);
             }
-
-            MaterialModel.DataBean dataBean = tempMaterials.get(0);
-            dataBean.setNum(goodsNum);
-            tempMaterials.set(0,dataBean);
-            goodsListBean.setMaterials(tempMaterials);
-            tempData.add(goodsListBean);
         }
         addOrderAdapter.setList(tempData);
         caculateShopMount();
