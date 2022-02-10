@@ -194,7 +194,7 @@ public class ConfigUrl {
     /**
      * [押金]退押
      */
-    public static final String RETURN_DEPOSIT = "3";
+    public static final String RETURN_DEPOSIT = "/api/app/depositManage/returnDeposits";
 
 
     /**
